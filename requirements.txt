@@ -1,0 +1,7 @@
+streamlit>=1.63,<2
+polars>=1.30,<2
+duckdb>=1.5.5,<2
+pyarrow>=20,<30
+plotly>=7,<8
+PyYAML>=6,<7
+reportlab>=4.4,<5

@@ -1,0 +1,5 @@
+metric,source_a,value_a,source_b,value_b,status,note
+blocks,JH_AT_GLANCE,264,JLA current_blocks rows,264,reconciled,Saryu is included from Latehar district site; older divisional table had 9 Latehar blocks.
+panchayats,JH_AT_GLANCE,4345,AH divisional rows excluding Saryu blank,4407,conflict_preserved,Official sources use different snapshots/definitions; do not force equality.
+villages,JH_AT_GLANCE,32394,AH divisional rows plus Saryu,31763,conflict_preserved,Official sources use different snapshots/definitions; village counts are source-specific.
+subdivisions,JH_STATE_PROFILE_2026,45,JH_AT_GLANCE,38,temporal_conflict,State Profile says 45 current subdivisions; At-a-Glance table retains an older 38 count.

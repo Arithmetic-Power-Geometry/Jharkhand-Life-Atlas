@@ -1,0 +1,24 @@
+id: core_geography
+name: Core Geography & Census Baseline
+version: 1.1.0
+status: active
+description: "Evidence-backed Jharkhand administrative hierarchy, Census 2011 baseline source map, and source-reconciliation layer that anchors every JLA module."
+geography:
+  primary: place
+  supports: [state, division, district, subdivision, block, panchayat, village]
+temporal:
+  type: versioned_reference
+dependencies: []
+features:
+  map: false
+  download: true
+  report: true
+  comparison: true
+coverage:
+  bundled_current_hierarchy: "1 state, 5 divisions, 24 districts, 45 subdivisions, 264 blocks"
+  census_codes: "24 Census 2011 district codes"
+  census_pca_catalog: "24 official district PCA catalog records indexed"
+  state_baseline: "2011 state-level demographic and workforce facts"
+  reconciliation: "official source conflicts preserved and documented"
+  pending_raw_ingestion: "entity-level panchayat/village master, village PCA values, DCHB village amenities, and geometry are not claimed as ingested until official raw files are retrieved and validated"
+quality_rule: "No source = no published factual value; missing data is never interpreted as zero."

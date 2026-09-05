@@ -1,0 +1,9 @@
+id: example_module
+name: Example Module
+version: 0.1.0
+status: draft
+description: "Copy this folder, rename it, then edit module.yaml."
+geography: {primary: village}
+temporal: {type: cross_sectional}
+dependencies: [core_geography]
+features: {map: true, download: true, report: true, comparison: true}

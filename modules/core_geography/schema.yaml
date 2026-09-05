@@ -1,0 +1,29 @@
+places:
+  description: Current verified administrative hierarchy through block level.
+  fields:
+    - {name: place_id, type: string, required: true, unique: true}
+    - {name: place_type, type: string, required: true}
+    - {name: name, type: string, required: true}
+    - {name: parent_place_id, type: string, required: true}
+    - {name: division, type: string, required: false}
+    - {name: district_code, type: string, required: false}
+    - {name: district, type: string, required: false}
+    - {name: subdivision, type: string, required: false}
+    - {name: block, type: string, required: false}
+    - {name: source_id, type: string, required: true}
+    - {name: official_code_status, type: string, required: true}
+    - {name: record_status, type: string, required: true}
+current_blocks:
+  description: Source-specific current administrative snapshots by block.
+  fields:
+    - {name: district, type: string, required: true}
+    - {name: subdivision, type: string, required: false}
+    - {name: block, type: string, required: true}
+    - {name: panchayat_count, type: integer, required: false}
+    - {name: village_count, type: integer, required: false}
+    - {name: source_id, type: string, required: true}
+    - {name: as_of, type: date, required: true}
+    - {name: observation_type, type: string, required: true}
+    - {name: quality_class, type: string, required: true}
+source_audits:
+  files: [state_facts_2011.csv, census_pca_catalog.csv, reconciliation.csv]
