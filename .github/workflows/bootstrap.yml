@@ -1,10 +1,8 @@
 name: bootstrap-jla
 
 on:
-  push:
-    branches: [build/module1-and-app]
-    paths:
-      - ".github/workflows/bootstrap.yml"
+  pull_request:
+    branches: [main]
   workflow_dispatch:
 
 permissions:
@@ -25,6 +23,19 @@ jobs:
           cat .bootstrap/chunk_* | base64 -d > /tmp/jla.tar.gz
           tar -xzf /tmp/jla.tar.gz -C .
           rm -rf .bootstrap .github/workflows/bootstrap.yml
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+
+      - name: Install and validate
+        shell: bash
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt pytest
+          python -m compileall -q jla app_pages modules scripts streamlit_app.py
+          pytest -q
+          python scripts/check.py
 
       - name: Commit final repository tree
         shell: bash
