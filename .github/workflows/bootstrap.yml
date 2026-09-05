@@ -22,7 +22,9 @@ jobs:
         run: |
           cat .bootstrap/chunk_* | base64 -d > /tmp/jla.tar.gz
           tar -xzf /tmp/jla.tar.gz -C .
-          rm -rf .bootstrap .github/workflows/bootstrap.yml
+          # Keep the temporary bootstrap workflow/chunks until the tested tree is pushed.
+          # The connector removes them afterward. Avoid workflow-file mutations in this bot push.
+          rm -f .github/workflows/tests.yml .github/workflows/update.yml
 
       - uses: actions/setup-python@v5
         with:
@@ -37,11 +39,11 @@ jobs:
           pytest -q
           python scripts/check.py
 
-      - name: Commit final repository tree
+      - name: Commit validated repository tree
         shell: bash
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add -A
-          git diff --cached --quiet || git commit -m "Complete JLA v1.1.0 Module 1 and Streamlit app"
+          git diff --cached --quiet || git commit -m "Stage validated JLA v1.1.0 Module 1 and Streamlit app"
           git push origin HEAD:build/module1-and-app
