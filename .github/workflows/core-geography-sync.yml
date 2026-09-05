@@ -1,0 +1,42 @@
+name: core-geography-sync
+
+on:
+  push:
+    paths:
+      - 'modules/core_geography/sync_official.py'
+      - '.github/workflows/core-geography-sync.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - name: Install ingestion dependencies
+        run: pip install pandas openpyxl xlrd requests beautifulsoup4
+      - name: Sync authoritative Census and LGD data
+        run: python modules/core_geography/sync_official.py
+      - name: Validate repository
+        run: |
+          pip install -r requirements.txt pytest
+          python -m compileall -q jla app_pages modules scripts streamlit_app.py
+          pytest -q
+          python scripts/check.py
+      - name: Commit curated authoritative outputs
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add data/curated/core_geography modules/core_geography/sync_report.json
+          if git diff --cached --quiet; then
+            echo 'No curated-data changes to commit.'
+          else
+            git commit -m 'Sync authoritative Core Geography data [skip ci]'
+            git push
+          fi
