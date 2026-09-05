@@ -6,6 +6,7 @@ on:
       - 'modules/core_geography/sync_official.py'
       - 'modules/core_geography/sync_runner.py'
       - 'modules/core_geography/sync_fast_runner.py'
+      - 'modules/core_geography/complete_module1.py'
       - '.github/workflows/core-geography-sync.yml'
   workflow_dispatch:
 
@@ -27,6 +28,8 @@ jobs:
         run: pip install pandas openpyxl xlrd requests beautifulsoup4
       - name: Sync authoritative Census and LGD data
         run: python modules/core_geography/sync_fast_runner.py
+      - name: Complete DCHB, MDDS and temporal crosswalk layers
+        run: python modules/core_geography/complete_module1.py
       - name: Validate repository
         run: |
           pip install -r requirements.txt pytest
