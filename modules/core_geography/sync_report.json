@@ -1,0 +1,54 @@
+{
+  "started_at": "2026-09-05T16:46:29.119660+00:00",
+  "status": "success",
+  "sources": {
+    "location_directory": {
+      "url": "https://censusindia.gov.in/nada/index.php/catalog/42648/download/46323/PC11_TV_DIR.xlsx",
+      "sha256": "e5670123e836148cd4a869805333b519f45ce837d1145c8b5cece3a01dbf7dd0",
+      "bytes": 23318601,
+      "source_id": "CENSUS_LOCATION_DIR_2011"
+    },
+    "basic_population": {
+      "url": "https://censusindia.gov.in/nada/index.php/catalog/42559/download/46185/2011-IndiaStateDistSbDistTwn-0000.xlsx",
+      "sha256": "da487f7a1181fd9f43ccf354a8b5864ffca5920fc82b5183d644d483445cb380",
+      "bytes": 16044425,
+      "source_id": "CENSUS_BASIC_2011"
+    },
+    "mdds_jh": {
+      "url": "https://censusindia.gov.in/nada/index.php/catalog/7059/download/10171/Rdir_2001_MDDS_20.xls",
+      "sha256": "2f3c82c05a46f8701f2a6f7496a5d6314ffcefa8ee858bdd9c5d0878858c38a0",
+      "bytes": 6347264,
+      "source_id": "CENSUS_MDDS_JH_2011",
+      "local_path": "data/raw/core_geography/Rdir_2001_MDDS_20.xls"
+    },
+    "village_amenities": {
+      "url": "https://censusindia.gov.in/nada/index.php/catalog/570/download/1930/DH_2011_DCHB_Village_Release_2000.xlsx",
+      "sha256": "6d4f5101a7375ce3cb282b78815d86a880098fe1a9c13d17832f429a475aa803",
+      "bytes": 61439599,
+      "source_id": "CENSUS_DCHB_JH_2011",
+      "local_path": "data/raw/core_geography/DH_2011_DCHB_Village_Release_2000.xlsx"
+    }
+  },
+  "counts": {
+    "census_places": {
+      "village": 32624,
+      "subdistrict": 261,
+      "district": 24,
+      "state": 1
+    },
+    "basic_population": {
+      "rows": 32623,
+      "district_workbooks": 24,
+      "core_fields_populated": 8
+    },
+    "lgd_current": {
+      "districts": 24,
+      "subdistricts": 264,
+      "blocks": 264,
+      "panchayats": 4369,
+      "villages": 32962
+    }
+  },
+  "errors": [],
+  "finished_at": "2026-09-05T17:01:56.220721+00:00"
+}
