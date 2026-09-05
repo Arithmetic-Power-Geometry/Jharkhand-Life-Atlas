@@ -1,5 +1,5 @@
 {
-  "started_at": "2026-09-05T16:46:29.119660+00:00",
+  "started_at": "2026-09-05T20:03:09.805871+00:00",
   "status": "success",
   "sources": {
     "location_directory": {
@@ -47,8 +47,51 @@
       "blocks": 264,
       "panchayats": 4369,
       "villages": 32962
+    },
+    "dchb_village_amenities": {
+      "rows": 32394,
+      "source_fields_populated": 394,
+      "file": "DH_2011_DCHB_Village_Release_2000.xlsx",
+      "sheet_diagnostics": [
+        {
+          "sheet": "Village_Data_2000",
+          "matched_census_codes": 32394
+        },
+        {
+          "sheet": "Hamlet_Data_2000",
+          "matched_census_codes": 17486
+        },
+        {
+          "sheet": "Misc_Information",
+          "matched_census_codes": 0
+        }
+      ],
+      "code_validation": "exact_membership_in_verified_census_2011_village_backbone"
+    },
+    "mdds_2001_2011_crosswalk": {
+      "rows": 32584,
+      "linked": 32583,
+      "verified_2011": 32584,
+      "file": "Rdir_2001_MDDS_20.xls",
+      "sheet_diagnostics": [
+        {
+          "sheet": "Village Directory",
+          "verified_2011_codes": 32868
+        }
+      ],
+      "validation": "2011 exact Census membership + explicit reconstructed 2001 source header"
+    },
+    "census_lgd_temporal_crosswalk": {
+      "census_villages": 32624,
+      "official_code_links": 0,
+      "lgd_census2011_field": "not_exposed"
     }
   },
   "errors": [],
-  "finished_at": "2026-09-05T17:01:56.220721+00:00"
+  "finished_at": "2026-09-05T20:16:26.965972+00:00",
+  "module1_completion_layers": {
+    "dchb_village_amenities": "validated",
+    "mdds_2001_2011_crosswalk": "validated",
+    "census_lgd_temporal_crosswalk": "validated_with_unmatched_explicit"
+  }
 }
