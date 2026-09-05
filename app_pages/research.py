@@ -1,10 +1,10 @@
 import streamlit as st
 from jla.ui import hero, badges, section_note
-from jla.data import places, sources, variables, research_bundle, dataframe_to_csv_bytes
+from jla.data import places, sources, variables, research_bundle, dataframe_to_csv_bytes, core_research_tables
 
 hero(
     "Download data",
-    "Choose the geographic level you need and download either a simple CSV or a research bundle containing the evidence needed to understand and cite it.",
+    "Choose the geographic level you need and download either a simple CSV or a complete research bundle containing the evidence needed to understand, reproduce and cite Module 1.",
     eyebrow="Research tools · Transparent extracts",
 )
 
@@ -22,16 +22,20 @@ except Exception:
     row_count = len(out)
     level = "all"
 
-badges([f"Level: {level}", f"Rows: {row_count}", "Source registry included", "Data dictionary included"])
-section_note("For reproducible research, prefer the research bundle. It packages the selected data together with sources, variable definitions, README and licence notes.")
+included = core_research_tables()
+badges([f"Level: {level}", f"Rows: {row_count}", f"Core tables: {len(included)}", "Provenance included"])
+section_note("For reproducible research, prefer the research bundle. It packages the selected place extract with sources, variable definitions and all verified Module 1 curated evidence layers.")
 
 preview, provenance = st.tabs(["Data preview", "What is included"])
 with preview:
     st.dataframe(out, width="stretch", hide_index=True)
 with provenance:
     st.markdown("**Research bundle contents**")
-    st.markdown("- `data.csv` — selected JLA records\n- `sources.csv` — provenance/source registry\n- `data_dictionary.csv` — variable definitions\n- `README.txt` — extract context\n- `LICENSE.txt` — JLA licensing notes")
-    st.caption("Third-party source material retains its own source terms; JLA does not silently relicense external datasets.")
+    st.markdown("- `data.csv` — selected JLA place records\n- `sources.csv` — provenance/source registry\n- `data_dictionary.csv` — variable definitions\n- `core_geography/` — verified Module 1 curated tables\n- `README.txt` — extract context and temporal safeguards\n- `LICENSE.txt` — JLA licensing notes")
+    with st.expander("View included Module 1 tables", expanded=False):
+        for filename in included:
+            st.code(f"core_geography/{filename}")
+    st.caption("Third-party source material retains its own source terms; JLA does not silently relicense external datasets. Missing values are not interpreted as zero, and Census 2011 remains separate from current LGD unless an authoritative crosswalk supports linkage.")
 
 st.markdown("### Download")
 c1, c2 = st.columns(2)
