@@ -128,4 +128,4 @@ def sidebar_footer():
         st.divider()
         st.markdown("**JLA · Jharkhand Life Atlas**")
         st.caption("Evidence about people, places and access — connected at village level.")
-        st.markdown('<div class="jla-footer">v1.0.0 · Non-partisan · Provenance-first<br>Copyright (C) 2026 Mohammad Amir Khusru Akhtar · CC BY 4.0</div>', unsafe_allow_html=True)
+        st.markdown('<div class="jla-footer">v1.0.0 · Provenance-first<br>Copyright (C) 2026 Mohammad Amir Khusru Akhtar · CC BY 4.0</div>', unsafe_allow_html=True)
