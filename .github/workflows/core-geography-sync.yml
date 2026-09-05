@@ -4,6 +4,7 @@ on:
   push:
     paths:
       - 'modules/core_geography/sync_official.py'
+      - 'modules/core_geography/sync_runner.py'
       - '.github/workflows/core-geography-sync.yml'
   workflow_dispatch:
 
@@ -22,7 +23,7 @@ jobs:
       - name: Install ingestion dependencies
         run: pip install pandas openpyxl xlrd requests beautifulsoup4
       - name: Sync authoritative Census and LGD data
-        run: python modules/core_geography/sync_official.py
+        run: python modules/core_geography/sync_runner.py
       - name: Validate repository
         run: |
           pip install -r requirements.txt pytest
