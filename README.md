@@ -1,36 +1,91 @@
-# Jharkhand Life Atlas (JLA) v1.0.0
+# Jharkhand Life Atlas (JLA)
 
-**Evidence about people, places and access — connected at village level.**
+> **Evidence about people, places and access — connected at village level.**
 
-Copyright (C) 2026 Mohammad Amir Khusru Akhtar
+**v1.0.0 · Provenance-first**  
+Copyright (C) 2026 Mohammad Amir Khusru Akhtar · CC BY 4.0
 
-Licensed under **Creative Commons Attribution 4.0 International (CC BY 4.0)** for original JLA code, documentation, schemas, and original data products. Third-party source data retain their original licences and attribution requirements; see `NOTICE.md` and the source registry.
+## About
 
-## What this package is
+**Jharkhand Life Atlas (JLA)** connects geography, public-interest data and source evidence in one modular research platform. It is designed as a long-term, extensible evidence infrastructure for Jharkhand: begin with a verified geographic backbone, then connect independent thematic modules without rebuilding the core application.
 
-JLA is a modular, provenance-first public-interest data platform. Version 1.0.0 ships with the production repository skeleton and the first module, **Core Geography**, including a Jharkhand district baseline, a place model, source registry, dynamic module discovery, downloads, evidence metadata, PDF/HTML reporting, validation, tests, and an admin module builder.
+JLA is intended for researchers, students, planners, public-interest organisations and citizens who need data that can be explored, downloaded, cited and traced back to its evidence.
 
-The project deliberately does **not fabricate village-level records**. The bundled district baseline lets the application run immediately. Official village/block/panchayat crosswalks can be ingested into the same schema as authoritative files are verified. The architecture is already village-ready.
+## Core idea
 
-## Streamlit deployment
+JLA follows one simple chain:
 
-1. In Streamlit Community Cloud choose this repository and set **Main file path** to `streamlit_app.py`.
-2. Deploy. Public mode works immediately.
-3. Configure private secrets separately if you want to enable Admin mode.
+**Place → Variable → Observation → Time → Source → Method → Quality**
 
-## Dynamic modules
+Every published factual value should be traceable. Missing information remains missing; it is never silently converted to zero or replaced by an invented value.
 
-Drop a valid module folder under:
+## Modular by design
+
+The geographic backbone provides stable place identities. Independent modules can then add evidence about health, water, education, agriculture, livelihoods, environment, climate, accessibility, human-wildlife conflict and other public-interest themes.
+
+A valid module lives under:
 
 ```text
 modules/<module_id>/
 ```
 
-At minimum it needs `module.yaml`. On the next Streamlit restart/rerun JLA discovers it automatically and shows it in the Modules page. If the module includes `data/indicators.csv`, those records become browsable and downloadable through the generic module renderer.
+The application discovers modules from the repository, allowing the platform to expand without redesigning its core navigation or evidence model.
 
-Admin mode contains a **Module Builder** that produces a ready-to-commit module ZIP with schema, source, indicator, README and test templates.
+## Module 1 — Core Geography & Census Baseline
 
-## Local run
+Core Geography establishes the geographic spine used by all later JLA modules. Its target hierarchy is:
+
+**State → District → Sub-district → Block → Panchayat → Village/Town**
+
+The module preserves official identifiers, administrative relationships, temporal context, source provenance and Census baseline observations where authoritative source material has been successfully ingested and validated.
+
+Census 2011 geography and current administrative/LGD geography are treated as distinct temporal views and must not be silently mixed. Coverage published by JLA reflects only records that have passed the project's source and validation rules.
+
+## Evidence and provenance rules
+
+JLA is provenance-first:
+
+- no source = no published factual value;
+- missing data ≠ zero;
+- observed, derived and modelled values are distinguished;
+- source year and geographic resolution remain visible;
+- transformations should be reproducible;
+- third-party licensing and attribution remain attached to source material;
+- unsupported or ambiguous records are rejected rather than guessed;
+- public outputs should not expose person-level identifiable information.
+
+## Public-interest and non-partisan use
+
+JLA measures publicly observable conditions, accessibility, exposure and service environments. It does not rank political parties, elected representatives or governments, and derived indicators should not be interpreted as attribution of political responsibility.
+
+## Research and application features
+
+The repository supports:
+
+- geographic exploration and place profiles;
+- modular data discovery;
+- source and methodology inspection;
+- evidence-preserving CSV/research-bundle downloads;
+- PDF/HTML evidence reports;
+- validation and automated tests;
+- reproducible source ingestion workflows;
+- dynamic module discovery; and
+- an Admin Module Builder for preparing future modules.
+
+## Technology
+
+- **Application:** Streamlit 1.63+
+- **Analytics:** DuckDB
+- **Transformation:** Polars / PyArrow
+- **Canonical tabular storage:** Parquet
+- **Spatial storage:** GeoParquet where verified geometry is available
+- **Portable exchange:** CSV / GeoJSON where appropriate
+- **Visualisation:** Plotly 7+ / MapLibre-compatible mapping
+- **Metadata:** YAML / JSON / structured source registries
+- **Reports:** Python-native HTML/PDF
+- **Automation:** GitHub Actions
+
+## Run locally
 
 ```bash
 python -m venv .venv
@@ -40,22 +95,26 @@ pip install -r requirements.txt
 streamlit run streamlit_app.py
 ```
 
-## Architecture
+## Streamlit deployment
 
-- Canonical production data: Parquet / GeoParquet
-- Portable source/seed data: CSV
-- Analytics: DuckDB
-- Transformation: Polars
-- App: Streamlit 1.63+
-- Charts/maps: Plotly 7+
-- Reports: Python-native HTML/PDF for zero-extra-runtime deployment
-- Citations: structured source registry + BibTeX export
-- Module contract: `module.yaml` + optional standardized data files
+In Streamlit Community Cloud, select this repository, use branch `main`, and set the main file path to:
 
-## Public-interest principles
+```text
+streamlit_app.py
+```
 
-JLA reports conditions and evidence, not political blame. It separates observed, derived and modelled values; exposes source year and quality; never interprets missing data as zero; and keeps third-party licensing/provenance visible.
+Public functionality does not require an admin secret. Admin credentials must be configured privately through Streamlit secrets and must never be committed to this repository.
+
+## Data licensing
+
+Original JLA material is released under the **Creative Commons Attribution 4.0 International (CC BY 4.0)** licence as stated in this repository. Third-party datasets, government source files and externally produced material retain their own applicable terms, licences and attribution requirements. Inclusion of provenance metadata does not relicense third-party material. See `NOTICE.md` and the source registry for source-specific information.
 
 ## Repository status
 
-`v1.0.0` is a foundation release. The **software layer is complete and runnable**; the bundled Core Geography dataset is a verified district-level baseline and must be expanded with authoritative village/block/panchayat source files rather than invented values.
+JLA is under evidence-driven expansion. Software capabilities and data coverage are deliberately reported separately: a working module does not imply that every potentially available dataset has been ingested. Each module should be considered complete only after its intended authoritative sources, validation rules, provenance records and published outputs have been checked.
+
+---
+
+**Jharkhand Life Atlas (JLA)**  
+**v1.0.0 · Provenance-first**  
+**Copyright (C) 2026 Mohammad Amir Khusru Akhtar · CC BY 4.0**
