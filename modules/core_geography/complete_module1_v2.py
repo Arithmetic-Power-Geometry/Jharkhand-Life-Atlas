@@ -196,12 +196,23 @@ def build_mdds_crosswalk_robust() -> tuple[pd.DataFrame, dict]:
         headers = _structured_mdds_headers(raw, first_data_row)
         header_norm = [norm(h) for h in headers]
 
-        # The 2001 column is accepted only when the reconstructed source header
-        # explicitly identifies both the 2001 group and a village/location code.
-        candidates_2001 = [
-            i for i, h in enumerate(header_norm)
-            if "2001" in h and "code" in h and ("village" in h or "plcn" in h or "location" in h)
-        ]
+        # Require the leaf/column-level source label itself to identify a code
+        # field.  The merged parent heading contains the word "codes" for both
+        # the code and name columns, so matching the full composite header would
+        # incorrectly classify the village-name column as a second code column.
+        candidates_2001: list[int] = []
+        for i, h in enumerate(header_norm):
+            parts = h.split("__")
+            group = parts[0] if parts else h
+            leaf = parts[-1] if parts else h
+            explicit_leaf_code = (
+                "plcn" in leaf
+                or "village_code" in leaf
+                or "location_code" in leaf
+            )
+            if "2001" in group and "name" not in leaf and explicit_leaf_code:
+                candidates_2001.append(i)
+
         if len(candidates_2001) != 1:
             raise RuntimeError(
                 "MDDS 2001 village-code column is not uniquely identified by explicit source headers. "
