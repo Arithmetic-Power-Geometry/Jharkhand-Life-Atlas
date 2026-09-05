@@ -1,0 +1,21 @@
+tables:
+  health_facilities:
+    grain: one_source_facility_record
+    required_fields: [facility_source_id, facility_name, facility_type, ownership, source_id, reference_period, observation_type, quality_class]
+    optional_fields: [place_id, district_code, subdistrict_code, block_code, panchayat_code, village_code, latitude, longitude, address, systems_of_medicine, services, beds, doctors_sanctioned, doctors_in_position, paramedical_sanctioned, paramedical_in_position, certification_status, certification_valid_to]
+    rules:
+      - "Facility identity must remain source-specific until a deterministic or evidence-backed cross-source match exists."
+      - "Coordinates must come from an authoritative source or be explicitly marked derived/modelled; no guessed geocoding."
+      - "Missing staffing/capacity values are null, never zero."
+  health_service_activity:
+    grain: source_geography_indicator_period
+    required_fields: [place_id, indicator_id, period, value_numeric, unit, source_id, observation_type, quality_class]
+    rules:
+      - "Publish only at the source-supported geography."
+      - "District HMIS values must not be allocated to villages or facilities."
+  health_access_indicators:
+    grain: place_indicator_period
+    required_fields: [place_id, indicator_id, period, value_numeric, unit, source_id, observation_type, quality_class, method]
+    rules:
+      - "Derived accessibility requires verified facility geography and documented method."
+      - "Observed, derived and modelled outputs must be separable."

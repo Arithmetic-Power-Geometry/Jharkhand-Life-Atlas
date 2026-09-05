@@ -1,0 +1,80 @@
+sources:
+  - source_id: CENSUS_DCHB_JH_2011_HEALTH
+    title: Jharkhand District Census Handbooks — village health amenities
+    publisher: Office of the Registrar General & Census Commissioner, India
+    url: https://censusindia.gov.in/nada/index.php/catalog/?sk=Jharkhand
+    role: historical_village_health_amenities
+    reference_year: 2011
+    publication_class: DERIVED_ONLY
+    license_review_status: reviewed_conservative
+    notes: "Reuse only under JLA's existing conservative Census policy; preserve source fields and do not reinterpret missing facility values as zero."
+
+  - source_id: OGD_HEALTH_CENTRES_DIRECTORY
+    title: All India Health Centres Directory
+    publisher: Ministry of Health and Family Welfare, Government of India
+    url: https://www.data.gov.in/catalog/all-india-health-centres-directory
+    role: official_health_facility_directory
+    reference_year: historical_directory
+    publication_class: OPEN_WITH_ATTRIBUTION
+    license_review_status: platform_license_review_required_before_ingest
+    notes: "Official OGD directory of PHC, Sub Centre, CHC, District Hospital and State Hospital with geolocation; verify resource currency and exact terms before publication."
+
+  - source_id: OGD_HOSPITAL_DIRECTORY_NHP
+    title: Hospital Directory — National Health Portal
+    publisher: Ministry of Health and Family Welfare / NIHFW
+    url: https://www.data.gov.in/catalog/hospital-directory-national-health-portal
+    role: hospital_directory
+    reference_year: historical_directory
+    publication_class: OPEN_WITH_ATTRIBUTION
+    license_review_status: platform_license_review_required_before_ingest
+    notes: "Includes state-wise hospitals and metadata; preserve update date and avoid treating an old directory as current."
+
+  - source_id: OGD_HMIS_JH_DISTRICT
+    title: Item-wise monthly HMIS report at District level of Jharkhand
+    publisher: Ministry of Health and Family Welfare, Government of India
+    url: https://www.data.gov.in/catalog/item-wise-monthly-hmis-report-district-level-jharkhand
+    role: district_service_activity_time_series
+    reference_year: time_series
+    publication_class: OPEN_WITH_ATTRIBUTION
+    license_review_status: platform_license_review_required_before_ingest
+    notes: "District-level service/activity indicators only; do not infer facility- or village-level values from district aggregates."
+
+  - source_id: ABDM_HFR
+    title: Ayushman Bharat Digital Mission — Health Facility Registry
+    publisher: National Health Authority, Government of India
+    url: https://abdm.gov.in/health-facilities
+    role: current_verified_facility_registry_candidate
+    reference_year: current
+    publication_class: RESTRICTED
+    license_review_status: rights_and_export_mechanism_pending
+    notes: "Authoritative registry candidate spanning public/private facilities. Do not scrape or redistribute until an official reusable export/API and terms are verified."
+
+  - source_id: NHSRC_AAM
+    title: Ayushman Arogya Mandir programme map/table
+    publisher: National Health Systems Resource Centre / National Health Mission
+    url: https://nhsrcindia.org/AB-HWCs-map-table
+    role: state_level_current_programme_coverage
+    reference_year: current_page
+    publication_class: DERIVED_ONLY
+    license_review_status: resource_specific_review_pending
+    notes: "Useful for programme coverage verification; state totals must not be expanded into facility records without an authoritative facility-level source."
+
+  - source_id: NHSRC_NQAS
+    title: NQAS Certified Facilities
+    publisher: National Health Systems Resource Centre / National Health Mission
+    url: https://nhsrcindia.org/quality-map-home
+    role: health_facility_quality_certification_candidate
+    reference_year: current_page
+    publication_class: DERIVED_ONLY
+    license_review_status: resource_specific_review_pending
+    notes: "Use only certified-facility information actually exposed by the official source, with validity dates preserved."
+
+  - source_id: CBHI_NHP
+    title: National Health Profile
+    publisher: Central Bureau of Health Intelligence / DGHS / MoHFW
+    url: https://cbhidghs.mohfw.gov.in/publications/national-health-profile
+    role: state_national_health_system_context
+    reference_year: annual
+    publication_class: DERIVED_ONLY
+    license_review_status: resource_specific_review_pending
+    notes: "State/national context and time-series source; not a substitute for granular facility records."
