@@ -1,0 +1,36 @@
+name: bootstrap-jla
+
+on:
+  push:
+    branches: [build/module1-and-app]
+    paths:
+      - ".github/workflows/bootstrap.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  bootstrap:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: build/module1-and-app
+          fetch-depth: 0
+
+      - name: Reconstruct tested package
+        shell: bash
+        run: |
+          cat .bootstrap/chunk_* | base64 -d > /tmp/jla.tar.gz
+          tar -xzf /tmp/jla.tar.gz -C .
+          rm -rf .bootstrap .github/workflows/bootstrap.yml
+
+      - name: Commit final repository tree
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git diff --cached --quiet || git commit -m "Complete JLA v1.1.0 Module 1 and Streamlit app"
+          git push origin HEAD:build/module1-and-app
