@@ -1,0 +1,25 @@
+place_id,place_type,name,parent_place_id,state_code,state_name,district_code,district_name,subdistrict_code,subdistrict_name,block_code,block_name,panchayat_code,panchayat_name,village_code,village_name,latitude,longitude,valid_from,valid_to,source_id,quality_class,record_status
+JH-DIST-346,district,Garhwa,JH-STATE-20,20,Jharkhand,346,Garhwa,,,,,,,,,,,2011,,CENSUS_BASIC_2011,A,verified_baseline
+JH-DIST-347,district,Chatra,JH-STATE-20,20,Jharkhand,347,Chatra,,,,,,,,,,,2011,,CENSUS_BASIC_2011,A,verified_baseline
+JH-DIST-348,district,Kodarma,JH-STATE-20,20,Jharkhand,348,Kodarma,,,,,,,,,,,2011,,CENSUS_BASIC_2011,A,verified_baseline
+JH-DIST-349,district,Giridih,JH-STATE-20,20,Jharkhand,349,Giridih,,,,,,,,,,,2011,,CENSUS_BASIC_2011,A,verified_baseline
+JH-DIST-350,district,Deoghar,JH-STATE-20,20,Jharkhand,350,Deoghar,,,,,,,,,,,2011,,CENSUS_BASIC_2011,A,verified_baseline
+JH-DIST-351,district,Godda,JH-STATE-20,20,Jharkhand,351,Godda,,,,,,,,,,,2011,,CENSUS_BASIC_2011,A,verified_baseline
+JH-DIST-352,district,Sahibganj,JH-STATE-20,20,Jharkhand,352,Sahibganj,,,,,,,,,,,2011,,CENSUS_BASIC_2011,A,verified_baseline
+JH-DIST-353,district,Pakur,JH-STATE-20,20,Jharkhand,353,Pakur,,,,,,,,,,,2011,,CENSUS_BASIC_2011,A,verified_baseline
+JH-DIST-354,district,Dumka,JH-STATE-20,20,Jharkhand,354,Dumka,,,,,,,,,,,2011,,CENSUS_BASIC_2011,A,verified_baseline
+JH-DIST-355,district,Bokaro,JH-STATE-20,20,Jharkhand,355,Bokaro,,,,,,,,,,,2011,,CENSUS_BASIC_2011,A,verified_baseline
+JH-DIST-356,district,Dhanbad,JH-STATE-20,20,Jharkhand,356,Dhanbad,,,,,,,,,,,2011,,CENSUS_BASIC_2011,A,verified_baseline
+JH-DIST-357,district,Purbi Singhbhum,JH-STATE-20,20,Jharkhand,357,Purbi Singhbhum,,,,,,,,,,,2011,,CENSUS_BASIC_2011,A,verified_baseline
+JH-DIST-358,district,Palamu,JH-STATE-20,20,Jharkhand,358,Palamu,,,,,,,,,,,2011,,CENSUS_BASIC_2011,A,verified_baseline
+JH-DIST-359,district,Latehar,JH-STATE-20,20,Jharkhand,359,Latehar,,,,,,,,,,,2011,,CENSUS_BASIC_2011,A,verified_baseline
+JH-DIST-360,district,Hazaribagh,JH-STATE-20,20,Jharkhand,360,Hazaribagh,,,,,,,,,,,2011,,CENSUS_BASIC_2011,A,verified_baseline
+JH-DIST-361,district,Ramgarh,JH-STATE-20,20,Jharkhand,361,Ramgarh,,,,,,,,,,,2011,,CENSUS_BASIC_2011,A,verified_baseline
+JH-DIST-362,district,Ranchi,JH-STATE-20,20,Jharkhand,362,Ranchi,,,,,,,,,,,2011,,CENSUS_BASIC_2011,A,verified_baseline
+JH-DIST-363,district,Khunti,JH-STATE-20,20,Jharkhand,363,Khunti,,,,,,,,,,,2011,,CENSUS_BASIC_2011,A,verified_baseline
+JH-DIST-364,district,Gumla,JH-STATE-20,20,Jharkhand,364,Gumla,,,,,,,,,,,2011,,CENSUS_BASIC_2011,A,verified_baseline
+JH-DIST-365,district,Simdega,JH-STATE-20,20,Jharkhand,365,Simdega,,,,,,,,,,,2011,,CENSUS_BASIC_2011,A,verified_baseline
+JH-DIST-366,district,Pashchimi Singhbhum,JH-STATE-20,20,Jharkhand,366,Pashchimi Singhbhum,,,,,,,,,,,2011,,CENSUS_BASIC_2011,A,verified_baseline
+JH-DIST-367,district,Saraikela-Kharsawan,JH-STATE-20,20,Jharkhand,367,Saraikela-Kharsawan,,,,,,,,,,,2011,,CENSUS_BASIC_2011,A,verified_baseline
+JH-DIST-368,district,Jamtara,JH-STATE-20,20,Jharkhand,368,Jamtara,,,,,,,,,,,2011,,CENSUS_BASIC_2011,A,verified_baseline
+JH-DIST-369,district,Lohardaga,JH-STATE-20,20,Jharkhand,369,Lohardaga,,,,,,,,,,,2011,,CENSUS_BASIC_2011,A,verified_baseline

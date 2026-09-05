@@ -1,0 +1,18 @@
+cff-version: 1.2.0
+title: "Jharkhand Life Atlas"
+message: "If you use JLA, please cite this software/data release and the underlying sources used by your extract."
+type: software
+authors:
+  - family-names: Akhtar
+    given-names: Mohammad Amir Khusru
+version: 1.0.0
+date-released: 2026-09-05
+license: CC-BY-4.0
+repository-code: "https://github.com/Arithmetic-Power-Geometry/Jharkhand-Life-Atlas"
+keywords:
+  - Jharkhand
+  - open data
+  - village
+  - public interest
+  - geospatial
+  - reproducibility

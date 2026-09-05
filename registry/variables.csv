@@ -1,0 +1,4 @@
+variable_id,module_id,variable_name,display_name,description,definition,unit,datatype,geographic_level,temporal_level,source_id,reference_year,observation_type,quality_class,citation_key
+geo.place_id,core_geography,place_id,JLA Place ID,Stable JLA identifier for a geographic entity.,JLA-controlled stable identifier; not a replacement for official codes.,,string,all,versioned,CENSUS_BASIC_2011,2011 baseline,derived_identifier,A,census_basic_2011
+geo.district_code,core_geography,district_code,Census district code,Census 2011 district location code.,District code represented in the Census 2011 hierarchy.,code,string,district,2011 baseline,CENSUS_BASIC_2011,2011,observed,A,census_basic_2011
+geo.name,core_geography,name,Place name,Published geographic entity name.,Display name for the geographic entity.,,string,all,versioned,CENSUS_BASIC_2011,2011 baseline,observed,A,census_basic_2011

@@ -1,0 +1,15 @@
+fields:
+  - {name: place_id, type: string, required: true, unique: true}
+  - {name: place_type, type: string, required: true}
+  - {name: name, type: string, required: true}
+  - {name: parent_place_id, type: string, required: false}
+  - {name: state_code, type: string, required: true}
+  - {name: district_code, type: string, required: false}
+  - {name: subdistrict_code, type: string, required: false}
+  - {name: block_code, type: string, required: false}
+  - {name: panchayat_code, type: string, required: false}
+  - {name: village_code, type: string, required: false}
+  - {name: latitude, type: float, required: false}
+  - {name: longitude, type: float, required: false}
+  - {name: source_id, type: string, required: true}
+  - {name: quality_class, type: string, required: true}

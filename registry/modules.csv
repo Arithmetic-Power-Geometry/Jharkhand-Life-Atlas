@@ -1,0 +1,2 @@
+module_id,name,version,status,geographic_level,last_updated,quality_status,license
+core_geography,Core Geography,1.0.0,active,district_to_village_ready,2026-09-05,district_baseline_verified; village_ingestion_ready,CC BY 4.0 for JLA original material

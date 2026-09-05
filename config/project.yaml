@@ -1,0 +1,15 @@
+project:
+  id: jla
+  name: Jharkhand Life Atlas
+  version: 1.0.0
+  state: Jharkhand
+  country: India
+  copyright: "Copyright (C) 2026 Mohammad Amir Khusru Akhtar"
+  license: CC BY 4.0
+  tagline: "Evidence about people, places and access — connected at village level."
+principles:
+  - non_partisan
+  - provenance_first
+  - no_fabricated_values
+  - missing_is_not_zero
+  - observed_derived_modelled_separated
