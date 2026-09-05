@@ -12,27 +12,11 @@ JLA is a modular, provenance-first public-interest data platform. Version 1.0.0 
 
 The project deliberately does **not fabricate village-level records**. The bundled district baseline lets the application run immediately. Official village/block/panchayat crosswalks can be ingested into the same schema as authoritative files are verified. The architecture is already village-ready.
 
-## One-click Streamlit deployment
+## Streamlit deployment
 
 1. In Streamlit Community Cloud choose this repository and set **Main file path** to `streamlit_app.py`.
 2. Deploy. Public mode works immediately.
 3. Configure private secrets separately if you want to enable Admin mode.
-
-### Enable Admin mode securely
-
-Never commit a plaintext admin password to a public GitHub repository.
-
-In **Streamlit Cloud → App settings → Secrets**, create your own private credentials. For example:
-
-```toml
-[admin]
-username = "your-admin-username"
-password = "use-a-strong-unique-password"
-```
-
-Do **not** copy example credentials into production and do not commit real credentials to GitHub. Streamlit Cloud stores these values outside the repository.
-
-Optional GitHub publishing values are described in `.streamlit/secrets.toml.example`; v1.0.0 intentionally does not require a GitHub token.
 
 ## Dynamic modules
 
