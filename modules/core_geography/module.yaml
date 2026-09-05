@@ -1,20 +1,24 @@
 id: core_geography
-name: Core Geography
-version: 1.0.0
+name: Core Geography & Census Baseline
+version: 1.1.0
 status: active
-description: "Stable place identity, administrative hierarchy and source crosswalk foundation for every JLA module."
+description: "Stable place identity, Census baseline, administrative hierarchy and temporal source crosswalk foundation for every JLA module."
 geography:
   primary: place
-  supports: [state, district, subdistrict, block, panchayat, village]
+  supports: [state, district, subdistrict, block, panchayat, village, town]
 temporal:
   type: versioned_reference
+  views: [census_2011, current_lgd]
 dependencies: []
 features:
   map: true
   download: true
   report: true
   comparison: true
+  provenance: true
 coverage:
-  bundled: "24 Jharkhand districts (Census 2011 baseline)"
-  target: "complete authoritative district/block/panchayat/village crosswalk"
-  note: "No village record is fabricated; village expansion is performed from verified official source files."
+  bundled: "24 Jharkhand districts (verified Census 2011 baseline)"
+  source_inventory: "authoritative Census 2011 + DCHB + OGD PCA + LGD + Jharkhand block references verified"
+  full_village_ingest: pending_official_raw_files
+  target: "authoritative state/district/subdistrict/block/panchayat/village/town crosswalk with Census 2011 demographic baseline and current LGD temporal view"
+  note: "No village/block/panchayat record is fabricated; full publication occurs only after official raw files are ingested, checksummed and validated."
