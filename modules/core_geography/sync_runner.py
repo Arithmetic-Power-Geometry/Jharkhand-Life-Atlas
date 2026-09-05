@@ -109,7 +109,6 @@ def _parse_pca_tv(path: Path) -> pd.DataFrame:
             if found:
                 break
         if not found:
-            # permissive contains fallback after normalized exact aliases
             tokens = [x for x in sync.norm(aliases[-1]).split("_") if x not in {"of", "in", "the"}]
             found = _pick_col(cols, [], tokens[:3] if tokens else None)
         metric_cols[out] = found
@@ -120,13 +119,13 @@ def _parse_pca_tv(path: Path) -> pd.DataFrame:
         ward = sync.digits(_value(r, ward_c)) if ward_c else ""
         code = sync.digits(_value(r, tv_c))
         name = _value(r, name_c)
-        # Keep village and whole-town records; remove wards and higher-level aggregates.
+        # Census uses ward code 0000 for the whole village/town record.
         if level_c:
             if not ("village" in level or "town" in level):
                 continue
             if "ward" in level:
                 continue
-        if ward:
+        if ward and int(ward) != 0:
             continue
         if not code or not name:
             continue
@@ -179,7 +178,6 @@ def _build_village_population_from_24(_unused_national_path):
         })
 
     out = pd.concat(frames, ignore_index=True)
-    # PCA-TV may include towns in addition to villages. Codes are unique at town/village level.
     out = out.drop_duplicates(subset=["place_code", "name"], keep="first")
     if len(out) < 30_000:
         raise RuntimeError(f"Expected >30,000 Jharkhand PCA-TV place rows, got {len(out)}")
