@@ -54,9 +54,23 @@ JLA is provenance-first:
 - unsupported or ambiguous records are rejected rather than guessed;
 - public outputs should not expose person-level identifiable information.
 
+## Mandatory data-governance gate
+
+Public visibility is not the same as permission to republish. Every source must pass a governance review covering **authority, provenance, rights, attribution, privacy, sensitivity, geographic disclosure, scientific integrity, temporal integrity and validation** before factual values are published.
+
+Each registered source receives a publication class:
+
+**OPEN · OPEN_WITH_ATTRIBUTION · DERIVED_ONLY · AGGREGATE_ONLY · RESTRICTED · DO_NOT_PUBLISH**
+
+Unclear rights default to a conservative class until verified. Wildlife and vulnerable-community data receive additional disclosure review, and JLA does not publish operationally sensitive protected-wildlife locations or private person-level records merely because they are obtainable.
+
+See [`docs/DATA_GOVERNANCE.md`](docs/DATA_GOVERNANCE.md) for the full policy.
+
 ## Public-interest and non-partisan use
 
 JLA measures publicly observable conditions, accessibility, exposure and service environments. It does not rank political parties, elected representatives or governments, and derived indicators should not be interpreted as attribution of political responsibility.
+
+Problem-focused modules may include human–elephant conflict, snakebite, vector-borne disease, drought, flood, heat, food security, migration, employment, mining/industrial environment and other public-interest risks, provided their evidence passes the same rights, privacy, sensitivity and validation gates.
 
 ## Research and application features
 
@@ -107,11 +121,15 @@ Public functionality does not require an admin secret. Admin credentials must be
 
 ## Data licensing
 
-Original JLA material is released under the **Creative Commons Attribution 4.0 International (CC BY 4.0)** licence as stated in this repository. Third-party datasets, government source files and externally produced material retain their own applicable terms, licences and attribution requirements. Inclusion of provenance metadata does not relicense third-party material. See `NOTICE.md` and the source registry for source-specific information.
+Original JLA material is released under the **Creative Commons Attribution 4.0 International (CC BY 4.0)** licence as stated in this repository. Third-party datasets, government source files and externally produced material retain their own applicable terms, licences and attribution requirements. Inclusion of provenance metadata does not relicense third-party material. See `NOTICE.md`, `docs/DATA_GOVERNANCE.md` and the source registry for source-specific information.
+
+## Independence and non-endorsement
+
+**Jharkhand Life Atlas is an independent, non-partisan research infrastructure. It is not affiliated with or endorsed by the Government of Jharkhand, Government of India, or any source organisation. Government and third-party data remain subject to their respective ownership, licensing and attribution terms.**
 
 ## Repository status
 
-JLA is under evidence-driven expansion. Software capabilities and data coverage are deliberately reported separately: a working module does not imply that every potentially available dataset has been ingested. Each module should be considered complete only after its intended authoritative sources, validation rules, provenance records and published outputs have been checked.
+JLA is under evidence-driven expansion. Software capabilities and data coverage are deliberately reported separately: a working module does not imply that every potentially available dataset has been ingested. Each module should be considered complete only after its intended authoritative sources, validation rules, provenance records, governance review and published outputs have been checked.
 
 ---
 
