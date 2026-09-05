@@ -35,6 +35,14 @@ def _filter(data, column, value):
             return None
 
 
+def _first_match(data, columns, value):
+    for col in columns:
+        match = _filter(data, col, value)
+        if _height(match):
+            return match
+    return None
+
+
 def _value(record, key):
     v = record.get(key)
     return "" if v is None else str(v).strip()
@@ -101,7 +109,6 @@ try:
             st.markdown(f"**Village:** {_hierarchy_value(record, 'village', 'village')}")
         section_note("Hierarchy fields distinguish 'not applicable at this geographic level' from genuinely unavailable verified values. JLA never fills missing hierarchy with guesses.")
 
-        # Census child units provide context for higher-level pages.
         try:
             pid = _value(record, "place_id")
             children = df.filter(df["parent_place_id"] == pid)
@@ -120,9 +127,8 @@ try:
 
         demo = optional_core_table("village_demography_2011.csv")
         amenities = optional_core_table("village_amenities_2011.csv")
-
-        demo_match = _filter(demo, "place_code", code)
-        amen_match = _filter(amenities, "village_code", code) or _filter(amenities, "place_code", code)
+        demo_match = _first_match(demo, ["place_code", "village_code", "census_2011_code"], code)
+        amen_match = _first_match(amenities, ["village_code", "place_code", "census_2011_code"], code)
 
         if _height(demo_match):
             st.markdown("#### Census 2011 demographic baseline")
@@ -147,8 +153,6 @@ try:
         lgd_d = optional_core_table("lgd_districts_current.csv")
         lgd_sd = optional_core_table("lgd_subdistricts_current.csv")
         lgd_b = optional_core_table("lgd_blocks_current.csv")
-        lgd_gp = optional_core_table("lgd_panchayats_current.csv")
-        lgd_v = optional_core_table("lgd_villages_current.csv")
 
         st.markdown("#### Current LGD temporal view")
         st.caption("Current LGD records are intentionally separate from Census 2011. A crosswalk is displayed only where the published linkage supports it.")
@@ -161,11 +165,7 @@ try:
                 ("Subdistricts", lgd_sd, ["districtCode", "district_code"]),
                 ("Blocks", lgd_b, ["districtCode", "district_code"]),
             ]:
-                match = None
-                for col in candidates:
-                    match = _filter(table, col, dcode)
-                    if _height(match):
-                        break
+                match = _first_match(table, candidates, dcode)
                 if _height(match):
                     shown = True
                     st.markdown(f"**{label}: {_height(match):,} verified current row(s)**")
@@ -175,12 +175,12 @@ try:
                 st.info("No current LGD rows are linked to this Census district code in the current display layer.")
 
         code = _value(record, "village_code") or (_value(record, "place_id").split("-")[-1] if _value(record, "place_type") in {"village", "town"} else "")
-        cw_match = _filter(crosswalk, "census_2011_code", code) or _filter(crosswalk, "census_code", code)
+        cw_match = _first_match(crosswalk, ["census_2011_code", "census_code", "village_code_2011", "village_code"], code)
         if _height(cw_match):
             st.markdown("#### Census 2011 ↔ current LGD linkage")
             st.dataframe(cw_match, width="stretch", hide_index=True)
 
-        mdds_match = _filter(mdds, "village_code_2011", code) or _filter(mdds, "census_2011_code", code)
+        mdds_match = _first_match(mdds, ["village_code_2011", "census_2011_code", "village_code", "location_code_2011"], code)
         if _height(mdds_match):
             st.markdown("#### Census 2001 ↔ 2011 MDDS linkage")
             st.dataframe(mdds_match, width="stretch", hide_index=True)
