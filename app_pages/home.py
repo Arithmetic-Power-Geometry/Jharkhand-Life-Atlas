@@ -5,7 +5,7 @@ from jla.data import places, sources, variables
 
 hero(
     "Understand a place. Find a need. Trace the evidence.",
-    "Jharkhand Life Atlas connects geography, public-interest data and source evidence in one modular research platform. Start with Core Geography today; future modules plug into the same structure without rebuilding the app.",
+    "Jharkhand Life Atlas connects geography, public-interest data and source evidence in one modular research platform. A shared geographic backbone connects independent evidence modules, allowing the atlas to grow without rebuilding the core application.",
 )
 
 p = places()
@@ -28,7 +28,7 @@ c3.metric("Data variables", n_vars)
 c4.metric("Registered sources", n_sources)
 
 section_note(
-    "Current release status: the software and module framework are operational. Core Geography currently contains a verified 24-district Jharkhand baseline; village, block and panchayat records are added only when authoritative source files are verified. Missing data is never invented."
+    "JLA publishes only evidence that has passed its source and validation rules. Data coverage grows module by module as authoritative material is verified and ingested. Missing information remains missing and is never invented."
 )
 
 st.markdown("### Quick access")
@@ -49,11 +49,11 @@ with d:
 st.markdown("### How JLA works")
 x, y, z = st.columns(3)
 with x:
-    card("1 · Place first", "Every record anchors to a stable place identity so future health, water, education, agriculture and risk modules can connect cleanly.", "🗺️")
+    card("1 · Place first", "Every record anchors to a stable place identity so evidence from different public-interest domains can connect cleanly.", "🗺️")
 with y:
     card("2 · Evidence always visible", "Values retain source, year, method, observation type and quality so researchers can audit what they use.", "🔗")
 with z:
-    card("3 · Modules grow independently", "New societal modules can be added under modules/ and discovered by the app without rewriting the core platform.", "➕")
+    card("3 · Modules grow independently", "New modules can be added under modules/ and discovered by the app without rewriting the core platform.", "➕")
 
 st.markdown("### Evidence rule")
 st.success("Every published value should be traceable: **value → variable → source → year → method → quality**. Missing data is not zero, and unsupported values are not published.", icon="✅")
