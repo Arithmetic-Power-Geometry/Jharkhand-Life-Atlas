@@ -18,6 +18,8 @@ jobs:
     timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - uses: actions/setup-python@v5
         with:
           python-version: '3.13'
@@ -33,12 +35,31 @@ jobs:
           python scripts/check.py
       - name: Commit curated authoritative outputs
         run: |
+          set -e
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add data/curated/core_geography modules/core_geography/sync_report.json
+
           if git diff --cached --quiet; then
             echo 'No curated-data changes to commit.'
-          else
-            git commit -m 'Sync authoritative Core Geography data [skip ci]'
-            git push
+            exit 0
           fi
+
+          git commit -m 'Sync authoritative Core Geography data [skip ci]'
+
+          # main may have advanced while the long source sync was running.
+          # Rebase the generated-data commit onto the latest main before pushing,
+          # preserving unrelated README/UI/module changes rather than force-pushing.
+          for attempt in 1 2 3; do
+            git fetch origin main
+            git rebase origin/main
+            if git push origin HEAD:main; then
+              echo 'Curated Core Geography outputs pushed successfully.'
+              exit 0
+            fi
+            echo "Push attempt ${attempt} raced with another main update; retrying."
+            sleep 3
+          done
+
+          echo 'Could not push curated outputs after 3 safe retries.' >&2
+          exit 1
