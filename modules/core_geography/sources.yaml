@@ -1,4 +1,47 @@
 sources:
-  - CENSUS_BASIC_2011
-  - OGD_PCA_JH_2011
-  - CENSUS_DCHB_RANCHI_2011
+  - id: CENSUS_LOCATION_DIRECTORY_2011
+    role: canonical_2011_geography
+    authority: Office of the Registrar General & Census Commissioner, India
+    catalog: https://censusindia.gov.in/nada/index.php/catalog/42648
+    reference_id: PC11_TV_DIR
+    file: PC11_TV_DIR.xlsx
+    geography: [state, district, subdistrict, village, town]
+    use: "Canonical Census 2011 location codes and names; filter state code 20 for Jharkhand."
+  - id: CENSUS_MDDS_JH_2011
+    role: jharkhand_rural_crosswalk
+    authority: Office of the Registrar General & Census Commissioner, India
+    catalog: https://censusindia.gov.in/nada/index.php/catalog/7059
+    reference_id: PC11_MDDS_R-20
+    file: Rdir_2001_MDDS_20.xls
+    geography: [state, district, subdistrict, village]
+    use: "Jharkhand rural PLCN/MDDS codes with 2001-to-2011 code crosswalk."
+  - id: OGD_PCA_JH_2011
+    role: village_town_demographic_baseline
+    authority: Registrar General and Census Commissioner, India
+    catalog: https://www.data.gov.in/catalog/villagetown-wise-primary-census-abstract-2011-jharkhand
+    geography: [district, subdistrict, village, town, ward]
+    use: "Households, population, age 0-6, SC/ST, literacy and worker counts."
+  - id: CENSUS_DCHB_JH_2011
+    role: village_town_amenities
+    authority: Directorate of Census Operations, Jharkhand / ORGI
+    catalog: https://censusindia.gov.in/nada/index.php/catalog/?sk=Jharkhand
+    geography: [district, village, town]
+    use: "District Census Handbook Part A village/town directory amenities and Part B PCA cross-checks."
+  - id: LGD_CURRENT
+    role: current_administrative_crosswalk
+    authority: Ministry of Panchayati Raj, Government of India
+    catalog: https://www.data.gov.in/catalog/local-government-directory-lgd
+    geography: [state, district, subdistrict, block, village, panchayat, local_body]
+    use: "Current LGD codes and administrative relationships; kept temporally distinct from Census 2011."
+  - id: JH_BLOCK_LIST
+    role: official_state_block_reference
+    authority: Government of Jharkhand
+    catalog: https://www.jharkhand.gov.in/PDepartment/ViewDoc?id=A040DO005SD001517052019033702963
+    geography: [district, block]
+    use: "Official Jharkhand district/block reference; verify currency before current-status use."
+
+rules:
+  - "No source means no published factual value."
+  - "Missing data is never converted to zero."
+  - "Census 2011 and current LGD geography are stored as separate temporal views and are never silently merged."
+  - "Third-party mirrors are discovery aids only; authoritative values must be verified against official sources before publication."
