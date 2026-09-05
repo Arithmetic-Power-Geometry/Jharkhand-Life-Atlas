@@ -14,23 +14,23 @@ The project deliberately does **not fabricate village-level records**. The bundl
 
 ## One-click Streamlit deployment
 
-1. Upload this entire folder to a GitHub repository.
-2. In Streamlit Community Cloud choose the repository and set **Main file path** to `streamlit_app.py`.
-3. Deploy. Public mode works immediately.
+1. In Streamlit Community Cloud choose this repository and set **Main file path** to `streamlit_app.py`.
+2. Deploy. Public mode works immediately.
+3. Configure private secrets separately if you want to enable Admin mode.
 
 ### Enable Admin mode securely
 
 Never commit a plaintext admin password to a public GitHub repository.
 
-In **Streamlit Cloud → App settings → Secrets**, paste:
+In **Streamlit Cloud → App settings → Secrets**, create your own private credentials. For example:
 
 ```toml
 [admin]
-username = "admin"
-password = "JLA-Admin-2026!"
+username = "your-admin-username"
+password = "use-a-strong-unique-password"
 ```
 
-For a public production deployment, change that password before sharing the app.
+Do **not** copy example credentials into production and do not commit real credentials to GitHub. Streamlit Cloud stores these values outside the repository.
 
 Optional GitHub publishing values are described in `.streamlit/secrets.toml.example`; v1.0.0 intentionally does not require a GitHub token.
 
