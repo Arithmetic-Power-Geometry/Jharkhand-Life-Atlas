@@ -16,8 +16,12 @@ sources:
     role: official_health_facility_directory
     reference_year: historical_directory
     publication_class: OPEN_WITH_ATTRIBUTION
-    license_review_status: platform_license_review_required_before_ingest
-    notes: "Official OGD directory of PHC, Sub Centre, CHC, District Hospital and State Hospital with geolocation; verify resource currency and exact terms before publication."
+    license: Government Open Data License - India
+    license_url: https://www.data.gov.in/sites/default/files/Gazette_Notification_OGDL.pdf
+    license_review_status: reviewed_ogdl_platform
+    license_checked_on: 2026-09-06
+    attribution_required: true
+    notes: "Published OGD resources are licensed under GODL-India. Preserve resource update date and source URL/DOI/URI. Verify the exact resource currency before ingest; do not present an old directory as current."
 
   - source_id: OGD_HOSPITAL_DIRECTORY_NHP
     title: Hospital Directory — National Health Portal
@@ -26,8 +30,12 @@ sources:
     role: hospital_directory
     reference_year: historical_directory
     publication_class: OPEN_WITH_ATTRIBUTION
-    license_review_status: platform_license_review_required_before_ingest
-    notes: "Includes state-wise hospitals and metadata; preserve update date and avoid treating an old directory as current."
+    license: Government Open Data License - India
+    license_url: https://www.data.gov.in/sites/default/files/Gazette_Notification_OGDL.pdf
+    license_review_status: reviewed_ogdl_platform
+    license_checked_on: 2026-09-06
+    attribution_required: true
+    notes: "Published OGD resources are licensed under GODL-India. Preserve resource update date and source URL/DOI/URI; do not treat a historical directory as a current registry."
 
   - source_id: OGD_HMIS_JH_DISTRICT
     title: Item-wise monthly HMIS report at District level of Jharkhand
@@ -36,8 +44,15 @@ sources:
     role: district_service_activity_time_series
     reference_year: time_series
     publication_class: OPEN_WITH_ATTRIBUTION
-    license_review_status: platform_license_review_required_before_ingest
-    notes: "District-level service/activity indicators only; do not infer facility- or village-level values from district aggregates."
+    license: Government Open Data License - India
+    license_url: https://www.data.gov.in/sites/default/files/Gazette_Notification_OGDL.pdf
+    license_review_status: reviewed_ogdl_catalog
+    license_checked_on: 2026-09-06
+    attribution_required: true
+    catalog_published_on: 2020-12-23
+    catalog_updated_on: 2021-05-25
+    catalog_api_resource_id: f7daca9b-92d4-4c6c-886a-91bf94a7e27e
+    notes: "Official catalog is explicitly released under NDSAP and the OGD platform applies GODL-India. District-level service/activity indicators only; never allocate district aggregates to villages or facilities. Preserve period, district, indicator and source metadata."
 
   - source_id: ABDM_HFR
     title: Ayushman Bharat Digital Mission — Health Facility Registry
