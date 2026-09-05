@@ -1,77 +1,126 @@
-# Jharkhand Life Atlas (JLA) v1.0.0
+# Jharkhand Life Atlas (JLA) v1.1.0
 
 **Evidence about people, places and access — connected at village level.**
 
 Copyright (C) 2026 Mohammad Amir Khusru Akhtar
 
-Licensed under **Creative Commons Attribution 4.0 International (CC BY 4.0)** for original JLA code, documentation, schemas, and original data products. Third-party source data retain their original licences and attribution requirements; see `NOTICE.md` and the source registry.
+JLA is an open, modular, provenance-first public-interest data infrastructure for Jharkhand, India. Original JLA code, documentation, schemas and original data products are licensed under **CC BY 4.0**. Third-party sources retain their own terms; JLA does not relicense them.
 
-## What this package is
+## Module 1 status — Core Geography & Census Baseline
 
-JLA is a modular, provenance-first public-interest data platform. Version 1.0.0 ships with the production repository skeleton and the first module, **Core Geography**, including a Jharkhand district baseline, a place model, source registry, dynamic module discovery, downloads, evidence metadata, PDF/HTML reporting, validation, tests, and an admin module builder.
+The bundled, validated release contains:
 
-The project deliberately does **not fabricate village-level records**. The bundled district baseline lets the application run immediately. Official village/block/panchayat crosswalks can be ingested into the same schema as authoritative files are verified. The architecture is already village-ready.
+- **1** state
+- **5** divisions
+- **24** districts
+- **45** subdivisions
+- **264** blocks
+- **24** Census 2011 district codes
+- **24** official district Primary Census Abstract (PCA) catalog records
+- source-reported block-level panchayat and village counts where officially published
+- a Jharkhand 2011 state baseline covering population, households, age 0–6, SC/ST, literacy, workers, sex ratio, density, cultivators and agricultural labourers
+- an explicit reconciliation dataset preserving disagreements among official administrative snapshots
 
-## One-click Streamlit deployment
+### Scientific boundary of this release
 
-1. Upload this entire folder to a GitHub repository.
-2. In Streamlit Community Cloud choose the repository and set **Main file path** to `streamlit_app.py`.
-3. Deploy. Public mode works immediately.
+JLA does **not** claim that a full entity-level panchayat/village master, all village PCA observations, District Census Handbook village amenities, or authoritative map geometry have already been ingested. Their official source families are registered and indexed, but raw records are promoted to curated JLA data only after successful retrieval and validation.
 
-### Enable Admin mode securely
+That distinction is deliberate:
 
-Never commit a plaintext admin password to a public GitHub repository.
+> **No source = no published factual value. Missing data is not zero. Catalog discovery is not raw-data ingestion.**
 
-In **Streamlit Cloud → App settings → Secrets**, paste:
+## Run the Streamlit app
 
-```toml
-[admin]
-username = "admin"
-password = "JLA-Admin-2026!"
-```
-
-For a public production deployment, change that password before sharing the app.
-
-Optional GitHub publishing values are described in `.streamlit/secrets.toml.example`; v1.0.0 intentionally does not require a GitHub token.
-
-## Dynamic modules
-
-Drop a valid module folder under:
-
-```text
-modules/<module_id>/
-```
-
-At minimum it needs `module.yaml`. On the next Streamlit restart/rerun JLA discovers it automatically and shows it in the Modules page. If the module includes `data/indicators.csv`, those records become browsable and downloadable through the generic module renderer.
-
-Admin mode contains a **Module Builder** that produces a ready-to-commit module ZIP with schema, source, indicator, README and test templates.
-
-## Local run
+### Local
 
 ```bash
 python -m venv .venv
-# Windows: .venv\Scripts\activate
-# macOS/Linux: source .venv/bin/activate
+# Windows
+.venv\Scripts\activate
+# macOS/Linux
+# source .venv/bin/activate
+
 pip install -r requirements.txt
 streamlit run streamlit_app.py
 ```
 
-## Architecture
+### Streamlit Community Cloud
 
-- Canonical production data: Parquet / GeoParquet
-- Portable source/seed data: CSV
-- Analytics: DuckDB
-- Transformation: Polars
-- App: Streamlit 1.63+
-- Charts/maps: Plotly 7+
-- Reports: Python-native HTML/PDF for zero-extra-runtime deployment
-- Citations: structured source registry + BibTeX export
-- Module contract: `module.yaml` + optional standardized data files
+1. Select repository: `Arithmetic-Power-Geometry/Jharkhand-Life-Atlas`
+2. Branch: `main`
+3. Main file: `streamlit_app.py`
+4. Deploy.
 
-## Public-interest principles
+Public mode requires no secrets.
 
-JLA reports conditions and evidence, not political blame. It separates observed, derived and modelled values; exposes source year and quality; never interprets missing data as zero; and keeps third-party licensing/provenance visible.
+### Enable Admin mode securely
 
-## Repository status
+Never commit `.streamlit/secrets.toml` or a real password.
 
-`v1.0.0` is a foundation release. The **software layer is complete and runnable**; the bundled Core Geography dataset is a verified district-level baseline and must be expanded with authoritative village/block/panchayat source files rather than invented values.
+In **Streamlit Community Cloud → App settings → Secrets**, add your own credentials:
+
+```toml
+[admin]
+username = "admin"
+password = "CHANGE-THIS-BEFORE-PUBLIC-SHARING"
+```
+
+The Admin page can run integrity checks and generate a ready-to-commit folder for the **next module**. JLA discovers valid `modules/<module_id>/module.yaml` folders automatically.
+
+## Application capabilities
+
+- professional overview with administrative coverage metrics
+- Division → District → Subdivision → Block explorer
+- source-reported panchayat/village counts with provenance
+- official-source conflict/reconciliation audit
+- 24-district Census PCA catalog browser
+- variable/data dictionary
+- filtered CSV downloads
+- self-describing research ZIP with sources, dictionary, audit and catalog
+- PDF and HTML evidence-profile reports with references
+- secure Admin module builder
+- dynamic module discovery for future societal modules
+
+Verified map geometry is not bundled in v1.1.0, so the app intentionally does **not** plot approximate or invented locations.
+
+## Repository structure
+
+```text
+.github/                 CI and scheduled audit workflows
+.streamlit/              Streamlit configuration and secrets example
+app_pages/               Streamlit pages
+config/                  Project configuration
+data/curated/            Curated evidence-backed datasets
+docs/                    Data and module policies
+jla/                     Reusable Python package
+modules/                  Dynamic modules and templates
+registry/                Sources, variables and module registry
+reports/                 Bibliography and generated-output directory
+scripts/                 Integrity commands
+tests/                   Automated tests
+streamlit_app.py         Streamlit entry point
+```
+
+## Evidence and political-neutrality policy
+
+JLA is a non-partisan research infrastructure. It measures publicly observable conditions, accessibility, exposure and service environments. It does not evaluate political parties, elected representatives or governments. Derived indicators describe data-defined conditions and must not be interpreted as attribution of responsibility.
+
+Official sources can disagree because of dates, definitions or administrative change. JLA preserves such disagreements with source IDs, values and reconciliation status instead of silently forcing a single number.
+
+## Core official source families
+
+The Module 1 registry includes Government of Jharkhand state/profile sources, official divisional/block administrative pages, Census of India 2011 Basic Population Figures, Jharkhand PCA district catalogs, District Census Handbooks, and Jharkhand Administrative Atlas catalogs. See `registry/sources.csv` and `modules/core_geography/sources.yaml` for the complete registered list and URLs.
+
+## Validate
+
+```bash
+python -m compileall -q jla app_pages modules scripts streamlit_app.py
+pytest -q
+python scripts/check.py
+```
+
+GitHub Actions executes the same checks on pushes and pull requests.
+
+## Citation
+
+Use `CITATION.cff` for JLA and cite the underlying official sources used in an extract. The research bundle carries the source registry so provenance is not separated from the data.

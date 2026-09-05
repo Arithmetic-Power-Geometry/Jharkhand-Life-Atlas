@@ -1,0 +1,2 @@
+module_id,name,version,status,geographic_level,last_updated,quality_status,license
+core_geography,Core Geography & Census Baseline,1.1.0,active,state_to_block_verified; village_ready,2026-09-05,current_hierarchy_verified_through_block; source_conflicts_preserved; raw_village_ingestion_pending,CC BY 4.0 for JLA original material

@@ -1,0 +1,14 @@
+project:
+  name: Jharkhand Life Atlas
+  short_name: JLA
+  version: 1.1.0
+  tagline: "Evidence about people, places and access — connected at village level."
+  repository: "https://github.com/Arithmetic-Power-Geometry/Jharkhand-Life-Atlas"
+  copyright: "Copyright (C) 2026 Mohammad Amir Khusru Akhtar"
+  license: "CC BY 4.0 for original JLA material; third-party source terms remain controlling"
+principles:
+  - "No source = no published factual value"
+  - "Missing data is not zero"
+  - "Observed, derived and modelled values are distinguishable"
+  - "Official-source disagreements are preserved and documented"
+  - "JLA is non-partisan and does not attribute political responsibility"

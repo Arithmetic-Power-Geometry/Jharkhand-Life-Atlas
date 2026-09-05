@@ -1,0 +1,263 @@
+{
+  "project": "Jharkhand Life Atlas",
+  "version": "1.1.0",
+  "generated": "2026-09-05",
+  "note": "MANIFEST.json excludes itself by design.",
+  "files": [
+    {
+      "path": ".github/workflows/tests.yml",
+      "sha256": "40a9b5aa1f193315e975832706099f3b01d8b04627eb48b666dad70776b3468e",
+      "bytes": 415
+    },
+    {
+      "path": ".github/workflows/update.yml",
+      "sha256": "39be5343b8638dfa8cd341d011ed8a0d1c5c637224a65fb9a3db8c7de8376eaf",
+      "bytes": 476
+    },
+    {
+      "path": ".gitignore",
+      "sha256": "86bee2d0d3ce27b2c2cbfb2a061258a359aa67e6c43feb1c45a3b18c598f36f2",
+      "bytes": 140
+    },
+    {
+      "path": ".streamlit/config.toml",
+      "sha256": "9ef061c5307ffa985493c5ce618ad4ff8571a251ff6aea9de1a9670c5b00420d",
+      "bytes": 217
+    },
+    {
+      "path": ".streamlit/secrets.toml.example",
+      "sha256": "8279126b129482340f7d9e4b84fbd80d90f6b61ea3619179955799c90453a895",
+      "bytes": 312
+    },
+    {
+      "path": "CITATION.cff",
+      "sha256": "c9eb5b4f9e13665cfcb724a179ef904d06c9f771491ac268c8931c50f42ad674",
+      "bytes": 501
+    },
+    {
+      "path": "LICENSE",
+      "sha256": "1a7f89f52e2cfc93504b8e43b1244303990ec71815dacfdadebaddd32bfddc3c",
+      "bytes": 653
+    },
+    {
+      "path": "NOTICE.md",
+      "sha256": "90951a4381c51033fe020b1bce8e82b7cf031a613fba4b5ec75260b1c022043f",
+      "bytes": 884
+    },
+    {
+      "path": "README.md",
+      "sha256": "b94600a97e5be769166e90b5ceb38666c9b7d346821366303cf6a25ce34722f5",
+      "bytes": 5345
+    },
+    {
+      "path": "app_pages/admin.py",
+      "sha256": "f8e71602996732542c4f3201e163bb489ad7d8f1d3e18d1fa90467e559ebb5ed",
+      "bytes": 2730
+    },
+    {
+      "path": "app_pages/explore.py",
+      "sha256": "1d48a38cf3f49d07f0c12037feed27349be023bbe488535d5834426ff548342d",
+      "bytes": 2729
+    },
+    {
+      "path": "app_pages/home.py",
+      "sha256": "eac4d5662fceab903fcd36d6128554d50e48b19ce270ca65eb25c264b008f25b",
+      "bytes": 3072
+    },
+    {
+      "path": "app_pages/modules.py",
+      "sha256": "b16dca2d56262ddf7c10186ee8169a138d5eaac2b60e4b84c21a34380b7a138b",
+      "bytes": 1377
+    },
+    {
+      "path": "app_pages/reports.py",
+      "sha256": "dba0ae05e24e89c646683899b881619ed1e3f3b74acdfd55e45b202268cd1f06",
+      "bytes": 1719
+    },
+    {
+      "path": "app_pages/research.py",
+      "sha256": "3099a267717629172bc681620c8a36e0214ee590a26f211177f8834dfadc3a3b",
+      "bytes": 1951
+    },
+    {
+      "path": "app_pages/sources.py",
+      "sha256": "464bd5d5b0ae218a7a0814f818d33dd740c4f8e284f3dd130488a09b050ff03b",
+      "bytes": 1848
+    },
+    {
+      "path": "config/project.yaml",
+      "sha256": "1eb7444ae1f4ef002fa10f51ab54ead999899ef9b2cb087b254345b3ecc55ca5",
+      "bytes": 688
+    },
+    {
+      "path": "data/curated/core_geography/census_pca_catalog.csv",
+      "sha256": "734abb58644a54937f21ce9a3eab84edebceb3eeb7e786e4d98008893eb37e7e",
+      "bytes": 5084
+    },
+    {
+      "path": "data/curated/core_geography/current_blocks.csv",
+      "sha256": "b179e02bb48037e2cc74f1ff658fc7bbd5ba49e34d29704b612eb7b75fd323d1",
+      "bytes": 23795
+    },
+    {
+      "path": "data/curated/core_geography/places.csv",
+      "sha256": "eec40b20f70919bd1ccd6cc8e332893753e3e8ce8cab84c5b36fdf12bb6b331c",
+      "bytes": 60695
+    },
+    {
+      "path": "data/curated/core_geography/reconciliation.csv",
+      "sha256": "3775a8d4b2c941e03f28f4f9e8da4754d1d5a3a9d27233e039b006d708e4ecfc",
+      "bytes": 717
+    },
+    {
+      "path": "data/curated/core_geography/state_facts_2011.csv",
+      "sha256": "bf3bcffa19a0a8d0efd147d8d3595e229034da813ae36164db2e4028762dca0b",
+      "bytes": 2087
+    },
+    {
+      "path": "docs/DATA_POLICY.md",
+      "sha256": "815457172a0c7a3121d23d28d41e7629a05da7c214bf9353980437a8bd5ac258",
+      "bytes": 680
+    },
+    {
+      "path": "docs/MODULE_SPEC.md",
+      "sha256": "13b22ea9dfb98e0a0106ba1fa313fa38119f9b0c112e6525fbdcb7c56b939ff8",
+      "bytes": 778
+    },
+    {
+      "path": "jla/__init__.py",
+      "sha256": "27e8febb48ada44153ea2add9969a2c50a9831a74d9755fdd53c549a888b1cc2",
+      "bytes": 22
+    },
+    {
+      "path": "jla/data.py",
+      "sha256": "80fb6c97f14c811a69bafbff119d474c6754386a9ec574bdd86e07bc334fcd93",
+      "bytes": 2984
+    },
+    {
+      "path": "jla/module_builder.py",
+      "sha256": "89f47486e28ff14a7d0d7bdcea9bb53dfe1f82c153716eead71647b9aaa497ea",
+      "bytes": 1795
+    },
+    {
+      "path": "jla/modules.py",
+      "sha256": "5aaeefdf57be936e7b80ac850ce62ae6d477bc7b631853eb346eba65b1bc5701",
+      "bytes": 1256
+    },
+    {
+      "path": "jla/paths.py",
+      "sha256": "05e04d5f4cb0ccf843546879d99de9a80f57434e80653a33fb5353af9049d332",
+      "bytes": 188
+    },
+    {
+      "path": "jla/reports.py",
+      "sha256": "96aeed5ca3e40da342f0f4ad7deb1f6cac26224e1574211f15413f7ecccf03f2",
+      "bytes": 3732
+    },
+    {
+      "path": "jla/security.py",
+      "sha256": "5051f6ca213f4ecf54f1c89d6cb12680059609cdc015cb6f052361e62498fb71",
+      "bytes": 589
+    },
+    {
+      "path": "jla/ui.py",
+      "sha256": "b32f71bb49786499e8282757fb53c6819ed4cc7941409cbead4d46a8c621e4fc",
+      "bytes": 2511
+    },
+    {
+      "path": "jla/validation.py",
+      "sha256": "64f6ad66a1284efcbb141ef3976768333d0426d026418efcf1fc130a7f0ef0f6",
+      "bytes": 3103
+    },
+    {
+      "path": "modules/_template/module.yaml",
+      "sha256": "0cc5aa86c83b2fc26ef24cb061b26c0df95e3b86665b6a9e5d00cd2e809b07d2",
+      "bytes": 301
+    },
+    {
+      "path": "modules/core_geography/README.md",
+      "sha256": "f77ea8326d5cbfbf94fd053d36a780953de019f0cb4f067fa49ca9f7e6dca62e",
+      "bytes": 1262
+    },
+    {
+      "path": "modules/core_geography/ingest_template.py",
+      "sha256": "f6781dcd2e0f5768d00853b3678c4bafff90d4c3f8cddf5b53c3489e36303ee4",
+      "bytes": 557
+    },
+    {
+      "path": "modules/core_geography/module.yaml",
+      "sha256": "42c443b032aa8e7241c67294b50eda72a9fe1880927a497f2fb2afe4e6fa0356",
+      "bytes": 1157
+    },
+    {
+      "path": "modules/core_geography/schema.yaml",
+      "sha256": "e8f784f3675d363b8bce9f54d4c188e4def57dbd03139113d9a99618ef87b0b5",
+      "bytes": 1473
+    },
+    {
+      "path": "modules/core_geography/sources.yaml",
+      "sha256": "e09a49f2d9872e437e17f1e55055c92ad4a0f7ab059798313eda48f7887fe257",
+      "bytes": 358
+    },
+    {
+      "path": "pyproject.toml",
+      "sha256": "2df7f73145d27fd22390e35b0274186ac81c82f59acba7b74edcfcd2cc3ea767",
+      "bytes": 471
+    },
+    {
+      "path": "registry/modules.csv",
+      "sha256": "d2aad98c2a4e13d364fc856f5859614996aec2d2f9cf6296d440b50b264cee42",
+      "bytes": 330
+    },
+    {
+      "path": "registry/sources.csv",
+      "sha256": "1ccb85b889f6fe94080b43099a5566806aee4f2fb2a829ca228258d6b0f5431a",
+      "bytes": 6094
+    },
+    {
+      "path": "registry/variables.csv",
+      "sha256": "477e73c43aeff0fc036e5342088c3bbda098d6938cdbb18277eeac578c0c4f6c",
+      "bytes": 6394
+    },
+    {
+      "path": "reports/bibliography/sources.bib",
+      "sha256": "20f9725ede03ebea2027cabe17677b1b0d09e94aafbb0ea443e8ec2de9027f99",
+      "bytes": 1263
+    },
+    {
+      "path": "reports/generated/.gitkeep",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "requirements.txt",
+      "sha256": "1db69056e75325e2bba47f8ac82e0b8d6b1461c37472a817950d23b8d02e468a",
+      "bytes": 112
+    },
+    {
+      "path": "scripts/check.py",
+      "sha256": "be60b69f4ee4433cf495bab63e238ab4a8d0ae7e070de2cedef7e3e979238204",
+      "bytes": 354
+    },
+    {
+      "path": "streamlit_app.py",
+      "sha256": "51a35e293092dd697fac829eb704ae2eb4cdee4102dda65b9f204f08ee6b9393",
+      "bytes": 937
+    },
+    {
+      "path": "tests/test_core.py",
+      "sha256": "254d07c4c3fe2329181a74e259fa600e55731e95f15cb8345f2bc3855051e69d",
+      "bytes": 1617
+    },
+    {
+      "path": "tests/test_module_builder.py",
+      "sha256": "76c5342aa28c42d1fe80e723261440cdb0febb53cb15ee80407cb2e858f64c40",
+      "bytes": 355
+    },
+    {
+      "path": "tests/test_security.py",
+      "sha256": "6c535fdfa94c564ecdfcff77e9781ecdce545b8d284c9a55a7674523ed019766",
+      "bytes": 211
+    }
+  ]
+}

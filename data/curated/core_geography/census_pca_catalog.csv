@@ -1,0 +1,25 @@
+census_ordinal,district_name_census,reference_id,catalog_url,expected_download_filename,coverage,ingestion_status
+01,Garhwa,PC11_PCA-TV-2001,https://censusindia.gov.in/nada/index.php/catalog/6537,DDW_PCA2001_2011_MDDS with UI.xlsx,"district,sub-district,village,town,ward",catalog_verified_family_raw_file_not_bundled
+02,Chatra,PC11_PCA-TV-2002,https://censusindia.gov.in/nada/index.php/catalog/6538,DDW_PCA2002_2011_MDDS with UI.xlsx,"district,sub-district,village,town,ward",catalog_verified_family_raw_file_not_bundled
+03,Kodarma,PC11_PCA-TV-2003,https://censusindia.gov.in/nada/index.php/catalog/6539,DDW_PCA2003_2011_MDDS with UI.xlsx,"district,sub-district,village,town,ward",catalog_verified_family_raw_file_not_bundled
+04,Giridih,PC11_PCA-TV-2004,https://censusindia.gov.in/nada/index.php/catalog/6540,DDW_PCA2004_2011_MDDS with UI.xlsx,"district,sub-district,village,town,ward",catalog_verified_family_raw_file_not_bundled
+05,Deoghar,PC11_PCA-TV-2005,https://censusindia.gov.in/nada/index.php/catalog/6541,DDW_PCA2005_2011_MDDS with UI.xlsx,"district,sub-district,village,town,ward",catalog_verified_family_raw_file_not_bundled
+06,Godda,PC11_PCA-TV-2006,https://censusindia.gov.in/nada/index.php/catalog/6542,DDW_PCA2006_2011_MDDS with UI.xlsx,"district,sub-district,village,town,ward",catalog_verified_family_raw_file_not_bundled
+07,Sahibganj,PC11_PCA-TV-2007,https://censusindia.gov.in/nada/index.php/catalog/6543,DDW_PCA2007_2011_MDDS with UI.xlsx,"district,sub-district,village,town,ward",catalog_verified_family_raw_file_not_bundled
+08,Pakur,PC11_PCA-TV-2008,https://censusindia.gov.in/nada/index.php/catalog/6544,DDW_PCA2008_2011_MDDS with UI.xlsx,"district,sub-district,village,town,ward",catalog_verified_family_raw_file_not_bundled
+09,Dhanbad,PC11_PCA-TV-2009,https://censusindia.gov.in/nada/index.php/catalog/6545,DDW_PCA2009_2011_MDDS with UI.xlsx,"district,sub-district,village,town,ward",catalog_verified_family_raw_file_not_bundled
+10,Bokaro,PC11_PCA-TV-2010,https://censusindia.gov.in/nada/index.php/catalog/6546,DDW_PCA2010_2011_MDDS with UI.xlsx,"district,sub-district,village,town,ward",catalog_verified_family_raw_file_not_bundled
+11,Lohardaga,PC11_PCA-TV-2011,https://censusindia.gov.in/nada/index.php/catalog/6547,DDW_PCA2011_2011_MDDS with UI.xlsx,"district,sub-district,village,town,ward",catalog_verified_family_raw_file_not_bundled
+12,Purbi Singhbhum,PC11_PCA-TV-2012,https://censusindia.gov.in/nada/index.php/catalog/6548,DDW_PCA2012_2011_MDDS with UI.xlsx,"district,sub-district,village,town,ward",catalog_verified_family_raw_file_not_bundled
+13,Palamu,PC11_PCA-TV-2013,https://censusindia.gov.in/nada/index.php/catalog/6549,DDW_PCA2013_2011_MDDS with UI.xlsx,"district,sub-district,village,town,ward",catalog_verified_family_raw_file_not_bundled
+14,Latehar,PC11_PCA-TV-2014,https://censusindia.gov.in/nada/index.php/catalog/6550,DDW_PCA2014_2011_MDDS with UI.xlsx,"district,sub-district,village,town,ward",catalog_verified_family_raw_file_not_bundled
+15,Hazaribagh,PC11_PCA-TV-2015,https://censusindia.gov.in/nada/index.php/catalog/6551,DDW_PCA2015_2011_MDDS with UI.xlsx,"district,sub-district,village,town,ward",catalog_verified_family_raw_file_not_bundled
+16,Ramgarh,PC11_PCA-TV-2016,https://censusindia.gov.in/nada/index.php/catalog/6552,DDW_PCA2016_2011_MDDS with UI.xlsx,"district,sub-district,village,town,ward",catalog_verified_family_raw_file_not_bundled
+17,Dumka,PC11_PCA-TV-2017,https://censusindia.gov.in/nada/index.php/catalog/6553,DDW_PCA2017_2011_MDDS with UI.xlsx,"district,sub-district,village,town,ward",catalog_verified_family_raw_file_not_bundled
+18,Jamtara,PC11_PCA-TV-2018,https://censusindia.gov.in/nada/index.php/catalog/6554,DDW_PCA2018_2011_MDDS with UI.xlsx,"district,sub-district,village,town,ward",catalog_verified_family_raw_file_not_bundled
+19,Ranchi,PC11_PCA-TV-2019,https://censusindia.gov.in/nada/index.php/catalog/6555,DDW_PCA2019_2011_MDDS with UI.xlsx,"district,sub-district,village,town,ward",catalog_verified_family_raw_file_not_bundled
+20,Khunti,PC11_PCA-TV-2020,https://censusindia.gov.in/nada/index.php/catalog/6556,DDW_PCA2020_2011_MDDS with UI.xlsx,"district,sub-district,village,town,ward",catalog_verified_family_raw_file_not_bundled
+21,Gumla,PC11_PCA-TV-2021,https://censusindia.gov.in/nada/index.php/catalog/6557,DDW_PCA2021_2011_MDDS with UI.xlsx,"district,sub-district,village,town,ward",catalog_verified_family_raw_file_not_bundled
+22,Simdega,PC11_PCA-TV-2022,https://censusindia.gov.in/nada/index.php/catalog/6558,DDW_PCA2022_2011_MDDS with UI.xlsx,"district,sub-district,village,town,ward",catalog_verified_family_raw_file_not_bundled
+23,Pashchimi Singhbhum,PC11_PCA-TV-2023,https://censusindia.gov.in/nada/index.php/catalog/6559,DDW_PCA2023_2011_MDDS with UI.xlsx,"district,sub-district,village,town,ward",catalog_verified_family_raw_file_not_bundled
+24,Saraikela-Kharsawan,PC11_PCA-TV-2024,https://censusindia.gov.in/nada/index.php/catalog/6560,DDW_PCA2024_2011_MDDS with UI.xlsx,"district,sub-district,village,town,ward",catalog_verified_family_raw_file_not_bundled

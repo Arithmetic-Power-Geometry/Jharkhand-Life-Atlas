@@ -1,0 +1,340 @@
+place_id,place_type,name,parent_place_id,division,district_code,district,subdivision,block,source_id,official_code_status,record_status
+JH-STATE-20,state,Jharkhand,IND,,,,,,JH_STATE_PROFILE_2026,state_census_code_20,verified_snapshot
+JH-DIV-PALAMU,division,Palamu,JH-STATE-20,Palamu,,,,,JH_STATE_PROFILE_2026,official_name_no_code_ingested,verified_snapshot
+JH-DIV-NORTH-CHOTANAGPUR,division,North Chotanagpur,JH-STATE-20,North Chotanagpur,,,,,JH_STATE_PROFILE_2026,official_name_no_code_ingested,verified_snapshot
+JH-DIV-SOUTH-CHOTANAGPUR,division,South Chotanagpur,JH-STATE-20,South Chotanagpur,,,,,JH_STATE_PROFILE_2026,official_name_no_code_ingested,verified_snapshot
+JH-DIV-KOLHAN,division,Kolhan,JH-STATE-20,Kolhan,,,,,JH_STATE_PROFILE_2026,official_name_no_code_ingested,verified_snapshot
+JH-DIV-SANTHAL-PARGANA,division,Santhal Pargana,JH-STATE-20,Santhal Pargana,,,,,JH_STATE_PROFILE_2026,official_name_no_code_ingested,verified_snapshot
+JH-DIST-346,district,Garhwa,JH-DIV-PALAMU,Palamu,346,Garhwa,,,CENSUS_PCA_TV_2011,census_2011_code,verified_snapshot
+JH-DIST-347,district,Chatra,JH-DIV-NORTH-CHOTANAGPUR,North Chotanagpur,347,Chatra,,,CENSUS_PCA_TV_2011,census_2011_code,verified_snapshot
+JH-DIST-348,district,Koderma,JH-DIV-NORTH-CHOTANAGPUR,North Chotanagpur,348,Koderma,,,CENSUS_PCA_TV_2011,census_2011_code,verified_snapshot
+JH-DIST-349,district,Giridih,JH-DIV-NORTH-CHOTANAGPUR,North Chotanagpur,349,Giridih,,,CENSUS_PCA_TV_2011,census_2011_code,verified_snapshot
+JH-DIST-350,district,Deoghar,JH-DIV-SANTHAL-PARGANA,Santhal Pargana,350,Deoghar,,,CENSUS_PCA_TV_2011,census_2011_code,verified_snapshot
+JH-DIST-351,district,Godda,JH-DIV-SANTHAL-PARGANA,Santhal Pargana,351,Godda,,,CENSUS_PCA_TV_2011,census_2011_code,verified_snapshot
+JH-DIST-352,district,Sahibganj,JH-DIV-SANTHAL-PARGANA,Santhal Pargana,352,Sahibganj,,,CENSUS_PCA_TV_2011,census_2011_code,verified_snapshot
+JH-DIST-353,district,Pakur,JH-DIV-SANTHAL-PARGANA,Santhal Pargana,353,Pakur,,,CENSUS_PCA_TV_2011,census_2011_code,verified_snapshot
+JH-DIST-354,district,Dumka,JH-DIV-SANTHAL-PARGANA,Santhal Pargana,354,Dumka,,,CENSUS_PCA_TV_2011,census_2011_code,verified_snapshot
+JH-DIST-355,district,Bokaro,JH-DIV-NORTH-CHOTANAGPUR,North Chotanagpur,355,Bokaro,,,CENSUS_PCA_TV_2011,census_2011_code,verified_snapshot
+JH-DIST-356,district,Dhanbad,JH-DIV-NORTH-CHOTANAGPUR,North Chotanagpur,356,Dhanbad,,,CENSUS_PCA_TV_2011,census_2011_code,verified_snapshot
+JH-DIST-357,district,East Singhbhum,JH-DIV-KOLHAN,Kolhan,357,East Singhbhum,,,CENSUS_PCA_TV_2011,census_2011_code,verified_snapshot
+JH-DIST-358,district,Palamu,JH-DIV-PALAMU,Palamu,358,Palamu,,,CENSUS_PCA_TV_2011,census_2011_code,verified_snapshot
+JH-DIST-359,district,Latehar,JH-DIV-PALAMU,Palamu,359,Latehar,,,CENSUS_PCA_TV_2011,census_2011_code,verified_snapshot
+JH-DIST-360,district,Hazaribagh,JH-DIV-NORTH-CHOTANAGPUR,North Chotanagpur,360,Hazaribagh,,,CENSUS_PCA_TV_2011,census_2011_code,verified_snapshot
+JH-DIST-361,district,Ramgarh,JH-DIV-NORTH-CHOTANAGPUR,North Chotanagpur,361,Ramgarh,,,CENSUS_PCA_TV_2011,census_2011_code,verified_snapshot
+JH-DIST-362,district,Ranchi,JH-DIV-SOUTH-CHOTANAGPUR,South Chotanagpur,362,Ranchi,,,CENSUS_PCA_TV_2011,census_2011_code,verified_snapshot
+JH-DIST-363,district,Khunti,JH-DIV-SOUTH-CHOTANAGPUR,South Chotanagpur,363,Khunti,,,CENSUS_PCA_TV_2011,census_2011_code,verified_snapshot
+JH-DIST-364,district,Gumla,JH-DIV-SOUTH-CHOTANAGPUR,South Chotanagpur,364,Gumla,,,CENSUS_PCA_TV_2011,census_2011_code,verified_snapshot
+JH-DIST-365,district,Simdega,JH-DIV-SOUTH-CHOTANAGPUR,South Chotanagpur,365,Simdega,,,CENSUS_PCA_TV_2011,census_2011_code,verified_snapshot
+JH-DIST-366,district,West Singhbhum,JH-DIV-KOLHAN,Kolhan,366,West Singhbhum,,,CENSUS_PCA_TV_2011,census_2011_code,verified_snapshot
+JH-DIST-367,district,Saraikela-Kharsawan,JH-DIV-KOLHAN,Kolhan,367,Saraikela-Kharsawan,,,CENSUS_PCA_TV_2011,census_2011_code,verified_snapshot
+JH-DIST-368,district,Jamtara,JH-DIV-SANTHAL-PARGANA,Santhal Pargana,368,Jamtara,,,CENSUS_PCA_TV_2011,census_2011_code,verified_snapshot
+JH-DIST-369,district,Lohardaga,JH-DIV-SOUTH-CHOTANAGPUR,South Chotanagpur,369,Lohardaga,,,CENSUS_PCA_TV_2011,census_2011_code,verified_snapshot
+JH-SUBDIV-HAZARIBAGH-HAZARIBAGH,subdivision,Hazaribagh,JH-DIST-360,North Chotanagpur,360,Hazaribagh,Hazaribagh,,JH_ADMIN_DIVISION_SNAPSHOT,official_name_no_code_ingested,verified_snapshot
+JH-SUBDIV-HAZARIBAGH-BARHI,subdivision,Barhi,JH-DIST-360,North Chotanagpur,360,Hazaribagh,Barhi,,JH_ADMIN_DIVISION_SNAPSHOT,official_name_no_code_ingested,verified_snapshot
+JH-SUBDIV-DHANBAD-DHANBAD,subdivision,Dhanbad,JH-DIST-356,North Chotanagpur,356,Dhanbad,Dhanbad,,JH_ADMIN_DIVISION_SNAPSHOT,official_name_no_code_ingested,verified_snapshot
+JH-SUBDIV-GIRIDIH-GIRIDIH,subdivision,Giridih,JH-DIST-349,North Chotanagpur,349,Giridih,Giridih,,JH_ADMIN_DIVISION_SNAPSHOT,official_name_no_code_ingested,verified_snapshot
+JH-SUBDIV-GIRIDIH-KHORIMAHUA,subdivision,Khorimahua,JH-DIST-349,North Chotanagpur,349,Giridih,Khorimahua,,JH_ADMIN_DIVISION_SNAPSHOT,official_name_no_code_ingested,verified_snapshot
+JH-SUBDIV-GIRIDIH-DUMRI,subdivision,Dumri,JH-DIST-349,North Chotanagpur,349,Giridih,Dumri,,JH_ADMIN_DIVISION_SNAPSHOT,official_name_no_code_ingested,verified_snapshot
+JH-SUBDIV-GIRIDIH-SARIYA,subdivision,Sariya,JH-DIST-349,North Chotanagpur,349,Giridih,Sariya,,JH_ADMIN_DIVISION_SNAPSHOT,official_name_no_code_ingested,verified_snapshot
+JH-SUBDIV-KODERMA-KODERMA,subdivision,Koderma,JH-DIST-348,North Chotanagpur,348,Koderma,Koderma,,JH_ADMIN_DIVISION_SNAPSHOT,official_name_no_code_ingested,verified_snapshot
+JH-SUBDIV-CHATRA-CHATRA,subdivision,Chatra,JH-DIST-347,North Chotanagpur,347,Chatra,Chatra,,JH_ADMIN_DIVISION_SNAPSHOT,official_name_no_code_ingested,verified_snapshot
+JH-SUBDIV-CHATRA-SIMARIA,subdivision,Simaria,JH-DIST-347,North Chotanagpur,347,Chatra,Simaria,,JH_ADMIN_DIVISION_SNAPSHOT,official_name_no_code_ingested,verified_snapshot
+JH-SUBDIV-BOKARO-CHAS,subdivision,Chas,JH-DIST-355,North Chotanagpur,355,Bokaro,Chas,,JH_ADMIN_DIVISION_SNAPSHOT,official_name_no_code_ingested,verified_snapshot
+JH-SUBDIV-BOKARO-TENUGHAT,subdivision,Tenughat,JH-DIST-355,North Chotanagpur,355,Bokaro,Tenughat,,JH_ADMIN_DIVISION_SNAPSHOT,official_name_no_code_ingested,verified_snapshot
+JH-SUBDIV-RAMGARH-RAMGARH,subdivision,Ramgarh,JH-DIST-361,North Chotanagpur,361,Ramgarh,Ramgarh,,JH_ADMIN_DIVISION_SNAPSHOT,official_name_no_code_ingested,verified_snapshot
+JH-SUBDIV-DUMKA-DUMKA,subdivision,Dumka,JH-DIST-354,Santhal Pargana,354,Dumka,Dumka,,JH_ADMIN_DIVISION_SNAPSHOT,official_name_no_code_ingested,verified_snapshot
+JH-SUBDIV-DEOGHAR-DEOGHAR,subdivision,Deoghar,JH-DIST-350,Santhal Pargana,350,Deoghar,Deoghar,,JH_ADMIN_DIVISION_SNAPSHOT,official_name_no_code_ingested,verified_snapshot
+JH-SUBDIV-DEOGHAR-MADHUPUR,subdivision,Madhupur,JH-DIST-350,Santhal Pargana,350,Deoghar,Madhupur,,JH_ADMIN_DIVISION_SNAPSHOT,official_name_no_code_ingested,verified_snapshot
+JH-SUBDIV-SAHIBGANJ-SAHIBGANJ,subdivision,Sahibganj,JH-DIST-352,Santhal Pargana,352,Sahibganj,Sahibganj,,JH_ADMIN_DIVISION_SNAPSHOT,official_name_no_code_ingested,verified_snapshot
+JH-SUBDIV-SAHIBGANJ-RAJMAHAL,subdivision,Rajmahal,JH-DIST-352,Santhal Pargana,352,Sahibganj,Rajmahal,,JH_ADMIN_DIVISION_SNAPSHOT,official_name_no_code_ingested,verified_snapshot
+JH-SUBDIV-GODDA-GODDA,subdivision,Godda,JH-DIST-351,Santhal Pargana,351,Godda,Godda,,JH_ADMIN_DIVISION_SNAPSHOT,official_name_no_code_ingested,verified_snapshot
+JH-SUBDIV-GODDA-MAHGAMA,subdivision,Mahgama,JH-DIST-351,Santhal Pargana,351,Godda,Mahgama,,JH_ADMIN_DIVISION_SNAPSHOT,official_name_no_code_ingested,verified_snapshot
+JH-SUBDIV-JAMTARA-JAMTARA,subdivision,Jamtara,JH-DIST-368,Santhal Pargana,368,Jamtara,Jamtara,,JH_ADMIN_DIVISION_SNAPSHOT,official_name_no_code_ingested,verified_snapshot
+JH-SUBDIV-PAKUR-PAKUR,subdivision,Pakur,JH-DIST-353,Santhal Pargana,353,Pakur,Pakur,,JH_ADMIN_DIVISION_SNAPSHOT,official_name_no_code_ingested,verified_snapshot
+JH-SUBDIV-RANCHI-RANCHI,subdivision,Ranchi,JH-DIST-362,South Chotanagpur,362,Ranchi,Ranchi,,JH_ADMIN_DIVISION_SNAPSHOT,official_name_no_code_ingested,verified_snapshot
+JH-SUBDIV-RANCHI-BUNDU,subdivision,Bundu,JH-DIST-362,South Chotanagpur,362,Ranchi,Bundu,,JH_ADMIN_DIVISION_SNAPSHOT,official_name_no_code_ingested,verified_snapshot
+JH-SUBDIV-GUMLA-GUMLA,subdivision,Gumla,JH-DIST-364,South Chotanagpur,364,Gumla,Gumla,,JH_ADMIN_DIVISION_SNAPSHOT,official_name_no_code_ingested,verified_snapshot
+JH-SUBDIV-GUMLA-BASIA,subdivision,Basia,JH-DIST-364,South Chotanagpur,364,Gumla,Basia,,JH_ADMIN_DIVISION_SNAPSHOT,official_name_no_code_ingested,verified_snapshot
+JH-SUBDIV-GUMLA-CHAINPUR,subdivision,Chainpur,JH-DIST-364,South Chotanagpur,364,Gumla,Chainpur,,JH_ADMIN_DIVISION_SNAPSHOT,official_name_no_code_ingested,verified_snapshot
+JH-SUBDIV-LOHARDAGA-LOHARDAGA,subdivision,Lohardaga,JH-DIST-369,South Chotanagpur,369,Lohardaga,Lohardaga,,JH_ADMIN_DIVISION_SNAPSHOT,official_name_no_code_ingested,verified_snapshot
+JH-SUBDIV-SIMDEGA-SIMDEGA,subdivision,Simdega,JH-DIST-365,South Chotanagpur,365,Simdega,Simdega,,JH_ADMIN_DIVISION_SNAPSHOT,official_name_no_code_ingested,verified_snapshot
+JH-SUBDIV-KHUNTI-KHUNTI,subdivision,Khunti,JH-DIST-363,South Chotanagpur,363,Khunti,Khunti,,JH_ADMIN_DIVISION_SNAPSHOT,official_name_no_code_ingested,verified_snapshot
+JH-SUBDIV-PALAMU-MEDININAGAR,subdivision,Medininagar,JH-DIST-358,Palamu,358,Palamu,Medininagar,,JH_ADMIN_DIVISION_SNAPSHOT,official_name_no_code_ingested,verified_snapshot
+JH-SUBDIV-PALAMU-CHHATARPUR,subdivision,Chhatarpur,JH-DIST-358,Palamu,358,Palamu,Chhatarpur,,JH_ADMIN_DIVISION_SNAPSHOT,official_name_no_code_ingested,verified_snapshot
+JH-SUBDIV-PALAMU-HUSSAINABAD,subdivision,Hussainabad,JH-DIST-358,Palamu,358,Palamu,Hussainabad,,JH_ADMIN_DIVISION_SNAPSHOT,official_name_no_code_ingested,verified_snapshot
+JH-SUBDIV-GARHWA-GARHWA,subdivision,Garhwa,JH-DIST-346,Palamu,346,Garhwa,Garhwa,,JH_ADMIN_DIVISION_SNAPSHOT,official_name_no_code_ingested,verified_snapshot
+JH-SUBDIV-GARHWA-NAGARUNTARI,subdivision,Nagaruntari,JH-DIST-346,Palamu,346,Garhwa,Nagaruntari,,JH_ADMIN_DIVISION_SNAPSHOT,official_name_no_code_ingested,verified_snapshot
+JH-SUBDIV-GARHWA-RANKA,subdivision,Ranka,JH-DIST-346,Palamu,346,Garhwa,Ranka,,JH_ADMIN_DIVISION_SNAPSHOT,official_name_no_code_ingested,verified_snapshot
+JH-SUBDIV-LATEHAR-LATEHAR,subdivision,Latehar,JH-DIST-359,Palamu,359,Latehar,Latehar,,JH_ADMIN_DIVISION_SNAPSHOT,official_name_no_code_ingested,verified_snapshot
+JH-SUBDIV-LATEHAR-MAHUADANR,subdivision,Mahuadanr,JH-DIST-359,Palamu,359,Latehar,Mahuadanr,,JH_ADMIN_DIVISION_SNAPSHOT,official_name_no_code_ingested,verified_snapshot
+JH-SUBDIV-WEST-SINGHBHUM-CHAIBASA,subdivision,Chaibasa,JH-DIST-366,Kolhan,366,West Singhbhum,Chaibasa,,JH_ADMIN_DIVISION_SNAPSHOT,official_name_no_code_ingested,verified_snapshot
+JH-SUBDIV-WEST-SINGHBHUM-CHAKRADHARPUR,subdivision,Chakradharpur,JH-DIST-366,Kolhan,366,West Singhbhum,Chakradharpur,,JH_ADMIN_DIVISION_SNAPSHOT,official_name_no_code_ingested,verified_snapshot
+JH-SUBDIV-WEST-SINGHBHUM-JAGANNATHPUR,subdivision,Jagannathpur,JH-DIST-366,Kolhan,366,West Singhbhum,Jagannathpur,,JH_ADMIN_DIVISION_SNAPSHOT,official_name_no_code_ingested,verified_snapshot
+JH-SUBDIV-EAST-SINGHBHUM-JAMSHEDPUR,subdivision,Jamshedpur,JH-DIST-357,Kolhan,357,East Singhbhum,Jamshedpur,,JH_ADMIN_DIVISION_SNAPSHOT,official_name_no_code_ingested,verified_snapshot
+JH-SUBDIV-EAST-SINGHBHUM-GHATSHILA,subdivision,Ghatshila,JH-DIST-357,Kolhan,357,East Singhbhum,Ghatshila,,JH_ADMIN_DIVISION_SNAPSHOT,official_name_no_code_ingested,verified_snapshot
+JH-SUBDIV-SARAIKELA-KHARSAWAN-SARAIKELA,subdivision,Saraikela,JH-DIST-367,Kolhan,367,Saraikela-Kharsawan,Saraikela,,JH_ADMIN_DIVISION_SNAPSHOT,official_name_no_code_ingested,verified_snapshot
+JH-SUBDIV-SARAIKELA-KHARSAWAN-CHANDIL,subdivision,Chandil,JH-DIST-367,Kolhan,367,Saraikela-Kharsawan,Chandil,,JH_ADMIN_DIVISION_SNAPSHOT,official_name_no_code_ingested,verified_snapshot
+JH-BLOCK-HAZARIBAGH-BARKAGAON,block,Barkagaon,JH-SUBDIV-HAZARIBAGH-HAZARIBAGH,North Chotanagpur,360,Hazaribagh,Hazaribagh,Barkagaon,JH_AH_NORTH_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-HAZARIBAGH-BISHUNGARH,block,Bishungarh,JH-SUBDIV-HAZARIBAGH-HAZARIBAGH,North Chotanagpur,360,Hazaribagh,Hazaribagh,Bishungarh,JH_AH_NORTH_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-HAZARIBAGH-CHURCHU,block,Churchu,JH-SUBDIV-HAZARIBAGH-HAZARIBAGH,North Chotanagpur,360,Hazaribagh,Hazaribagh,Churchu,JH_AH_NORTH_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-HAZARIBAGH-DADI,block,Dadi,JH-SUBDIV-HAZARIBAGH-HAZARIBAGH,North Chotanagpur,360,Hazaribagh,Hazaribagh,Dadi,JH_AH_NORTH_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-HAZARIBAGH-DARU,block,Daru,JH-SUBDIV-HAZARIBAGH-HAZARIBAGH,North Chotanagpur,360,Hazaribagh,Hazaribagh,Daru,JH_AH_NORTH_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-HAZARIBAGH-HAZARIBAGH,block,Hazaribagh,JH-SUBDIV-HAZARIBAGH-HAZARIBAGH,North Chotanagpur,360,Hazaribagh,Hazaribagh,Hazaribagh,JH_AH_NORTH_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-HAZARIBAGH-ICHAK,block,Ichak,JH-SUBDIV-HAZARIBAGH-HAZARIBAGH,North Chotanagpur,360,Hazaribagh,Hazaribagh,Ichak,JH_AH_NORTH_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-HAZARIBAGH-KATAMDAG,block,Katamdag,JH-SUBDIV-HAZARIBAGH-HAZARIBAGH,North Chotanagpur,360,Hazaribagh,Hazaribagh,Katamdag,JH_AH_NORTH_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-HAZARIBAGH-KATKAMSANDI,block,Katkamsandi,JH-SUBDIV-HAZARIBAGH-HAZARIBAGH,North Chotanagpur,360,Hazaribagh,Hazaribagh,Katkamsandi,JH_AH_NORTH_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-HAZARIBAGH-KEREDARI,block,Keredari,JH-SUBDIV-HAZARIBAGH-HAZARIBAGH,North Chotanagpur,360,Hazaribagh,Hazaribagh,Keredari,JH_AH_NORTH_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-HAZARIBAGH-TATIJHARIYA,block,Tatijhariya,JH-SUBDIV-HAZARIBAGH-HAZARIBAGH,North Chotanagpur,360,Hazaribagh,Hazaribagh,Tatijhariya,JH_AH_NORTH_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-HAZARIBAGH-BARHI,block,Barhi,JH-SUBDIV-HAZARIBAGH-BARHI,North Chotanagpur,360,Hazaribagh,Barhi,Barhi,JH_AH_NORTH_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-HAZARIBAGH-BARKATHA,block,Barkatha,JH-SUBDIV-HAZARIBAGH-BARHI,North Chotanagpur,360,Hazaribagh,Barhi,Barkatha,JH_AH_NORTH_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-HAZARIBAGH-CHALKUSA,block,Chalkusa,JH-SUBDIV-HAZARIBAGH-BARHI,North Chotanagpur,360,Hazaribagh,Barhi,Chalkusa,JH_AH_NORTH_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-HAZARIBAGH-CHAUPARAN,block,Chauparan,JH-SUBDIV-HAZARIBAGH-BARHI,North Chotanagpur,360,Hazaribagh,Barhi,Chauparan,JH_AH_NORTH_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-HAZARIBAGH-PADMA,block,Padma,JH-SUBDIV-HAZARIBAGH-BARHI,North Chotanagpur,360,Hazaribagh,Barhi,Padma,JH_AH_NORTH_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-DHANBAD-BAGHMARA,block,Baghmara,JH-SUBDIV-DHANBAD-DHANBAD,North Chotanagpur,356,Dhanbad,Dhanbad,Baghmara,JH_AH_NORTH_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-DHANBAD-BALIAPUR,block,Baliapur,JH-SUBDIV-DHANBAD-DHANBAD,North Chotanagpur,356,Dhanbad,Dhanbad,Baliapur,JH_AH_NORTH_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-DHANBAD-DHANBAD,block,Dhanbad,JH-SUBDIV-DHANBAD-DHANBAD,North Chotanagpur,356,Dhanbad,Dhanbad,Dhanbad,JH_AH_NORTH_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-DHANBAD-EGARKUND,block,Egarkund,JH-SUBDIV-DHANBAD-DHANBAD,North Chotanagpur,356,Dhanbad,Dhanbad,Egarkund,JH_AH_NORTH_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-DHANBAD-GOVINDPUR,block,Govindpur,JH-SUBDIV-DHANBAD-DHANBAD,North Chotanagpur,356,Dhanbad,Dhanbad,Govindpur,JH_AH_NORTH_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-DHANBAD-KALIASOL,block,Kaliasol,JH-SUBDIV-DHANBAD-DHANBAD,North Chotanagpur,356,Dhanbad,Dhanbad,Kaliasol,JH_AH_NORTH_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-DHANBAD-NIRSA,block,Nirsa,JH-SUBDIV-DHANBAD-DHANBAD,North Chotanagpur,356,Dhanbad,Dhanbad,Nirsa,JH_AH_NORTH_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-DHANBAD-PURBI-TUNDI,block,Purbi Tundi,JH-SUBDIV-DHANBAD-DHANBAD,North Chotanagpur,356,Dhanbad,Dhanbad,Purbi Tundi,JH_AH_NORTH_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-DHANBAD-TOPCHANCHI,block,Topchanchi,JH-SUBDIV-DHANBAD-DHANBAD,North Chotanagpur,356,Dhanbad,Dhanbad,Topchanchi,JH_AH_NORTH_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-DHANBAD-TUNDI,block,Tundi,JH-SUBDIV-DHANBAD-DHANBAD,North Chotanagpur,356,Dhanbad,Dhanbad,Tundi,JH_AH_NORTH_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-GIRIDIH-BENGABAD,block,Bengabad,JH-SUBDIV-GIRIDIH-GIRIDIH,North Chotanagpur,349,Giridih,Giridih,Bengabad,JH_AH_NORTH_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-GIRIDIH-GANDEY,block,Gandey,JH-SUBDIV-GIRIDIH-GIRIDIH,North Chotanagpur,349,Giridih,Giridih,Gandey,JH_AH_NORTH_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-GIRIDIH-GIRIDIH,block,Giridih,JH-SUBDIV-GIRIDIH-GIRIDIH,North Chotanagpur,349,Giridih,Giridih,Giridih,JH_AH_NORTH_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-GIRIDIH-DEORI,block,Deori,JH-SUBDIV-GIRIDIH-KHORIMAHUA,North Chotanagpur,349,Giridih,Khorimahua,Deori,JH_AH_NORTH_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-GIRIDIH-DHANWAR,block,Dhanwar,JH-SUBDIV-GIRIDIH-KHORIMAHUA,North Chotanagpur,349,Giridih,Khorimahua,Dhanwar,JH_AH_NORTH_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-GIRIDIH-GAWAN,block,Gawan,JH-SUBDIV-GIRIDIH-KHORIMAHUA,North Chotanagpur,349,Giridih,Khorimahua,Gawan,JH_AH_NORTH_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-GIRIDIH-JAMUA,block,Jamua,JH-SUBDIV-GIRIDIH-KHORIMAHUA,North Chotanagpur,349,Giridih,Khorimahua,Jamua,JH_AH_NORTH_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-GIRIDIH-TISRI,block,Tisri,JH-SUBDIV-GIRIDIH-KHORIMAHUA,North Chotanagpur,349,Giridih,Khorimahua,Tisri,JH_AH_NORTH_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-GIRIDIH-DUMRI,block,Dumri,JH-SUBDIV-GIRIDIH-DUMRI,North Chotanagpur,349,Giridih,Dumri,Dumri,JH_AH_NORTH_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-GIRIDIH-PIRTAND,block,Pirtand,JH-SUBDIV-GIRIDIH-DUMRI,North Chotanagpur,349,Giridih,Dumri,Pirtand,JH_AH_NORTH_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-GIRIDIH-BAGODAR,block,Bagodar,JH-SUBDIV-GIRIDIH-SARIYA,North Chotanagpur,349,Giridih,Sariya,Bagodar,JH_AH_NORTH_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-GIRIDIH-BIRNI,block,Birni,JH-SUBDIV-GIRIDIH-SARIYA,North Chotanagpur,349,Giridih,Sariya,Birni,JH_AH_NORTH_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-GIRIDIH-SARIYA,block,Sariya,JH-SUBDIV-GIRIDIH-SARIYA,North Chotanagpur,349,Giridih,Sariya,Sariya,JH_AH_NORTH_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-KODERMA-CHANDWARA,block,Chandwara,JH-SUBDIV-KODERMA-KODERMA,North Chotanagpur,348,Koderma,Koderma,Chandwara,JH_AH_NORTH_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-KODERMA-DOMCHANCH,block,Domchanch,JH-SUBDIV-KODERMA-KODERMA,North Chotanagpur,348,Koderma,Koderma,Domchanch,JH_AH_NORTH_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-KODERMA-JAYNAGAR,block,Jaynagar,JH-SUBDIV-KODERMA-KODERMA,North Chotanagpur,348,Koderma,Koderma,Jaynagar,JH_AH_NORTH_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-KODERMA-KODERMA,block,Koderma,JH-SUBDIV-KODERMA-KODERMA,North Chotanagpur,348,Koderma,Koderma,Koderma,JH_AH_NORTH_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-KODERMA-MARKACHO,block,Markacho,JH-SUBDIV-KODERMA-KODERMA,North Chotanagpur,348,Koderma,Koderma,Markacho,JH_AH_NORTH_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-KODERMA-SATGAWAN,block,Satgawan,JH-SUBDIV-KODERMA-KODERMA,North Chotanagpur,348,Koderma,Koderma,Satgawan,JH_AH_NORTH_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-CHATRA-CHATRA,block,Chatra,JH-SUBDIV-CHATRA-CHATRA,North Chotanagpur,347,Chatra,Chatra,Chatra,JH_AH_NORTH_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-CHATRA-HUNTERGANJ,block,Hunterganj,JH-SUBDIV-CHATRA-CHATRA,North Chotanagpur,347,Chatra,Chatra,Hunterganj,JH_AH_NORTH_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-CHATRA-ITKHORI,block,Itkhori,JH-SUBDIV-CHATRA-CHATRA,North Chotanagpur,347,Chatra,Chatra,Itkhori,JH_AH_NORTH_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-CHATRA-KANHACHATTI,block,Kanhachatti,JH-SUBDIV-CHATRA-CHATRA,North Chotanagpur,347,Chatra,Chatra,Kanhachatti,JH_AH_NORTH_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-CHATRA-KUNDA,block,Kunda,JH-SUBDIV-CHATRA-CHATRA,North Chotanagpur,347,Chatra,Chatra,Kunda,JH_AH_NORTH_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-CHATRA-MAYURHAND,block,Mayurhand,JH-SUBDIV-CHATRA-CHATRA,North Chotanagpur,347,Chatra,Chatra,Mayurhand,JH_AH_NORTH_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-CHATRA-PRATAPPUR,block,Pratappur,JH-SUBDIV-CHATRA-CHATRA,North Chotanagpur,347,Chatra,Chatra,Pratappur,JH_AH_NORTH_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-CHATRA-GIDHAUR,block,Gidhaur,JH-SUBDIV-CHATRA-SIMARIA,North Chotanagpur,347,Chatra,Simaria,Gidhaur,JH_AH_NORTH_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-CHATRA-LAWALONG,block,Lawalong,JH-SUBDIV-CHATRA-SIMARIA,North Chotanagpur,347,Chatra,Simaria,Lawalong,JH_AH_NORTH_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-CHATRA-PATHALGADA,block,Pathalgada,JH-SUBDIV-CHATRA-SIMARIA,North Chotanagpur,347,Chatra,Simaria,Pathalgada,JH_AH_NORTH_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-CHATRA-SIMARIA,block,Simaria,JH-SUBDIV-CHATRA-SIMARIA,North Chotanagpur,347,Chatra,Simaria,Simaria,JH_AH_NORTH_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-CHATRA-TANDWA,block,Tandwa,JH-SUBDIV-CHATRA-SIMARIA,North Chotanagpur,347,Chatra,Simaria,Tandwa,JH_AH_NORTH_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-BOKARO-CHANDANKIYARI,block,Chandankiyari,JH-SUBDIV-BOKARO-CHAS,North Chotanagpur,355,Bokaro,Chas,Chandankiyari,JH_AH_NORTH_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-BOKARO-CHAS,block,Chas,JH-SUBDIV-BOKARO-CHAS,North Chotanagpur,355,Bokaro,Chas,Chas,JH_AH_NORTH_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-BOKARO-BERMO,block,Bermo,JH-SUBDIV-BOKARO-TENUGHAT,North Chotanagpur,355,Bokaro,Tenughat,Bermo,JH_AH_NORTH_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-BOKARO-CHANDRAPURA,block,Chandrapura,JH-SUBDIV-BOKARO-TENUGHAT,North Chotanagpur,355,Bokaro,Tenughat,Chandrapura,JH_AH_NORTH_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-BOKARO-GOMIA,block,Gomia,JH-SUBDIV-BOKARO-TENUGHAT,North Chotanagpur,355,Bokaro,Tenughat,Gomia,JH_AH_NORTH_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-BOKARO-JARIDIH,block,Jaridih,JH-SUBDIV-BOKARO-TENUGHAT,North Chotanagpur,355,Bokaro,Tenughat,Jaridih,JH_AH_NORTH_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-BOKARO-KASMAR,block,Kasmar,JH-SUBDIV-BOKARO-TENUGHAT,North Chotanagpur,355,Bokaro,Tenughat,Kasmar,JH_AH_NORTH_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-BOKARO-NAWADIH,block,Nawadih,JH-SUBDIV-BOKARO-TENUGHAT,North Chotanagpur,355,Bokaro,Tenughat,Nawadih,JH_AH_NORTH_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-BOKARO-PETARWAR,block,Petarwar,JH-SUBDIV-BOKARO-TENUGHAT,North Chotanagpur,355,Bokaro,Tenughat,Petarwar,JH_AH_NORTH_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-RAMGARH-CHITARPUR,block,Chitarpur,JH-SUBDIV-RAMGARH-RAMGARH,North Chotanagpur,361,Ramgarh,Ramgarh,Chitarpur,JH_AH_NORTH_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-RAMGARH-DULMI,block,Dulmi,JH-SUBDIV-RAMGARH-RAMGARH,North Chotanagpur,361,Ramgarh,Ramgarh,Dulmi,JH_AH_NORTH_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-RAMGARH-GOLA,block,Gola,JH-SUBDIV-RAMGARH-RAMGARH,North Chotanagpur,361,Ramgarh,Ramgarh,Gola,JH_AH_NORTH_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-RAMGARH-MANDU,block,Mandu,JH-SUBDIV-RAMGARH-RAMGARH,North Chotanagpur,361,Ramgarh,Ramgarh,Mandu,JH_AH_NORTH_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-RAMGARH-PATRATU,block,Patratu,JH-SUBDIV-RAMGARH-RAMGARH,North Chotanagpur,361,Ramgarh,Ramgarh,Patratu,JH_AH_NORTH_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-RAMGARH-RAMGARH,block,Ramgarh,JH-SUBDIV-RAMGARH-RAMGARH,North Chotanagpur,361,Ramgarh,Ramgarh,Ramgarh,JH_AH_NORTH_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-DUMKA-DUMKA,block,Dumka,JH-SUBDIV-DUMKA-DUMKA,Santhal Pargana,354,Dumka,Dumka,Dumka,JH_AH_SANTHAL_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-DUMKA-GOPIKANDAR,block,Gopikandar,JH-SUBDIV-DUMKA-DUMKA,Santhal Pargana,354,Dumka,Dumka,Gopikandar,JH_AH_SANTHAL_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-DUMKA-JAMA,block,Jama,JH-SUBDIV-DUMKA-DUMKA,Santhal Pargana,354,Dumka,Dumka,Jama,JH_AH_SANTHAL_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-DUMKA-JARMUNDI,block,Jarmundi,JH-SUBDIV-DUMKA-DUMKA,Santhal Pargana,354,Dumka,Dumka,Jarmundi,JH_AH_SANTHAL_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-DUMKA-KATHIKUND,block,Kathikund,JH-SUBDIV-DUMKA-DUMKA,Santhal Pargana,354,Dumka,Dumka,Kathikund,JH_AH_SANTHAL_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-DUMKA-MASALIA,block,Masalia,JH-SUBDIV-DUMKA-DUMKA,Santhal Pargana,354,Dumka,Dumka,Masalia,JH_AH_SANTHAL_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-DUMKA-RAMGARH,block,Ramgarh,JH-SUBDIV-DUMKA-DUMKA,Santhal Pargana,354,Dumka,Dumka,Ramgarh,JH_AH_SANTHAL_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-DUMKA-RANESHWAR,block,Raneshwar,JH-SUBDIV-DUMKA-DUMKA,Santhal Pargana,354,Dumka,Dumka,Raneshwar,JH_AH_SANTHAL_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-DUMKA-SARAIYAHAT,block,Saraiyahat,JH-SUBDIV-DUMKA-DUMKA,Santhal Pargana,354,Dumka,Dumka,Saraiyahat,JH_AH_SANTHAL_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-DUMKA-SHIKARIPARA,block,Shikaripara,JH-SUBDIV-DUMKA-DUMKA,Santhal Pargana,354,Dumka,Dumka,Shikaripara,JH_AH_SANTHAL_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-DEOGHAR-DEOGHAR,block,Deoghar,JH-SUBDIV-DEOGHAR-DEOGHAR,Santhal Pargana,350,Deoghar,Deoghar,Deoghar,JH_AH_SANTHAL_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-DEOGHAR-DEVIPUR,block,Devipur,JH-SUBDIV-DEOGHAR-DEOGHAR,Santhal Pargana,350,Deoghar,Deoghar,Devipur,JH_AH_SANTHAL_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-DEOGHAR-MOHANPUR,block,Mohanpur,JH-SUBDIV-DEOGHAR-DEOGHAR,Santhal Pargana,350,Deoghar,Deoghar,Mohanpur,JH_AH_SANTHAL_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-DEOGHAR-SARWAN,block,Sarwan,JH-SUBDIV-DEOGHAR-DEOGHAR,Santhal Pargana,350,Deoghar,Deoghar,Sarwan,JH_AH_SANTHAL_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-DEOGHAR-SONARAITHADI,block,Sonaraithadi,JH-SUBDIV-DEOGHAR-DEOGHAR,Santhal Pargana,350,Deoghar,Deoghar,Sonaraithadi,JH_AH_SANTHAL_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-DEOGHAR-KARO,block,Karo,JH-SUBDIV-DEOGHAR-MADHUPUR,Santhal Pargana,350,Deoghar,Madhupur,Karo,JH_AH_SANTHAL_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-DEOGHAR-MADHUPUR,block,Madhupur,JH-SUBDIV-DEOGHAR-MADHUPUR,Santhal Pargana,350,Deoghar,Madhupur,Madhupur,JH_AH_SANTHAL_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-DEOGHAR-MARGOMUNDA,block,Margomunda,JH-SUBDIV-DEOGHAR-MADHUPUR,Santhal Pargana,350,Deoghar,Madhupur,Margomunda,JH_AH_SANTHAL_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-DEOGHAR-PALOJORI,block,Palojori,JH-SUBDIV-DEOGHAR-MADHUPUR,Santhal Pargana,350,Deoghar,Madhupur,Palojori,JH_AH_SANTHAL_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-DEOGHAR-SARATH,block,Sarath,JH-SUBDIV-DEOGHAR-MADHUPUR,Santhal Pargana,350,Deoghar,Madhupur,Sarath,JH_AH_SANTHAL_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-SAHIBGANJ-BARHET,block,Barhet,JH-SUBDIV-SAHIBGANJ-SAHIBGANJ,Santhal Pargana,352,Sahibganj,Sahibganj,Barhet,JH_AH_SANTHAL_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-SAHIBGANJ-BORIO,block,Borio,JH-SUBDIV-SAHIBGANJ-SAHIBGANJ,Santhal Pargana,352,Sahibganj,Sahibganj,Borio,JH_AH_SANTHAL_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-SAHIBGANJ-MANDRO,block,Mandro,JH-SUBDIV-SAHIBGANJ-SAHIBGANJ,Santhal Pargana,352,Sahibganj,Sahibganj,Mandro,JH_AH_SANTHAL_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-SAHIBGANJ-SAHIBGANJ,block,Sahibganj,JH-SUBDIV-SAHIBGANJ-SAHIBGANJ,Santhal Pargana,352,Sahibganj,Sahibganj,Sahibganj,JH_AH_SANTHAL_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-SAHIBGANJ-BARHARWA,block,Barharwa,JH-SUBDIV-SAHIBGANJ-RAJMAHAL,Santhal Pargana,352,Sahibganj,Rajmahal,Barharwa,JH_AH_SANTHAL_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-SAHIBGANJ-PATHNA,block,Pathna,JH-SUBDIV-SAHIBGANJ-RAJMAHAL,Santhal Pargana,352,Sahibganj,Rajmahal,Pathna,JH_AH_SANTHAL_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-SAHIBGANJ-RAJMAHAL,block,Rajmahal,JH-SUBDIV-SAHIBGANJ-RAJMAHAL,Santhal Pargana,352,Sahibganj,Rajmahal,Rajmahal,JH_AH_SANTHAL_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-SAHIBGANJ-TALJHARI,block,Taljhari,JH-SUBDIV-SAHIBGANJ-RAJMAHAL,Santhal Pargana,352,Sahibganj,Rajmahal,Taljhari,JH_AH_SANTHAL_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-SAHIBGANJ-UDHWA,block,Udhwa,JH-SUBDIV-SAHIBGANJ-RAJMAHAL,Santhal Pargana,352,Sahibganj,Rajmahal,Udhwa,JH_AH_SANTHAL_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-GODDA-BASANTRAI,block,Basantrai,JH-SUBDIV-GODDA-GODDA,Santhal Pargana,351,Godda,Godda,Basantrai,JH_AH_SANTHAL_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-GODDA-GODDA,block,Godda,JH-SUBDIV-GODDA-GODDA,Santhal Pargana,351,Godda,Godda,Godda,JH_AH_SANTHAL_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-GODDA-PATHARGAMA,block,Pathargama,JH-SUBDIV-GODDA-GODDA,Santhal Pargana,351,Godda,Godda,Pathargama,JH_AH_SANTHAL_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-GODDA-PORAIYAHAT,block,Poraiyahat,JH-SUBDIV-GODDA-GODDA,Santhal Pargana,351,Godda,Godda,Poraiyahat,JH_AH_SANTHAL_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-GODDA-SUNDARPAHARI,block,Sundarpahari,JH-SUBDIV-GODDA-GODDA,Santhal Pargana,351,Godda,Godda,Sundarpahari,JH_AH_SANTHAL_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-GODDA-BOARIJOR,block,Boarijor,JH-SUBDIV-GODDA-MAHGAMA,Santhal Pargana,351,Godda,Mahgama,Boarijor,JH_AH_SANTHAL_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-GODDA-MAHGAMA,block,Mahgama,JH-SUBDIV-GODDA-MAHGAMA,Santhal Pargana,351,Godda,Mahgama,Mahgama,JH_AH_SANTHAL_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-GODDA-MEHERMA,block,Meherma,JH-SUBDIV-GODDA-MAHGAMA,Santhal Pargana,351,Godda,Mahgama,Meherma,JH_AH_SANTHAL_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-GODDA-THAKURGANGTI,block,Thakurgangti,JH-SUBDIV-GODDA-MAHGAMA,Santhal Pargana,351,Godda,Mahgama,Thakurgangti,JH_AH_SANTHAL_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-JAMTARA-FATEHPUR,block,Fatehpur,JH-SUBDIV-JAMTARA-JAMTARA,Santhal Pargana,368,Jamtara,Jamtara,Fatehpur,JH_AH_SANTHAL_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-JAMTARA-JAMTARA,block,Jamtara,JH-SUBDIV-JAMTARA-JAMTARA,Santhal Pargana,368,Jamtara,Jamtara,Jamtara,JH_AH_SANTHAL_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-JAMTARA-KARMATAND,block,Karmatand,JH-SUBDIV-JAMTARA-JAMTARA,Santhal Pargana,368,Jamtara,Jamtara,Karmatand,JH_AH_SANTHAL_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-JAMTARA-KUNDHIT,block,Kundhit,JH-SUBDIV-JAMTARA-JAMTARA,Santhal Pargana,368,Jamtara,Jamtara,Kundhit,JH_AH_SANTHAL_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-JAMTARA-NALA,block,Nala,JH-SUBDIV-JAMTARA-JAMTARA,Santhal Pargana,368,Jamtara,Jamtara,Nala,JH_AH_SANTHAL_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-JAMTARA-NARAYANPUR,block,Narayanpur,JH-SUBDIV-JAMTARA-JAMTARA,Santhal Pargana,368,Jamtara,Jamtara,Narayanpur,JH_AH_SANTHAL_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-PAKUR-AMRAPARA,block,Amrapara,JH-SUBDIV-PAKUR-PAKUR,Santhal Pargana,353,Pakur,Pakur,Amrapara,JH_AH_SANTHAL_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-PAKUR-HIRANPUR,block,Hiranpur,JH-SUBDIV-PAKUR-PAKUR,Santhal Pargana,353,Pakur,Pakur,Hiranpur,JH_AH_SANTHAL_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-PAKUR-LITIPARA,block,Litipara,JH-SUBDIV-PAKUR-PAKUR,Santhal Pargana,353,Pakur,Pakur,Litipara,JH_AH_SANTHAL_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-PAKUR-MAHESHPUR,block,Maheshpur,JH-SUBDIV-PAKUR-PAKUR,Santhal Pargana,353,Pakur,Pakur,Maheshpur,JH_AH_SANTHAL_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-PAKUR-PAKUR,block,Pakur,JH-SUBDIV-PAKUR-PAKUR,Santhal Pargana,353,Pakur,Pakur,Pakur,JH_AH_SANTHAL_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-PAKUR-PAKURIA,block,Pakuria,JH-SUBDIV-PAKUR-PAKUR,Santhal Pargana,353,Pakur,Pakur,Pakuria,JH_AH_SANTHAL_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-RANCHI-ANGARA,block,Angara,JH-SUBDIV-RANCHI-RANCHI,South Chotanagpur,362,Ranchi,Ranchi,Angara,JH_AH_SOUTH_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-RANCHI-BERO,block,Bero,JH-SUBDIV-RANCHI-RANCHI,South Chotanagpur,362,Ranchi,Ranchi,Bero,JH_AH_SOUTH_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-RANCHI-BURMU,block,Burmu,JH-SUBDIV-RANCHI-RANCHI,South Chotanagpur,362,Ranchi,Ranchi,Burmu,JH_AH_SOUTH_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-RANCHI-CHANHO,block,Chanho,JH-SUBDIV-RANCHI-RANCHI,South Chotanagpur,362,Ranchi,Ranchi,Chanho,JH_AH_SOUTH_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-RANCHI-ITKI,block,Itki,JH-SUBDIV-RANCHI-RANCHI,South Chotanagpur,362,Ranchi,Ranchi,Itki,JH_AH_SOUTH_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-RANCHI-KANKE,block,Kanke,JH-SUBDIV-RANCHI-RANCHI,South Chotanagpur,362,Ranchi,Ranchi,Kanke,JH_AH_SOUTH_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-RANCHI-KHELARI,block,Khelari,JH-SUBDIV-RANCHI-RANCHI,South Chotanagpur,362,Ranchi,Ranchi,Khelari,JH_AH_SOUTH_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-RANCHI-LAPUNG,block,Lapung,JH-SUBDIV-RANCHI-RANCHI,South Chotanagpur,362,Ranchi,Ranchi,Lapung,JH_AH_SOUTH_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-RANCHI-MANDAR,block,Mandar,JH-SUBDIV-RANCHI-RANCHI,South Chotanagpur,362,Ranchi,Ranchi,Mandar,JH_AH_SOUTH_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-RANCHI-NAGRI,block,Nagri,JH-SUBDIV-RANCHI-RANCHI,South Chotanagpur,362,Ranchi,Ranchi,Nagri,JH_AH_SOUTH_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-RANCHI-NAMKUM,block,Namkum,JH-SUBDIV-RANCHI-RANCHI,South Chotanagpur,362,Ranchi,Ranchi,Namkum,JH_AH_SOUTH_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-RANCHI-ORMANJHI,block,Ormanjhi,JH-SUBDIV-RANCHI-RANCHI,South Chotanagpur,362,Ranchi,Ranchi,Ormanjhi,JH_AH_SOUTH_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-RANCHI-RATU,block,Ratu,JH-SUBDIV-RANCHI-RANCHI,South Chotanagpur,362,Ranchi,Ranchi,Ratu,JH_AH_SOUTH_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-RANCHI-SILLI,block,Silli,JH-SUBDIV-RANCHI-RANCHI,South Chotanagpur,362,Ranchi,Ranchi,Silli,JH_AH_SOUTH_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-RANCHI-BUNDU,block,Bundu,JH-SUBDIV-RANCHI-BUNDU,South Chotanagpur,362,Ranchi,Bundu,Bundu,JH_AH_SOUTH_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-RANCHI-RAHE,block,Rahe,JH-SUBDIV-RANCHI-BUNDU,South Chotanagpur,362,Ranchi,Bundu,Rahe,JH_AH_SOUTH_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-RANCHI-SONAHATU,block,Sonahatu,JH-SUBDIV-RANCHI-BUNDU,South Chotanagpur,362,Ranchi,Bundu,Sonahatu,JH_AH_SOUTH_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-RANCHI-TAMAR,block,Tamar,JH-SUBDIV-RANCHI-BUNDU,South Chotanagpur,362,Ranchi,Bundu,Tamar,JH_AH_SOUTH_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-GUMLA-BHARNO,block,Bharno,JH-SUBDIV-GUMLA-GUMLA,South Chotanagpur,364,Gumla,Gumla,Bharno,JH_AH_SOUTH_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-GUMLA-BISHUNPUR,block,Bishunpur,JH-SUBDIV-GUMLA-GUMLA,South Chotanagpur,364,Gumla,Gumla,Bishunpur,JH_AH_SOUTH_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-GUMLA-GHAGHRA,block,Ghaghra,JH-SUBDIV-GUMLA-GUMLA,South Chotanagpur,364,Gumla,Gumla,Ghaghra,JH_AH_SOUTH_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-GUMLA-GUMLA,block,Gumla,JH-SUBDIV-GUMLA-GUMLA,South Chotanagpur,364,Gumla,Gumla,Gumla,JH_AH_SOUTH_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-GUMLA-RAIDIH,block,Raidih,JH-SUBDIV-GUMLA-GUMLA,South Chotanagpur,364,Gumla,Gumla,Raidih,JH_AH_SOUTH_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-GUMLA-SISAI,block,Sisai,JH-SUBDIV-GUMLA-GUMLA,South Chotanagpur,364,Gumla,Gumla,Sisai,JH_AH_SOUTH_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-GUMLA-BASIA,block,Basia,JH-SUBDIV-GUMLA-BASIA,South Chotanagpur,364,Gumla,Basia,Basia,JH_AH_SOUTH_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-GUMLA-KAMDARA,block,Kamdara,JH-SUBDIV-GUMLA-BASIA,South Chotanagpur,364,Gumla,Basia,Kamdara,JH_AH_SOUTH_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-GUMLA-PALKOT,block,Palkot,JH-SUBDIV-GUMLA-BASIA,South Chotanagpur,364,Gumla,Basia,Palkot,JH_AH_SOUTH_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-GUMLA-CHAINPUR,block,Chainpur,JH-SUBDIV-GUMLA-CHAINPUR,South Chotanagpur,364,Gumla,Chainpur,Chainpur,JH_AH_SOUTH_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-GUMLA-DUMRI,block,Dumri,JH-SUBDIV-GUMLA-CHAINPUR,South Chotanagpur,364,Gumla,Chainpur,Dumri,JH_AH_SOUTH_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-GUMLA-JARI,block,Jari,JH-SUBDIV-GUMLA-CHAINPUR,South Chotanagpur,364,Gumla,Chainpur,Jari,JH_AH_SOUTH_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-LOHARDAGA-BHANDRA,block,Bhandra,JH-SUBDIV-LOHARDAGA-LOHARDAGA,South Chotanagpur,369,Lohardaga,Lohardaga,Bhandra,JH_AH_SOUTH_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-LOHARDAGA-KAIRO,block,Kairo,JH-SUBDIV-LOHARDAGA-LOHARDAGA,South Chotanagpur,369,Lohardaga,Lohardaga,Kairo,JH_AH_SOUTH_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-LOHARDAGA-KISKO,block,Kisko,JH-SUBDIV-LOHARDAGA-LOHARDAGA,South Chotanagpur,369,Lohardaga,Lohardaga,Kisko,JH_AH_SOUTH_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-LOHARDAGA-KURU,block,Kuru,JH-SUBDIV-LOHARDAGA-LOHARDAGA,South Chotanagpur,369,Lohardaga,Lohardaga,Kuru,JH_AH_SOUTH_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-LOHARDAGA-LOHARDAGA,block,Lohardaga,JH-SUBDIV-LOHARDAGA-LOHARDAGA,South Chotanagpur,369,Lohardaga,Lohardaga,Lohardaga,JH_AH_SOUTH_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-LOHARDAGA-PESHRAR,block,Peshrar,JH-SUBDIV-LOHARDAGA-LOHARDAGA,South Chotanagpur,369,Lohardaga,Lohardaga,Peshrar,JH_AH_SOUTH_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-LOHARDAGA-SENHA,block,Senha,JH-SUBDIV-LOHARDAGA-LOHARDAGA,South Chotanagpur,369,Lohardaga,Lohardaga,Senha,JH_AH_SOUTH_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-SIMDEGA-BANO,block,Bano,JH-SUBDIV-SIMDEGA-SIMDEGA,South Chotanagpur,365,Simdega,Simdega,Bano,JH_AH_SOUTH_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-SIMDEGA-BANSJOR,block,Bansjor,JH-SUBDIV-SIMDEGA-SIMDEGA,South Chotanagpur,365,Simdega,Simdega,Bansjor,JH_AH_SOUTH_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-SIMDEGA-BOLBA,block,Bolba,JH-SUBDIV-SIMDEGA-SIMDEGA,South Chotanagpur,365,Simdega,Simdega,Bolba,JH_AH_SOUTH_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-SIMDEGA-JALDEGA,block,Jaldega,JH-SUBDIV-SIMDEGA-SIMDEGA,South Chotanagpur,365,Simdega,Simdega,Jaldega,JH_AH_SOUTH_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-SIMDEGA-KERSAI,block,Kersai,JH-SUBDIV-SIMDEGA-SIMDEGA,South Chotanagpur,365,Simdega,Simdega,Kersai,JH_AH_SOUTH_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-SIMDEGA-KOLEBIRA,block,Kolebira,JH-SUBDIV-SIMDEGA-SIMDEGA,South Chotanagpur,365,Simdega,Simdega,Kolebira,JH_AH_SOUTH_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-SIMDEGA-KURDEG,block,Kurdeg,JH-SUBDIV-SIMDEGA-SIMDEGA,South Chotanagpur,365,Simdega,Simdega,Kurdeg,JH_AH_SOUTH_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-SIMDEGA-PAKARTANR,block,Pakartanr,JH-SUBDIV-SIMDEGA-SIMDEGA,South Chotanagpur,365,Simdega,Simdega,Pakartanr,JH_AH_SOUTH_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-SIMDEGA-SIMDEGA,block,Simdega,JH-SUBDIV-SIMDEGA-SIMDEGA,South Chotanagpur,365,Simdega,Simdega,Simdega,JH_AH_SOUTH_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-SIMDEGA-THETHAITANGAR,block,Thethaitangar,JH-SUBDIV-SIMDEGA-SIMDEGA,South Chotanagpur,365,Simdega,Simdega,Thethaitangar,JH_AH_SOUTH_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-KHUNTI-ARKI,block,Arki,JH-SUBDIV-KHUNTI-KHUNTI,South Chotanagpur,363,Khunti,Khunti,Arki,JH_AH_SOUTH_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-KHUNTI-KARRA,block,Karra,JH-SUBDIV-KHUNTI-KHUNTI,South Chotanagpur,363,Khunti,Khunti,Karra,JH_AH_SOUTH_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-KHUNTI-KHUNTI,block,Khunti,JH-SUBDIV-KHUNTI-KHUNTI,South Chotanagpur,363,Khunti,Khunti,Khunti,JH_AH_SOUTH_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-KHUNTI-MURHU,block,Murhu,JH-SUBDIV-KHUNTI-KHUNTI,South Chotanagpur,363,Khunti,Khunti,Murhu,JH_AH_SOUTH_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-KHUNTI-RANIA,block,Rania,JH-SUBDIV-KHUNTI-KHUNTI,South Chotanagpur,363,Khunti,Khunti,Rania,JH_AH_SOUTH_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-KHUNTI-TORPA,block,Torpa,JH-SUBDIV-KHUNTI-KHUNTI,South Chotanagpur,363,Khunti,Khunti,Torpa,JH_AH_SOUTH_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-PALAMU-BISHRAMPUR,block,Bishrampur,JH-SUBDIV-PALAMU-MEDININAGAR,Palamu,358,Palamu,Medininagar,Bishrampur,JH_AH_PALAMU_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-PALAMU-CHAINPUR,block,Chainpur,JH-SUBDIV-PALAMU-MEDININAGAR,Palamu,358,Palamu,Medininagar,Chainpur,JH_AH_PALAMU_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-PALAMU-LESLIGANJ,block,Lesliganj,JH-SUBDIV-PALAMU-MEDININAGAR,Palamu,358,Palamu,Medininagar,Lesliganj,JH_AH_PALAMU_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-PALAMU-MANATU,block,Manatu,JH-SUBDIV-PALAMU-MEDININAGAR,Palamu,358,Palamu,Medininagar,Manatu,JH_AH_PALAMU_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-PALAMU-MEDININAGAR,block,Medininagar,JH-SUBDIV-PALAMU-MEDININAGAR,Palamu,358,Palamu,Medininagar,Medininagar,JH_AH_PALAMU_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-PALAMU-NAWA-BAZAR,block,Nawa Bazar,JH-SUBDIV-PALAMU-MEDININAGAR,Palamu,358,Palamu,Medininagar,Nawa Bazar,JH_AH_PALAMU_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-PALAMU-PADWA,block,Padwa,JH-SUBDIV-PALAMU-MEDININAGAR,Palamu,358,Palamu,Medininagar,Padwa,JH_AH_PALAMU_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-PALAMU-PANDU,block,Pandu,JH-SUBDIV-PALAMU-MEDININAGAR,Palamu,358,Palamu,Medininagar,Pandu,JH_AH_PALAMU_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-PALAMU-PANKI,block,Panki,JH-SUBDIV-PALAMU-MEDININAGAR,Palamu,358,Palamu,Medininagar,Panki,JH_AH_PALAMU_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-PALAMU-PATAN,block,Patan,JH-SUBDIV-PALAMU-MEDININAGAR,Palamu,358,Palamu,Medininagar,Patan,JH_AH_PALAMU_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-PALAMU-RAMGARH,block,Ramgarh,JH-SUBDIV-PALAMU-MEDININAGAR,Palamu,358,Palamu,Medininagar,Ramgarh,JH_AH_PALAMU_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-PALAMU-SATBARWA,block,Satbarwa,JH-SUBDIV-PALAMU-MEDININAGAR,Palamu,358,Palamu,Medininagar,Satbarwa,JH_AH_PALAMU_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-PALAMU-TARHASI,block,Tarhasi,JH-SUBDIV-PALAMU-MEDININAGAR,Palamu,358,Palamu,Medininagar,Tarhasi,JH_AH_PALAMU_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-PALAMU-UNTARI-ROAD,block,Untari Road,JH-SUBDIV-PALAMU-MEDININAGAR,Palamu,358,Palamu,Medininagar,Untari Road,JH_AH_PALAMU_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-PALAMU-CHHATARPUR,block,Chhatarpur,JH-SUBDIV-PALAMU-CHHATARPUR,Palamu,358,Palamu,Chhatarpur,Chhatarpur,JH_AH_PALAMU_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-PALAMU-HARIHARGANJ,block,Hariharganj,JH-SUBDIV-PALAMU-CHHATARPUR,Palamu,358,Palamu,Chhatarpur,Hariharganj,JH_AH_PALAMU_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-PALAMU-NAWDIHA,block,Nawdiha,JH-SUBDIV-PALAMU-CHHATARPUR,Palamu,358,Palamu,Chhatarpur,Nawdiha,JH_AH_PALAMU_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-PALAMU-PIPRA,block,Pipra,JH-SUBDIV-PALAMU-CHHATARPUR,Palamu,358,Palamu,Chhatarpur,Pipra,JH_AH_PALAMU_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-PALAMU-HAIDARNAGAR,block,Haidarnagar,JH-SUBDIV-PALAMU-HUSSAINABAD,Palamu,358,Palamu,Hussainabad,Haidarnagar,JH_AH_PALAMU_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-PALAMU-HUSSAINABAD,block,Hussainabad,JH-SUBDIV-PALAMU-HUSSAINABAD,Palamu,358,Palamu,Hussainabad,Hussainabad,JH_AH_PALAMU_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-PALAMU-MOHAMMADGANJ,block,Mohammadganj,JH-SUBDIV-PALAMU-HUSSAINABAD,Palamu,358,Palamu,Hussainabad,Mohammadganj,JH_AH_PALAMU_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-GARHWA-BARDIHA,block,Bardiha,JH-SUBDIV-GARHWA-GARHWA,Palamu,346,Garhwa,Garhwa,Bardiha,JH_AH_PALAMU_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-GARHWA-DANDA,block,Danda,JH-SUBDIV-GARHWA-GARHWA,Palamu,346,Garhwa,Garhwa,Danda,JH_AH_PALAMU_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-GARHWA-DANDAI,block,Dandai,JH-SUBDIV-GARHWA-GARHWA,Palamu,346,Garhwa,Garhwa,Dandai,JH_AH_PALAMU_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-GARHWA-GARHWA,block,Garhwa,JH-SUBDIV-GARHWA-GARHWA,Palamu,346,Garhwa,Garhwa,Garhwa,JH_AH_PALAMU_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-GARHWA-KANDI,block,Kandi,JH-SUBDIV-GARHWA-GARHWA,Palamu,346,Garhwa,Garhwa,Kandi,JH_AH_PALAMU_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-GARHWA-MAJHIAON,block,Majhiaon,JH-SUBDIV-GARHWA-GARHWA,Palamu,346,Garhwa,Garhwa,Majhiaon,JH_AH_PALAMU_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-GARHWA-MERAL,block,Meral,JH-SUBDIV-GARHWA-GARHWA,Palamu,346,Garhwa,Garhwa,Meral,JH_AH_PALAMU_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-GARHWA-BHAWNATHPUR,block,Bhawnathpur,JH-SUBDIV-GARHWA-NAGARUNTARI,Palamu,346,Garhwa,Nagaruntari,Bhawnathpur,JH_AH_PALAMU_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-GARHWA-BISHUNPURA,block,Bishunpura,JH-SUBDIV-GARHWA-NAGARUNTARI,Palamu,346,Garhwa,Nagaruntari,Bishunpura,JH_AH_PALAMU_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-GARHWA-DHURKI,block,Dhurki,JH-SUBDIV-GARHWA-NAGARUNTARI,Palamu,346,Garhwa,Nagaruntari,Dhurki,JH_AH_PALAMU_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-GARHWA-KETAR,block,Ketar,JH-SUBDIV-GARHWA-NAGARUNTARI,Palamu,346,Garhwa,Nagaruntari,Ketar,JH_AH_PALAMU_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-GARHWA-KHARAUNDHI,block,Kharaundhi,JH-SUBDIV-GARHWA-NAGARUNTARI,Palamu,346,Garhwa,Nagaruntari,Kharaundhi,JH_AH_PALAMU_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-GARHWA-NAGARUNTARI,block,Nagaruntari,JH-SUBDIV-GARHWA-NAGARUNTARI,Palamu,346,Garhwa,Nagaruntari,Nagaruntari,JH_AH_PALAMU_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-GARHWA-RAMNA,block,Ramna,JH-SUBDIV-GARHWA-NAGARUNTARI,Palamu,346,Garhwa,Nagaruntari,Ramna,JH_AH_PALAMU_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-GARHWA-SAGMA,block,Sagma,JH-SUBDIV-GARHWA-NAGARUNTARI,Palamu,346,Garhwa,Nagaruntari,Sagma,JH_AH_PALAMU_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-GARHWA-BHANDARIA,block,Bhandaria,JH-SUBDIV-GARHWA-RANKA,Palamu,346,Garhwa,Ranka,Bhandaria,JH_AH_PALAMU_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-GARHWA-BARGARH,block,Bargarh,JH-SUBDIV-GARHWA-RANKA,Palamu,346,Garhwa,Ranka,Bargarh,JH_AH_PALAMU_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-GARHWA-CHINIA,block,Chinia,JH-SUBDIV-GARHWA-RANKA,Palamu,346,Garhwa,Ranka,Chinia,JH_AH_PALAMU_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-GARHWA-RAMKANDA,block,Ramkanda,JH-SUBDIV-GARHWA-RANKA,Palamu,346,Garhwa,Ranka,Ramkanda,JH_AH_PALAMU_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-GARHWA-RANKA,block,Ranka,JH-SUBDIV-GARHWA-RANKA,Palamu,346,Garhwa,Ranka,Ranka,JH_AH_PALAMU_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-LATEHAR-BALUMATH,block,Balumath,JH-SUBDIV-LATEHAR-LATEHAR,Palamu,359,Latehar,Latehar,Balumath,JH_AH_PALAMU_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-LATEHAR-BARIYATU,block,Bariyatu,JH-SUBDIV-LATEHAR-LATEHAR,Palamu,359,Latehar,Latehar,Bariyatu,JH_AH_PALAMU_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-LATEHAR-BARWADIH,block,Barwadih,JH-SUBDIV-LATEHAR-LATEHAR,Palamu,359,Latehar,Latehar,Barwadih,JH_AH_PALAMU_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-LATEHAR-CHANDWA,block,Chandwa,JH-SUBDIV-LATEHAR-LATEHAR,Palamu,359,Latehar,Latehar,Chandwa,JH_AH_PALAMU_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-LATEHAR-HERHANJ,block,Herhanj,JH-SUBDIV-LATEHAR-LATEHAR,Palamu,359,Latehar,Latehar,Herhanj,JH_AH_PALAMU_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-LATEHAR-LATEHAR,block,Latehar,JH-SUBDIV-LATEHAR-LATEHAR,Palamu,359,Latehar,Latehar,Latehar,JH_AH_PALAMU_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-LATEHAR-MANIKA,block,Manika,JH-SUBDIV-LATEHAR-LATEHAR,Palamu,359,Latehar,Latehar,Manika,JH_AH_PALAMU_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-LATEHAR-GARU,block,Garu,JH-SUBDIV-LATEHAR-MAHUADANR,Palamu,359,Latehar,Mahuadanr,Garu,JH_AH_PALAMU_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-LATEHAR-MAHUADANR,block,Mahuadanr,JH-SUBDIV-LATEHAR-MAHUADANR,Palamu,359,Latehar,Mahuadanr,Mahuadanr,JH_AH_PALAMU_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-LATEHAR-SARYU,block,Saryu,JH-DIST-359,Palamu,359,Latehar,,Saryu,LATEHAR_BLOCK_2026,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-WEST-SINGHBHUM-CHAIBASA,block,Chaibasa,JH-SUBDIV-WEST-SINGHBHUM-CHAIBASA,Kolhan,366,West Singhbhum,Chaibasa,Chaibasa,JH_AH_KOLHAN_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-WEST-SINGHBHUM-HATGAMHARIA,block,Hatgamharia,JH-SUBDIV-WEST-SINGHBHUM-CHAIBASA,Kolhan,366,West Singhbhum,Chaibasa,Hatgamharia,JH_AH_KOLHAN_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-WEST-SINGHBHUM-JHINKPANI,block,Jhinkpani,JH-SUBDIV-WEST-SINGHBHUM-CHAIBASA,Kolhan,366,West Singhbhum,Chaibasa,Jhinkpani,JH_AH_KOLHAN_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-WEST-SINGHBHUM-KHUNTPANI,block,Khuntpani,JH-SUBDIV-WEST-SINGHBHUM-CHAIBASA,Kolhan,366,West Singhbhum,Chaibasa,Khuntpani,JH_AH_KOLHAN_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-WEST-SINGHBHUM-MANJHARI,block,Manjhari,JH-SUBDIV-WEST-SINGHBHUM-CHAIBASA,Kolhan,366,West Singhbhum,Chaibasa,Manjhari,JH_AH_KOLHAN_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-WEST-SINGHBHUM-TANTNAGAR,block,Tantnagar,JH-SUBDIV-WEST-SINGHBHUM-CHAIBASA,Kolhan,366,West Singhbhum,Chaibasa,Tantnagar,JH_AH_KOLHAN_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-WEST-SINGHBHUM-TONTO,block,Tonto,JH-SUBDIV-WEST-SINGHBHUM-CHAIBASA,Kolhan,366,West Singhbhum,Chaibasa,Tonto,JH_AH_KOLHAN_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-WEST-SINGHBHUM-ANANDPUR,block,Anandpur,JH-SUBDIV-WEST-SINGHBHUM-CHAKRADHARPUR,Kolhan,366,West Singhbhum,Chakradharpur,Anandpur,JH_AH_KOLHAN_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-WEST-SINGHBHUM-BANDGAON,block,Bandgaon,JH-SUBDIV-WEST-SINGHBHUM-CHAKRADHARPUR,Kolhan,366,West Singhbhum,Chakradharpur,Bandgaon,JH_AH_KOLHAN_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-WEST-SINGHBHUM-CHAKRADHARPUR,block,Chakradharpur,JH-SUBDIV-WEST-SINGHBHUM-CHAKRADHARPUR,Kolhan,366,West Singhbhum,Chakradharpur,Chakradharpur,JH_AH_KOLHAN_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-WEST-SINGHBHUM-GOILKERA,block,Goilkera,JH-SUBDIV-WEST-SINGHBHUM-CHAKRADHARPUR,Kolhan,366,West Singhbhum,Chakradharpur,Goilkera,JH_AH_KOLHAN_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-WEST-SINGHBHUM-GUDRI,block,Gudri,JH-SUBDIV-WEST-SINGHBHUM-CHAKRADHARPUR,Kolhan,366,West Singhbhum,Chakradharpur,Gudri,JH_AH_KOLHAN_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-WEST-SINGHBHUM-MANOHARPUR,block,Manoharpur,JH-SUBDIV-WEST-SINGHBHUM-CHAKRADHARPUR,Kolhan,366,West Singhbhum,Chakradharpur,Manoharpur,JH_AH_KOLHAN_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-WEST-SINGHBHUM-SONUA,block,Sonua,JH-SUBDIV-WEST-SINGHBHUM-CHAKRADHARPUR,Kolhan,366,West Singhbhum,Chakradharpur,Sonua,JH_AH_KOLHAN_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-WEST-SINGHBHUM-JAGANNATHPUR,block,Jagannathpur,JH-SUBDIV-WEST-SINGHBHUM-JAGANNATHPUR,Kolhan,366,West Singhbhum,Jagannathpur,Jagannathpur,JH_AH_KOLHAN_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-WEST-SINGHBHUM-KUMARDUNGI,block,Kumardungi,JH-SUBDIV-WEST-SINGHBHUM-JAGANNATHPUR,Kolhan,366,West Singhbhum,Jagannathpur,Kumardungi,JH_AH_KOLHAN_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-WEST-SINGHBHUM-MAJHGAON,block,Majhgaon,JH-SUBDIV-WEST-SINGHBHUM-JAGANNATHPUR,Kolhan,366,West Singhbhum,Jagannathpur,Majhgaon,JH_AH_KOLHAN_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-WEST-SINGHBHUM-NOAMUNDI,block,Noamundi,JH-SUBDIV-WEST-SINGHBHUM-JAGANNATHPUR,Kolhan,366,West Singhbhum,Jagannathpur,Noamundi,JH_AH_KOLHAN_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-EAST-SINGHBHUM-BORAM,block,Boram,JH-SUBDIV-EAST-SINGHBHUM-JAMSHEDPUR,Kolhan,357,East Singhbhum,Jamshedpur,Boram,JH_AH_KOLHAN_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-EAST-SINGHBHUM-JAMSHEDPUR,block,Jamshedpur,JH-SUBDIV-EAST-SINGHBHUM-JAMSHEDPUR,Kolhan,357,East Singhbhum,Jamshedpur,Jamshedpur,JH_AH_KOLHAN_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-EAST-SINGHBHUM-PATAMDA,block,Patamda,JH-SUBDIV-EAST-SINGHBHUM-JAMSHEDPUR,Kolhan,357,East Singhbhum,Jamshedpur,Patamda,JH_AH_KOLHAN_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-EAST-SINGHBHUM-POTKA,block,Potka,JH-SUBDIV-EAST-SINGHBHUM-JAMSHEDPUR,Kolhan,357,East Singhbhum,Jamshedpur,Potka,JH_AH_KOLHAN_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-EAST-SINGHBHUM-BAHRAGORA,block,Bahragora,JH-SUBDIV-EAST-SINGHBHUM-GHATSHILA,Kolhan,357,East Singhbhum,Ghatshila,Bahragora,JH_AH_KOLHAN_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-EAST-SINGHBHUM-CHAKULIA,block,Chakulia,JH-SUBDIV-EAST-SINGHBHUM-GHATSHILA,Kolhan,357,East Singhbhum,Ghatshila,Chakulia,JH_AH_KOLHAN_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-EAST-SINGHBHUM-DHALBHUMGARH,block,Dhalbhumgarh,JH-SUBDIV-EAST-SINGHBHUM-GHATSHILA,Kolhan,357,East Singhbhum,Ghatshila,Dhalbhumgarh,JH_AH_KOLHAN_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-EAST-SINGHBHUM-DUMARIA,block,Dumaria,JH-SUBDIV-EAST-SINGHBHUM-GHATSHILA,Kolhan,357,East Singhbhum,Ghatshila,Dumaria,JH_AH_KOLHAN_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-EAST-SINGHBHUM-GHATSHILA,block,Ghatshila,JH-SUBDIV-EAST-SINGHBHUM-GHATSHILA,Kolhan,357,East Singhbhum,Ghatshila,Ghatshila,JH_AH_KOLHAN_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-EAST-SINGHBHUM-GURABANDHA,block,Gurabandha,JH-SUBDIV-EAST-SINGHBHUM-GHATSHILA,Kolhan,357,East Singhbhum,Ghatshila,Gurabandha,JH_AH_KOLHAN_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-EAST-SINGHBHUM-MUSABANI,block,Musabani,JH-SUBDIV-EAST-SINGHBHUM-GHATSHILA,Kolhan,357,East Singhbhum,Ghatshila,Musabani,JH_AH_KOLHAN_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-SARAIKELA-KHARSAWAN-GAMHARIA,block,Gamharia,JH-SUBDIV-SARAIKELA-KHARSAWAN-SARAIKELA,Kolhan,367,Saraikela-Kharsawan,Saraikela,Gamharia,JH_AH_KOLHAN_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-SARAIKELA-KHARSAWAN-KHARSAWAN,block,Kharsawan,JH-SUBDIV-SARAIKELA-KHARSAWAN-SARAIKELA,Kolhan,367,Saraikela-Kharsawan,Saraikela,Kharsawan,JH_AH_KOLHAN_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-SARAIKELA-KHARSAWAN-KUCHAI,block,Kuchai,JH-SUBDIV-SARAIKELA-KHARSAWAN-SARAIKELA,Kolhan,367,Saraikela-Kharsawan,Saraikela,Kuchai,JH_AH_KOLHAN_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-SARAIKELA-KHARSAWAN-RAJNAGAR,block,Rajnagar,JH-SUBDIV-SARAIKELA-KHARSAWAN-SARAIKELA,Kolhan,367,Saraikela-Kharsawan,Saraikela,Rajnagar,JH_AH_KOLHAN_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-SARAIKELA-KHARSAWAN-SARAIKELA,block,Saraikela,JH-SUBDIV-SARAIKELA-KHARSAWAN-SARAIKELA,Kolhan,367,Saraikela-Kharsawan,Saraikela,Saraikela,JH_AH_KOLHAN_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-SARAIKELA-KHARSAWAN-CHANDIL,block,Chandil,JH-SUBDIV-SARAIKELA-KHARSAWAN-CHANDIL,Kolhan,367,Saraikela-Kharsawan,Chandil,Chandil,JH_AH_KOLHAN_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-SARAIKELA-KHARSAWAN-ICHAGARH,block,Ichagarh,JH-SUBDIV-SARAIKELA-KHARSAWAN-CHANDIL,Kolhan,367,Saraikela-Kharsawan,Chandil,Ichagarh,JH_AH_KOLHAN_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-SARAIKELA-KHARSAWAN-KUKRU,block,Kukru,JH-SUBDIV-SARAIKELA-KHARSAWAN-CHANDIL,Kolhan,367,Saraikela-Kharsawan,Chandil,Kukru,JH_AH_KOLHAN_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
+JH-BLOCK-SARAIKELA-KHARSAWAN-NIMDIH,block,Nimdih,JH-SUBDIV-SARAIKELA-KHARSAWAN-CHANDIL,Kolhan,367,Saraikela-Kharsawan,Chandil,Nimdih,JH_AH_KOLHAN_ADMIN,official_name_no_lgd_code_ingested,verified_snapshot
