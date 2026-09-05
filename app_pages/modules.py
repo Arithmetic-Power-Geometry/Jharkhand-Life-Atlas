@@ -1,8 +1,8 @@
 import streamlit as st
 from pathlib import Path
-from jla.ui import hero, card, badges, section_note
+from jla.ui import hero, badges, section_note
 from jla.modules import discover_modules
-from jla.data import module_indicators
+from jla.data import module_indicators, core_research_tables, optional_core_table
 
 hero(
     "Browse modules",
@@ -46,6 +46,20 @@ else:
 
             deps = ", ".join(m.get("dependencies", [])) or "None"
             st.caption(f"Dependencies: {deps}")
+
+            if m.get("id") == "core_geography":
+                tables = core_research_tables()
+                st.markdown(f"**Published curated evidence tables:** {len(tables)}")
+                with st.expander("View Core Geography datasets", expanded=False):
+                    for filename in tables:
+                        table = optional_core_table(filename)
+                        try:
+                            rows = table.height if table is not None else 0
+                        except Exception:
+                            rows = len(table) if table is not None else 0
+                        st.markdown(f"`{filename}` — **{rows:,} rows**")
+                st.caption("Includes Census 2011 geography/demography, DCHB village amenities, MDDS 2001↔2011 evidence, current LGD layers and the conservative Census↔LGD temporal view.")
+                continue
 
             data = module_indicators(m.get("_path", ""))
             if data is not None:
