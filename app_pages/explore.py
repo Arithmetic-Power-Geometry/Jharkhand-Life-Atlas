@@ -137,8 +137,8 @@ try:
 
         demo = optional_core_table("village_demography_2011.csv")
         amenities = optional_core_table("village_amenities_2011.csv")
-        demo_match = _first_match(demo, ["place_code", "village_code", "census_2011_code"], code)
-        amen_match = _first_match(amenities, ["village_code", "place_code", "census_2011_code"], code)
+        demo_match = _first_match(demo, ["place_code", "village_code", "census_2011_code", "census_village_code_2011"], code)
+        amen_match = _first_match(amenities, ["census_village_code_2011", "village_code", "place_code", "census_2011_code"], code)
 
         if _height(demo_match):
             st.markdown("#### Census 2011 demographic baseline")
@@ -185,12 +185,12 @@ try:
                 st.info("No current LGD rows are linked to this Census district code in the current display layer.")
 
         code = _value(record, "village_code") or (_value(record, "place_id").split("-")[-1] if _value(record, "place_type") in {"village", "town"} else "")
-        cw_match = _first_match(crosswalk, ["census_2011_code", "census_code", "village_code_2011", "village_code"], code)
+        cw_match = _first_match(crosswalk, ["census_village_code_2011", "census_2011_code", "census_code", "village_code_2011", "village_code"], code)
         if _height(cw_match):
             st.markdown("#### Census 2011 ↔ current LGD linkage")
             st.dataframe(cw_match, width="stretch", hide_index=True)
 
-        mdds_match = _first_match(mdds, ["village_code_2011", "census_2011_code", "village_code", "location_code_2011"], code)
+        mdds_match = _first_match(mdds, ["census_village_code_2011", "village_code_2011", "census_2011_code", "village_code", "location_code_2011"], code)
         if _height(mdds_match):
             st.markdown("#### Census 2001 ↔ 2011 MDDS linkage")
             st.dataframe(mdds_match, width="stretch", hide_index=True)
