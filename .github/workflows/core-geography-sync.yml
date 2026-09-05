@@ -7,6 +7,7 @@ on:
       - 'modules/core_geography/sync_runner.py'
       - 'modules/core_geography/sync_fast_runner.py'
       - 'modules/core_geography/complete_module1.py'
+      - 'modules/core_geography/complete_module1_v2.py'
       - '.github/workflows/core-geography-sync.yml'
   workflow_dispatch:
 
@@ -29,7 +30,7 @@ jobs:
       - name: Sync authoritative Census and LGD data
         run: python modules/core_geography/sync_fast_runner.py
       - name: Complete DCHB, MDDS and temporal crosswalk layers
-        run: python modules/core_geography/complete_module1.py
+        run: python modules/core_geography/complete_module1_v2.py
       - name: Validate repository
         run: |
           pip install -r requirements.txt pytest
