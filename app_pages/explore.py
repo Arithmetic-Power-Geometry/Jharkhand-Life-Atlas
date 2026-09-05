@@ -63,13 +63,23 @@ def _hierarchy_value(record, field, target_level):
 
 try:
     levels = df.get_column("place_type").unique().sort().to_list()
+    default_level_index = levels.index("district") if "district" in levels else 0
+
     top1, top2 = st.columns([1, 2])
     with top1:
-        level = st.selectbox("Geographic level", levels, help="Verified levels available in the current published Core Geography release.")
+        level = st.selectbox(
+            "Geographic level",
+            levels,
+            index=default_level_index,
+            help="Verified levels available in the current published Core Geography release.",
+        )
+
     sub = df.filter(df["place_type"] == level)
     names = sub.get_column("name").sort().to_list()
+    default_name_index = names.index("Ranchi") if level == "district" and "Ranchi" in names else 0
+
     with top2:
-        name = st.selectbox("Place", names)
+        name = st.selectbox("Place", names, index=default_name_index)
 
     row = sub.filter(sub["name"] == name)
     record = row.to_dicts()[0]
