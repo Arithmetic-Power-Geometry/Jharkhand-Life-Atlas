@@ -1,14 +1,14 @@
 id: core_geography
 name: Core Geography & Census Baseline
-version: 1.1.0
-status: active
-description: "Stable place identity, Census baseline, administrative hierarchy and temporal source crosswalk foundation for every JLA module."
+version: 1.2.0
+status: complete
+description: "Stable place identity, Census baseline, administrative hierarchy, village amenities and temporal source-crosswalk foundation for every JLA module."
 geography:
   primary: place
   supports: [state, district, subdistrict, block, panchayat, village, town]
 temporal:
   type: versioned_reference
-  views: [census_2011, current_lgd]
+  views: [census_2001_2011, census_2011, current_lgd]
 dependencies: []
 features:
   map: true
@@ -17,8 +17,12 @@ features:
   comparison: true
   provenance: true
 coverage:
-  bundled: "24 Jharkhand districts (verified Census 2011 baseline)"
-  source_inventory: "authoritative Census 2011 + DCHB + OGD PCA + LGD + Jharkhand block references verified"
-  full_village_ingest: pending_official_raw_files
-  target: "authoritative state/district/subdistrict/block/panchayat/village/town crosswalk with Census 2011 demographic baseline and current LGD temporal view"
-  note: "No village/block/panchayat record is fabricated; full publication occurs only after official raw files are ingested, checksummed and validated."
+  bundled: "Jharkhand statewide authoritative Core Geography release"
+  census_2011: "1 state, 24 districts, 261 subdistricts, 32624 villages; 24 PCA district workbooks"
+  current_lgd: "24 districts, 264 subdistricts, 264 blocks, 4369 panchayats, 32962 villages"
+  dchb_village_amenities: "32394 verified Census-2011 village rows; exact Census-code membership validation"
+  mdds_2001_2011_crosswalk: "32584 verified 2011 village rows; 32583 carry explicit 2001 source codes"
+  census_lgd_temporal_crosswalk: "32624 Census-2011 villages retained as an explicit temporal view; no official village links asserted because the retrieved LGD response does not expose a Census-2011 code field"
+  source_inventory: "authoritative Census 2011 location directory, PCA, DCHB, Jharkhand MDDS and current LGD sources with provenance and governance metadata"
+  full_village_ingest: complete_authoritative_available_layers
+  note: "No village/block/panchayat record or temporal match is fabricated. Missing or unsupported Census-to-current-LGD links remain explicitly unmatched."
