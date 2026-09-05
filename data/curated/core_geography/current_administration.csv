@@ -1,0 +1,52 @@
+place_id,place_type,name,parent_place_id,state_code,state_name,division_name,district_code,district_name,subdivision_name,source_id,quality_class,record_status
+JH-STATE-20,state,Jharkhand,,20,Jharkhand,,,,,JH_STATE_PROFILE,A,verified_current
+JH-DIV-PALAMU,division,Palamu,JH-STATE-20,20,Jharkhand,Palamu,,,,JH_STATE_PROFILE,A,verified_current
+JH-DIV-NORTH-CHOTANAGPUR,division,North Chotanagpur,JH-STATE-20,20,Jharkhand,North Chotanagpur,,,,JH_STATE_PROFILE,A,verified_current
+JH-DIV-SOUTH-CHOTANAGPUR,division,South Chotanagpur,JH-STATE-20,20,Jharkhand,South Chotanagpur,,,,JH_STATE_PROFILE,A,verified_current
+JH-DIV-KOLHAN,division,Kolhan,JH-STATE-20,20,Jharkhand,Kolhan,,,,JH_STATE_PROFILE,A,verified_current
+JH-DIV-SANTHAL-PARGANA,division,Santhal Pargana,JH-STATE-20,20,Jharkhand,Santhal Pargana,,,,JH_STATE_PROFILE,A,verified_current
+JH-SUBDIV-350-DEOGHAR,subdivision,Deoghar,JH-DIST-350,20,Jharkhand,Santhal Pargana,350,Deoghar,Deoghar,JH_STATE_PROFILE,A,verified_current
+JH-SUBDIV-350-MADHUPUR,subdivision,Madhupur,JH-DIST-350,20,Jharkhand,Santhal Pargana,350,Deoghar,Madhupur,JH_STATE_PROFILE,A,verified_current
+JH-SUBDIV-354-DUMKA,subdivision,Dumka,JH-DIST-354,20,Jharkhand,Santhal Pargana,354,Dumka,Dumka,JH_STATE_PROFILE,A,verified_current
+JH-SUBDIV-355-BERMO,subdivision,Bermo,JH-DIST-355,20,Jharkhand,North Chotanagpur,355,Bokaro,Bermo,JH_STATE_PROFILE,A,verified_current
+JH-SUBDIV-355-CHAS,subdivision,Chas,JH-DIST-355,20,Jharkhand,North Chotanagpur,355,Bokaro,Chas,JH_STATE_PROFILE,A,verified_current
+JH-SUBDIV-349-GIRIDIH,subdivision,Giridih,JH-DIST-349,20,Jharkhand,North Chotanagpur,349,Giridih,Giridih,JH_STATE_PROFILE,A,verified_current
+JH-SUBDIV-349-DUMRI,subdivision,Dumri,JH-DIST-349,20,Jharkhand,North Chotanagpur,349,Giridih,Dumri,JH_STATE_PROFILE,A,verified_current
+JH-SUBDIV-349-KHORIMAHUA,subdivision,Khorimahua,JH-DIST-349,20,Jharkhand,North Chotanagpur,349,Giridih,Khorimahua,JH_STATE_PROFILE,A,verified_current
+JH-SUBDIV-349-SARIA,subdivision,Saria,JH-DIST-349,20,Jharkhand,North Chotanagpur,349,Giridih,Saria,JH_STATE_PROFILE,A,verified_current
+JH-SUBDIV-348-KODERMA,subdivision,Koderma,JH-DIST-348,20,Jharkhand,North Chotanagpur,348,Kodarma,Koderma,JH_STATE_PROFILE,A,verified_current
+JH-SUBDIV-351-GODDA,subdivision,Godda,JH-DIST-351,20,Jharkhand,Santhal Pargana,351,Godda,Godda,JH_STATE_PROFILE,A,verified_current
+JH-SUBDIV-351-MAHGAMA,subdivision,Mahgama,JH-DIST-351,20,Jharkhand,Santhal Pargana,351,Godda,Mahgama,JH_STATE_PROFILE,A,verified_current
+JH-SUBDIV-347-CHATRA,subdivision,Chatra,JH-DIST-347,20,Jharkhand,North Chotanagpur,347,Chatra,Chatra,JH_STATE_PROFILE,A,verified_current
+JH-SUBDIV-347-SIMARIYA,subdivision,Simariya,JH-DIST-347,20,Jharkhand,North Chotanagpur,347,Chatra,Simariya,JH_STATE_PROFILE,A,verified_current
+JH-SUBDIV-356-DHANBAD,subdivision,Dhanbad,JH-DIST-356,20,Jharkhand,North Chotanagpur,356,Dhanbad,Dhanbad,JH_STATE_PROFILE,A,verified_current
+JH-SUBDIV-346-GARHWA,subdivision,Garhwa,JH-DIST-346,20,Jharkhand,Palamu,346,Garhwa,Garhwa,JH_STATE_PROFILE,A,verified_current
+JH-SUBDIV-346-NAGARUNTARI,subdivision,Nagaruntari,JH-DIST-346,20,Jharkhand,Palamu,346,Garhwa,Nagaruntari,JH_STATE_PROFILE,A,verified_current
+JH-SUBDIV-346-RANKA,subdivision,Ranka,JH-DIST-346,20,Jharkhand,Palamu,346,Garhwa,Ranka,JH_STATE_PROFILE,A,verified_current
+JH-SUBDIV-357-DHALBHUMGARH,subdivision,Dhalbhumgarh,JH-DIST-357,20,Jharkhand,Kolhan,357,Purbi Singhbhum,Dhalbhumgarh,JH_STATE_PROFILE,A,verified_current
+JH-SUBDIV-357-GHATSHILA,subdivision,Ghatshila,JH-DIST-357,20,Jharkhand,Kolhan,357,Purbi Singhbhum,Ghatshila,JH_STATE_PROFILE,A,verified_current
+JH-SUBDIV-368-JAMTARA,subdivision,Jamtara,JH-DIST-368,20,Jharkhand,Santhal Pargana,368,Jamtara,Jamtara,JH_STATE_PROFILE,A,verified_current
+JH-SUBDIV-367-SARAIKELA,subdivision,Saraikela,JH-DIST-367,20,Jharkhand,Kolhan,367,Saraikela-Kharsawan,Saraikela,JH_STATE_PROFILE,A,verified_current
+JH-SUBDIV-367-CHANDIL,subdivision,Chandil,JH-DIST-367,20,Jharkhand,Kolhan,367,Saraikela-Kharsawan,Chandil,JH_STATE_PROFILE,A,verified_current
+JH-SUBDIV-362-RANCHI,subdivision,Ranchi,JH-DIST-362,20,Jharkhand,South Chotanagpur,362,Ranchi,Ranchi,JH_STATE_PROFILE,A,verified_current
+JH-SUBDIV-362-BUNDU,subdivision,Bundu,JH-DIST-362,20,Jharkhand,South Chotanagpur,362,Ranchi,Bundu,JH_STATE_PROFILE,A,verified_current
+JH-SUBDIV-353-PAKUR,subdivision,Pakur,JH-DIST-353,20,Jharkhand,Santhal Pargana,353,Pakur,Pakur,JH_STATE_PROFILE,A,verified_current
+JH-SUBDIV-359-LATEHAR,subdivision,Latehar,JH-DIST-359,20,Jharkhand,Palamu,359,Latehar,Latehar,JH_STATE_PROFILE,A,verified_current
+JH-SUBDIV-359-MAHUADAND,subdivision,Mahuadand,JH-DIST-359,20,Jharkhand,Palamu,359,Latehar,Mahuadand,JH_STATE_PROFILE,A,verified_current
+JH-SUBDIV-360-HAZARIBAGH,subdivision,Hazaribagh,JH-DIST-360,20,Jharkhand,North Chotanagpur,360,Hazaribagh,Hazaribagh,JH_STATE_PROFILE,A,verified_current
+JH-SUBDIV-360-BARHI,subdivision,Barhi,JH-DIST-360,20,Jharkhand,North Chotanagpur,360,Hazaribagh,Barhi,JH_STATE_PROFILE,A,verified_current
+JH-SUBDIV-369-LOHARDAGA,subdivision,Lohardaga,JH-DIST-369,20,Jharkhand,South Chotanagpur,369,Lohardaga,Lohardaga,JH_STATE_PROFILE,A,verified_current
+JH-SUBDIV-358-MEDININAGAR,subdivision,Medininagar,JH-DIST-358,20,Jharkhand,Palamu,358,Palamu,Medininagar,JH_STATE_PROFILE,A,verified_current
+JH-SUBDIV-358-CHHATARPUR,subdivision,Chhatarpur,JH-DIST-358,20,Jharkhand,Palamu,358,Palamu,Chhatarpur,JH_STATE_PROFILE,A,verified_current
+JH-SUBDIV-358-HUSAINABAD,subdivision,Husainabad,JH-DIST-358,20,Jharkhand,Palamu,358,Palamu,Husainabad,JH_STATE_PROFILE,A,verified_current
+JH-SUBDIV-361-RAMGARH,subdivision,Ramgarh,JH-DIST-361,20,Jharkhand,North Chotanagpur,361,Ramgarh,Ramgarh,JH_STATE_PROFILE,A,verified_current
+JH-SUBDIV-365-SIMDEGA,subdivision,Simdega,JH-DIST-365,20,Jharkhand,South Chotanagpur,365,Simdega,Simdega,JH_STATE_PROFILE,A,verified_current
+JH-SUBDIV-366-CHAIBASA,subdivision,Chaibasa,JH-DIST-366,20,Jharkhand,Kolhan,366,Pashchimi Singhbhum,Chaibasa,JH_STATE_PROFILE,A,verified_current
+JH-SUBDIV-366-PODAHAAT,subdivision,Podahaat,JH-DIST-366,20,Jharkhand,Kolhan,366,Pashchimi Singhbhum,Podahaat,JH_STATE_PROFILE,A,verified_current
+JH-SUBDIV-366-JAGANNATHPUR,subdivision,Jagannathpur,JH-DIST-366,20,Jharkhand,Kolhan,366,Pashchimi Singhbhum,Jagannathpur,JH_STATE_PROFILE,A,verified_current
+JH-SUBDIV-352-SAHIBGANJ,subdivision,Sahibganj,JH-DIST-352,20,Jharkhand,Santhal Pargana,352,Sahibganj,Sahibganj,JH_STATE_PROFILE,A,verified_current
+JH-SUBDIV-352-RAJMAHAL,subdivision,Rajmahal,JH-DIST-352,20,Jharkhand,Santhal Pargana,352,Sahibganj,Rajmahal,JH_STATE_PROFILE,A,verified_current
+JH-SUBDIV-364-GUMLA,subdivision,Gumla,JH-DIST-364,20,Jharkhand,South Chotanagpur,364,Gumla,Gumla,JH_STATE_PROFILE,A,verified_current
+JH-SUBDIV-364-CHAINPUR,subdivision,Chainpur,JH-DIST-364,20,Jharkhand,South Chotanagpur,364,Gumla,Chainpur,JH_STATE_PROFILE,A,verified_current
+JH-SUBDIV-364-BASIA,subdivision,Basia,JH-DIST-364,20,Jharkhand,South Chotanagpur,364,Gumla,Basia,JH_STATE_PROFILE,A,verified_current
+JH-SUBDIV-363-KHUNTI,subdivision,Khunti,JH-DIST-363,20,Jharkhand,South Chotanagpur,363,Khunti,Khunti,JH_STATE_PROFILE,A,verified_current
