@@ -31,7 +31,7 @@ criteria:
     evidence: "Validation logic/tests exist, but production outputs do not yet exist."
   tests:
     satisfied: true
-    evidence: "Dedicated health foundation, facility-ingest and HMIS-ingest tests are present."
+    evidence: "Dedicated health tests are present and the health-access-validation workflow executes every tests/test_health_access_*.py file."
   streamlit_presentation:
     satisfied: false
     evidence: "No production Module 2 health dataset is yet available for presentation."
@@ -43,5 +43,5 @@ criteria:
     evidence: "Module README, source registry, schema and acquisition ledger are present."
   green_ci_on_main:
     satisfied: true
-    evidence: "Latest verified main tests workflow for a95885206c4645d69ed5f8ea65886c8712edcd85 completed successfully on 2026-09-06; this criterion must be re-verified at final completion."
+    evidence: "Dedicated health-access-validation run 34029825695 for main commit 373aa3fc31207bacab6030c173aea93559dc5b12 completed successfully on 2026-09-06 after running the wildcard Module 2 test suite; this criterion must be re-verified at final completion."
 completion_rule: "status may become complete only when every criterion is satisfied and final CI is green on main."
