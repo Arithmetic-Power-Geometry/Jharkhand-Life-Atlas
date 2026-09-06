@@ -1,0 +1,47 @@
+module: water_access
+protocol_version: 1
+status: open
+criteria:
+  authoritative_acquisition:
+    satisfied: false
+    evidence: "Official JJM/OGD source discovery is verified, but no selected Jharkhand production payload has yet been acquired and hash/schema verified."
+  rights_licence_review:
+    satisfied: false
+    evidence: "NDSAP/GODL-India applicability is identified for OGD resources, but exact resource-level licence/attribution metadata and any JJM portal export terms must be verified before reuse."
+  smallest_authoritative_reusable_granularity:
+    satisfied: false
+    evidence: "Village/habitation-level evidence is described by official sources, but the smallest lawful reusable production payload has not yet been acquired."
+  cleaning_engineering:
+    satisfied: false
+    evidence: "No production water payload has yet been ingested; cleaning rules must preserve nulls and source semantics."
+  geographic_linkage:
+    satisfied: false
+    evidence: "Current JJM geography must be linked through evidence-backed identifiers/crosswalks to the shared geographic backbone; historical and current geography cannot be silently merged."
+  provenance:
+    satisfied: false
+    evidence: "Source registry exists, but production retrieval URL/API parameters, retrieval timestamp, payload hash and transformation lineage are pending."
+  schema:
+    satisfied: false
+    evidence: "Module contract exists, but a production schema grounded in acquired source fields has not yet been finalized."
+  indicators:
+    satisfied: false
+    evidence: "No Module 3 indicator may be published until source acquisition, geography and denominator semantics are verified."
+  validation:
+    satisfied: false
+    evidence: "Production validation cannot pass before authoritative payload ingestion and linkage."
+  tests:
+    satisfied: false
+    evidence: "Module-specific publication-gate tests are being established; ingestion and indicator tests remain pending."
+  streamlit_presentation:
+    satisfied: false
+    evidence: "Streamlit may show IN DEVELOPMENT metadata only; no unfinished water evidence may be presented as a published dataset."
+  downloadable_data_reports:
+    satisfied: false
+    evidence: "No Module 3 research-ready download/report exists yet."
+  documentation:
+    satisfied: false
+    evidence: "Source inventory and module contract exist; schema, methods, provenance and usage documentation remain incomplete."
+  green_ci_on_main:
+    satisfied: false
+    evidence: "Final module completion requires a verified green CI run on the exact main commit that satisfies every publication criterion."
+completion_rule: "status may become complete only when every criterion is satisfied and final CI is green on main."
