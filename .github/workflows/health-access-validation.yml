@@ -1,0 +1,38 @@
+name: health-access-validation
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'modules/health_access/**'
+      - 'tests/test_health_access_*.py'
+      - 'data/curated/health_access/**'
+      - 'app_pages/**'
+      - 'scripts/**'
+      - '.github/workflows/health-access-validation.yml'
+  pull_request:
+    paths:
+      - 'modules/health_access/**'
+      - 'tests/test_health_access_*.py'
+      - 'data/curated/health_access/**'
+      - 'app_pages/**'
+      - 'scripts/**'
+      - '.github/workflows/health-access-validation.yml'
+  workflow_dispatch:
+
+jobs:
+  validate-health-access:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - name: Install dependencies
+        run: pip install -r requirements.txt pytest
+      - name: Compile Module 2 code
+        run: python -m compileall -q modules/health_access app_pages scripts
+      - name: Run Module 2 tests
+        run: pytest -q tests/test_health_access_foundation.py tests/test_health_access_hmis_ingest.py tests/test_health_access_facility_ingest.py
+      - name: Run repository validation
+        run: python scripts/check.py
