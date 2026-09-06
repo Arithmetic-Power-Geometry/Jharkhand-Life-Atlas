@@ -18,18 +18,30 @@ try:
 except Exception:
     n_places, n_sources, n_vars = len(p), len(s), len(v)
 
+ready = [m for m in mods if m.get("status") == "complete"]
+in_development = [m for m in mods if m.get("status") != "complete"]
+
 badges(["Open data", "Evidence-preserving", "Village-ready", "Modular", "Research-friendly"])
 
 st.markdown("### At a glance")
 c1, c2, c3, c4 = st.columns(4)
 c1.metric("Verified places", n_places, help="Records bundled and validated in the current release")
-c2.metric("Active modules", len(mods))
-c3.metric("Data variables", n_vars)
+c2.metric("Research-ready modules", len(ready), help="Modules that passed the full JLA publication gate")
+c3.metric("In development", len(in_development), help="Visible engineering work that is not yet presented as completed evidence")
 c4.metric("Registered sources", n_sources)
 
 section_note(
-    "JLA publishes only evidence that has passed its source and validation rules. Data coverage grows module by module as authoritative material is verified and ingested. Missing information remains missing and is never invented."
+    "JLA publishes only evidence that has passed its source and validation rules. Module progress is visible to readers: completed work, active development and remaining publication gates are shown separately. Missing information remains missing and is never invented."
 )
+
+if ready:
+    st.markdown("### Research-ready now")
+    for m in ready:
+        st.success(f"{m.get('name')} · v{m.get('version', '—')} · publication gate passed", icon="✅")
+if in_development:
+    st.markdown("### Currently being built")
+    for m in in_development:
+        st.info(f"{m.get('name')} · v{m.get('version', '—')} · in development — open Modules for verified work completed and remaining gates.", icon="🔄")
 
 st.markdown("### Quick access")
 a, b, c, d = st.columns(4)
@@ -37,7 +49,7 @@ with a:
     card("Explore places", "Browse the geographic backbone and inspect the evidence attached to each place.", "📍")
     st.page_link("app_pages/explore.py", label="Open explorer", icon="🔎", use_container_width=True)
 with b:
-    card("Browse modules", "See what each module contains, its status, geography and published observations.", "🧩")
+    card("Browse modules", "See research-ready work, active development, evidence rules and remaining completion gates.", "🧩")
     st.page_link("app_pages/modules.py", label="Open modules", icon="🗂️", use_container_width=True)
 with c:
     card("Download data", "Create a transparent research extract with sources, dictionary and licence notes.", "⬇️")
