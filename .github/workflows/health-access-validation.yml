@@ -5,7 +5,7 @@ on:
     branches: [main]
     paths:
       - 'modules/health_access/**'
-      - 'tests/test_health_access_*.py'
+      - 'tests/test_health*.py'
       - 'data/curated/health_access/**'
       - 'app_pages/**'
       - 'scripts/**'
@@ -13,7 +13,7 @@ on:
   pull_request:
     paths:
       - 'modules/health_access/**'
-      - 'tests/test_health_access_*.py'
+      - 'tests/test_health*.py'
       - 'data/curated/health_access/**'
       - 'app_pages/**'
       - 'scripts/**'
@@ -33,6 +33,6 @@ jobs:
       - name: Compile Module 2 code
         run: python -m compileall -q modules/health_access app_pages scripts
       - name: Run every Module 2 test
-        run: pytest -q tests/test_health_access_*.py
+        run: pytest -q tests/test_health*.py
       - name: Run repository validation
         run: python scripts/check.py
