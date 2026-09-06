@@ -43,7 +43,8 @@ sources:
     attribution_required: true
     catalog_published_on: 2015-08-13
     catalog_updated_on: 2018-01-12
-    notes: "Catalog-level metadata is historical. Prefer the newest verified dated resource for acquisition; do not represent the catalog date as facility currency."
+    catalog_api_id: e48a8bcf-ff56-4f39-839d-095827ba2a18
+    notes: "Catalog-level metadata is historical. The official Catalog API control resolves to identifier e48a8bcf-ff56-4f39-839d-095827ba2a18; this is a catalog identifier, not evidence that a resource payload has been acquired. Prefer the newest verified dated resource for acquisition; do not represent the catalog date as facility currency."
 
   - source_id: OGD_NIN_HEALTH_FACILITIES_GEO_2026
     title: NIN Health Facilities with Geo Code and additional parameters (updated till last month)
