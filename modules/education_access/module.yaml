@@ -1,0 +1,39 @@
+id: education_access
+name: Education & School Access
+version: 0.1.0
+status: active
+description: "Authoritative, place-linked evidence on schools, enrolment context, infrastructure and educational access in Jharkhand. Architecture and source review are active; no Module 5 thematic evidence is yet published."
+geography:
+  primary: place
+  supports: [state, district, block, village, school]
+temporal:
+  type: multi_source_academic_year
+  views: [dated_udise_school_evidence, dated_udise_aggregate_evidence, census_2011_education_context]
+dependencies: [core_geography]
+features:
+  map: true
+  download: true
+  report: true
+  comparison: true
+  provenance: true
+principles:
+  - no_source_no_published_value
+  - missing_is_not_zero
+  - observed_derived_modelled_separated
+  - no_student_person_level_or_contact_identifiers
+  - historical_and_current_geographies_not_silently_merged
+  - smallest_authoritative_reusable_granularity
+scope:
+  school_directory: official_source_discovery_verified_access_and_reuse_review_pending
+  school_infrastructure: authoritative_source_discovery_verified_payload_acquisition_pending
+  enrolment_aggregates: authoritative_source_discovery_verified_payload_acquisition_pending
+  teacher_aggregates: authoritative_source_discovery_active
+  access_indicators: pending_verified_school_locations_geography_and_method
+  census_2011_education_context: dependency_available_from_core_geography_subject_to_module_validation
+engineering:
+  geographic_backbone: core_geography
+  fuzzy_linking: prohibited
+  missing_numeric_policy: preserve_null_never_zero
+  sensitive_data_policy: "Exclude student lists, PEN numbers, mobile numbers, staff personal records and other person-level identifiers even if an authenticated API can expose them."
+  publication_policy: fail_closed_until_source_payload_rights_geography_and_validation_verified
+completion_gate: "Do not mark complete until acquisition, rights review, provenance, geographic linking, schema, indicators, validation, tests, Streamlit, downloads/reports, documentation and CI are verified on main."
