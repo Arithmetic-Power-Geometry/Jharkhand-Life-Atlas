@@ -29,7 +29,14 @@ def read_csv(path: Path):
     if pl is None:
         with path.open(encoding="utf-8", newline="") as f:
             return list(csv.DictReader(f))
-    return pl.read_csv(path, infer_schema_length=10000, null_values=["", "NA", "N/A", "null"])
+    nulls = ["", "NA", "N/A", "null"]
+    try:
+        return pl.read_csv(path, infer_schema_length=10000, null_values=nulls)
+    except pl.exceptions.ComputeError:
+        # Evidence tables can legitimately contain mixed code/value columns beyond
+        # the inference window. Retrying as strings preserves source values and
+        # missingness rather than coercing, dropping, or inventing observations.
+        return pl.read_csv(path, infer_schema=False, null_values=nulls)
 
 def places():
     return read_csv(CORE_DIR / "places.csv")
