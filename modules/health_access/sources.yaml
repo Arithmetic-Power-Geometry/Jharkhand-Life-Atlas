@@ -15,13 +15,19 @@ sources:
     url: https://www.data.gov.in/catalog/all-india-health-centres-directory
     role: official_health_facility_directory
     reference_year: historical_directory
+    catalog_published_on: 2017-09-21
+    catalog_updated_on: 2019-08-20
+    catalog_packaging: zip_download_and_catalog_api
+    advertised_granularity: facility
+    advertised_facility_types: [primary_health_centre, sub_centre, community_health_centre, district_hospital, state_hospital]
+    advertised_fields: [state_name, district_name, sub_district_name, location, facility_address, geolocation]
     publication_class: OPEN_WITH_ATTRIBUTION
     license: Government Open Data License - India
     license_url: https://www.data.gov.in/sites/default/files/Gazette_Notification_OGDL.pdf
-    license_review_status: reviewed_ogdl_platform
+    license_review_status: reviewed_catalog_ndsap_and_ogdl_platform
     license_checked_on: 2026-09-06
     attribution_required: true
-    notes: "Published OGD resources are licensed under GODL-India. Preserve resource update date and source URL/DOI/URI. Verify the exact resource currency before ingest; do not present an old directory as current."
+    notes: "Official catalog advertises facility-level PHC, sub-centre, CHC, district-hospital and state-hospital records with geolocation, state/district/subdistrict/location/address fields. The catalog exposes a ZIP download and Catalog API and was updated 2019-08-20. Treat as historical: acquire and hash the exact official package before publication and preserve its resource date; never label it current."
 
   - source_id: OGD_HOSPITAL_DIRECTORY_NHP
     title: Hospital Directory — National Health Portal
