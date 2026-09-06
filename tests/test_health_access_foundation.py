@@ -71,7 +71,7 @@ def test_health_source_coverage_is_fail_closed_and_auditable():
         "CENSUS_DCHB_JH_2011_HEALTH",
         "OGD_HEALTH_CENTRES_DIRECTORY",
         "OGD_NIN_HEALTH_FACILITIES_GEO_2026",
-        "OGD_NHP_HOSPITAL_GEO_2025",
+        "OGD_NHP_HOSPITAL_GEO_2026",
         "OGD_HMIS_JH_DISTRICT",
         "ABDM_HFR",
     }
@@ -83,7 +83,8 @@ def test_health_source_coverage_is_fail_closed_and_auditable():
     assert by_id["OGD_NIN_HEALTH_FACILITIES_GEO_2026"]["raw_file_ingested"] == "no"
     assert by_id["OGD_NIN_HEALTH_FACILITIES_GEO_2026"]["curated_output_published"] == "no"
     assert by_id["OGD_NIN_HEALTH_FACILITIES_GEO_2026"]["publication_status"] == "pending_exact_api_or_csv_acquisition"
-    assert by_id["OGD_NHP_HOSPITAL_GEO_2025"]["raw_file_ingested"] == "no"
-    assert by_id["OGD_NHP_HOSPITAL_GEO_2025"]["curated_output_published"] == "no"
+    assert by_id["OGD_NHP_HOSPITAL_GEO_2026"]["raw_file_ingested"] == "no"
+    assert by_id["OGD_NHP_HOSPITAL_GEO_2026"]["curated_output_published"] == "no"
+    assert by_id["OGD_NHP_HOSPITAL_GEO_2026"]["publication_status"] == "pending_exact_api_or_csv_acquisition"
     assert by_id["OGD_HMIS_JH_DISTRICT"]["raw_file_ingested"] == "no"
     assert by_id["ABDM_HFR"]["publication_status"] == "blocked_rights_and_export"
