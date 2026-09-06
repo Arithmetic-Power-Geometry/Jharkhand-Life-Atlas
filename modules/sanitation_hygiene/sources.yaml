@@ -1,0 +1,48 @@
+sources:
+  - id: SBMG_OFFICIAL_DASHBOARD
+    title: Swachh Bharat Mission (Grameen) 2.0 official dashboard and village progress reports
+    publisher: Department of Drinking Water and Sanitation, Ministry of Jal Shakti, Government of India
+    authority: primary_official
+    url: https://sbm.gov.in/SBMGDashboard/
+    scope: ODF Plus status, solid waste management, liquid waste management and community sanitation assets
+    smallest_reusable_granularity: village_where_official_report_or_reusable_payload_is_available
+    rights_status: exact_report_or_payload_terms_must_be_reviewed_before_republication
+    acquisition_status: discovery_verified_payload_not_acquired
+    publishable: false
+    notes: "The official dashboard exposes village-progress reporting and multiple ODF Plus/community-asset indicators. Dashboard visibility is not acquisition; exact reusable payload, rights, extraction method and geography vintage must be verified before publication."
+
+  - id: SBMG_IMIS_REPORTS
+    title: Swachh Bharat Mission (Grameen) Phase II IMIS reports
+    publisher: Department of Drinking Water and Sanitation, Ministry of Jal Shakti, Government of India
+    authority: primary_official
+    url: https://sbm.gov.in/SBMPhase2_apr2026/Secure/Entry/UserMenu.aspx
+    scope: ODF Plus declarations and verification, solid/liquid waste management, community and household sanitation assets, faecal sludge management and plastic waste management reporting
+    smallest_reusable_granularity: village_or_gram_panchayat_subject_to_exact_report_export
+    rights_status: review_required_for_each_export_or_report
+    acquisition_status: report_inventory_verified_payload_not_acquired
+    publishable: false
+    notes: "Official report inventory verified. Do not scrape or publish household-level records or identifiers; prefer village/GP aggregates and only where rights and reproducibility are clear."
+
+  - id: OGD_SBMG_RURAL_SANITATION_COVERAGE
+    title: Daily data on Rural Sanitation Coverage under Swachh Bharat Mission
+    publisher: Ministry of Jal Shakti, Department of Drinking Water and Sanitation
+    authority: primary_official_open_data_catalog
+    url: https://www.data.gov.in/catalog/daily-data-rural-sanitation-coverage-under-swachh-bharat-mission
+    described_levels: [state, district, block, gram_panchayat]
+    released_under: National Data Sharing and Accessibility Policy (NDSAP)
+    catalog_updated: 2026-05-28
+    rights_status: Government Open Data License - India applies to published OGD resources; exact resource metadata and attribution must be preserved
+    acquisition_status: catalog_verified_exact_resource_payload_pending
+    publishable: false
+    notes: "The catalog reports target/achievement, household sanitation and toilet coverage resources. Catalog metadata alone is not evidence acquisition; select and hash exact Jharkhand resource payloads before use."
+
+  - id: OGD_RS_ODF_PLUS_2025_STATE
+    title: State/UT-wise Number of ODF Plus Villages as per SBM-G IMIS as on 07-02-2025
+    publisher: Rajya Sabha; source reported as SBM-G IMIS
+    authority: official_secondary_parliamentary_snapshot
+    url: https://www.data.gov.in/resource/stateut-wise-number-open-defecation-free-odf-plus-villages-integrated-management
+    granularity: state
+    snapshot_date: 2025-02-07
+    acquisition_status: metadata_verified_not_selected_as_primary_smallest_granularity
+    publishable: false
+    notes: "Potential independent state-level cross-check only. It must not replace finer official SBM-G village/GP evidence when lawfully reusable evidence is available."
