@@ -66,6 +66,7 @@ def curate_facility_directory(
     *,
     source_id: str,
     reference_period: str,
+    source_geography_vintage: str,
     state_column: str,
     district_column: str,
     record_id_column: str,
@@ -79,6 +80,13 @@ def curate_facility_directory(
 ) -> dict[str, int]:
     if not reference_period.strip():
         raise ValueError("An explicit facility-directory reference period is required")
+
+    geography_vintage = source_geography_vintage.strip().casefold()
+    if geography_vintage != "census2011_compatible":
+        raise ValueError(
+            "Facility source geography is not explicitly Census-2011 compatible; an evidence-backed temporal crosswalk "
+            "is required before linking current or differently-vintaged district geography to the Census-2011 backbone"
+        )
 
     frame = pl.read_csv(input_csv, infer_schema_length=10000, ignore_errors=False)
     required = {state_column, district_column, record_id_column, name_column, type_column, ownership_column}
@@ -135,6 +143,7 @@ def curate_facility_directory(
                 "systems_of_medicine": _clean_text(row[systems_column]) if systems_column else None,
                 "source_id": source_id,
                 "reference_period": reference_period,
+                "source_geography_vintage": source_geography_vintage.strip(),
                 "observation_type": "observed_source_facility_record",
                 "quality_class": "authoritative_source_exact_census2011_district_name_link",
                 "geographic_link_method": "unique_exact_normalized_name_to_census2011_district",
@@ -171,6 +180,11 @@ def main() -> None:
     parser.add_argument("--output", type=Path, default=Path("data/curated/health_access/health_facilities.csv"))
     parser.add_argument("--source-id", required=True)
     parser.add_argument("--reference-period", required=True)
+    parser.add_argument(
+        "--source-geography-vintage",
+        required=True,
+        help="Must be census2011_compatible for direct linking; other vintages require an evidence-backed crosswalk before ingestion.",
+    )
     parser.add_argument("--state-column", required=True)
     parser.add_argument("--district-column", required=True)
     parser.add_argument("--record-id-column", required=True)
@@ -189,6 +203,7 @@ def main() -> None:
         args.output,
         source_id=args.source_id,
         reference_period=args.reference_period,
+        source_geography_vintage=args.source_geography_vintage,
         state_column=args.state_column,
         district_column=args.district_column,
         record_id_column=args.record_id_column,
