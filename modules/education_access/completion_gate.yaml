@@ -1,0 +1,47 @@
+module: education_access
+protocol_version: 1
+status: open
+criteria:
+  authoritative_acquisition:
+    satisfied: false
+    evidence: "Official UDISE+/Ministry of Education and OGD source discovery is verified, but no selected Jharkhand production payload has yet been acquired and hash/schema verified."
+  rights_licence_review:
+    satisfied: false
+    evidence: "NDSAP/GODL-India applicability is identified for OGD resources, but exact resource-level licence, attribution and API/export terms must be reviewed before reuse."
+  smallest_authoritative_reusable_granularity:
+    satisfied: false
+    evidence: "School-level evidence is described by official systems, but the smallest lawful reusable production payload has not yet been acquired and sensitive student/staff interfaces are excluded."
+  cleaning_engineering:
+    satisfied: false
+    evidence: "No production education payload has yet been ingested; cleaning rules must preserve nulls, academic-year semantics and source-reported values."
+  geographic_linkage:
+    satisfied: false
+    evidence: "Current UDISE+ geography must be linked through authoritative identifiers or evidence-backed crosswalks; Census 2011 and current administrative geography cannot be silently merged."
+  provenance:
+    satisfied: false
+    evidence: "Source inventory exists, but production retrieval URL/API parameters, academic year, retrieval timestamp, payload hash and transformation lineage are pending."
+  schema:
+    satisfied: false
+    evidence: "Module contract exists, but a production schema grounded in acquired source fields has not yet been finalized."
+  indicators:
+    satisfied: false
+    evidence: "School-access, infrastructure, enrolment or teacher indicators may not be published until acquisition, geography, denominator and academic-year semantics are verified."
+  validation:
+    satisfied: false
+    evidence: "Production validation cannot pass before authoritative payload ingestion, privacy screening and geographic linkage."
+  tests:
+    satisfied: false
+    evidence: "Governance tests exist; ingestion, privacy, geographic-linkage and indicator validation tests remain pending."
+  streamlit_presentation:
+    satisfied: false
+    evidence: "Streamlit may show IN DEVELOPMENT metadata only; unfinished education evidence must not be presented as published data."
+  downloadable_data_reports:
+    satisfied: false
+    evidence: "No Module 5 research-ready download or reproducible report exists yet."
+  documentation:
+    satisfied: false
+    evidence: "Source inventory and module contract exist; schema, methods, provenance, validation, privacy and usage documentation remain incomplete."
+  green_ci_on_main:
+    satisfied: false
+    evidence: "Final module completion requires a verified green CI run on the exact main commit satisfying every publication criterion."
+completion_rule: "status may become complete only when every criterion is satisfied and final CI is green on main."
