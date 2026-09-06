@@ -27,15 +27,34 @@ sources:
     title: Hospital Directory — National Health Portal
     publisher: Ministry of Health and Family Welfare / NIHFW
     url: https://www.data.gov.in/catalog/hospital-directory-national-health-portal
-    role: hospital_directory
-    reference_year: historical_directory
+    role: hospital_directory_catalog
+    reference_year: historical_catalog
     publication_class: OPEN_WITH_ATTRIBUTION
     license: Government Open Data License - India
     license_url: https://www.data.gov.in/sites/default/files/Gazette_Notification_OGDL.pdf
     license_review_status: reviewed_ogdl_platform
     license_checked_on: 2026-09-06
     attribution_required: true
-    notes: "Published OGD resources are licensed under GODL-India. Preserve resource update date and source URL/DOI/URI; do not treat a historical directory as a current registry."
+    catalog_published_on: 2015-08-13
+    catalog_updated_on: 2018-01-12
+    notes: "Catalog-level metadata is historical; use a dated resource record for acquisition rather than representing this catalog date as facility currency."
+
+  - source_id: OGD_NHP_HOSPITAL_GEO_2025
+    title: National Hospital Directory with Geo Code and additional parameters
+    publisher: National Institute of Health and Family Welfare / Ministry of Health and Family Welfare, Government of India
+    url: https://www.data.gov.in/resource/national-hospital-directory-geo-code-and-additional-parameters-updated-till-last-month
+    role: official_hospital_directory_geocoded
+    reference_year: 2025
+    resource_published_on: 2017-08-10
+    resource_updated_on: 2025-06-02
+    granularity: facility
+    publication_class: OPEN_WITH_ATTRIBUTION
+    license: Government Open Data License - India
+    license_url: https://www.data.gov.in/sites/default/files/Gazette_Notification_OGDL.pdf
+    license_review_status: reviewed_resource_and_ogdl_platform
+    license_checked_on: 2026-09-06
+    attribution_required: true
+    notes: "Official OGD resource page reports a 9.9 MB CSV, monthly granularity, regular updates, and update date 2025-06-02. Ingest only the official downloaded CSV; filter Jharkhand explicitly, retain source record identity and coordinates, and link districts only by unique exact Census-2011 names. Do not label records as current beyond the resource's explicit update date."
 
   - source_id: OGD_HMIS_JH_DISTRICT
     title: Item-wise monthly HMIS report at District level of Jharkhand
@@ -52,7 +71,7 @@ sources:
     catalog_published_on: 2020-12-23
     catalog_updated_on: 2021-05-25
     catalog_api_resource_id: f7daca9b-92d4-4c6c-886a-91bf94a7e27e
-    notes: "Official catalog is explicitly released under NDSAP and the OGD platform applies GODL-India. District-level service/activity indicators only; never allocate district aggregates to villages or facilities. Preserve period, district, indicator and source metadata."
+    notes: "Official catalog is explicitly released under NDSAP and the OGD platform applies GODL-India. District-level service/activity indicators only; never allocate district aggregates to villages or facilities. Preserve period, district, indicator and source metadata. Individual inspected historical resources may expose CSV download without a resource API."
 
   - source_id: ABDM_HFR
     title: Ayushman Bharat Digital Mission — Health Facility Registry
