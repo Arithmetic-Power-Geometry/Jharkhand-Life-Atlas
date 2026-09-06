@@ -5,9 +5,23 @@ from jla.ui import hero, badges, section_note
 from jla.modules import discover_modules
 from jla.data import module_indicators, core_research_tables, optional_core_table
 
+
+def humanize(value):
+    return str(value).replace("_", " ").strip().capitalize()
+
+
+def progress_label(value):
+    text = str(value)
+    if "pending" in text or "discovery" in text or "review" in text:
+        return "⏳"
+    if "ready" in text or "complete" in text:
+        return "✅"
+    return "🔄"
+
+
 hero(
     "Research the Jharkhand Life Atlas",
-    "Start with a place, understand its evidence, combine thematic modules, and download reproducible research-ready data.",
+    "See what is complete, what is being built, what evidence is already available, and what must still pass validation before publication.",
     eyebrow="Modules · One geographic backbone · Forty connected evidence layers",
 )
 
@@ -43,7 +57,11 @@ c2.metric("Research-ready", complete_count)
 c3.metric("In development", active_count)
 c4.metric("Planned", pending_count)
 
-section_note("Research-ready means the module has passed JLA's publication gate. In-development and planned modules remain visible so researchers can understand the full Atlas without mistaking unfinished work for published evidence.")
+section_note("Status is read directly from each module contract in the repository. Research-ready means the publication gate has passed. In-development work is shown transparently, but unfinished evidence is never presented as complete.")
+
+st.markdown("## Current build status")
+st.progress(complete_count / max(len(roadmap), 1), text=f"{complete_count} of {len(roadmap)} modules research-ready")
+st.caption("Completion percentage counts only modules that have passed the full JLA publication gate; engineering progress inside active modules is shown separately below.")
 
 st.markdown("## How to use JLA for research")
 a, b, c, d = st.columns(4)
@@ -55,7 +73,7 @@ with b:
     st.caption("Use Core Geography for Census 2011 population, amenities, administrative identity and temporal geography evidence.")
 with c:
     st.markdown("**3 · Add evidence layers**")
-    st.caption("Combine Health, Water, Education, livelihoods, environment, hazards and later modules through the shared place backbone.")
+    st.caption("Combine validated thematic modules through the shared place backbone as they become research-ready.")
 with d:
     st.markdown("**4 · Verify & reproduce**")
     st.caption("Inspect provenance and methods, then download research-ready evidence for analysis, reporting and citation.")
@@ -73,22 +91,29 @@ with start_c:
         st.switch_page("app_pages/sources.py")
 
 st.divider()
-st.markdown("## Module roadmap")
-st.caption("Build order is deliberate: geographic foundation → essential services → people and livelihoods → infrastructure → environment and hazards → integrated research layers.")
+st.markdown("## Module roadmap and live work")
+st.caption("Every module remains visible. Open an in-development module to see its verified scope, engineering work and remaining publication gate instead of a vague progress claim.")
 
 for number, (module_id, planned_name) in enumerate(roadmap, start=1):
     m = by_id.get(module_id)
     if m is None:
-        label, detail = "PLANNED", "Implementation has not started. No evidence is published from this module."
+        label, detail = "PLANNED", "Implementation has not started on the published branch. No evidence is published from this module."
     elif m.get("status") == "complete":
         label, detail = "RESEARCH-READY", f"v{m.get('version', '—')} · Publication gate passed."
     else:
-        label, detail = "IN DEVELOPMENT", f"v{m.get('version', '—')} · Not yet certified as a complete research layer."
-    with st.expander(f"{number:02d}. {planned_name}  ·  {label}", expanded=(module_id == "core_geography")):
+        label, detail = "IN DEVELOPMENT", f"v{m.get('version', '—')} · Work is visible but not yet certified as a complete research layer."
+    with st.expander(f"{number:02d}. {planned_name}  ·  {label}", expanded=(module_id in {"core_geography", "health_access"})):
         if m:
             st.write(m.get("description", detail))
         st.caption(detail)
         if module_id == "core_geography" and m:
+            st.markdown("**What is complete**")
+            coverage = m.get("coverage", {}) or {}
+            for key, value in coverage.items():
+                if key != "note":
+                    st.markdown(f"- **{humanize(key)}:** {value}")
+            if coverage.get("note"):
+                st.info(coverage["note"])
             st.markdown("**What researchers can do with this module**")
             st.write("Define a study population or place; retrieve Census 2011 demographic and village-amenity baselines; identify historical Census and current LGD administrative units; and use the JLA place backbone to join later thematic modules without relying on ambiguous place names.")
             use1, use2 = st.columns(2)
@@ -120,11 +145,34 @@ for number, (module_id, planned_name) in enumerate(roadmap, start=1):
                     st.switch_page("app_pages/sources.py")
         elif m:
             geo = m.get("geography", {}) or {}
-            badges([f"Status: {m.get('status', '—')}", f"Primary geography: {geo.get('primary', '—')}", "Valid contract" if m.get("_valid") else "Contract issue"])
+            badges([f"Status: {m.get('status', '—')}", f"Version: {m.get('version', '—')}", f"Primary geography: {geo.get('primary', '—')}", "Valid contract" if m.get("_valid") else "Contract issue"])
             deps = ", ".join(m.get("dependencies", [])) or "None"
             st.caption(f"Dependencies: {deps}")
             if not m.get("_valid"):
                 st.error("; ".join(m.get("_errors", [])))
+
+            scope = m.get("scope", {}) or {}
+            if scope:
+                st.markdown("**Verified development status**")
+                for key, value in scope.items():
+                    st.markdown(f"{progress_label(value)} **{humanize(key)}:** {humanize(value)}")
+
+            engineering = m.get("engineering", {}) or {}
+            if engineering:
+                with st.expander("Engineering and evidence rules", expanded=False):
+                    for key, value in engineering.items():
+                        st.markdown(f"- **{humanize(key)}:** `{value}`")
+
+            principles = m.get("principles", []) or []
+            if principles:
+                with st.expander("Scientific safeguards", expanded=False):
+                    for principle in principles:
+                        st.markdown(f"- {humanize(principle)}")
+
+            if m.get("completion_gate"):
+                st.markdown("**What remains before RESEARCH-READY**")
+                st.warning(m["completion_gate"])
+
             data = module_indicators(m.get("_path", ""))
             if data is not None:
                 rows = data.height if hasattr(data, "height") else len(data)
