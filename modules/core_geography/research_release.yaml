@@ -1,0 +1,61 @@
+schema_version: 1
+module: core_geography
+artifact: first_scientific_dataset_paper_release
+status: preparation
+submission_status: not_submitted
+publication_status: not_published
+doi_status: not_minted_for_dataset_paper_release
+purpose: >-
+  Research-release readiness record for Module 1. This manifest supports preparation
+  of a scientific dataset paper and archival release without implying journal
+  submission, acceptance, publication, or DOI registration.
+verified_release_scope:
+  module_status: complete
+  module_version: 1.2.0
+  census_2011:
+    state: 1
+    districts: 24
+    subdistricts: 261
+    villages: 32624
+    pca_district_workbooks: 24
+  current_lgd:
+    districts: 24
+    subdistricts: 264
+    blocks: 264
+    panchayats: 4369
+    villages: 32962
+  dchb_village_amenities:
+    verified_rows: 32394
+    validation: exact_census_code_membership
+  mdds_2001_2011_crosswalk:
+    verified_2011_village_rows: 32584
+    rows_with_explicit_2001_source_code: 32583
+  census_lgd_temporal_crosswalk:
+    census_2011_villages_retained: 32624
+    official_village_links_asserted: 0
+    reason: retrieved_lgd_response_does_not_expose_census_2011_code_field
+scientific_integrity:
+  missing_values_preserved: true
+  unsupported_temporal_links_remain_unmatched: true
+  historical_and_current_geography_kept_distinct: true
+  person_level_data_in_release: false
+  third_party_licensing_preserved_separately: true
+paper_support_assets:
+  statistics_inputs: ready_from_verified_module_metadata_and_curated_outputs
+  figures_tables_inputs: preparation_required
+  data_dictionary: preparation_required
+  technical_validation: repository_tests_and_module_validation_available
+  usage_examples: preparation_required
+  reproducibility_assets: ingestion_and_sync_code_available
+  citation_readiness: CITATION_cff_available
+  doi_readiness: preparation_required
+  manuscript_support_documentation: preparation_required
+release_gate:
+  - Recompute all manuscript statistics directly from release artifacts before submission.
+  - Generate tables and figures from version-pinned curated outputs, never by manual transcription.
+  - Publish a field-level data dictionary covering identifiers, temporal views, provenance, null semantics, and licensing.
+  - Record a clean reproducibility run and green CI for the exact release commit/tag.
+  - Archive only redistributable artifacts and preserve source-specific attribution and licence terms.
+  - Mint or register a DOI only after the versioned release package is frozen and verified.
+  - Do not claim journal submission, acceptance, publication, peer review, or DOI registration until independently true.
+source_of_scope_claims: modules/core_geography/module.yaml
