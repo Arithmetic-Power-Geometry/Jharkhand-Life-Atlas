@@ -1,0 +1,71 @@
+schema_version: 1
+module: water_access
+purpose: >-
+  Machine-readable provenance contract for every authoritative raw payload used by
+  Module 3. Catalog pages, dashboards, previews, screenshots, advertised files,
+  and summary statistics are not acquired payloads.
+required_fields:
+  - source_id
+  - authoritative_resource_url
+  - retrieval_utc
+  - retrieval_method
+  - payload_sha256
+  - payload_bytes
+  - media_type
+  - source_resource_updated_on
+  - licence
+  - licence_url
+  - attribution_required
+  - schema_inspected
+  - jharkhand_filter_field
+  - source_geography_vintage
+  - smallest_authoritative_reusable_granularity
+  - person_level_sensitive_data_present
+constraints:
+  source_id:
+    rule: must_exist_in_sources_yaml
+  authoritative_resource_url:
+    rule: must_be_https_and_point_to_the_exact_official_resource_or_official_api_request
+  retrieval_utc:
+    rule: required_iso8601_utc
+  retrieval_method:
+    allowed: [official_csv_download, official_zip_download, official_excel_download, official_data_api]
+  payload_sha256:
+    rule: exactly_64_lowercase_hex_characters_computed_from_acquired_bytes
+  payload_bytes:
+    rule: positive_integer_measured_from_acquired_payload
+  media_type:
+    rule: record_observed_payload_type_not_advertised_type
+  source_resource_updated_on:
+    rule: preserve_official_resource_date_when_available_never_replace_with_retrieval_date
+  licence:
+    rule: must_match_reviewed_source_registry_entry
+  licence_url:
+    rule: required_for_redistributable_third_party_data
+  attribution_required:
+    rule: preserve_source_specific_requirement
+  schema_inspected:
+    rule: must_be_true_before_ingestion_or_publication
+  jharkhand_filter_field:
+    rule: record_exact_source_field_and_value_used_to_select_jharkhand_no_positional_or_inferred_filtering
+  source_geography_vintage:
+    rule: required_and_must_flow_into_geographic_linkage_validation
+  smallest_authoritative_reusable_granularity:
+    rule: preserve_the_smallest_non_sensitive_authoritative_unit_exposed_by_the_source_without_aggregation_for_convenience
+  person_level_sensitive_data_present:
+    rule: must_be_false_for_publication; if_true_stop_and_review_before_any_curated_output
+fail_closed_rules:
+  - Never create a manifest from catalog metadata, a dashboard, screenshot, or preview alone.
+  - Never populate a checksum before the payload bytes have actually been acquired.
+  - Never treat a successful HTTP response as schema validation.
+  - Never convert missing source values to zero during acquisition or ingestion.
+  - Never publish beneficiary, Aadhaar-linked, household-person, phone, or other person-level identifiers.
+  - Never silently aggregate away an authoritative village or habitation identifier merely to simplify ingestion.
+  - Never link current JJM or other current geography to Census 2011 by name equality alone.
+  - Never infer a denominator or household coverage percentage when the source does not expose denominator semantics.
+publication_gate: >-
+  A source may be treated as acquired only after a real manifest satisfying this
+  contract exists, the observed payload schema has passed source-specific checks,
+  Jharkhand selection is explicit, rights are reviewed, and geography/privacy
+  validation has passed. Until then Module 3 remains IN DEVELOPMENT and no factual
+  water indicator may be presented as published JLA evidence.
