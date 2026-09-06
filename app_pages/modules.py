@@ -15,9 +15,30 @@ mods = [m for m in discover_modules() if not Path(m.get("_path", "")).name.start
 by_id = {m.get("id"): m for m in mods}
 roadmap_path = Path("config/module_roadmap.yaml")
 try:
-    roadmap = (yaml.safe_load(roadmap_path.read_text(encoding="utf-8")) or {}).get("modules", [])
+    raw_roadmap = (yaml.safe_load(roadmap_path.read_text(encoding="utf-8")) or {}).get("modules", [])
 except Exception:
-    roadmap = [[m.get("id"), m.get("name", m.get("id"))] for m in mods]
+    raw_roadmap = []
+
+# YAML 1.1 may parse unquoted `on` as boolean True (for example sanitation_hygiene ->
+# "Sanitation & Hygiene" is safe, but roadmap values can still be non-strings). Normalize
+# every roadmap entry defensively and fail over to discovered modules for malformed entries.
+roadmap = []
+for entry in raw_roadmap:
+    if isinstance(entry, (list, tuple)) and len(entry) >= 2:
+        module_id, planned_name = entry[0], entry[1]
+    elif isinstance(entry, dict):
+        module_id = entry.get("id")
+        planned_name = entry.get("name")
+    else:
+        continue
+    if module_id is None:
+        continue
+    module_id = str(module_id)
+    planned_name = str(planned_name) if planned_name is not None else module_id
+    roadmap.append((module_id, planned_name))
+
+if not roadmap:
+    roadmap = [(str(m.get("id")), str(m.get("name", m.get("id")))) for m in mods if m.get("id")]
 
 complete_count = sum(1 for module_id, _ in roadmap if by_id.get(module_id, {}).get("status") == "complete")
 active_count = sum(1 for module_id, _ in roadmap if module_id in by_id and by_id[module_id].get("status") != "complete")
