@@ -1,0 +1,48 @@
+sources:
+  - id: JJM_OFFICIAL_PORTAL
+    title: Jal Jeevan Mission official portal and IMIS programme evidence
+    publisher: Department of Drinking Water and Sanitation, Ministry of Jal Shakti, Government of India
+    authority: primary_official
+    url: https://jaljeevanmission.gov.in/
+    scope: rural drinking-water service, household tap connections, programme monitoring and water-quality systems
+    smallest_reusable_granularity: village_or_habitation_where_an_official_reusable_payload_is_available
+    rights_status: review_required_for_exact_payload
+    acquisition_status: discovery_verified_payload_not_acquired
+    publishable: false
+    notes: "Official JJM documentation states that monitoring includes details up to village level. Do not ingest beneficiary/Aadhaar-linked person-level information. Exact reusable payload, terms and geography must be verified before publication."
+
+  - id: OGD_JJM_CATALOG
+    title: Jal Jeevan Mission (JJM) OGD catalog
+    publisher: Ministry of Jal Shakti, Department of Drinking Water and Sanitation
+    authority: primary_official_open_data_catalog
+    url: https://www.data.gov.in/catalog/jal-jeevan-mission-jjm
+    released_under: National Data Sharing and Accessibility Policy (NDSAP)
+    licence: Government Open Data License - India applies to published OGD datasets/resources; verify exact resource metadata before reuse
+    catalog_updated: 2026-03-27
+    acquisition_status: catalog_verified_exact_resource_payload_pending
+    publishable: false
+    notes: "Catalog metadata is evidence of discovery, not acquisition. Preserve resource-specific attribution and licence metadata separately from JLA software/original content."
+
+  - id: OGD_JJM_PWS_HABITATION
+    title: House Connections by Piped Water Supply (PWS) Scheme in Habitation under Jal Jeevan Mission (JJM)
+    publisher: Ministry of Jal Shakti, Department of Drinking Water and Sanitation
+    authority: primary_official_open_data_catalog
+    url: https://sandbox.data.gov.in/catalog/house-connections-piped-water-supply-pws-scheme-habitation-under-jal-jeevan-mission-jjm
+    described_levels: [district, block, gram_panchayat, village, habitation]
+    released_under: National Data Sharing and Accessibility Policy (NDSAP)
+    rights_status: exact_resource_and_production_endpoint_verification_required
+    acquisition_status: catalog_discovered_payload_not_acquired
+    publishable: false
+    notes: "Sandbox catalog discovery is not sufficient for publication. Prefer a production data.gov.in resource or official JJM export and acquire the smallest authoritative reusable geography available."
+
+  - id: OGD_RS_JJM_2025_STATE
+    title: State/UT-wise Status of Tap Water Connections in Rural Households under JJM as on 29-01-2025
+    publisher: Rajya Sabha; source noted as JJM IMIS
+    authority: official_secondary_parliamentary_snapshot
+    url: https://www.data.gov.in/resource/stateut-wise-status-tap-water-connections-rural-households-under-jal-jeevan-mission-jjm-29
+    granularity: state
+    snapshot_date: 2025-01-29
+    released_under: National Data Sharing and Accessibility Policy (NDSAP)
+    acquisition_status: metadata_verified_not_selected_as_primary_smallest_granularity
+    publishable: false
+    notes: "Useful for independent state-level cross-checking only. It must not replace finer official JJM evidence when that evidence can be lawfully acquired."
