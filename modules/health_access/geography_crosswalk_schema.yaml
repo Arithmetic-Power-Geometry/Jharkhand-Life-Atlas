@@ -1,0 +1,52 @@
+schema_version: 1
+purpose: >-
+  Contract for linking health-source district geography to the Census-2011 JLA backbone
+  when the source geography vintage is not explicitly Census-2011 compatible.
+publication_rule: >-
+  No current or differently-vintaged health record may be linked to Census-2011 geography
+  by name equality alone. A reviewed crosswalk satisfying this contract is required.
+grain: one source district geography unit to one Census-2011 district only when documentary evidence supports equivalence
+required_fields:
+  source_geography_vintage:
+    type: string
+    nullable: false
+  source_district_name:
+    type: string
+    nullable: false
+  source_district_code:
+    type: string
+    nullable: true
+    note: Preserve null when the authoritative source does not expose a district code; never invent one.
+  census2011_district_code:
+    type: string
+    nullable: false
+  relationship:
+    type: enum
+    values: [equivalent, split, merge, boundary_change, unresolved]
+    nullable: false
+  evidence_source_id:
+    type: string
+    nullable: false
+  evidence_url:
+    type: string
+    nullable: false
+  evidence_reference_date:
+    type: string
+    nullable: false
+  reviewed_on:
+    type: date
+    nullable: false
+  review_status:
+    type: enum
+    values: [verified_equivalent, non_equivalent, unresolved]
+    nullable: false
+  notes:
+    type: string
+    nullable: true
+hard_gates:
+  - Only rows with relationship=equivalent and review_status=verified_equivalent may support a direct one-to-one link.
+  - split, merge, boundary_change and unresolved relationships must never be silently allocated or collapsed.
+  - Every source district in a publication payload must resolve uniquely or publication aborts.
+  - Evidence must identify an authoritative geography source and preserve its URL/reference date.
+  - Crosswalk review is source-vintage specific; it cannot be reused for another vintage without evidence.
+  - Missing source district codes remain null and must not be replaced with Census codes.
