@@ -1,0 +1,73 @@
+module: water_access
+contract_version: 1
+status: prepublication_contract
+purpose: >-
+  Defines the minimum metadata and governance envelope that every future curated
+  Module 3 table must satisfy. This is not a claim about fields present in any
+  unacquired JJM/OGD payload and does not satisfy the production-schema gate.
+
+required_record_metadata:
+  - field: source_id
+    type: string
+    nullable: false
+    rule: must reference an authoritative source registered for Module 3
+  - field: source_record_id
+    type: string
+    nullable: true
+    rule: preserve source-provided identity when available; never synthesize an official identifier
+  - field: geography_vintage
+    type: string
+    nullable: false
+    rule: explicitly identify the administrative/statistical geography vintage used by the source
+  - field: observation_date
+    type: date
+    nullable: true
+    rule: preserve exact source date when supplied; do not infer an exact date from a broad period
+  - field: observation_period
+    type: string
+    nullable: true
+    rule: retain source-defined month/year/financial-year/snapshot semantics when exact date is unavailable
+  - field: observation_status
+    type: enum
+    nullable: false
+    allowed: [observed, derived, modelled]
+    rule: observed, derived and modelled values must remain distinguishable
+  - field: provenance_ref
+    type: string
+    nullable: false
+    rule: point to retrieval and transformation provenance sufficient to reproduce the curated record
+
+geographic_linkage:
+  allowed_linkage_methods:
+    - authoritative_identifier
+    - verified_temporal_crosswalk
+  prohibited_linkage_methods:
+    - fuzzy_name_match
+    - silent_name_equivalence_across_vintages
+  unresolved_policy: retain_unlinked_and_flag
+  historical_current_merge_policy: prohibited_without_evidence_backed_crosswalk
+
+numeric_semantics:
+  missing_policy: preserve_null
+  zero_policy: zero_only_when_source_explicitly_reports_zero
+  denominator_policy: no_rate_or_coverage_indicator_without_verified_denominator_semantics
+  coercion_policy: parse_failures_become_validation_errors_not_zero
+
+privacy:
+  person_level_records: prohibited
+  beneficiary_identifiers: prohibited
+  aadhaar_or_equivalent_identifiers: prohibited
+  publication_granularity: smallest_authoritative_reusable_non_person_level_granularity
+
+provenance_requirements:
+  - retrieval_url_or_endpoint
+  - retrieval_timestamp
+  - payload_hash
+  - source_licence_or_terms_reference
+  - transformation_version
+  - geography_linkage_method
+
+publication_rules:
+  - this contract alone does not authorize publication
+  - production fields must be finalized only after authoritative payload acquisition and schema inspection
+  - all completion_gate criteria must pass before Module 3 status becomes complete
