@@ -1,0 +1,39 @@
+id: sanitation_hygiene
+name: Sanitation & Hygiene
+version: 0.1.0
+status: active
+description: "Authoritative, place-linked sanitation, ODF Plus, solid/liquid waste management and hygiene-enabling infrastructure evidence for Jharkhand. Architecture and source review are active; no Module 4 thematic evidence is yet published."
+geography:
+  primary: place
+  supports: [state, district, block, panchayat, village]
+temporal:
+  type: multi_source_time_series
+  views: [census_2011_sanitation_baseline, dated_sbmg_odf_plus_evidence, dated_waste_management_evidence]
+dependencies: [core_geography]
+features:
+  map: true
+  download: true
+  report: true
+  comparison: true
+  provenance: true
+principles:
+  - no_source_no_published_value
+  - missing_is_not_zero
+  - observed_derived_modelled_separated
+  - no_person_level_or_household_identifiers
+  - historical_and_current_geographies_not_silently_merged
+  - smallest_authoritative_reusable_granularity
+scope:
+  census_2011_sanitation_baseline: dependency_available_from_core_geography_publication_pending_module_validation
+  odf_plus_status: authoritative_source_discovery_verified_payload_acquisition_pending
+  solid_waste_management: authoritative_source_discovery_verified_payload_acquisition_pending
+  liquid_waste_management: authoritative_source_discovery_verified_payload_acquisition_pending
+  community_sanitation_assets: source_discovery_verified_payload_acquisition_pending
+  hygiene_enabling_infrastructure: source_discovery_active
+  indicators: pending_verified_acquisition_and_geography
+engineering:
+  geographic_backbone: core_geography
+  fuzzy_linking: prohibited
+  missing_numeric_policy: preserve_null_never_zero
+  publication_policy: fail_closed_until_source_payload_rights_geography_and_validation_verified
+completion_gate: "Do not mark complete until acquisition, rights review, provenance, geographic linking, schema, indicators, validation, tests, Streamlit, downloads/reports, documentation and CI are verified on main."
