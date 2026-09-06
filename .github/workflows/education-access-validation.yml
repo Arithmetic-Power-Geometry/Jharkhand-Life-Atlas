@@ -1,0 +1,38 @@
+name: education-access-validation
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'modules/education_access/**'
+      - 'tests/test_education*.py'
+      - 'data/curated/education_access/**'
+      - 'app_pages/**'
+      - 'scripts/**'
+      - '.github/workflows/education-access-validation.yml'
+  pull_request:
+    paths:
+      - 'modules/education_access/**'
+      - 'tests/test_education*.py'
+      - 'data/curated/education_access/**'
+      - 'app_pages/**'
+      - 'scripts/**'
+      - '.github/workflows/education-access-validation.yml'
+  workflow_dispatch:
+
+jobs:
+  validate-education-access:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - name: Install dependencies
+        run: pip install -r requirements.txt pytest
+      - name: Compile Module 5 code
+        run: python -m compileall -q modules/education_access app_pages scripts
+      - name: Run every Module 5 test
+        run: pytest -q tests/test_education*.py
+      - name: Run repository validation
+        run: python scripts/check.py
