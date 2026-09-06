@@ -1,0 +1,47 @@
+module: health_access
+protocol_version: 1
+status: open
+criteria:
+  authoritative_acquisition:
+    satisfied: false
+    evidence: "Preferred 2026 OGD facility payload and Jharkhand HMIS source files are not yet acquired and schema-verified."
+  rights_licence_review:
+    satisfied: true
+    evidence: "OGD sources are reviewed under Government Open Data License - India with attribution; restricted ABDM HFR remains excluded pending terms/export rights."
+  smallest_authoritative_reusable_granularity:
+    satisfied: false
+    evidence: "Facility-level OGD source is identified but payload acquisition is pending."
+  cleaning_engineering:
+    satisfied: false
+    evidence: "Fail-closed facility and HMIS ingestion engines exist; production source payloads have not yet been processed."
+  geographic_linkage:
+    satisfied: false
+    evidence: "Current/differently dated facility geography requires an evidence-backed temporal crosswalk; name equality alone is prohibited."
+  provenance:
+    satisfied: false
+    evidence: "Source registry and acquisition ledger exist, but production retrieval hashes/API request provenance are pending."
+  schema:
+    satisfied: true
+    evidence: "modules/health_access/schema.yaml defines facility and service-activity grains and missing-value rules."
+  indicators:
+    satisfied: false
+    evidence: "No production health indicator outputs may be published before authoritative acquisition and linkage."
+  validation:
+    satisfied: false
+    evidence: "Validation logic/tests exist, but production outputs do not yet exist."
+  tests:
+    satisfied: true
+    evidence: "Dedicated health foundation, facility-ingest and HMIS-ingest tests are present."
+  streamlit_presentation:
+    satisfied: false
+    evidence: "No production Module 2 health dataset is yet available for presentation."
+  downloadable_data_reports:
+    satisfied: false
+    evidence: "No production Module 2 health dataset/report may be released before acquisition and validation."
+  documentation:
+    satisfied: true
+    evidence: "Module README, source registry, schema and acquisition ledger are present."
+  green_ci_on_main:
+    satisfied: true
+    evidence: "Latest verified main tests workflow for a95885206c4645d69ed5f8ea65886c8712edcd85 completed successfully on 2026-09-06; this criterion must be re-verified at final completion."
+completion_rule: "status may become complete only when every criterion is satisfied and final CI is green on main."
