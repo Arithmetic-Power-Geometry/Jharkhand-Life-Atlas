@@ -62,24 +62,26 @@ sources:
     license_review_status: reviewed_resource_catalog_and_ogdl_platform
     license_checked_on: 2026-09-06
     attribution_required: true
-    notes: "The official OGD Hospital Directory catalog lists this high-value monthly facility resource as updated 2026-08-11 and exposes CSV-through-URL and Data API access. This is now the preferred acquisition target for geocoded facility coverage. Do not publish from catalog metadata alone: first verify the exact API/download endpoint, acquire the bytes/records, record retrieval time and hash or API request provenance, inspect the real schema, filter Jharkhand explicitly, and preserve source record identity."
+    notes: "The official OGD Hospital Directory catalog lists this high-value monthly facility resource as updated 2026-08-11 and exposes CSV-through-URL and Data API access. This is the preferred acquisition target for geocoded facility coverage. Do not publish from catalog metadata alone: first verify the exact API/download endpoint, acquire the bytes/records, record retrieval time and hash or API request provenance, inspect the real schema, filter Jharkhand explicitly, and preserve source record identity."
 
-  - source_id: OGD_NHP_HOSPITAL_GEO_2025
-    title: National Hospital Directory with Geo Code and additional parameters
+  - source_id: OGD_NHP_HOSPITAL_GEO_2026
+    title: National Hospital Directory with Geo Code and additional parameters (updated till last month)
     publisher: National Institute of Health and Family Welfare / Ministry of Health and Family Welfare, Government of India
     url: https://www.data.gov.in/resource/national-hospital-directory-geo-code-and-additional-parameters-updated-till-last-month
-    role: official_hospital_directory_geocoded_historical_snapshot_candidate
-    reference_year: 2025
+    role: official_hospital_directory_geocoded_parallel_source
+    reference_year: 2026
     resource_published_on: 2017-08-10
-    resource_updated_on: 2025-06-02
+    resource_updated_on: 2026-08-11
     granularity: facility
+    advertised_access: [csv_download, data_api, preview]
+    advertised_file_size: 9.9 MB
     publication_class: OPEN_WITH_ATTRIBUTION
     license: Government Open Data License - India
     license_url: https://www.data.gov.in/sites/default/files/Gazette_Notification_OGDL.pdf
-    license_review_status: reviewed_resource_and_ogdl_platform
+    license_review_status: reviewed_resource_catalog_and_ogdl_platform
     license_checked_on: 2026-09-06
     attribution_required: true
-    notes: "Earlier verified resource page reported a 9.9 MB CSV, monthly granularity and update date 2025-06-02. Retain as historical evidence, but prefer OGD_NIN_HEALTH_FACILITIES_GEO_2026 for new acquisition because the official catalog now reports that resource updated 2026-08-11. Never merge snapshots without explicit source-date handling."
+    notes: "Fresh verification on 2026-09-06 shows the official OGD catalog now reports this resource updated 2026-08-11, not 2025-06-02. Keep it separate from the NIN Health Facilities resource: similar update dates do not establish record equivalence. Acquire, hash and schema-check independently before any comparison or union."
 
   - source_id: OGD_HMIS_JH_DISTRICT
     title: Item-wise monthly HMIS report at District level of Jharkhand
