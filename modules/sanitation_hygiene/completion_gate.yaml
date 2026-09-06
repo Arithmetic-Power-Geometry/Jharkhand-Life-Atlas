@@ -1,0 +1,47 @@
+module: sanitation_hygiene
+protocol_version: 1
+status: open
+criteria:
+  authoritative_acquisition:
+    satisfied: false
+    evidence: "Official SBM-G dashboard/IMIS and OGD source discovery is verified, but no selected Jharkhand production payload has yet been acquired and hash/schema verified."
+  rights_licence_review:
+    satisfied: false
+    evidence: "NDSAP/GODL-India applicability is identified for OGD resources, but exact resource-level licence/attribution metadata and portal export terms must be reviewed before reuse."
+  smallest_authoritative_reusable_granularity:
+    satisfied: false
+    evidence: "Village/Gram Panchayat evidence is described by official sources, but the smallest lawful reusable production payload has not yet been acquired."
+  cleaning_engineering:
+    satisfied: false
+    evidence: "No production sanitation payload has yet been ingested; cleaning rules must preserve nulls and source semantics."
+  geographic_linkage:
+    satisfied: false
+    evidence: "Current SBM-G geography must be linked through authoritative identifiers or evidence-backed crosswalks; Census 2011 and current administrative geography cannot be silently merged."
+  provenance:
+    satisfied: false
+    evidence: "Source inventory exists, but production retrieval URL/report parameters, retrieval timestamp, payload hash and transformation lineage are pending."
+  schema:
+    satisfied: false
+    evidence: "Module contract exists, but a production schema grounded in acquired source fields has not yet been finalized."
+  indicators:
+    satisfied: false
+    evidence: "ODF Plus, waste-management and sanitation-asset indicators may not be published until acquisition, geography and denominator/status semantics are verified."
+  validation:
+    satisfied: false
+    evidence: "Production validation cannot pass before authoritative payload ingestion and linkage."
+  tests:
+    satisfied: false
+    evidence: "Governance tests exist; ingestion, geographic-linkage and indicator validation tests remain pending."
+  streamlit_presentation:
+    satisfied: false
+    evidence: "Streamlit may show IN DEVELOPMENT metadata only; unfinished sanitation evidence must not be presented as published data."
+  downloadable_data_reports:
+    satisfied: false
+    evidence: "No Module 4 research-ready download or reproducible report exists yet."
+  documentation:
+    satisfied: false
+    evidence: "Source inventory and module contract exist; schema, methods, provenance, validation and usage documentation remain incomplete."
+  green_ci_on_main:
+    satisfied: false
+    evidence: "Final module completion requires a verified green CI run on the exact main commit satisfying every publication criterion."
+completion_rule: "status may become complete only when every criterion is satisfied and final CI is green on main."
