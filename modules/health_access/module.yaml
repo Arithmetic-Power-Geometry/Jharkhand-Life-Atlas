@@ -1,6 +1,6 @@
 id: health_access
 name: Health & Healthcare Access
-version: 0.1.0
+version: 0.2.0
 status: active
 description: "Authoritative, place-linked health-facility, service-capacity and healthcare-access evidence for Jharkhand."
 geography:
@@ -25,8 +25,14 @@ principles:
 scope:
   facility_inventory: pending_authoritative_ingest
   public_health_capacity: pending_authoritative_ingest
-  service_activity: pending_authoritative_ingest
+  service_activity: fail_closed_hmis_ingestion_engine_ready_source_file_acquisition_pending
   access_indicators: pending_verified_geographic_linking
   private_facilities: source_discovery_and_rights_review
   quality_certification: source_discovery_and_rights_review
+engineering:
+  hmis_district_ingest: modules/health_access/ingest_hmis.py
+  hmis_link_rule: unique_exact_normalized_name_to_census2011_district
+  hmis_fuzzy_linking: prohibited
+  missing_numeric_policy: preserve_null_never_zero
+  official_download_host_allowlist: data.gov.in
 completion_gate: "Do not mark complete until acquisition, rights review, provenance, geographic linking, schema, indicators, validation, tests, Streamlit, downloads/reports and CI are verified on main."
