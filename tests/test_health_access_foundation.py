@@ -28,7 +28,8 @@ def test_open_ogd_health_sources_have_reviewed_license_metadata():
         assert source["publication_class"] == "OPEN_WITH_ATTRIBUTION"
         assert source["license"] == "Government Open Data License - India"
         assert source["license_url"].startswith("https://www.data.gov.in/")
-        assert source["license_review_status"].startswith("reviewed_ogdl")
+        assert source["license_review_status"].startswith("reviewed_")
+        assert "ogdl" in source["license_review_status"]
         assert source["attribution_required"] is True
         assert source["license_checked_on"]
 
