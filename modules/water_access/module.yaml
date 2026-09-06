@@ -1,0 +1,38 @@
+id: water_access
+name: Water & Drinking-Water Access
+version: 0.1.0
+status: active
+description: "Authoritative, place-linked drinking-water access, service and water-quality evidence for Jharkhand. Architecture and source review are active; no Module 3 thematic evidence is yet published."
+geography:
+  primary: place
+  supports: [state, district, block, panchayat, village, habitation]
+temporal:
+  type: multi_source_time_series
+  views: [census_2011_water_amenities, dated_jjm_service_evidence, dated_water_quality_evidence]
+dependencies: [core_geography]
+features:
+  map: true
+  download: true
+  report: true
+  comparison: true
+  provenance: true
+principles:
+  - no_source_no_published_value
+  - missing_is_not_zero
+  - observed_derived_modelled_separated
+  - no_person_level_or_beneficiary_records
+  - historical_and_current_geographies_not_silently_merged
+  - smallest_authoritative_reusable_granularity
+scope:
+  census_2011_water_baseline: dependency_available_from_core_geography_publication_pending_module_validation
+  rural_tap_water_access: authoritative_source_discovery_verified_payload_acquisition_pending
+  piped_water_scheme_connections: authoritative_catalog_discovered_payload_acquisition_pending
+  drinking_water_quality: source_discovery_active
+  service_functionality: source_discovery_active
+  access_indicators: pending_verified_acquisition_and_geography
+engineering:
+  geographic_backbone: core_geography
+  fuzzy_linking: prohibited
+  missing_numeric_policy: preserve_null_never_zero
+  publication_policy: fail_closed_until_source_payload_rights_geography_and_validation_verified
+completion_gate: "Do not mark complete until acquisition, rights review, provenance, geographic linking, schema, indicators, validation, tests, Streamlit, downloads/reports, documentation and CI are verified on main."
