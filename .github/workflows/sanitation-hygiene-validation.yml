@@ -1,0 +1,38 @@
+name: sanitation-hygiene-validation
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'modules/sanitation_hygiene/**'
+      - 'tests/test_sanitation*.py'
+      - 'data/curated/sanitation_hygiene/**'
+      - 'app_pages/**'
+      - 'scripts/**'
+      - '.github/workflows/sanitation-hygiene-validation.yml'
+  pull_request:
+    paths:
+      - 'modules/sanitation_hygiene/**'
+      - 'tests/test_sanitation*.py'
+      - 'data/curated/sanitation_hygiene/**'
+      - 'app_pages/**'
+      - 'scripts/**'
+      - '.github/workflows/sanitation-hygiene-validation.yml'
+  workflow_dispatch:
+
+jobs:
+  validate-sanitation-hygiene:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - name: Install dependencies
+        run: pip install -r requirements.txt pytest
+      - name: Compile Module 4 code
+        run: python -m compileall -q modules/sanitation_hygiene app_pages scripts
+      - name: Run every Module 4 test
+        run: pytest -q tests/test_sanitation*.py
+      - name: Run repository validation
+        run: python scripts/check.py
