@@ -1,0 +1,38 @@
+name: water-access-validation
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'modules/water_access/**'
+      - 'tests/test_water*.py'
+      - 'data/curated/water_access/**'
+      - 'app_pages/**'
+      - 'scripts/**'
+      - '.github/workflows/water-access-validation.yml'
+  pull_request:
+    paths:
+      - 'modules/water_access/**'
+      - 'tests/test_water*.py'
+      - 'data/curated/water_access/**'
+      - 'app_pages/**'
+      - 'scripts/**'
+      - '.github/workflows/water-access-validation.yml'
+  workflow_dispatch:
+
+jobs:
+  validate-water-access:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - name: Install dependencies
+        run: pip install -r requirements.txt pytest
+      - name: Compile Module 3 code
+        run: python -m compileall -q modules/water_access app_pages scripts
+      - name: Run every Module 3 test
+        run: pytest -q tests/test_water*.py
+      - name: Run repository validation
+        run: python scripts/check.py
