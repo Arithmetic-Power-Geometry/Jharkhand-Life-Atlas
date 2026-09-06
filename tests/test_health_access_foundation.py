@@ -42,6 +42,15 @@ def test_restricted_current_registry_is_not_publishable_yet():
     assert hfr["license_review_status"] == "rights_and_export_mechanism_pending"
 
 
+def test_newest_official_geocoded_facility_source_is_preferred_but_not_claimed_ingested():
+    sources = {s["source_id"]: s for s in _load("sources.yaml")["sources"]}
+    newest = sources["OGD_NIN_HEALTH_FACILITIES_GEO_2026"]
+    assert newest["resource_updated_on"].isoformat() == "2026-08-11"
+    assert newest["granularity"] == "facility"
+    assert "data_api" in newest["advertised_access"]
+    assert newest["publication_class"] == "OPEN_WITH_ATTRIBUTION"
+
+
 def test_health_schema_preserves_missing_and_source_grain():
     schema = _load("schema.yaml")["tables"]
     facilities = schema["health_facilities"]
@@ -61,6 +70,7 @@ def test_health_source_coverage_is_fail_closed_and_auditable():
     required = {
         "CENSUS_DCHB_JH_2011_HEALTH",
         "OGD_HEALTH_CENTRES_DIRECTORY",
+        "OGD_NIN_HEALTH_FACILITIES_GEO_2026",
         "OGD_NHP_HOSPITAL_GEO_2025",
         "OGD_HMIS_JH_DISTRICT",
         "ABDM_HFR",
@@ -70,6 +80,9 @@ def test_health_source_coverage_is_fail_closed_and_auditable():
         assert row["catalog_or_resource_verified"] in {"yes", "no"}
         assert row["raw_file_ingested"] in {"yes", "no"}
         assert row["curated_output_published"] in {"yes", "no"}
+    assert by_id["OGD_NIN_HEALTH_FACILITIES_GEO_2026"]["raw_file_ingested"] == "no"
+    assert by_id["OGD_NIN_HEALTH_FACILITIES_GEO_2026"]["curated_output_published"] == "no"
+    assert by_id["OGD_NIN_HEALTH_FACILITIES_GEO_2026"]["publication_status"] == "pending_exact_api_or_csv_acquisition"
     assert by_id["OGD_NHP_HOSPITAL_GEO_2025"]["raw_file_ingested"] == "no"
     assert by_id["OGD_NHP_HOSPITAL_GEO_2025"]["curated_output_published"] == "no"
     assert by_id["OGD_HMIS_JH_DISTRICT"]["raw_file_ingested"] == "no"
