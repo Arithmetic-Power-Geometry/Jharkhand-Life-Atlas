@@ -34,13 +34,14 @@ def _write_source(path: Path, *, bad_district: bool = False, missing_id: bool = 
     ).write_csv(path)
 
 
-def _curate(source: Path, core: Path, output: Path):
+def _curate(source: Path, core: Path, output: Path, *, geography_vintage: str = "census2011_compatible"):
     return curate_facility_directory(
         source,
         core,
         output,
         source_id="OGD_TEST",
         reference_period="2025-06-02",
+        source_geography_vintage=geography_vintage,
         state_column="State",
         district_column="District",
         record_id_column="RecordID",
@@ -74,6 +75,7 @@ def test_facility_ingest_filters_state_links_exactly_and_preserves_missing_coord
     assert result["district_code"].to_list() == [1, 2]
     assert result["latitude"].to_list()[1] is None
     assert result["longitude"].to_list()[1] is None
+    assert set(result["source_geography_vintage"].to_list()) == {"census2011_compatible"}
     assert set(result["geographic_link_method"].to_list()) == {
         "unique_exact_normalized_name_to_census2011_district"
     }
@@ -100,4 +102,16 @@ def test_facility_ingest_rejects_missing_source_identity(tmp_path: Path):
 
     with pytest.raises(ValueError, match="source-provided facility record identifier"):
         _curate(source, core, output)
+    assert not output.exists()
+
+
+def test_facility_ingest_rejects_current_geography_without_temporal_crosswalk(tmp_path: Path):
+    core = tmp_path / "core.csv"
+    source = tmp_path / "source.csv"
+    output = tmp_path / "out.csv"
+    _write_core(core)
+    _write_source(source)
+
+    with pytest.raises(ValueError, match="evidence-backed temporal crosswalk"):
+        _curate(source, core, output, geography_vintage="current_2026")
     assert not output.exists()
