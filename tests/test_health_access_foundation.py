@@ -1,4 +1,5 @@
 from pathlib import Path
+import csv
 
 import yaml
 
@@ -48,3 +49,28 @@ def test_health_schema_preserves_missing_and_source_grain():
     assert facilities["grain"] == "one_source_facility_record"
     assert any("null, never zero" in rule for rule in facilities["rules"])
     assert any("District HMIS values must not be allocated" in rule for rule in service["rules"])
+
+
+def test_health_source_coverage_is_fail_closed_and_auditable():
+    path = MODULE / "source_coverage.csv"
+    assert path.exists()
+    with path.open(encoding="utf-8", newline="") as handle:
+        rows = list(csv.DictReader(handle))
+    assert rows
+    by_id = {row["source_id"]: row for row in rows}
+    required = {
+        "CENSUS_DCHB_JH_2011_HEALTH",
+        "OGD_HEALTH_CENTRES_DIRECTORY",
+        "OGD_NHP_HOSPITAL_GEO_2025",
+        "OGD_HMIS_JH_DISTRICT",
+        "ABDM_HFR",
+    }
+    assert required.issubset(by_id)
+    for row in rows:
+        assert row["catalog_or_resource_verified"] in {"yes", "no"}
+        assert row["raw_file_ingested"] in {"yes", "no"}
+        assert row["curated_output_published"] in {"yes", "no"}
+    assert by_id["OGD_NHP_HOSPITAL_GEO_2025"]["raw_file_ingested"] == "no"
+    assert by_id["OGD_NHP_HOSPITAL_GEO_2025"]["curated_output_published"] == "no"
+    assert by_id["OGD_HMIS_JH_DISTRICT"]["raw_file_ingested"] == "no"
+    assert by_id["ABDM_HFR"]["publication_status"] == "blocked_rights_and_export"
