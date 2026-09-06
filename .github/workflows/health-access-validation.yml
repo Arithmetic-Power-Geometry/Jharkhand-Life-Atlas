@@ -32,7 +32,7 @@ jobs:
         run: pip install -r requirements.txt pytest
       - name: Compile Module 2 code
         run: python -m compileall -q modules/health_access app_pages scripts
-      - name: Run Module 2 tests
-        run: pytest -q tests/test_health_access_foundation.py tests/test_health_access_hmis_ingest.py tests/test_health_access_facility_ingest.py
+      - name: Run every Module 2 test
+        run: pytest -q tests/test_health_access_*.py
       - name: Run repository validation
         run: python scripts/check.py
