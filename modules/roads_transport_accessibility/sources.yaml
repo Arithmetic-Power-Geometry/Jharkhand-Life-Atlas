@@ -1,0 +1,33 @@
+module: roads_transport_accessibility
+status: discovery_active_no_thematic_values_published
+sources:
+  - id: pmgsy_ommas_geosadak
+    authority: National Rural Infrastructure Development Agency / Ministry of Rural Development
+    role: primary_candidate_rural_roads_and_connectivity
+    official_reference: https://pmgsy.nic.in/
+    evidence_scope: "PMGSY programme systems including OMMAS and GeoSadak are authoritative candidates for rural-road, habitation-connectivity, DRRP/core-network and works evidence."
+    acquisition_status: exact_reusable_jharkhand_payload_not_yet_acquired
+    rights_status: resource_level_reuse_and_attribution_review_required
+    geography_status: source_identifiers_and_vintage_must_be_inspected_before_linkage
+    publication_class: pending_governance_review
+  - id: ogd_transport_and_pmgsy
+    authority: Open Government Data Platform India / contributing ministries
+    role: discovery_and_open_resource_candidate
+    official_reference: https://data.gov.in/
+    evidence_scope: "OGD exposes Transport-sector and PMGSY-group resources; exact Jharkhand resources must be selected and inspected rather than inferred from catalog metadata."
+    acquisition_status: exact_resource_not_yet_selected_or_hashed
+    rights_status: "OGD states published datasets/resources are licensed under Government Open Data License - India; resource-level attribution and any exceptions must still be verified."
+    geography_status: granularity_and_identifiers_pending_payload_inspection
+    publication_class: pending_resource_review
+  - id: lgd_geography
+    authority: Ministry of Panchayati Raj
+    role: current_administrative_geography_reference
+    official_reference: https://data.gov.in/catalog/local-government-directory-lgd
+    evidence_scope: "Current administrative identifiers for linkage where temporally compatible."
+    acquisition_status: shared_core_geography_dependency
+    rights_status: governed_by_existing_core_geography_review
+    geography_status: must_not_replace_or_silently_merge_census_2011_geography
+    publication_class: shared_verified_dependency_only
+blockers:
+  - "No exact authoritative Jharkhand road/transport payload has yet passed acquisition, hashing, schema inspection, rights review and geographic-linkage validation."
+  - "Accessibility metrics remain architecture-only until verified networks, destinations and impedance assumptions exist."
