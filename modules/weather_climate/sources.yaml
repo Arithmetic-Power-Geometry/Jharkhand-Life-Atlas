@@ -1,0 +1,43 @@
+module: weather_climate
+status: discovery_active_no_thematic_values_published
+sources:
+  - id: imd_district_rainfall_api
+    authority: "India Meteorological Department, Ministry of Earth Sciences, Government of India"
+    source_type: official_public_api
+    discovery_url: "https://api.imd.gov.in/public/api_reference.html"
+    candidate_scope: "District-wise rainfall observations and normals for Jharkhand"
+    observed_public_evidence: "IMD documents a district-wise rainfall API with daily, weekly and cumulative actual, normal, departure and category fields."
+    acquisition_status: not_yet_acquired
+    rights_status: pending_api_and_redistribution_review
+    geography_status: pending_district_identifier_and_vintage_review
+    schema_status: documented_sample_only_real_payload_not_yet_inspected
+    publication_status: blocked
+    notes: "API documentation is not equivalent to a captured Jharkhand payload. JLA must acquire dated responses, hash/store permitted snapshots, inspect real fields, verify district linkage and review reuse terms before publication."
+  - id: imd_meteorological_centre_ranchi
+    authority: "Meteorological Centre Ranchi, India Meteorological Department, Government of India"
+    source_type: official_state_weather_bulletins
+    discovery_url: "https://mausam.imd.gov.in/ranchi/"
+    candidate_scope: "Jharkhand district rainfall statistics, seasonal summaries, warnings and state weather/climate bulletins"
+    observed_public_evidence: "MC Ranchi publishes official district-wise rainfall statistics and periodic Jharkhand weather/climate bulletins."
+    acquisition_status: not_yet_selected
+    rights_status: pending_resource_level_review
+    geography_status: pending_report_period_and_district_vintage_review
+    schema_status: pending_exact_report_or_machine_readable_payload_inspection
+    publication_status: blocked
+    notes: "Bulletin tables/maps may support audit and historical context but must not be scraped into research-ready values without resource-level rights, period, extraction and validation records."
+  - id: ogd_rainfall_catalogue
+    authority: "Open Government Data Platform India / National Water Informatics Centre with IMD and NRSC source contributions"
+    source_type: official_open_data_catalogue
+    discovery_url: "https://www.data.gov.in/catalog/rainfall"
+    candidate_scope: "Rainfall catalogue including gridded IMD/NRSC data and IMD daily normal rainfall up to district level"
+    observed_public_evidence: "The official OGD catalogue states that the Rainfall catalogue includes gridded IMD and NRSC data and daily normal rainfall as per IMD up to district level."
+    acquisition_status: not_yet_acquired
+    rights_status: government_open_data_license_india_catalogue_level_verified_resource_level_pending
+    geography_status: pending_exact_resource_granularity_and_vintage_review
+    schema_status: pending_exact_resource_payload_inspection
+    publication_status: blocked
+    notes: "Catalog-level GODL coverage does not substitute for identifying and acquiring the exact resource, recording attribution, hash, schema and supported inference level."
+rights_policy:
+  default: fail_closed
+  rule: "Verify exact API/resource terms, attribution and redistribution permissions. Public display or API documentation alone is not sufficient permission to redistribute a captured dataset."
+publication_note: "No thematic weather or climate value from these candidates is currently research-ready or published by Module 16."
