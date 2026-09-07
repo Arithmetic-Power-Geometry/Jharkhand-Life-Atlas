@@ -1,0 +1,97 @@
+contract_id: JLA_SOURCE_SNAPSHOT_V1
+status: active
+purpose: >-
+  Define the minimum evidence required before any discovered external source may be
+  treated as acquired JLA evidence. This contract applies across all roadmap modules.
+
+principles:
+  - catalog_metadata_is_not_acquired_data
+  - resource_page_metadata_is_not_acquired_data
+  - preview_rows_or_fields_are_not_full_schema_verification
+  - failed_or_partial_requests_do_not_satisfy_acquisition
+  - immutable_snapshot_identity_precedes_cleaning
+  - missing_values_remain_null_unless_source_explicitly_encodes_zero
+  - source_and_geography_vintages_are_preserved
+  - historical_and_current_geographies_are_not_name_only_joined
+  - person_level_sensitive_data_are_not_published
+  - derived_outputs_require_verified_inputs_and_documented_methods
+
+required_after_successful_acquisition:
+  source_identity:
+    - module_id
+    - source_id
+    - source_title
+    - publisher
+    - authoritative_source_url
+    - exact_resource_or_api_url
+  retrieval:
+    - retrieved_at_utc
+    - retrieval_method
+    - media_type
+    - byte_count
+    - sha256
+  rights:
+    - publication_class
+    - licence_or_terms
+    - licence_url_or_terms_url
+    - rights_review_status
+    - attribution_requirement
+  temporal_geographic_context:
+    - source_reference_period
+    - source_geography_vintage
+    - smallest_authoritative_reusable_granularity
+  observed_payload:
+    - observed_schema
+    - record_count_before_jharkhand_filter
+    - jharkhand_filter_method
+    - record_count_after_jharkhand_filter
+    - source_record_identity_field_or_strategy
+    - null_semantics_reviewed
+  validation:
+    - schema_validation_status
+    - geography_linkage_status
+    - provenance_validation_status
+    - module_tests_status
+
+conditional_fields:
+  api_acquisition:
+    required:
+      - request_parameters
+      - pagination_strategy
+      - response_completeness_check
+    note: >-
+      If a stable byte-for-byte payload cannot be archived, record a canonical request
+      manifest and hashes for every acquired response page/chunk.
+  temporal_crosswalk:
+    required_when_source_geography_differs_from_target: true
+    required:
+      - crosswalk_source
+      - crosswalk_evidence_url
+      - relationship_type
+      - review_status
+    publishable_direct_relationship:
+      relationship_type: equivalent
+      review_status: verified_equivalent
+    unresolved_relationships:
+      - split
+      - merge
+      - boundary_change
+      - unresolved
+  restricted_source:
+    rule: >-
+      Do not redistribute raw data unless the applicable licence/terms explicitly allow it;
+      publish only lawful derived outputs whose disclosure risk and licence conditions pass review.
+
+forbidden_shortcuts:
+  - inventing_or_backfilling_payloads
+  - converting_missing_to_zero_without_explicit_source_semantics
+  - treating_dashboard_display_as_reproducible_snapshot_without_capture_provenance
+  - treating_catalog_update_date_as_record_observation_date
+  - fuzzy_or_name_only_temporal_geography_equivalence
+  - publishing_person_household_account_device_or_beneficiary_identifiers
+  - declaring_a_module_complete_from_source_discovery_alone
+
+publication_gate_effect: >-
+  A source that does not satisfy this contract may remain in discovery/source inventories,
+  but it cannot satisfy authoritative acquisition, production schema, indicator,
+  downloadable-evidence, or module-completion gates.
