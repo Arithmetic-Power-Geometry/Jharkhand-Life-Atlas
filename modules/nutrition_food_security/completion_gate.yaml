@@ -1,0 +1,55 @@
+module_id: nutrition_food_security
+gate_version: 1
+status: open
+rule: "Module 7 may be marked complete only when every criterion below is verified true against repository evidence on main."
+criteria:
+  authoritative_acquisition:
+    passed: false
+    requirement: "Acquire the exact authoritative payload(s), record retrieval timestamps, hashes, byte sizes and source identifiers; catalog pages alone do not satisfy acquisition."
+  rights_and_licence_review:
+    passed: false
+    requirement: "Verify source-specific reuse terms, attribution and any publication restrictions; third-party evidence retains its own licence."
+  smallest_authoritative_reusable_granularity:
+    passed: false
+    requirement: "Use only the smallest lawful authoritative aggregate granularity supported by the source; never expose person/household/beneficiary records."
+  cleaning_and_schema:
+    passed: false
+    requirement: "Define production schema from inspected payload fields, preserve nulls, record transformations and reject undocumented coercions."
+  geographic_linkage:
+    passed: false
+    requirement: "Link only through authoritative identifiers or a validated temporal crosswalk; prohibit name-only/fuzzy joins and silent Census-2011/current-geography equivalence."
+  provenance:
+    passed: false
+    requirement: "Every published value must retain source, period, geography, transformation, observation type and quality/provenance fields."
+  indicators:
+    passed: false
+    requirement: "Validate indicator definitions, survey universe/denominators, units and reporting periods; survey estimates must not be presented as administrative counts."
+  validation:
+    passed: false
+    requirement: "Run range, type, duplicate, geography, temporal, missingness and cross-source consistency checks appropriate to each source."
+  tests:
+    passed: false
+    requirement: "Automated tests enforce fail-closed publication, privacy exclusions, null preservation, geography rules and indicator semantics."
+  streamlit:
+    passed: false
+    requirement: "Streamlit shows IN DEVELOPMENT until this gate passes and exposes verified coverage, gaps, sources/methods and only genuinely published evidence."
+  downloads_and_reports:
+    passed: false
+    requirement: "Provide research-ready downloadable data plus reproducible report inputs/outputs with provenance and licence information."
+  documentation:
+    passed: false
+    requirement: "Document source selection, rights, methods, schema/data dictionary, limitations, usage examples and reproducibility."
+  green_ci_main:
+    passed: false
+    requirement: "All repository and Module 7 CI checks are green on the exact main commit containing the completed evidence release."
+privacy_red_lines:
+  - no_names_phone_numbers_aadhaar_ration_card_or_beneficiary_ids
+  - no_child_mother_household_or_respondent_level_records
+  - no_reconstruction_of_nfhs_microdata_from_aggregates
+  - no_authenticated_poshan_tracker_scraping
+scientific_red_lines:
+  - missing_is_not_zero
+  - no_fabricated_denominators
+  - no_survey_estimate_as_admin_count
+  - no_state_value_allocated_to_district_or_village
+  - no_silent_historical_current_geography_merge
