@@ -1,0 +1,83 @@
+contract_version: 1
+module_id: nutrition_food_security
+publication_state: prepublication_contract_only
+production_schema_gate_satisfied: false
+purpose: >-
+  Define the minimum lawful, provenance-preserving row contract for future Module 7
+  curated outputs. This file is not evidence that any nutrition or food-security
+  payload has been acquired or published.
+required_fields:
+  - source_id
+  - source_record_id
+  - indicator_id
+  - indicator_label
+  - value
+  - unit
+  - observation_status
+  - geography_level
+  - source_geography_id
+  - source_geography_name
+  - geography_vintage
+  - observation_period_start
+  - observation_period_end
+  - denominator_or_universe
+  - provenance_reference
+  - rights_class
+  - validation_status
+observation_status_allowed:
+  - observed
+  - derived
+  - modelled
+null_policy:
+  preserve_missing_as_null: true
+  zero_allowed_only_when_explicitly_reported_by_source: true
+  imputation_without_explicit_method_and_flag: prohibited
+privacy:
+  prohibited_fields:
+    - person_name
+    - mobile_number
+    - aadhaar
+    - ration_card_number
+    - beneficiary_id
+    - household_id
+    - child_id
+    - mother_id
+    - individual_measurement_record
+  permitted_scope: aggregate_public_interest_evidence_only
+geography:
+  authoritative_identifier_or_verified_crosswalk_required: true
+  fuzzy_name_join: prohibited
+  current_to_census2011_name_only_join: prohibited
+  geography_vintage_required: true
+  district_level_default_until_finer_linkage_verified: true
+temporal_integrity:
+  survey_period_must_be_preserved: true
+  programme_reporting_period_must_be_preserved: true
+  historical_and_current_geography_must_remain_explicit: true
+indicator_integrity:
+  authoritative_definition_required: true
+  denominator_or_universe_required_for_rates_prevalence_and_coverage: true
+  survey_estimates_must_not_be_represented_as_administrative_counts: true
+  published_precision_should_be_preserved_when_available: true
+provenance:
+  source_id_required: true
+  exact_source_artifact_or_resource_reference_required: true
+  transformation_method_required_for_derived_values: true
+  retrieval_and_hash_metadata_required_before_publication: true
+rights:
+  publication_class_required: true
+  unclear_rights_fail_closed: true
+  third_party_material_not_relicensed_by_jla: true
+publication_gate:
+  no_curated_output_may_be_labeled_research_ready_until:
+    - authoritative_payload_acquired
+    - rights_review_passed
+    - geography_linkage_verified
+    - provenance_complete
+    - production_schema_validated
+    - indicator_semantics_validated
+    - tests_green
+    - streamlit_truthful
+    - downloads_and_reports_verified
+    - documentation_complete
+    - ci_green_on_main
