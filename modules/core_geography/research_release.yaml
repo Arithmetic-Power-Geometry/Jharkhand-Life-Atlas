@@ -43,7 +43,8 @@ scientific_integrity:
 paper_support_assets:
   statistics_inputs: ready_from_verified_module_metadata_and_curated_outputs
   figures_tables_inputs: preparation_required
-  data_dictionary: preparation_required
+  data_dictionary: ready
+  data_dictionary_path: modules/core_geography/DATA_DICTIONARY.md
   technical_validation: repository_tests_and_module_validation_available
   usage_examples: preparation_required
   reproducibility_assets: ingestion_and_sync_code_available
@@ -53,7 +54,7 @@ paper_support_assets:
 release_gate:
   - Recompute all manuscript statistics directly from release artifacts before submission.
   - Generate tables and figures from version-pinned curated outputs, never by manual transcription.
-  - Publish a field-level data dictionary covering identifiers, temporal views, provenance, null semantics, and licensing.
+  - Keep the field-level data dictionary synchronized with the production schema, temporal views, provenance, null semantics, and licensing.
   - Record a clean reproducibility run and green CI for the exact release commit/tag.
   - Archive only redistributable artifacts and preserve source-specific attribution and licence terms.
   - Mint or register a DOI only after the versioned release package is frozen and verified.
