@@ -1,0 +1,45 @@
+schema: JLA_ACQUISITION_CANDIDATES_V1
+module_id: sanitation_hygiene
+verified_on: '2026-09-08'
+publication_allowed: false
+candidates:
+  - source_id: OGD_SBMG_IHHL_CSC_2024_25
+    authority: Government of India Open Government Data Platform / Rajya Sabha
+    resource_url: https://ap.data.gov.in/resource/stateut-wise-number-households-individual-household-latrines-ihhls-and-community-sanitary
+    resource_scope: state_ut
+    reporting_period: '2024-25'
+    programme: Swachh Bharat Mission - Gramin Phase II
+    acquisition_state: authoritative_resource_discovered_payload_not_acquired
+    candidate_role: state_level_context_only
+    required_before_use:
+      - resolve_canonical_data_gov_in_resource
+      - acquire_exact_payload
+      - record_sha256_and_byte_count
+      - inspect_observed_schema
+      - explicitly_filter_jharkhand
+      - verify_units_and_reporting_period
+      - verify_rights_and_attribution
+      - preserve_missing_as_null
+    limitations:
+      - state_level_resource_cannot_support_district_block_or_village_outputs
+      - construction_counts_do_not_by_themselves_establish_functionality_usage_or_ODF_sustainability
+  - source_id: OGD_SBMG_DISTRICT_IHHL_2017_18
+    authority: Government of India Open Government Data Platform / Ministry of Drinking Water and Sanitation
+    resource_url: https://punjab.data.gov.in/resource/stateut-and-district-wise-individual-household-latrines-ihhls-constructed-under-swachh
+    resource_scope: state_ut_and_district
+    reporting_period: '2017-12-01_to_2018-11-30'
+    acquisition_state: authoritative_historical_resource_discovered_payload_not_acquired
+    candidate_role: historical_district_context
+    required_before_use:
+      - resolve_canonical_data_gov_in_resource
+      - acquire_exact_payload
+      - record_sha256_and_byte_count
+      - inspect_observed_schema
+      - explicitly_filter_jharkhand
+      - identify_district_geography_vintage
+      - link_historical_districts_only_with_evidence_backed_crosswalk
+      - preserve_missing_as_null
+rules:
+  - discovery_does_not_open_publication_gate
+  - historical_and_current_geographies_are_not_silently_merged
+  - sanitation_construction_counts_are_not_equivalent_to_service_quality
