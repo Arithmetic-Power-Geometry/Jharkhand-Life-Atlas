@@ -1,0 +1,31 @@
+name: digital-connectivity-validation
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'modules/digital_connectivity/**'
+      - 'tests/test_digital_connectivity*.py'
+      - 'app_pages/**'
+      - 'pyproject.toml'
+      - '.github/workflows/digital-connectivity-validation.yml'
+  pull_request:
+    paths:
+      - 'modules/digital_connectivity/**'
+      - 'tests/test_digital_connectivity*.py'
+      - 'app_pages/**'
+      - 'pyproject.toml'
+      - '.github/workflows/digital-connectivity-validation.yml'
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install -e . pytest pyyaml
+      - run: python -m compileall modules/digital_connectivity
+      - run: pytest -q tests/test_digital_connectivity*.py
+      - run: pytest -q
