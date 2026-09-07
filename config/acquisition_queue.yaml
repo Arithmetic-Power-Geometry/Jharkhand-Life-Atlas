@@ -1,0 +1,106 @@
+queue_id: JLA_PARALLEL_ACQUISITION_V1
+status: active
+purpose: >-
+  Maintain an auditable priority queue for converting verified source discovery into
+  authoritative acquired evidence without confusing discovery with publication.
+
+execution_rules:
+  - health_access_has_highest_priority
+  - run_independent_safe_tasks_in_parallel
+  - exact_payload_identity_precedes_cleaning
+  - every_successful_acquisition_must_satisfy_JLA_SOURCE_SNAPSHOT_V1
+  - record_blockers_and_continue_other_independent_tasks
+  - never_publish_from_catalog_or_dashboard_metadata_alone
+  - preserve_missing_as_null
+  - never_use_name_only_temporal_geography_equivalence
+  - never_collect_or_publish_sensitive_person_level_data
+
+workstreams:
+  - rank: 1
+    module_id: health_access
+    source_id: OGD_NIN_HEALTH_FACILITIES_GEO_2026
+    objective: resolve_exact_official_csv_or_data_api_and_acquire_payload
+    current_state: resource_discovered_payload_not_acquired
+    next_evidence:
+      - exact_resource_or_api_url
+      - retrieved_at_utc
+      - byte_count_or_canonical_api_page_hashes
+      - sha256
+      - observed_schema
+      - source_record_identity
+      - explicit_jharkhand_filter
+      - source_geography_vintage
+    publication_allowed: false
+
+  - rank: 2
+    module_id: health_access
+    source_id: OGD_NHP_HOSPITAL_GEO_2026
+    objective: independently_acquire_and_compare_second_official_hospital_directory
+    current_state: resource_page_resolved_raw_payload_not_acquired
+    next_evidence:
+      - exact_resource_or_api_url
+      - immutable_snapshot_identity
+      - observed_schema
+      - record_count_before_and_after_jharkhand_filter
+      - identity_comparison_with_NIN_source
+    publication_allowed: false
+
+  - rank: 3
+    module_id: health_access
+    source_id: OGD_HMIS_JH_DISTRICT
+    objective: acquire_exact_district_HMIS_time_series_payload
+    current_state: catalog_and_api_resource_identifier_known_payload_not_acquired
+    next_evidence:
+      - exact_resource_or_api_url
+      - period_semantics
+      - indicator_dictionary
+      - immutable_snapshot_identity
+      - district_geography_vintage
+    publication_allowed: false
+
+  - rank: 4
+    module_id: water_access
+    source_id: OGD_JJM_CATALOG
+    objective: resolve_smallest_authoritative_reusable_Jharkhand_JJM_resource
+    current_state: catalog_verified_exact_resource_payload_pending
+    next_evidence:
+      - exact_production_resource_url
+      - exact_rights_and_attribution_metadata
+      - smallest_reusable_granularity
+      - source_geography_vintage
+      - immutable_snapshot_identity
+    publication_allowed: false
+
+  - rank: 5
+    module_id: sanitation_hygiene
+    source_id: OGD_SBMG_RURAL_SANITATION_COVERAGE
+    objective: resolve_and_acquire_exact_Jharkhand_rural_sanitation_resource
+    current_state: catalog_verified_exact_resource_payload_pending
+    next_evidence:
+      - exact_resource_or_api_url
+      - reporting_period
+      - geographic_levels_and_codes
+      - observed_schema
+      - immutable_snapshot_identity
+    publication_allowed: false
+
+  - rank: 6
+    module_id: education_access
+    source_id: OGD_UDISE_GROUP
+    objective: select_and_acquire_smallest_lawfully_reusable_Jharkhand_UDISE_resources
+    current_state: catalog_verified_exact_jharkhand_resource_selection_and_hash_pending
+    next_evidence:
+      - exact_resource_urls
+      - academic_years
+      - geography_level_and_vintage
+      - rights_and_attribution_metadata
+      - observed_schemas
+      - immutable_snapshot_identities
+    publication_allowed: false
+
+parallel_safe_followups:
+  - build_temporal_crosswalk_evidence_for_successfully_acquired_current_geographies
+  - implement_cleaners_only_after_observed_schema_is_captured
+  - validate_null_semantics_before_indicator_derivation
+  - update_Streamlit_evidence_coverage_from_verified_repository_truth
+  - generate_downloads_only_after_module_specific_publication_gates_pass
