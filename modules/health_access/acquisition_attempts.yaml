@@ -61,10 +61,26 @@ attempts:
     raw_bytes: null
     schema_inspected: false
     publication_effect: none_gate_remains_closed
+
+  - attempted_utc: '2026-09-07T17:42:00Z'
+    source_id: OGD_HEALTH_DIRECTORY_LIVE_CATALOG_CURRENCY_AUDIT
+    catalog_query_url: https://data.gov.in/catalog/hospital-directory-national-health-portal?filters%5Bfield_catalog_reference%5D=323881&format=json&limit=6&offset=0&sort%5Bcreated%5D=desc
+    catalog_metadata_verified: true
+    live_catalog_observation: "The current OGD catalog listing reports both NIN Health Faclities and National Hospital Directory monthly resources updated 2026-08-11 and exposes Data API controls."
+    cached_resource_page_observation: "A separately indexed/cached National Hospital Directory resource-page result still reports an older 2025-06-02 update and 9.9 MB size."
+    currency_resolution: live_catalog_metadata_preferred_for_current_resource_date_but_not_for_payload_identity
+    acquisition_result: metadata_currency_discrepancy_documented_no_payload_acquired
+    blocker_class: exact_raw_download_or_data_api_payload_endpoint_not_yet_captured
+    raw_sha256: null
+    raw_bytes: null
+    schema_inspected: false
+    publication_effect: none_gate_remains_closed
+
 rules:
   - catalog_metadata_is_not_raw_data
   - resource_page_metadata_is_not_raw_data
   - preview_fields_are_not_full_payload_schema
+  - cached_or_indexed_pages_do_not_establish_current_resource_currency_when_live_official_catalog_differs
   - failed_requests_do_not_satisfy_acquisition
   - hashes_and_byte_counts_exist_only_after_real_payload_acquisition
   - never_create_placeholder_payloads
