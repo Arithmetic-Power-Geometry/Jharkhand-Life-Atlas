@@ -1,0 +1,31 @@
+name: drought-water-stress-validation
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'modules/drought_water_stress/**'
+      - 'tests/test_drought_water_stress*.py'
+      - 'app_pages/**'
+      - 'pyproject.toml'
+      - '.github/workflows/drought-water-stress-validation.yml'
+  pull_request:
+    paths:
+      - 'modules/drought_water_stress/**'
+      - 'tests/test_drought_water_stress*.py'
+      - 'app_pages/**'
+      - 'pyproject.toml'
+      - '.github/workflows/drought-water-stress-validation.yml'
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install -e . pytest pyyaml
+      - run: python -m compileall modules/drought_water_stress
+      - run: pytest -q tests/test_drought_water_stress*.py
+      - run: pytest -q
