@@ -1,0 +1,48 @@
+sources:
+  - id: MOHFW_HMIS
+    name: Health Management Information System (HMIS / HMIS 2.0)
+    authority: Ministry of Health & Family Welfare, Government of India
+    url: https://hmis.nhp.gov.in/
+    source_type: administrative_reporting_system
+    thematic_scope: [maternal_health, child_health, immunization, service_delivery]
+    documented_granularity: facility_level_and_above_monthly
+    geography_note: "MoHFW documents HMIS as LGD-based and facility mapped to administrative geographies; exact exported identifiers and vintage must be verified from acquired payloads."
+    rights_status: "Official government system identified. Public reuse/licence terms for the exact export/API payload are not yet verified; do not republish values until reviewed."
+    acquisition_status: "Official system and documentation discovered; exact reusable Jharkhand payload/API resource not yet acquired and hashed."
+    publishable: false
+    privacy_boundary: "Use aggregate/facility reporting only; never ingest beneficiary-level RCH/MCTS records or person identifiers."
+
+  - id: MOHFW_HMIS_DOCUMENTATION
+    name: Health Management Information System brief/documentation
+    authority: Ministry of Health & Family Welfare, Government of India
+    url: https://www.mohfw.gov.in/sites/default/files/HMIS%20Brief.pdf
+    source_type: official_documentation
+    thematic_scope: [system_definition, reporting_granularity, maternal_health, child_health, immunization]
+    documented_granularity: metadata_only
+    rights_status: "Official ministry documentation; useful for source semantics, not itself a reusable observation dataset."
+    acquisition_status: "Documentation discovered and reviewed for system scope; observation payload still pending."
+    publishable: false
+
+  - id: NFHS_OFFICIAL
+    name: National Family Health Survey (NFHS) official reports and fact sheets
+    authority: Ministry of Health & Family Welfare, Government of India
+    url: https://main.mohfw.gov.in/basicpage-14
+    source_type: official_population_survey_outputs
+    thematic_scope: [maternal_health, child_health, immunization, nutrition_context]
+    documented_granularity: district_or_state_estimates_subject_to_release
+    geography_note: "Survey-wave district geography must be retained explicitly and never silently equated with later administrative geography."
+    rights_status: "Official survey outputs identified; exact file-level reuse, attribution and redistribution terms must be reviewed before packaging source-derived tables."
+    acquisition_status: "Official source family identified; exact Jharkhand wave files and machine-readable reusable granularity not yet verified and hashed."
+    publishable: false
+
+  - id: RCH_PORTAL_EXCLUDED_PERSON_LEVEL
+    name: Reproductive and Child Health (RCH) beneficiary tracking system
+    authority: Ministry of Health & Family Welfare, Government of India
+    url: https://rch.mohfw.gov.in/
+    source_type: operational_beneficiary_tracking_system
+    thematic_scope: [pregnancy_tracking, mother_child_service_tracking]
+    documented_granularity: person_level_operational_records
+    rights_status: "Not a JLA public-evidence acquisition target."
+    acquisition_status: "Explicitly excluded from person-level ingestion."
+    publishable: false
+    exclusion_reason: "JLA does not ingest or expose person-level mother/child records, names, contact details or identifiers. Aggregate evidence must come from an authoritative reusable aggregate source instead."
