@@ -1,0 +1,42 @@
+id: markets_essential_services
+name: Markets & Essential Services
+version: 0.1.0
+status: active
+description: "Authoritative place-linked evidence on formal markets and essential public-service access in Jharkhand. Source discovery and publication architecture are active; no Module 14 thematic evidence is yet published."
+geography:
+  primary: place
+  supports: [state, district, block, village]
+temporal:
+  type: multi_source_period
+  views: [dated_market_evidence, dated_service_facility_evidence, dated_access_evidence, census_2011_context]
+dependencies: [core_geography]
+features:
+  map: true
+  download: true
+  report: true
+  comparison: true
+  provenance: true
+principles:
+  - no_source_no_published_value
+  - missing_is_not_zero
+  - observed_derived_modelled_separated
+  - historical_and_current_geographies_not_silently_merged
+  - smallest_authoritative_reusable_granularity
+  - dynamic_directory_values_require_snapshot_provenance
+scope:
+  agricultural_markets: authoritative_source_discovery_active
+  postal_and_public_service_points: authoritative_source_discovery_active
+  other_essential_services: architecture_only_until_authoritative_payload_verified
+  service_accessibility: architecture_only_until_verified_destination_and_network_inputs_exist
+  census_context: verified_module1_census_2011_geography_only
+  place_linkage: no_name_only_linkage_to_current_administration
+engineering:
+  geographic_backbone: core_geography
+  fuzzy_linking: prohibited
+  missing_numeric_policy: preserve_null_never_zero
+  sensitive_data_policy: "Do not publish private trader/customer/beneficiary names, phone numbers, account or identity numbers, transaction histories, household-level service-use records, precise private residences, employee personal details, or other person-level records merely because a directory or portal exposes them."
+  temporal_geography_policy: "Every market/service observation must retain source date/period and geography vintage; Census 2011 and current administrative geography must not be silently merged."
+  dynamic_source_policy: "Changing directories and dashboards require an auditable dated snapshot/export with retrieval timestamp and hash before publication; a current web display alone is not sufficient provenance."
+  accessibility_policy: "Do not publish travel-time, distance-to-service, catchment, or coverage indicators until destination coordinates, network/impedance assumptions, geography vintage, and validation are verified."
+  publication_policy: fail_closed_until_source_payload_rights_geography_schema_indicator_semantics_and_validation_verified
+completion_gate: "Do not mark complete until acquisition, rights review, provenance, geographic linking, schema, indicators, validation, tests, Streamlit, downloads/reports, documentation and CI are verified on main."
