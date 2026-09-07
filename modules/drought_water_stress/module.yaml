@@ -1,0 +1,42 @@
+id: drought_water_stress
+name: Drought & Water Stress
+version: 0.1.0
+status: active
+description: "Authoritative drought and water-stress evidence for Jharkhand. Source discovery and publication architecture are active; no Module 17 thematic evidence is yet published."
+geography:
+  primary: supported_authoritative_unit_or_grid
+  supports: [state, district, sub_district, raster_grid, hydrological_unit]
+temporal:
+  type: monitoring_period_and_assessment_epoch
+  views: [daily, dekadal, fortnightly, monthly, seasonal, annual, multi_period_index]
+dependencies: [core_geography]
+features:
+  map: true
+  download: true
+  report: true
+  comparison: true
+  provenance: true
+principles:
+  - no_source_no_published_value
+  - missing_is_not_zero
+  - meteorological_agricultural_hydrological_drought_are_distinct
+  - observed_derived_modelled_composite_separated
+  - historical_and_current_geographies_not_silently_merged
+  - smallest_authoritative_reusable_granularity
+scope:
+  meteorological_drought: authoritative_source_discovery_active
+  agricultural_drought: authoritative_source_discovery_active
+  hydrological_drought: authoritative_source_discovery_active
+  water_stress: architecture_only_until_indicator_definition_denominator_and_period_verified
+  composite_indices: architecture_only_until_components_weights_thresholds_and_validation_verified
+  village_estimates: prohibited_until_validated_spatial_model_or_authoritative_product_exists
+engineering:
+  geographic_backbone: core_geography
+  fuzzy_linking: prohibited
+  missing_numeric_policy: preserve_null_never_zero
+  sensitive_data_policy: "Do not expose restricted observation-well, reservoir-operation, infrastructure-security, credential or person-level operational data merely because a drought source contains them."
+  temporal_geography_policy: "Every drought observation or classification must retain assessment period, source geography/grid/hydrological unit and administrative vintage where applicable; Census 2011 and current administrative geography must not be silently merged."
+  drought_semantics_policy: "Retain drought type, index name, component variables, units, accumulation window, baseline/reference period, thresholds, category definitions, model/product version and quality-control status where available."
+  composite_policy: "Do not publish composite drought or water-stress scores unless all component sources, missing-data treatment, weighting, thresholds, spatial support, temporal alignment and uncertainty are explicitly documented and validated."
+  publication_policy: fail_closed_until_source_payload_rights_geography_schema_temporal_semantics_and_validation_verified
+completion_gate: "Do not mark complete until acquisition, rights review, provenance, geographic linking, schema, indicators, validation, tests, Streamlit, downloads/reports, documentation and CI are verified on main."
