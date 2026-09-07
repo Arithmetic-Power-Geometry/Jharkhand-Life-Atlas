@@ -1,6 +1,7 @@
 import streamlit as st
 from jla.ui import hero, section_note
 from jla.data import sources, variables, source_coverage
+from jla.acquisition import acquisition_queue, acquisition_queue_status
 
 hero(
     "Sources, methods & responsible use",
@@ -9,9 +10,10 @@ hero(
 
 src = sources()
 
-t1, t2, t3, t4 = st.tabs([
+t1, t2, t3, t4, t5 = st.tabs([
     "Coverage audit",
     "Source registry",
+    "Acquisition queue",
     "Governance gate",
     "Variable registry",
 ])
@@ -31,6 +33,20 @@ with t2:
     )
 
 with t3:
+    status = acquisition_queue_status()
+    st.markdown("### Controlled evidence acquisition")
+    st.caption(
+        "This queue is read directly from repository configuration. It distinguishes source discovery from actual acquired evidence and does not imply publication readiness."
+    )
+    c1, c2 = st.columns(2)
+    c1.metric("Active acquisition workstreams", status["workstream_count"])
+    c2.metric("Queue status", str(status["status"]).upper())
+    st.dataframe(acquisition_queue(), width="stretch", hide_index=True)
+    st.warning(
+        "A source remains unpublished until its exact payload identity, rights, immutable snapshot/hash, observed schema, Jharkhand filter, temporal/geographic linkage, null semantics, validation and module-specific publication gate are verified."
+    )
+
+with t4:
     st.markdown("### Mandatory publication gate")
     st.markdown(
         "A dataset is not publishable merely because it is visible online. Before a factual value enters JLA, the source must pass checks for **authority, provenance, rights, attribution, privacy, sensitivity, geographic disclosure, scientific integrity, temporal integrity and validation**."
@@ -74,7 +90,7 @@ with t3:
         "The full project policy is maintained in docs/DATA_GOVERNANCE.md. Unclear rights default to a conservative publication class until verified."
     )
 
-with t4:
+with t5:
     st.dataframe(variables(), width="stretch", hide_index=True)
 
 st.info(
