@@ -1,0 +1,31 @@
+name: markets-essential-services-validation
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'modules/markets_essential_services/**'
+      - 'tests/test_markets_essential_services*.py'
+      - 'app_pages/**'
+      - 'pyproject.toml'
+      - '.github/workflows/markets-essential-services-validation.yml'
+  pull_request:
+    paths:
+      - 'modules/markets_essential_services/**'
+      - 'tests/test_markets_essential_services*.py'
+      - 'app_pages/**'
+      - 'pyproject.toml'
+      - '.github/workflows/markets-essential-services-validation.yml'
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install -e . pytest pyyaml
+      - run: python -m compileall modules/markets_essential_services
+      - run: pytest -q tests/test_markets_essential_services*.py
+      - run: pytest -q
