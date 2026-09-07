@@ -28,4 +28,4 @@ jobs:
       - run: pip install -e . pytest pyyaml
       - run: python -m compileall modules/livelihood_employment_poverty
       - run: pytest -q tests/test_livelihood_employment_poverty*.py
-      - run: python scripts/validate.py
+      - run: pytest -q
