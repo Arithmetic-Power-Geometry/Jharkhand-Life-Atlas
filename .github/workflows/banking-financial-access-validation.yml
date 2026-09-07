@@ -1,0 +1,31 @@
+name: banking-financial-access-validation
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'modules/banking_financial_access/**'
+      - 'tests/test_banking_financial_access*.py'
+      - 'app_pages/**'
+      - 'pyproject.toml'
+      - '.github/workflows/banking-financial-access-validation.yml'
+  pull_request:
+    paths:
+      - 'modules/banking_financial_access/**'
+      - 'tests/test_banking_financial_access*.py'
+      - 'app_pages/**'
+      - 'pyproject.toml'
+      - '.github/workflows/banking-financial-access-validation.yml'
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install -e . pytest pyyaml
+      - run: python -m compileall modules/banking_financial_access
+      - run: pytest -q tests/test_banking_financial_access*.py
+      - run: pytest -q
