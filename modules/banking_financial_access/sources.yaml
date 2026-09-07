@@ -1,0 +1,36 @@
+module: banking_financial_access
+status: discovery_active_no_thematic_values_published
+sources:
+  - id: rbi_directory_bank_offices
+    authority: Reserve Bank of India
+    source_type: official_directory
+    url: https://m.rbi.org.in/SCRIPTs/aboutDirectory.aspx
+    role: Candidate authoritative banking-office identity and location source; RBI documents Uniform Code Numbers for bank offices.
+    acquisition_status: not_yet_acquired
+    rights_status: pending_resource_level_review
+    geography_status: pending_real_payload_inspection
+    publication_status: blocked
+  - id: rbi_bsr_credit
+    authority: Reserve Bank of India
+    source_type: official_statistical_release
+    url: https://www.rbi.org.in/Scripts/Pr_DataRelease.aspx?DateFilter=Year&SectionID=376
+    role: Candidate credit and banking statistical evidence; exact Jharkhand-supported inference level must be established from acquired releases.
+    acquisition_status: not_yet_selected
+    rights_status: pending_resource_level_review
+    geography_status: pending_real_payload_inspection
+    publication_status: blocked
+  - id: pmjdy_statewise_accounts
+    authority: Department of Financial Services, Ministry of Finance, Government of India
+    source_type: official_dynamic_dashboard
+    url: https://pmjdy.gov.in/statewise-statistics
+    role: State-level PMJDY financial-inclusion account statistics; dynamic values require dated auditable snapshot provenance before use.
+    acquisition_status: not_yet_acquired_as_auditable_snapshot
+    rights_status: pending_resource_level_review
+    geography_status: state_level_only_until_verified_otherwise
+    publication_status: blocked
+notes:
+  - "Official discovery confirms PMJDY publishes dated state-wise account-opening reports, including Jharkhand; these displayed values are not ingested as published JLA evidence in this activation step."
+  - "RBI's Directory of Bank Offices provides an authoritative identity system for bank offices, but JLA must inspect actual reusable payload/export structure and temporal geography before integration."
+  - "RBI BSR statistical releases are candidates for credit/deposit or inclusion indicators only at granularity actually supported by the acquired release."
+  - "No missing banking observation may be interpreted as zero access, zero accounts, zero credit or zero deposits."
+  - "No customer-, account-, beneficiary- or transaction-level financial data may enter the public evidence layer."
