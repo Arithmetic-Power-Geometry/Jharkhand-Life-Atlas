@@ -26,4 +26,4 @@ jobs:
       - run: pip install -e . pytest pyyaml
       - run: python -m compileall modules/agriculture_farmers
       - run: pytest -q tests/test_agriculture_farmers*.py
-      - run: python scripts/validate.py
+      - run: pytest -q
