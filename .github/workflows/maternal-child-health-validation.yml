@@ -1,0 +1,38 @@
+name: maternal-child-health-validation
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'modules/maternal_child_health/**'
+      - 'tests/test_maternal_child_health*.py'
+      - 'data/curated/maternal_child_health/**'
+      - 'app_pages/**'
+      - 'scripts/**'
+      - '.github/workflows/maternal-child-health-validation.yml'
+  pull_request:
+    paths:
+      - 'modules/maternal_child_health/**'
+      - 'tests/test_maternal_child_health*.py'
+      - 'data/curated/maternal_child_health/**'
+      - 'app_pages/**'
+      - 'scripts/**'
+      - '.github/workflows/maternal-child-health-validation.yml'
+  workflow_dispatch:
+
+jobs:
+  validate-maternal-child-health:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - name: Install dependencies
+        run: pip install -r requirements.txt pytest
+      - name: Compile Module 6 code
+        run: python -m compileall -q modules/maternal_child_health app_pages scripts
+      - name: Run every Module 6 test
+        run: pytest -q tests/test_maternal_child_health*.py
+      - name: Run repository validation
+        run: python scripts/check.py
