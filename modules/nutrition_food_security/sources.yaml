@@ -1,0 +1,67 @@
+module_id: nutrition_food_security
+review_status: in_progress
+last_reviewed_utc: '2026-09-07T01:30:00Z'
+publication_rule: "Source discovery does not equal acquisition. No factual value may be published until exact payload, rights, geography, indicator semantics and validation pass."
+sources:
+  - source_id: MOHFW_NFHS5_JHARKHAND_2019_21
+    authority: Ministry of Health and Family Welfare, Government of India
+    title: National Family Health Survey (NFHS-5) 2019-21 - Jharkhand State Fact Sheet
+    official_url: https://www.mohfw.gov.in/sites/default/files/NFHS-5_Phase-II_0.pdf
+    source_type: official_survey_fact_sheet
+    temporal_scope: 2019-2021
+    geography: [state, district]
+    intended_role: primary_survey_nutrition_estimates
+    authority_verified: true
+    exact_payload_acquired: false
+    rights_review: pending_resource_specific_reuse_review
+    smallest_reusable_granularity: district_published_estimate_candidate_pending_payload_inspection
+    privacy_class: aggregate_only
+    publication_status: blocked_pending_acquisition_rights_schema_and_validation
+    notes: "Use published aggregate estimates only. Preserve survey period, universe/denominator, indicator definition and any confidence/precision information present in the authoritative source. Never reconstruct respondent records."
+
+  - source_id: OGD_NFHS5_MALNUTRITION_RS258
+    authority: Rajya Sabha / Open Government Data Platform India
+    title: State/UT-wise percentage of children under age 5 classified as stunted, wasted and underweight as per NFHS-5 during 2019-21
+    official_url: https://www.data.gov.in/resource/stateuts-wise-percentage-children-under-age-5-years-classified-malnourished-according
+    source_type: official_parliamentary_answer_ogd_resource
+    temporal_scope: 2019-2021
+    geography: [state]
+    intended_role: independent_state_level_cross_check_only
+    authority_verified: true
+    exact_payload_acquired: false
+    rights_review: NDSAP_GODL_metadata_verified_resource_payload_review_pending
+    smallest_reusable_granularity: state
+    privacy_class: aggregate_only
+    publication_status: blocked_pending_exact_payload_and_cross_check_protocol
+    notes: "Do not substitute this state-level parliamentary-answer extract for the primary NFHS fact-sheet evidence or infer district values from it."
+
+  - source_id: MWCD_POSHAN_TRACKER
+    authority: Ministry of Women and Child Development, Government of India
+    title: POSHAN Tracker
+    official_url: https://www.poshantracker.in/
+    source_type: official_programme_information_system
+    temporal_scope: current
+    geography: [state, district, project, anganwadi_centre_candidate]
+    intended_role: aggregate_programme_coverage_context_candidate
+    authority_verified: true
+    exact_payload_acquired: false
+    rights_review: pending_export_and_reuse_terms
+    smallest_reusable_granularity: unresolved_until_official_aggregate_export_review
+    privacy_class: restricted_person_level_system_aggregate_outputs_only_if_lawfully_reusable
+    publication_status: blocked_rights_export_privacy_and_schema
+    notes: "Do not scrape authenticated or beneficiary-level interfaces. Exclude child/mother records, identifiers, phone numbers, Aadhaar-linked information, growth-monitoring histories and household-level records. Only a clearly public, aggregate, reusable official export can enter JLA after review."
+
+  - source_id: CENSUS_DCHB_JH_2011_NUTRITION_CONTEXT
+    authority: Office of the Registrar General & Census Commissioner, India
+    title: Census 2011 District Census Handbook / village amenities context already validated in Module 1
+    source_type: verified_internal_dependency_on_authoritative_source
+    temporal_scope: 2011
+    geography: [district, village, town]
+    intended_role: historical_population_and_service_context_only
+    authority_verified: true
+    exact_payload_acquired: true
+    rights_review: inherit_verified_module1_governance
+    smallest_reusable_granularity: verified_module1_granularity
+    privacy_class: aggregate_only
+    publication_status: available_via_module1_not_module7_nutrition_evidence
+    notes: "Historical context only. Never present Census 2011 geography or amenities as current nutrition conditions or silently merge them with current administrative geography."
