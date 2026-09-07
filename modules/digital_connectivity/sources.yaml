@@ -1,0 +1,51 @@
+module: digital_connectivity
+status: discovery_active_no_thematic_values_published
+sources:
+  - id: bharatnet_programme
+    authority: Department of Telecommunications / Digital Bharat Nidhi
+    role: primary_candidate_rural_broadband_infrastructure
+    official_reference: https://www.bharatnet.dot.gov.in/
+    evidence_scope: "Official BharatNet programme source for Gram Panchayat/village broadband infrastructure and service context; exact Jharkhand reusable records or dated exports must be acquired and inspected before publication."
+    acquisition_status: exact_reusable_jharkhand_snapshot_not_yet_acquired
+    rights_status: resource_level_reuse_and_attribution_review_required
+    geography_status: gram_panchayat_village_identifiers_and_vintage_must_be_verified_before_linkage
+    publication_class: pending_governance_review
+  - id: digital_bharat_nidhi
+    authority: Department of Telecommunications / Digital Bharat Nidhi
+    role: rural_mobile_and_universal_service_context_candidate
+    official_reference: https://usof.gov.in/
+    evidence_scope: "Official universal-service programme source reporting BharatNet Gram Panchayat connectivity and mobile-tower programme context; exact Jharkhand payloads and granularity require acquisition."
+    acquisition_status: exact_jharkhand_payload_not_yet_acquired_or_hashed
+    rights_status: publication_and_reuse_terms_require_resource_level_review
+    geography_status: national_and_project_level_context_pending_exact_resource_inspection
+    publication_class: pending_resource_review
+  - id: trai_performance_indicators
+    authority: Telecom Regulatory Authority of India
+    role: primary_candidate_telecom_statistics
+    official_reference: https://www.trai.gov.in/release-publication/reports/performance-indicators-reports
+    evidence_scope: "Official periodic telecom performance-indicator reports, including the January-March 2026 release dated 22 June 2026; exact Jharkhand-relevant series, inference level and denominators must be inspected before use."
+    acquisition_status: exact_jharkhand_series_not_yet_extracted_or_hashed
+    rights_status: report_reuse_attribution_and_redistribution_review_required
+    geography_status: service_area_state_or_other_report_granularity_pending_series_inspection
+    publication_class: pending_resource_review
+  - id: ogd_telecom_resources
+    authority: Open Government Data Platform India / contributing ministries
+    role: discovery_and_open_resource_candidate
+    official_reference: https://data.gov.in/
+    evidence_scope: "OGD may expose telecommunications and digital-infrastructure resources. Exact Jharkhand resources must be selected, downloaded and inspected rather than inferred from catalog metadata."
+    acquisition_status: exact_resource_not_yet_selected_or_hashed
+    rights_status: "OGD resources generally require Government Open Data License - India and source-specific attribution review; exact resource terms must be verified."
+    geography_status: granularity_and_identifiers_pending_payload_inspection
+    publication_class: pending_resource_review
+  - id: lgd_geography
+    authority: Ministry of Panchayati Raj
+    role: current_administrative_geography_reference
+    official_reference: https://data.gov.in/catalog/local-government-directory-lgd
+    evidence_scope: "Current administrative identifiers for linkage where temporally compatible."
+    acquisition_status: shared_core_geography_dependency
+    rights_status: governed_by_existing_core_geography_review
+    geography_status: must_not_replace_or_silently_merge_census_2011_geography
+    publication_class: shared_verified_dependency_only
+blockers:
+  - "No exact authoritative Jharkhand digital-connectivity payload has yet passed acquisition, hashing, schema inspection, rights review and geographic-linkage validation."
+  - "Dynamic portal/dashboard values require auditable dated snapshots or exports before they can become published JLA evidence."
