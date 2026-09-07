@@ -46,9 +46,25 @@ attempts:
     raw_bytes: null
     schema_inspected: false
     publication_effect: none_gate_remains_closed
+
+  - attempted_utc: '2026-09-07T09:15:00Z'
+    source_id: OGD_NHP_HOSPITAL_GEO_RESOURCE_METADATA_RECHECK
+    resource_url: https://www.data.gov.in/resource/national-hospital-directory-geo-code-and-additional-parameters-updated-till-last-month
+    resource_identity_verified: true
+    rights_metadata_verified: true
+    rights_observation: "The official OGD page states that published datasets/resources and metadata are licensed under the Government Open Data License - India, subject to source-specific boundaries and attribution review."
+    preview_fields_observed: [Sr_No, Location_Coordinates, Location, Hospital_Name, Hospital_Category]
+    preview_fields_are_not_payload_schema_verification: true
+    acquisition_result: authoritative_resource_metadata_reconfirmed_no_raw_payload_acquired
+    blocker_class: exact_raw_download_or_data_api_payload_endpoint_not_yet_captured
+    raw_sha256: null
+    raw_bytes: null
+    schema_inspected: false
+    publication_effect: none_gate_remains_closed
 rules:
   - catalog_metadata_is_not_raw_data
   - resource_page_metadata_is_not_raw_data
+  - preview_fields_are_not_full_payload_schema
   - failed_requests_do_not_satisfy_acquisition
   - hashes_and_byte_counts_exist_only_after_real_payload_acquisition
   - never_create_placeholder_payloads
