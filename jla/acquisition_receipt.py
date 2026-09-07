@@ -12,7 +12,7 @@ import csv
 import hashlib
 import json
 from pathlib import Path
-from typing import Any, Iterable
+from typing import Any
 
 
 def _normalise_text(value: Any) -> str:
@@ -24,8 +24,7 @@ def _read_csv(path: Path) -> tuple[list[dict[str, Any]], list[str]]:
         reader = csv.DictReader(handle)
         if reader.fieldnames is None:
             raise ValueError("CSV payload has no header")
-        rows = list(reader)
-        return rows, list(reader.fieldnames)
+        return list(reader), list(reader.fieldnames)
 
 
 def _read_json(path: Path) -> tuple[list[dict[str, Any]], list[str]]:
@@ -48,24 +47,12 @@ def _read_json(path: Path) -> tuple[list[dict[str, Any]], list[str]]:
     return rows, fields
 
 
-def build_acquisition_receipt(
-    path: str | Path,
-    *,
-    state_field: str,
-    state_value: str = "Jharkhand",
-) -> dict[str, Any]:
-    """Return immutable acquisition evidence for a CSV or JSON payload.
-
-    The function performs no filling, coercion, aggregation, or missing-to-zero
-    conversion. The Jharkhand count is based only on an explicitly supplied source
-    field and an exact whitespace/case-normalised equality test.
-    """
-
+def build_acquisition_receipt(path: str | Path, *, state_field: str, state_value: str = "Jharkhand") -> dict[str, Any]:
+    """Return immutable acquisition evidence without transforming source values."""
     source_path = Path(path)
     raw = source_path.read_bytes()
     if not raw:
         raise ValueError("source payload is empty")
-
     suffix = source_path.suffix.casefold()
     if suffix == ".csv":
         rows, fields = _read_csv(source_path)
@@ -75,27 +62,64 @@ def build_acquisition_receipt(
         media_type = "application/json"
     else:
         raise ValueError("only CSV and JSON payloads are supported")
-
     if state_field not in fields:
         raise ValueError(f"state field not found in observed schema: {state_field}")
-
     target = _normalise_text(state_value)
     filtered_count = sum(_normalise_text(row.get(state_field, "")) == target for row in rows)
-
     return {
-        "retrieval": {
-            "media_type": media_type,
-            "byte_count": len(raw),
-            "sha256": hashlib.sha256(raw).hexdigest(),
-        },
+        "retrieval": {"media_type": media_type, "byte_count": len(raw), "sha256": hashlib.sha256(raw).hexdigest()},
         "observed_payload": {
             "observed_schema": fields,
             "record_count_before_jharkhand_filter": len(rows),
-            "jharkhand_filter_method": (
-                f"exact case/whitespace-normalised equality on source field {state_field!r} "
-                f"to {state_value!r}"
-            ),
+            "jharkhand_filter_method": f"exact case/whitespace-normalised equality on source field {state_field!r} to {state_value!r}",
             "record_count_after_jharkhand_filter": filtered_count,
             "null_semantics_reviewed": False,
         },
+    }
+
+
+def build_source_snapshot_draft(
+    path: str | Path,
+    *, module_id: str, source_id: str, source_title: str, publisher: str,
+    authoritative_source_url: str, exact_resource_or_api_url: str,
+    retrieved_at_utc: str, retrieval_method: str, publication_class: str,
+    licence_or_terms: str, licence_url_or_terms_url: str, attribution_requirement: str,
+    source_reference_period: str, source_geography_vintage: str,
+    smallest_authoritative_reusable_granularity: str,
+    source_record_identity_field_or_strategy: str, state_field: str,
+    state_value: str = "Jharkhand",
+) -> dict[str, Any]:
+    """Build a fail-closed JLA_SOURCE_SNAPSHOT_V1 draft around observed payload facts.
+
+    Review-dependent fields deliberately remain pending, so this draft cannot itself
+    satisfy the acquired-source gate.
+    """
+    receipt = build_acquisition_receipt(path, state_field=state_field, state_value=state_value)
+    receipt["retrieval"].update({"retrieved_at_utc": retrieved_at_utc, "retrieval_method": retrieval_method})
+    receipt["observed_payload"]["source_record_identity_field_or_strategy"] = source_record_identity_field_or_strategy
+    return {
+        "contract": "JLA_SOURCE_SNAPSHOT_V1",
+        "source_identity": {
+            "module_id": module_id, "source_id": source_id, "source_title": source_title,
+            "publisher": publisher, "authoritative_source_url": authoritative_source_url,
+            "exact_resource_or_api_url": exact_resource_or_api_url,
+        },
+        "retrieval": receipt["retrieval"],
+        "rights": {
+            "publication_class": publication_class, "licence_or_terms": licence_or_terms,
+            "licence_url_or_terms_url": licence_url_or_terms_url,
+            "rights_review_status": "pending_review", "attribution_requirement": attribution_requirement,
+        },
+        "temporal_geographic_context": {
+            "source_reference_period": source_reference_period,
+            "source_geography_vintage": source_geography_vintage,
+            "smallest_authoritative_reusable_granularity": smallest_authoritative_reusable_granularity,
+        },
+        "observed_payload": receipt["observed_payload"],
+        "validation": {
+            "schema_validation_status": "pending_review", "geography_linkage_status": "pending_review",
+            "provenance_validation_status": "pending_review", "module_tests_status": "pending_review",
+        },
+        "missing_values_converted_to_zero": False,
+        "contains_sensitive_person_level_data": False,
     }
