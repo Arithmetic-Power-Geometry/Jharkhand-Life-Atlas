@@ -100,6 +100,25 @@ sources:
     catalog_api_resource_id: f7daca9b-92d4-4c6c-886a-91bf94a7e27e
     notes: "Official catalog is explicitly released under NDSAP and the OGD platform applies GODL-India. District-level service/activity indicators only; never allocate district aggregates to villages or facilities. Preserve period, district, indicator and source metadata. Individual inspected historical resources may expose CSV download without a resource API."
 
+  - source_id: OGD_HMIS_ALL_STATES_DISTRICTS_2025
+    title: Item-wise HMIS report of all States and Districts Across the Months
+    publisher: Ministry of Health and Family Welfare, Government of India
+    url: https://www.data.gov.in/catalog/item-wise-hmis-report-all-states-and-districts-across-months
+    role: current_parallel_candidate_for_jharkhand_district_hmis
+    reference_year: time_series
+    catalog_published_on: 2021-02-10
+    catalog_updated_on: 2025-02-14
+    advertised_access: [catalog_api, zip_download]
+    advertised_granularity: district_month_indicator
+    publication_class: OPEN_WITH_ATTRIBUTION
+    license: Government Open Data License - India
+    license_url: https://www.data.gov.in/sites/default/files/Gazette_Notification_OGDL.pdf
+    license_review_status: reviewed_ogdl_catalog
+    license_checked_on: 2026-09-08
+    attribution_required: true
+    acquisition_status: catalog_verified_payload_not_acquired
+    notes: "Official OGD catalog is materially newer than the Jharkhand-specific HMIS catalog and is therefore registered as a parallel acquisition candidate. It must not silently replace the Jharkhand-specific series. Before use, acquire and hash the exact payload/resource, inspect the observed schema and period semantics, explicitly filter State/UT=Jharkhand, verify district geography vintage and record identity, compare overlap with the Jharkhand-specific catalog, preserve missing as null, and prohibit any village/facility allocation of district aggregates."
+
   - source_id: ABDM_HFR
     title: Ayushman Bharat Digital Mission — Health Facility Registry
     publisher: National Health Authority, Government of India
