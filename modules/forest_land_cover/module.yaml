@@ -1,0 +1,42 @@
+id: forest_land_cover
+name: Forest & Land Cover
+version: 0.1.0
+status: active
+description: "Authoritative forest-cover and land-cover evidence for Jharkhand. Source discovery and publication architecture are active; no Module 15 thematic evidence is yet published."
+geography:
+  primary: mapped_area
+  supports: [state, district, block, village, raster_grid]
+temporal:
+  type: multi_source_period
+  views: [forest_assessment_period, land_cover_epoch, change_interval, census_2011_context]
+dependencies: [core_geography]
+features:
+  map: true
+  download: true
+  report: true
+  comparison: true
+  provenance: true
+principles:
+  - no_source_no_published_value
+  - missing_is_not_zero
+  - observed_derived_modelled_separated
+  - historical_and_current_geographies_not_silently_merged
+  - smallest_authoritative_reusable_granularity
+  - remote_sensing_products_retain_sensor_method_scale_and_epoch
+scope:
+  forest_cover: authoritative_source_discovery_active
+  tree_cover: authoritative_source_discovery_active
+  land_use_land_cover: authoritative_source_discovery_active
+  change_detection: architecture_only_until_comparable_verified_epochs_exist
+  administrative_summaries: architecture_only_until_verified_spatial_overlay_and_vintage_alignment
+  census_context: verified_module1_census_2011_geography_only
+engineering:
+  geographic_backbone: core_geography
+  fuzzy_linking: prohibited
+  missing_numeric_policy: preserve_null_never_zero
+  sensitive_data_policy: "Do not expose sensitive biodiversity locations, private landholder information, precise locations of protected species or other restricted conservation data merely because a spatial source contains them."
+  temporal_geography_policy: "Every forest or land-cover observation must retain source epoch/assessment period, spatial resolution/scale and geography vintage; Census 2011 and current administrative geography must not be silently merged."
+  remote_sensing_policy: "Retain authoritative product name, sensor/input lineage when available, classification method, scale or resolution, epoch, class legend and uncertainty/accuracy metadata; do not treat differently defined products as directly interchangeable."
+  change_policy: "Do not publish forest-loss, gain, land-cover transition or trend outputs until compared epochs are methodologically compatible or differences are explicitly modelled and validated."
+  publication_policy: fail_closed_until_source_payload_rights_geography_schema_class_semantics_and_validation_verified
+completion_gate: "Do not mark complete until acquisition, rights review, provenance, geographic linking, schema, indicators, validation, tests, Streamlit, downloads/reports, documentation and CI are verified on main."
