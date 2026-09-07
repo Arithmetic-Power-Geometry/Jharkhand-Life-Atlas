@@ -1,0 +1,39 @@
+id: maternal_child_health
+name: Maternal & Child Health
+version: 0.1.0
+status: active
+description: "Authoritative, privacy-preserving, place-linked aggregate evidence on maternal health, child health and immunization in Jharkhand. Architecture and source review are active; no Module 6 thematic evidence is yet published."
+geography:
+  primary: place
+  supports: [state, district, block, facility]
+temporal:
+  type: multi_source_reporting_period
+  views: [dated_hmis_service_delivery, dated_survey_estimates, census_2011_context]
+dependencies: [core_geography]
+features:
+  map: true
+  download: true
+  report: true
+  comparison: true
+  provenance: true
+principles:
+  - no_source_no_published_value
+  - missing_is_not_zero
+  - observed_derived_modelled_separated
+  - no_person_level_mother_child_or_contact_identifiers
+  - historical_and_current_geographies_not_silently_merged
+  - smallest_authoritative_reusable_granularity
+scope:
+  maternal_health_service_delivery: official_hmis_source_discovery_verified_payload_acquisition_pending
+  child_health_immunization: official_hmis_source_discovery_verified_payload_acquisition_pending
+  survey_estimates: official_nfhs_source_discovery_rights_and_reuse_review_pending
+  facility_linkage: depends_on_verified_facility_identity_and_geography; no_cross_module_publish_until_prerequisites_pass
+  access_and_coverage_indicators: pending_verified_numerators_denominators_periods_and_geography
+engineering:
+  geographic_backbone: core_geography
+  fuzzy_linking: prohibited
+  missing_numeric_policy: preserve_null_never_zero
+  sensitive_data_policy: "Exclude RCH/MCTS beneficiary records, names, phone numbers, addresses, IDs, pregnancy-level records, child-level records and any other person-level identifiers even if an authenticated system can expose them."
+  denominator_policy: "Do not infer eligible-population denominators from unrelated sources; every rate or coverage measure requires an explicit authoritative denominator definition and compatible period/geography."
+  publication_policy: fail_closed_until_source_payload_rights_geography_schema_indicator_semantics_and_validation_verified
+completion_gate: "Do not mark complete until acquisition, rights review, provenance, geographic linking, schema, indicators, validation, tests, Streamlit, downloads/reports, documentation and CI are verified on main."
