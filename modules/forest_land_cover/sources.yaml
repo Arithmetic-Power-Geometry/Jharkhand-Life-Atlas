@@ -1,0 +1,42 @@
+module: forest_land_cover
+status: discovery_active_no_thematic_values_published
+sources:
+  - id: fsi_isfr_2023
+    authority: "Forest Survey of India, Ministry of Environment, Forest and Climate Change, Government of India"
+    source_type: official_biennial_forest_assessment
+    discovery_url: "https://fsi.nic.in/isfr-volume-i"
+    candidate_scope: "Jharkhand forest cover, tree cover and forest-resource context from India State of Forest Report 2023"
+    observed_public_evidence: "FSI identifies ISFR 2023 as the current biennial State of Forest Report and its Volume II includes a Jharkhand state chapter."
+    acquisition_status: not_yet_acquired
+    rights_status: pending_resource_level_review
+    geography_status: pending_assessment_boundary_and_vintage_review
+    schema_status: pending_exact_table_or_machine_readable_payload_inspection
+    publication_status: blocked
+    notes: "Report discovery is not equivalent to reusable structured acquisition. JLA must capture exact Jharkhand tables/data, rights/attribution, assessment definitions and provenance before publishing values."
+  - id: nrsc_bhuvan_lulc
+    authority: "National Remote Sensing Centre, Indian Space Research Organisation, Government of India"
+    source_type: official_geospatial_thematic_service
+    discovery_url: "https://bhuvan.nrsc.gov.in/"
+    candidate_scope: "Land Use/Land Cover and related thematic layers for Jharkhand"
+    observed_public_evidence: "Bhuvan documents Land Use/Land Cover thematic layers and state portals, including Jharkhand."
+    acquisition_status: not_yet_acquired
+    rights_status: pending_product_specific_review
+    geography_status: pending_spatial_reference_resolution_and_epoch_review
+    schema_status: pending_real_service_or_download_inspection
+    publication_status: blocked
+    notes: "Some Bhuvan products/services may have request, MoU, login or use-condition requirements. Do not assume open redistribution from public visualization alone."
+  - id: jharkhand_forest_department_candidates
+    authority: "Department of Forest, Environment & Climate Change, Government of Jharkhand"
+    source_type: official_state_government_candidates
+    discovery_url: "https://forest.jharkhand.gov.in/"
+    candidate_scope: "State forest administration, protected-area and forest-management evidence suitable for aggregate/spatial linkage"
+    acquisition_status: not_yet_selected
+    rights_status: pending_resource_specific_review
+    geography_status: pending
+    schema_status: pending
+    publication_status: blocked
+    notes: "Only authoritative reusable aggregate or spatial evidence may proceed. Sensitive conservation locations and person-level records remain excluded."
+rights_policy:
+  default: fail_closed
+  rule: "Public access or visualization is not sufficient permission to redistribute; verify exact product/resource rights, attribution, restrictions and conservation-sensitivity boundaries."
+publication_note: "No thematic forest or land-cover value from these candidates is currently research-ready or published by Module 15."
