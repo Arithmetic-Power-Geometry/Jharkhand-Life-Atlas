@@ -1,0 +1,29 @@
+name: agriculture-farmers-validation
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'modules/agriculture_farmers/**'
+      - 'tests/test_agriculture_farmers*.py'
+      - 'app_pages/**'
+      - '.github/workflows/agriculture-farmers-validation.yml'
+  pull_request:
+    paths:
+      - 'modules/agriculture_farmers/**'
+      - 'tests/test_agriculture_farmers*.py'
+      - 'app_pages/**'
+      - '.github/workflows/agriculture-farmers-validation.yml'
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install -e . pytest pyyaml
+      - run: python -m compileall modules/agriculture_farmers
+      - run: pytest -q tests/test_agriculture_farmers*.py
+      - run: python scripts/validate.py

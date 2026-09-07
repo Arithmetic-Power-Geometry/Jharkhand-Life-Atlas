@@ -1,0 +1,40 @@
+id: agriculture_farmers
+name: Agriculture & Farmers
+version: 0.1.0
+status: active
+description: "Authoritative aggregate evidence on crops, land use, irrigation and farm structure in Jharkhand. Architecture and source review are active; no Module 8 thematic evidence is yet published."
+geography:
+  primary: place
+  supports: [state, district]
+temporal:
+  type: multi_source_agricultural_year
+  views: [dated_agricultural_statistics, dated_agriculture_census, census_2011_context]
+dependencies: [core_geography]
+features:
+  map: true
+  download: true
+  report: true
+  comparison: true
+  provenance: true
+principles:
+  - no_source_no_published_value
+  - missing_is_not_zero
+  - observed_derived_modelled_separated
+  - no_farmer_or_beneficiary_person_level_records
+  - historical_and_current_geographies_not_silently_merged
+  - smallest_authoritative_reusable_granularity
+scope:
+  crop_area_production_yield: official_des_apy_identified_exact_export_and_rights_review_pending
+  land_use: official_des_land_use_statistics_identified_exact_jharkhand_payload_pending
+  farm_structure: agriculture_census_official_source_discovery_active
+  irrigation: authoritative_aggregate_source_discovery_active
+  farmer_scheme_context: aggregate_only_person_level_pm_kisan_or_beneficiary_records_excluded
+  place_linkage: district_level_only_until_verified_crosswalk_or_authoritative_identifiers_exist
+engineering:
+  geographic_backbone: core_geography
+  fuzzy_linking: prohibited
+  missing_numeric_policy: preserve_null_never_zero
+  sensitive_data_policy: "Exclude names, mobile numbers, Aadhaar, bank details, land-owner identifiers, beneficiary IDs, farmer IDs and any other person-level or household-level identifiers."
+  denominator_policy: "Do not construct rates, shares or yields unless authoritative numerator/denominator or published indicator semantics are temporally and geographically compatible."
+  publication_policy: fail_closed_until_source_payload_rights_geography_schema_indicator_semantics_and_validation_verified
+completion_gate: "Do not mark complete until acquisition, rights review, provenance, geographic linking, schema, indicators, validation, tests, Streamlit, downloads/reports, documentation and CI are verified on main."

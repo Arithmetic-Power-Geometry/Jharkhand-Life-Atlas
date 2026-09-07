@@ -1,0 +1,43 @@
+module_id: health_access
+state: active_source_resolution
+priority: high
+purpose: "Fail-closed plan for resolving authoritative Health payloads without treating catalogs, dashboards or snippets as acquired data."
+resolution_tracks:
+  - id: ogd_hospital_directory
+    objective: resolve_exact_machine_downloadable_resource
+    required_before_acquired_verified:
+      - exact_resource_url_or_api
+      - successful_byte_retrieval
+      - retrieval_timestamp
+      - sha256
+      - byte_count
+      - observed_media_type
+      - observed_schema
+      - resource_level_rights_and_attribution
+      - jharkhand_filter_verified
+      - geography_vintage_recorded
+    current_state: blocked_exact_payload_unresolved
+  - id: hmis_aggregate
+    objective: resolve_lawful_aggregate_jharkhand_export
+    required_before_acquired_verified:
+      - official_aggregate_export
+      - reporting_period
+      - facility_or_admin_geography_semantics
+      - denominator_semantics
+      - rights_and_redistribution_review
+      - sha256_and_observed_schema
+    current_state: source_engineering_active
+fail_closed_rules:
+  catalog_metadata_is_not_payload: true
+  dashboard_visual_is_not_payload: true
+  search_snippet_is_not_payload: true
+  missing_is_not_zero: true
+  person_level_health_records_prohibited: true
+  unresolved_geography_must_not_be_fuzzy_joined: true
+  historical_current_geography_must_not_be_silently_merged: true
+parallel_safe_work_while_blocked:
+  - maintain_ingestion_contracts
+  - strengthen_geography_crosswalk_validation
+  - maintain_source_coverage_and_provenance_schema
+  - validate_streamlit_status_truthfulness
+  - advance_independent_modules
