@@ -1,0 +1,42 @@
+id: weather_climate
+name: Weather & Climate
+version: 0.1.0
+status: active
+description: "Authoritative weather and climate evidence for Jharkhand. Source discovery and publication architecture are active; no Module 16 thematic evidence is yet published."
+geography:
+  primary: observation_or_supported_grid
+  supports: [state, district, station, raster_grid]
+temporal:
+  type: observation_and_climatology
+  views: [daily, weekly, monthly, seasonal, annual, climatological_normal_period]
+dependencies: [core_geography]
+features:
+  map: true
+  download: true
+  report: true
+  comparison: true
+  provenance: true
+principles:
+  - no_source_no_published_value
+  - missing_is_not_zero
+  - observed_derived_modelled_separated
+  - historical_and_current_geographies_not_silently_merged
+  - smallest_authoritative_reusable_granularity
+  - weather_observations_and_climatological_normals_are_not_interchangeable
+scope:
+  rainfall: authoritative_source_discovery_active
+  temperature: authoritative_source_discovery_active
+  weather_extremes: authoritative_source_discovery_active
+  climatological_normals: architecture_only_until_period_and_method_verified
+  trends_anomalies: architecture_only_until_homogeneous_verified_series_exist
+  village_estimates: prohibited_until_validated_spatial_model_or_authoritative_product_exists
+engineering:
+  geographic_backbone: core_geography
+  fuzzy_linking: prohibited
+  missing_numeric_policy: preserve_null_never_zero
+  sensitive_data_policy: "Do not expose restricted station metadata, credentials, personal contact information or other non-public operational details merely because a weather source contains them."
+  temporal_geography_policy: "Every observation must retain observation period, station/grid identity, source geography or grid definition and administrative vintage where applicable; Census 2011 and current administrative geography must not be silently merged."
+  climate_policy: "Retain variable definition, unit, accumulation/aggregation period, climatological-normal reference period, station/grid/product identity, quality-control status and source revision where available."
+  trend_policy: "Do not publish climate trends, anomalies, return periods or extremes derived from mixed or incomplete series until temporal homogeneity, missingness, method and uncertainty are explicitly validated."
+  publication_policy: fail_closed_until_source_payload_rights_geography_schema_temporal_semantics_and_validation_verified
+completion_gate: "Do not mark complete until acquisition, rights review, provenance, geographic linking, schema, indicators, validation, tests, Streamlit, downloads/reports, documentation and CI are verified on main."
