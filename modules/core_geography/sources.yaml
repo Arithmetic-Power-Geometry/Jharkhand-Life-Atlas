@@ -31,8 +31,11 @@ sources:
     role: current_administrative_crosswalk
     authority: Ministry of Panchayati Raj, Government of India
     catalog: https://www.data.gov.in/catalog/local-government-directory-lgd
+    catalog_updated_on: 2026-09-05
+    currency_checked_on: 2026-09-08
+    licence: Government Open Data License - India
     geography: [state, district, subdistrict, block, village, panchayat, local_body]
-    use: "Current LGD codes and administrative relationships; kept temporally distinct from Census 2011."
+    use: "Current LGD codes and administrative relationships; kept temporally distinct from Census 2011. The official OGD catalog was verified as updated 2026-09-05. Catalog currency alone is not payload acquisition evidence: exact resource bytes/API responses still require immutable provenance before any refreshed crosswalk is promoted."
   - id: JH_BLOCK_LIST
     role: official_state_block_reference
     authority: Government of Jharkhand
