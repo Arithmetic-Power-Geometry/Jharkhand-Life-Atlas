@@ -1,0 +1,51 @@
+module: electricity_energy
+status: discovery_active_no_thematic_values_published
+sources:
+  - id: saubhagya_dashboard
+    authority: Ministry of Power / REC Ltd.
+    role: primary_candidate_household_electrification
+    official_reference: https://www.saubhagya.gov.in/
+    evidence_scope: "Official household-electrification dashboard reporting State Government/DISCOM data; candidate for dated electrification evidence subject to export/snapshot acquisition and schema inspection."
+    acquisition_status: exact_reusable_jharkhand_snapshot_not_yet_acquired
+    rights_status: resource_level_reuse_and_attribution_review_required
+    geography_status: habitation_and_other_source_identifiers_vintage_must_be_inspected_before_linkage
+    publication_class: pending_governance_review
+  - id: cea_statistics_and_api
+    authority: Central Electricity Authority / Ministry of Power
+    role: primary_candidate_supply_generation_and_state_context
+    official_reference: https://cea.nic.in/
+    evidence_scope: "CEA publishes official power-sector statistics and APIs including state-wise installed capacity, electricity-supply position and per-capita consumption; exact Jharkhand series and metadata must be acquired and inspected."
+    acquisition_status: exact_jharkhand_series_not_yet_acquired_or_hashed
+    rights_status: publication_and_reuse_terms_require_resource_level_review
+    geography_status: primarily_state_or_system_level_context_pending_series_inspection
+    publication_class: pending_resource_review
+  - id: rdss_dashboard
+    authority: Ministry of Power / REC Ltd. / PFC Ltd.
+    role: distribution_reform_and_infrastructure_candidate
+    official_reference: https://rdss.powermin.gov.in/state-view-dashboard
+    evidence_scope: "Official RDSS dashboard exposes scheme-level smart-metering, loss-reduction and distribution-infrastructure progress; exact Jharkhand snapshot/export and denominator semantics must be verified."
+    acquisition_status: exact_reusable_jharkhand_snapshot_not_yet_acquired
+    rights_status: dashboard_reuse_and_attribution_review_required
+    geography_status: state_discom_and_project_identifiers_pending_snapshot_inspection
+    publication_class: pending_governance_review
+  - id: ogd_electricity_resources
+    authority: Open Government Data Platform India / contributing ministries
+    role: discovery_and_open_resource_candidate
+    official_reference: https://data.gov.in/
+    evidence_scope: "OGD may expose electricity and power-sector resources. Exact Jharkhand resources must be selected, downloaded and inspected rather than inferred from catalog metadata."
+    acquisition_status: exact_resource_not_yet_selected_or_hashed
+    rights_status: "OGD states published datasets/resources are licensed under Government Open Data License - India; resource-level attribution and any exceptions must still be verified."
+    geography_status: granularity_and_identifiers_pending_payload_inspection
+    publication_class: pending_resource_review
+  - id: lgd_geography
+    authority: Ministry of Panchayati Raj
+    role: current_administrative_geography_reference
+    official_reference: https://data.gov.in/catalog/local-government-directory-lgd
+    evidence_scope: "Current administrative identifiers for linkage where temporally compatible."
+    acquisition_status: shared_core_geography_dependency
+    rights_status: governed_by_existing_core_geography_review
+    geography_status: must_not_replace_or_silently_merge_census_2011_geography
+    publication_class: shared_verified_dependency_only
+blockers:
+  - "No exact authoritative Jharkhand electricity/energy payload has yet passed acquisition, hashing, schema inspection, rights review and geographic-linkage validation."
+  - "Dynamic dashboard values require auditable dated snapshots or exports before they can become published JLA evidence."
