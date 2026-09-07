@@ -1,0 +1,31 @@
+name: weather-climate-validation
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'modules/weather_climate/**'
+      - 'tests/test_weather_climate*.py'
+      - 'app_pages/**'
+      - 'pyproject.toml'
+      - '.github/workflows/weather-climate-validation.yml'
+  pull_request:
+    paths:
+      - 'modules/weather_climate/**'
+      - 'tests/test_weather_climate*.py'
+      - 'app_pages/**'
+      - 'pyproject.toml'
+      - '.github/workflows/weather-climate-validation.yml'
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install -e . pytest pyyaml
+      - run: python -m compileall modules/weather_climate
+      - run: pytest -q tests/test_weather_climate*.py
+      - run: pytest -q
