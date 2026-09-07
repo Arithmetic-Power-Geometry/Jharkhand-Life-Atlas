@@ -1,0 +1,57 @@
+module_id: livelihood_employment_poverty
+state: source_discovery
+publication_state: in_development
+sources:
+  - id: mospi_plfs
+    title: Periodic Labour Force Survey (PLFS)
+    authority: Ministry of Statistics and Programme Implementation, Government of India
+    url: https://www.mospi.gov.in/
+    role: candidate_primary_labour_statistics
+    geography: state_and_other_levels_only_as_supported_by_official_release
+    temporal: survey_period
+    verified_public_page: true
+    payload_acquired: false
+    rights_review_complete: false
+    notes: "MoSPI continues to publish PLFS releases, including 2026 bulletins. Exact Jharkhand tables/microdata route, supported inference level, weighting semantics, payload bytes and reuse terms must be verified before publication."
+  - id: mgnrega_official
+    title: Mahatma Gandhi National Rural Employment Guarantee Scheme public reporting
+    authority: Ministry of Rural Development, Government of India
+    url: https://nrega.nic.in/
+    role: candidate_primary_programme_statistics
+    geography: state_district_block_gram_panchayat_as_officially_reported
+    temporal: financial_year_and_reporting_period
+    verified_public_page: true
+    payload_acquired: false
+    rights_review_complete: false
+    notes: "Official MGNREGA portal identified. Only aggregate reusable reports may enter JLA; worker names, job-card records, household or payment-level records are prohibited. Exact export/API, rights and geography identifiers remain open."
+  - id: ogd_labour_employment
+    title: Open Government Data Platform India - Labour and Employment resources
+    authority: National Informatics Centre / contributing Government departments
+    url: https://data.gov.in/
+    role: discovery_catalog
+    geography: varies_by_resource
+    temporal: varies_by_resource
+    verified_public_page: true
+    payload_acquired: false
+    rights_review_complete: false
+    notes: "OGD identifies Labour and Employment as a data sector and states published resources are licensed under Government Open Data License - India; selected resources still require resource-level inspection, acquisition, attribution and redistribution review."
+rights:
+  policy: fail_closed_per_resource
+  portal_or_catalog_level_statement_is_not_sufficient_for_uninspected_resource: true
+privacy:
+  aggregate_only: true
+  prohibited: [name, job_card_number, aadhaar, mobile_number, bank_account, household_id, beneficiary_id, worker_id]
+geography:
+  core_backbone: core_geography
+  name_only_join: prohibited
+  current_to_census2011_silent_merge: prohibited
+survey_governance:
+  preserve_period_universe_weighting_and_supported_inference_level: true
+  survey_estimate_as_admin_count: prohibited
+next_actions:
+  - resolve_exact_jharkhand_plfs_aggregate_tables_and_supported_geographic_inference
+  - resolve_machine_reusable_mgnrega_aggregate_reports
+  - inspect_resource_level_rights_and_attribution
+  - record_geography_vintage_and_authoritative_identifiers
+  - hash_acquired_bytes_and_capture_observed_schema
+  - design_indicator_dictionary_only_after_payload_inspection
