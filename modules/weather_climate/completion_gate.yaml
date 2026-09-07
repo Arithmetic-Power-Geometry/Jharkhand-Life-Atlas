@@ -1,0 +1,41 @@
+module: weather_climate
+status: in_development
+publication_ready: false
+requirements:
+  authoritative_acquisition:
+    passed: false
+    rule: "Acquire exact authoritative Jharkhand weather/climate payloads, reports or auditable exports; record source URL/resource ID, retrieval time, byte count, SHA-256 and observed media/schema."
+  rights_review:
+    passed: false
+    rule: "Verify API/resource-level reuse rights, attribution, restrictions and redistribution conditions before publishing captured data."
+  geographic_linkage:
+    passed: false
+    rule: "Link station, district or grid evidence through authoritative identifiers/coordinates or verified temporal crosswalks; prohibit fuzzy/name-only joins and silent Census-2011/current-geography merging."
+  provenance:
+    passed: false
+    rule: "Every published observation must retain source, retrieval timestamp, observation period, station/grid/district identity, temporal aggregation, variable definition, unit and transformation lineage."
+  production_schema:
+    passed: false
+    rule: "Finalize schema only after real payload inspection; preserve nulls and distinguish observed, normal, departure, derived and modelled values."
+  indicators:
+    passed: false
+    rule: "Validate rainfall, temperature, normal-period, anomaly, category and extreme-event semantics only at supported inference levels; never infer missing observations or convert missing to zero."
+  validation:
+    passed: false
+    rule: "Run structural, geography, station/grid, temporal, null, duplicate, range, unit, aggregation, climatology-period, rights, provenance and source-specific checks."
+  tests:
+    passed: false
+    rule: "Module-specific regression and governance tests must pass."
+  streamlit:
+    passed: false
+    rule: "Show truthful IN DEVELOPMENT state, verified coverage, sources/methods, blockers and gaps; no unfinished weather/climate evidence may appear published."
+  downloads_reports:
+    passed: false
+    rule: "Provide research-ready exports/reports only for evidence that has passed all applicable source, rights, geography, temporal and validation gates."
+  documentation:
+    passed: false
+    rule: "Document sources, rights, geography, station/grid definitions, temporal semantics, units, climatological periods, quality control, transformations, uncertainty and limitations."
+  green_ci_main:
+    passed: false
+    rule: "All relevant CI must be green on the exact main commit containing the publication candidate."
+completion_rule: "publication_ready may become true only when every requirement above is independently verified true on main."
