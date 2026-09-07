@@ -15,5 +15,8 @@ dependencies = [
   "reportlab>=4.4,<5",
 ]
 
+[tool.setuptools]
+packages = ["jla"]
+
 [tool.pytest.ini_options]
 pythonpath = ["."]
