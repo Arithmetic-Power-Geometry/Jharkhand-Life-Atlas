@@ -97,6 +97,20 @@ attempts:
     schema_inspected: false
     publication_effect: none_gate_remains_closed
 
+  - attempted_utc: '2026-09-07T22:46:00Z'
+    source_id: OGD_HEALTH_DIRECTORY_LIVE_RESOURCE_ENUMERATION_AUDIT
+    catalog_query_url: https://www.data.gov.in/catalog/hospital-directory-national-health-portal?filters%5Bfield_catalog_reference%5D=323881&format=json&limit=6&offset=0&sort%5Bcreated%5D=desc
+    catalog_metadata_verified: true
+    catalog_observation: "Fresh official/indexed catalog evidence still enumerates six resources and reports the NIN Health Facilities and National Hospital Directory monthly resources updated 2026-08-11, with CSV/Data API controls."
+    direct_page_observation: "Opening the same parameterized catalog URL in the available retrieval path rendered the catalog shell but returned 'No Result Found' for the resource list, so no exact resource UUID, raw CSV endpoint, or API payload identity could be established from that response."
+    endpoint_resolution_rule: "Do not infer a resource UUID or construct an API URL from catalog metadata, titles, cached pages, or search snippets."
+    acquisition_result: live_catalog_currency_reverified_exact_payload_identity_still_unresolved
+    blocker_class: official_catalog_resource_enumeration_inconsistent_across_retrieval_paths
+    raw_sha256: null
+    raw_bytes: null
+    schema_inspected: false
+    publication_effect: none_gate_remains_closed
+
 rules:
   - catalog_metadata_is_not_raw_data
   - resource_page_metadata_is_not_raw_data
@@ -107,5 +121,7 @@ rules:
   - district_aggregates_are_never_allocated_to_villages_or_facilities
   - failed_requests_do_not_satisfy_acquisition
   - hashes_and_byte_counts_exist_only_after_real_payload_acquisition
+  - exact_resource_or_api_identifiers_are_never_inferred_from_titles_or_search_snippets
+  - inconsistent_catalog_rendering_is_recorded_as_a_blocker_not_bypassed
   - never_create_placeholder_payloads
   - missing_values_are_never_imputed_as_zero
