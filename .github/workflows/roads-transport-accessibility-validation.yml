@@ -28,4 +28,4 @@ jobs:
       - run: pip install -e . pytest pyyaml
       - run: python -m compileall modules/roads_transport_accessibility
       - run: pytest -q tests/test_roads_transport_accessibility*.py
-      - run: python scripts/validate.py
+      - run: pytest -q
