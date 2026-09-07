@@ -1,0 +1,37 @@
+schema: JLA_ACQUISITION_CANDIDATES_V1
+module_id: water_access
+verified_on: '2026-09-08'
+publication_allowed: false
+candidates:
+  - source_id: OGD_JJM_STATE_STATUS_2025_01_29
+    authority: Government of India Open Government Data Platform / Rajya Sabha; source note cites JJM-IMIS
+    resource_url: https://www.data.gov.in/resource/stateut-wise-status-tap-water-connections-rural-households-under-jal-jeevan-mission-jjm-29
+    resource_scope: state_ut
+    temporal_reference: '2025-01-29'
+    granularity_reported: quarterly
+    file_format_reported: csv
+    file_size_reported: '2.2 KB'
+    observed_fields_from_resource_page:
+      - State/ UT
+      - Total rural HHs
+      - Rural HHs with tap water supply as on 15-08-2019 - No.
+      - Rural HHs with tap water supply as on 15-08-2019 - %
+    source_note: figures are reported in lakh; source is JJM IMIS
+    api_available: false
+    candidate_role: state_level_context_only
+    acquisition_state: resource_metadata_verified_payload_not_acquired
+    required_before_use:
+      - acquire_exact_csv_payload
+      - record_sha256_and_byte_count
+      - inspect_full_observed_schema
+      - explicitly_filter_jharkhand
+      - preserve_missing_as_null
+      - verify_rights_and_attribution
+      - validate_against_module_schema
+    limitations:
+      - state_level_resource_cannot_support_district_block_or_village_outputs
+      - parliamentary_answer_snapshot_is_not_a_substitute_for_current_JJM_operational_data
+rules:
+  - resource_metadata_is_not_payload_evidence
+  - state_level_values_must_not_be_disaggregated_to_lower_geographies
+  - publication_gate_remains_closed
