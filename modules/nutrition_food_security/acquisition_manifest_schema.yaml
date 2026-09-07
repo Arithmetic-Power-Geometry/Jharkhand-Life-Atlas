@@ -1,0 +1,59 @@
+contract_version: 1
+module_id: nutrition_food_security
+state: pre_acquisition
+purpose: >-
+  Record the exact authoritative artifact acquired for Module 7 before any values
+  enter curated outputs. Catalog pages, dashboards and screenshots do not count as
+  acquired reusable data.
+required_manifest_fields:
+  - source_id
+  - authoritative_owner
+  - resource_title
+  - resource_url
+  - retrieval_timestamp_utc
+  - sha256
+  - byte_count
+  - media_type
+  - observed_schema_summary
+  - rights_status
+  - attribution_requirement
+  - geographic_scope
+  - source_geography_vintage
+  - temporal_coverage
+  - smallest_reusable_granularity
+  - privacy_review
+  - acquisition_status
+acquisition_status_allowed:
+  - acquired_verified
+  - blocked
+  - unavailable
+  - rights_pending
+  - schema_pending
+verification_rules:
+  sha256_required_for_acquired_verified: true
+  byte_count_required_for_acquired_verified: true
+  observed_schema_required_for_acquired_verified: true
+  exact_resource_url_required_for_acquired_verified: true
+  catalog_metadata_is_not_payload: true
+  dashboard_visual_is_not_payload: true
+  screenshots_are_not_data: true
+rights_rules:
+  rights_must_be_reviewed_at_resource_or_applicable_dataset_level: true
+  unclear_rights_fail_closed: true
+  attribution_must_be_preserved: true
+privacy_rules:
+  person_level_records_prohibited: true
+  household_or_beneficiary_identifiers_prohibited: true
+  child_or_mother_level_measurements_prohibited: true
+  aggregate_only_when_source_and_rights_allow: true
+geography_rules:
+  jharkhand_scope_must_be_explicitly_verified: true
+  source_geography_vintage_must_be_recorded: true
+  census2011_and_current_geography_must_not_be_silently_merged: true
+  name_only_crosswalk_prohibited: true
+indicator_rules:
+  denominator_or_universe_semantics_must_be_observed_before_rate_use: true
+  survey_estimates_must_retain_survey_period_and_definition: true
+fail_closed: >-
+  Until an acquisition manifest satisfies this contract, Module 7 remains IN
+  DEVELOPMENT and no thematic values may be presented as research-ready JLA data.
