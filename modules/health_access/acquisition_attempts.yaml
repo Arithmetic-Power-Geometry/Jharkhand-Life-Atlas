@@ -76,11 +76,35 @@ attempts:
     schema_inspected: false
     publication_effect: none_gate_remains_closed
 
+  - attempted_utc: '2026-09-07T20:55:00Z'
+    source_id: OGD_HMIS_ALL_STATES_DISTRICTS_2025
+    catalog_url: https://www.data.gov.in/catalog/item-wise-hmis-report-all-states-and-districts-across-months
+    catalog_metadata_verified: true
+    catalog_observation: "Official OGD catalog is published 2021-02-10, updated 2025-02-14, advertises Catalog API and ZIP download, and covers item-wise HMIS reporting across states and districts across months."
+    relationship_to_jharkhand_specific_catalog: parallel_newer_candidate_not_substitute
+    required_before_use:
+      - acquire_exact_resource_or_zip_payload
+      - immutable_snapshot_identity
+      - inspect_observed_schema_and_period_semantics
+      - explicitly_filter_jharkhand
+      - verify_district_geography_vintage
+      - compare_overlap_with_jharkhand_specific_catalog
+      - preserve_missing_as_null
+    acquisition_result: authoritative_catalog_verified_no_payload_acquired
+    blocker_class: exact_resource_payload_not_yet_acquired_and_verified
+    raw_sha256: null
+    raw_bytes: null
+    schema_inspected: false
+    publication_effect: none_gate_remains_closed
+
 rules:
   - catalog_metadata_is_not_raw_data
   - resource_page_metadata_is_not_raw_data
-  - preview_fields_are_not_full_payload_schema
+  - preview_fields_are_not_full_payload_schema_verification
   - cached_or_indexed_pages_do_not_establish_current_resource_currency_when_live_official_catalog_differs
+  - newer_national_catalog_does_not_silently_replace_jharkhand_specific_series
+  - national_payload_requires_explicit_jharkhand_filter_before_curated_use
+  - district_aggregates_are_never_allocated_to_villages_or_facilities
   - failed_requests_do_not_satisfy_acquisition
   - hashes_and_byte_counts_exist_only_after_real_payload_acquisition
   - never_create_placeholder_payloads
