@@ -1,0 +1,41 @@
+id: banking_financial_access
+name: Banking & Financial Access
+version: 0.1.0
+status: active
+description: "Authoritative aggregate place-linked evidence on banking infrastructure, financial inclusion and formal financial access in Jharkhand. Source discovery and publication architecture are active; no Module 13 thematic evidence is yet published."
+geography:
+  primary: place
+  supports: [state, district, block, village]
+temporal:
+  type: multi_source_period
+  views: [dated_rbi_evidence, dated_pmjdy_evidence, dated_financial_inclusion_evidence, census_2011_context]
+dependencies: [core_geography]
+features:
+  map: true
+  download: true
+  report: true
+  comparison: true
+  provenance: true
+principles:
+  - no_source_no_published_value
+  - missing_is_not_zero
+  - observed_derived_modelled_separated
+  - historical_and_current_geographies_not_silently_merged
+  - smallest_authoritative_reusable_granularity
+  - dynamic_dashboard_values_require_snapshot_provenance
+scope:
+  banking_offices: authoritative_source_discovery_active
+  financial_inclusion_accounts: authoritative_aggregate_source_discovery_active
+  district_credit_deposit: architecture_only_until_authoritative_payload_verified
+  business_correspondent_access: architecture_only_until_authoritative_payload_verified
+  census_context: verified_module1_census_2011_geography_only
+  place_linkage: no_name_only_linkage_to_current_administration
+engineering:
+  geographic_backbone: core_geography
+  fuzzy_linking: prohibited
+  missing_numeric_policy: preserve_null_never_zero
+  sensitive_data_policy: "Do not publish account-holder names, account numbers, Aadhaar, PAN, phone numbers, card numbers, transaction histories, bank balances at person/household level, beneficiary identifiers, precise customer locations, or other person-level financial records."
+  temporal_geography_policy: "Every banking or financial-access observation must retain source date/period and geography vintage; Census 2011 and current administrative geography must not be silently merged."
+  dynamic_source_policy: "Changing dashboard values require an auditable dated snapshot or export with retrieval timestamp and hash before publication; a current web display alone is not sufficient provenance."
+  publication_policy: fail_closed_until_source_payload_rights_geography_schema_indicator_semantics_and_validation_verified
+completion_gate: "Do not mark complete until acquisition, rights review, provenance, geographic linking, schema, indicators, validation, tests, Streamlit, downloads/reports, documentation and CI are verified on main."
