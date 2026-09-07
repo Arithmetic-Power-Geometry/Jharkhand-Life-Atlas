@@ -1,0 +1,38 @@
+name: nutrition-food-security-validation
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'modules/nutrition_food_security/**'
+      - 'tests/test_nutrition_food_security*.py'
+      - 'data/curated/nutrition_food_security/**'
+      - 'app_pages/**'
+      - 'scripts/**'
+      - '.github/workflows/nutrition-food-security-validation.yml'
+  pull_request:
+    paths:
+      - 'modules/nutrition_food_security/**'
+      - 'tests/test_nutrition_food_security*.py'
+      - 'data/curated/nutrition_food_security/**'
+      - 'app_pages/**'
+      - 'scripts/**'
+      - '.github/workflows/nutrition-food-security-validation.yml'
+  workflow_dispatch:
+
+jobs:
+  validate-nutrition-food-security:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - name: Install dependencies
+        run: pip install -r requirements.txt pytest
+      - name: Compile Module 7 code
+        run: python -m compileall -q modules/nutrition_food_security app_pages scripts
+      - name: Run every Module 7 test
+        run: pytest -q tests/test_nutrition_food_security*.py
+      - name: Run repository validation
+        run: python scripts/check.py
