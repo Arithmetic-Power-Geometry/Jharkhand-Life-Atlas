@@ -1,0 +1,31 @@
+name: livelihood-employment-poverty-validation
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'modules/livelihood_employment_poverty/**'
+      - 'tests/test_livelihood_employment_poverty*.py'
+      - 'app_pages/**'
+      - 'pyproject.toml'
+      - '.github/workflows/livelihood-employment-poverty-validation.yml'
+  pull_request:
+    paths:
+      - 'modules/livelihood_employment_poverty/**'
+      - 'tests/test_livelihood_employment_poverty*.py'
+      - 'app_pages/**'
+      - 'pyproject.toml'
+      - '.github/workflows/livelihood-employment-poverty-validation.yml'
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install -e . pytest pyyaml
+      - run: python -m compileall modules/livelihood_employment_poverty
+      - run: pytest -q tests/test_livelihood_employment_poverty*.py
+      - run: python scripts/validate.py
