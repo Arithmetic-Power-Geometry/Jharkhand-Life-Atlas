@@ -1,0 +1,41 @@
+module: drought_water_stress
+status: in_development
+publication_ready: false
+requirements:
+  authoritative_acquisition:
+    passed: false
+    rule: "Acquire exact authoritative Jharkhand drought/water-stress payloads, reports or auditable exports; record source URL/resource ID, retrieval time, byte count, SHA-256 and observed media/schema."
+  rights_review:
+    passed: false
+    rule: "Verify resource/product/API-level reuse rights, attribution, restrictions and redistribution conditions before publishing captured data."
+  geographic_linkage:
+    passed: false
+    rule: "Link district, sub-district, grid or hydrological-unit evidence through authoritative identifiers/coordinates or verified temporal crosswalks; prohibit fuzzy/name-only joins and silent Census-2011/current-geography merging."
+  provenance:
+    passed: false
+    rule: "Every published observation/classification must retain source, retrieval timestamp, assessment period, drought type, index/product identity, spatial support, baseline/reference period and transformation lineage."
+  production_schema:
+    passed: false
+    rule: "Finalize schema only after real payload inspection; preserve nulls and distinguish observed inputs, derived indices, modelled outputs, classes and composite scores."
+  indicators:
+    passed: false
+    rule: "Validate meteorological, agricultural and hydrological drought semantics separately; retain accumulation windows, baselines, thresholds and units; never infer missing observations or convert missing to zero."
+  validation:
+    passed: false
+    rule: "Run structural, geography, temporal, null, duplicate, range, unit, baseline, threshold, component-lineage, rights, provenance and source-specific checks."
+  tests:
+    passed: false
+    rule: "Module-specific regression and governance tests must pass."
+  streamlit:
+    passed: false
+    rule: "Show truthful IN DEVELOPMENT state, verified coverage, drought type/source/method, blockers and gaps; no unfinished drought evidence may appear published."
+  downloads_reports:
+    passed: false
+    rule: "Provide research-ready exports/reports only for evidence that has passed all applicable source, rights, geography, temporal, indicator and validation gates."
+  documentation:
+    passed: false
+    rule: "Document sources, rights, geography, drought definitions, index formulas/thresholds, baseline periods, units, component data, model/product versions, transformations, uncertainty and limitations."
+  green_ci_main:
+    passed: false
+    rule: "All relevant CI must be green on the exact main commit containing the publication candidate."
+completion_rule: "publication_ready may become true only when every requirement above is independently verified true on main."
