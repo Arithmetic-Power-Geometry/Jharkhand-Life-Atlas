@@ -46,7 +46,8 @@ paper_support_assets:
   data_dictionary: ready
   data_dictionary_path: modules/core_geography/DATA_DICTIONARY.md
   technical_validation: repository_tests_and_module_validation_available
-  usage_examples: preparation_required
+  usage_examples: ready
+  usage_examples_path: modules/core_geography/RESEARCH_USAGE.md
   reproducibility_assets: ingestion_and_sync_code_available
   citation_readiness: CITATION_cff_available
   doi_readiness: preparation_required
