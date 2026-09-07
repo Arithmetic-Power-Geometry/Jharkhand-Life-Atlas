@@ -1,0 +1,60 @@
+module_id: livelihood_employment_poverty
+status: in_development
+complete: false
+publication_gate:
+  authoritative_acquisition: false
+  rights_review: false
+  geographic_linkage: false
+  provenance: false
+  production_schema: false
+  indicators: false
+  validation: false
+  tests: false
+  streamlit: false
+  downloads_reports: false
+  documentation: false
+  ci_green_on_main: false
+rules:
+  all_required_before_complete: true
+  no_partial_completion_promotion: true
+  catalog_metadata_does_not_satisfy_acquisition: true
+  dashboard_values_do_not_satisfy_payload_acquisition: true
+  missing_must_remain_null_unless_source_explicitly_reports_zero: true
+  person_level_worker_beneficiary_household_data_prohibited: true
+  survey_estimates_must_not_be_presented_as_administrative_counts: true
+  current_and_historical_geographies_must_not_be_silently_merged: true
+  unsupported_derived_outputs_prohibited: true
+required_evidence:
+  authoritative_acquisition:
+    - exact_resource_url_or_api
+    - retrieval_timestamp
+    - sha256
+    - byte_count
+    - observed_media_type
+    - observed_schema
+  rights_review:
+    - resource_level_licence_or_terms
+    - attribution_requirements
+    - redistribution_decision
+  geographic_linkage:
+    - source_geography_vintage
+    - authoritative_identifier_or_verified_crosswalk
+    - unresolved_geographies_reported
+  provenance:
+    - source_id
+    - retrieval_metadata
+    - transformation_log
+  indicators:
+    - source_definition
+    - unit
+    - population_universe_or_programme_universe
+    - numerator_denominator_where_applicable
+    - temporal_semantics
+    - survey_or_administrative_status
+  validation:
+    - null_and_zero_audit
+    - range_and_unit_checks
+    - duplicate_checks
+    - geographic_coverage_report
+    - temporal_consistency_checks
+    - survey_inference_level_checks
