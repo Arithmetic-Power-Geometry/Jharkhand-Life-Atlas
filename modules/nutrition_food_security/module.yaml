@@ -1,0 +1,40 @@
+id: nutrition_food_security
+name: Nutrition & Food Security
+version: 0.1.0
+status: active
+description: "Authoritative, privacy-preserving evidence on nutrition outcomes and food-security context in Jharkhand. Source discovery and governance review are active; no Module 7 thematic evidence is yet published."
+geography:
+  primary: place
+  supports: [state, district]
+temporal:
+  type: multi_source_survey_and_reporting_period
+  views: [dated_nfhs_estimates, dated_programme_aggregates, census_2011_context]
+dependencies: [core_geography]
+features:
+  map: true
+  download: true
+  report: true
+  comparison: true
+  provenance: true
+principles:
+  - no_source_no_published_value
+  - missing_is_not_zero
+  - observed_derived_modelled_separated
+  - no_person_household_child_mother_or_beneficiary_identifiers
+  - historical_and_current_geographies_not_silently_merged
+  - smallest_authoritative_reusable_granularity
+scope:
+  anthropometric_outcomes: official_nfhs5_jharkhand_source_verified_exact_district_payload_and_reuse_review_pending
+  maternal_and_child_nutrition_indicators: official_nfhs5_source_verified_indicator_semantics_and_denominators_pending
+  programme_coverage_context: poshan_tracker_official_system_identified_aggregate_reuse_and_export_review_pending
+  food_security_context: authoritative_aggregate_source_discovery_active_no_household_or_ration_card_records
+  place_linkage: district_level_only_until_verified_crosswalk_or_authoritative_identifiers_exist
+engineering:
+  geographic_backbone: core_geography
+  fuzzy_linking: prohibited
+  missing_numeric_policy: preserve_null_never_zero
+  sensitive_data_policy: "Exclude names, mobile numbers, Aadhaar, ration-card identifiers, beneficiary IDs, household records, child-level measurements, mother-level records and any other person-level or household-level identifiers."
+  survey_policy: "Preserve survey design, survey period, estimate geography, denominator/universe, published precision and source wording; do not treat survey estimates as administrative counts."
+  denominator_policy: "Do not construct rates or prevalence measures unless numerator/denominator or the published estimate definition is authoritative and temporally/geographically compatible."
+  publication_policy: fail_closed_until_source_payload_rights_geography_schema_indicator_semantics_and_validation_verified
+completion_gate: "Do not mark complete until acquisition, rights review, provenance, geographic linking, schema, indicators, validation, tests, Streamlit, downloads/reports, documentation and CI are verified on main."
