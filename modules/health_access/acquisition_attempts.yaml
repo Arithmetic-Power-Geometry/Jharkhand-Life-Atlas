@@ -1,0 +1,42 @@
+module_id: health_access
+purpose: "Record exact source-acquisition attempts so discovery metadata is never mistaken for acquired evidence and repeated failures remain auditable."
+attempts:
+  - attempted_utc: '2026-09-07T01:25:00Z'
+    source_id: OGD_NIN_HEALTH_FACILITIES_GEO_2026
+    catalog_url: https://data.gov.in/catalog/hospital-directory-national-health-portal
+    catalog_metadata_verified: true
+    catalog_observation: "Official catalog currently lists NIN Health Faclities with Geo Code and additional parameters as a monthly high-value resource updated 2026-08-11 with CSV-through-URL and Data API access."
+    acquisition_result: no_payload_acquired
+    blocker_class: exact_resource_endpoint_or_payload_not_resolved
+    raw_sha256: null
+    raw_bytes: null
+    schema_inspected: false
+    publication_effect: none_gate_remains_closed
+
+  - attempted_utc: '2026-09-07T01:25:00Z'
+    source_id: OGD_NHP_HOSPITAL_GEO_2026
+    catalog_url: https://data.gov.in/catalog/hospital-directory-national-health-portal
+    catalog_metadata_verified: true
+    catalog_observation: "Official catalog currently lists National Hospital Directory with Geo Code and additional parameters as a monthly resource updated 2026-08-11, file size 9.9 MB, with CSV and Data API access."
+    acquisition_result: no_payload_acquired
+    blocker_class: exact_resource_endpoint_or_payload_not_resolved
+    raw_sha256: null
+    raw_bytes: null
+    schema_inspected: false
+    publication_effect: none_gate_remains_closed
+
+  - attempted_utc: '2026-09-07T01:25:00Z'
+    source_id: OGD_HOSPITAL_DIRECTORY_CATALOG_API
+    endpoint: https://www.data.gov.in/apis/e48a8bcf-ff56-4f39-839d-095827ba2a18
+    endpoint_role: catalog_api_candidate_not_verified_resource_payload
+    acquisition_result: request_failed_timeout
+    raw_sha256: null
+    raw_bytes: null
+    schema_inspected: false
+    publication_effect: none_gate_remains_closed
+rules:
+  - catalog_metadata_is_not_raw_data
+  - failed_requests_do_not_satisfy_acquisition
+  - hashes_and_byte_counts_exist_only_after_real_payload_acquisition
+  - never_create_placeholder_payloads
+  - missing_values_are_never_imputed_as_zero
