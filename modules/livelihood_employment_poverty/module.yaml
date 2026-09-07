@@ -1,0 +1,41 @@
+id: livelihood_employment_poverty
+name: Livelihood, Employment & Poverty
+version: 0.1.0
+status: active
+description: "Authoritative aggregate evidence on work, employment programmes, livelihoods and poverty in Jharkhand. Architecture and source review are active; no Module 9 thematic evidence is yet published."
+geography:
+  primary: place
+  supports: [state, district, block, gram_panchayat]
+temporal:
+  type: multi_source_period
+  views: [dated_labour_statistics, dated_programme_statistics, census_2011_context]
+dependencies: [core_geography]
+features:
+  map: true
+  download: true
+  report: true
+  comparison: true
+  provenance: true
+principles:
+  - no_source_no_published_value
+  - missing_is_not_zero
+  - observed_derived_modelled_separated
+  - no_worker_beneficiary_or_household_person_level_records
+  - historical_and_current_geographies_not_silently_merged
+  - smallest_authoritative_reusable_granularity
+scope:
+  labour_force: official_plfs_aggregate_statistics_identified_granularity_and_reuse_review_pending
+  rural_employment: official_mgnrega_aggregate_reporting_identified_exact_reusable_exports_pending
+  census_work_context: verified_module1_census_2011_geography_only_until_worker_fields_are_separately_acquired_and_validated
+  poverty: authoritative_aggregate_source_discovery_active
+  livelihoods: authoritative_non_person_level_source_discovery_active
+  place_linkage: no_name_only_linkage_to_current_administration
+engineering:
+  geographic_backbone: core_geography
+  fuzzy_linking: prohibited
+  missing_numeric_policy: preserve_null_never_zero
+  sensitive_data_policy: "Exclude names, job-card numbers, Aadhaar, mobile numbers, bank details, household identifiers, beneficiary identifiers and any other person-level records."
+  denominator_policy: "Do not construct employment, participation, poverty or programme rates unless authoritative numerator/denominator or published indicator semantics are temporally and geographically compatible."
+  survey_policy: "Survey estimates must retain survey period, population universe, weighting/estimate status and supported geographic inference level; they must not be presented as administrative counts."
+  publication_policy: fail_closed_until_source_payload_rights_geography_schema_indicator_semantics_and_validation_verified
+completion_gate: "Do not mark complete until acquisition, rights review, provenance, geographic linking, schema, indicators, validation, tests, Streamlit, downloads/reports, documentation and CI are verified on main."
