@@ -1,0 +1,43 @@
+module: drought_water_stress
+status: discovery_active_no_thematic_values_published
+sources:
+  - id: nrsc_nhp_hydrological_drought
+    authority: "National Remote Sensing Centre, ISRO, under the National Hydrology Project"
+    source_type: official_hydrological_drought_geoportal
+    discovery_url: "https://bhuvan.nrsc.gov.in/nhp/webgis-drought"
+    candidate_scope: "Hydrological drought indicators including standardized runoff, groundwater, reservoir storage, water-spread and composite hydrological drought indices"
+    observed_public_evidence: "The official NRSC National Hydrology Project portal documents SRI, SGWI, SRSI, SWSI and CHDI and administrative-unit statistics for drought categories."
+    acquisition_status: not_yet_acquired
+    rights_status: pending_product_level_reuse_review
+    geography_status: pending_exact_jharkhand_unit_grid_and_vintage_review
+    schema_status: portal_documented_real_payload_not_yet_inspected
+    publication_status: blocked
+    notes: "Portal display is not equivalent to a captured reusable dataset. JLA must identify exact downloadable/service endpoints, hash permitted snapshots, inspect product metadata and validate unit/time semantics before publication."
+  - id: nrsc_nadams_agricultural_drought
+    authority: "National Remote Sensing Centre, ISRO / Mahalanobis National Crop Forecast Centre, Ministry of Agriculture & Farmers’ Welfare"
+    source_type: official_agricultural_drought_monitoring_programme
+    discovery_url: "https://www.nrsc.gov.in/nrscnew/Services_Bhuvan_Disaster_Management_Support.php"
+    candidate_scope: "Agricultural drought monitoring and assessment for drought-prone states including Jharkhand"
+    observed_public_evidence: "NRSC documents NADAMS agricultural drought monitoring and official programme material identifies Jharkhand among monitored drought-prone states, using rainfall, vegetation/moisture indicators and ground information."
+    acquisition_status: not_yet_selected
+    rights_status: pending_exact_product_and_report_reuse_review
+    geography_status: pending_exact_assessment_unit_and_period_review
+    schema_status: pending_exact_report_or_machine_readable_product_inspection
+    publication_status: blocked
+    notes: "NADAMS categories must not be treated as meteorological or hydrological drought classes; exact product version, period and methodology must be preserved."
+  - id: imd_drought_indices
+    authority: "India Meteorological Department, Ministry of Earth Sciences, Government of India"
+    source_type: official_meteorological_drought_method_and_monitoring
+    discovery_url: "https://mausam.imd.gov.in/"
+    candidate_scope: "Meteorological drought indicators including SPI, SPEI and aridity anomaly products or reports"
+    observed_public_evidence: "IMD official reports document use of SPI, SPEI and aridity anomaly indices for drought monitoring."
+    acquisition_status: not_yet_selected
+    rights_status: pending_exact_resource_level_review
+    geography_status: pending_exact_product_granularity_grid_station_or_district_review
+    schema_status: pending_exact_product_payload_or_report_inspection
+    publication_status: blocked
+    notes: "Index values and drought categories require exact accumulation window, baseline period, thresholds, units/product metadata and assessment date; no inference from narrative documentation alone."
+rights_policy:
+  default: fail_closed
+  rule: "Verify exact portal/API/product/report terms, attribution and redistribution permissions before publishing captured values or derived extracts. Public visualization alone is not sufficient permission to redistribute a dataset."
+publication_note: "No drought or water-stress value from these candidates is currently research-ready or published by Module 17."
