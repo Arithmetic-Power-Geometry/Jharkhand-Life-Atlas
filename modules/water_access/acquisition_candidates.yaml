@@ -3,7 +3,7 @@ module_id: water_access
 verified_on: '2026-09-08'
 publication_allowed: false
 candidates:
-  - source_id: OGD_JJM_STATE_STATUS_2025_01_29
+  - source_id: OGD_RS_JJM_2025_STATE
     authority: Government of India Open Government Data Platform / Rajya Sabha; source note cites JJM-IMIS
     resource_url: https://www.data.gov.in/resource/stateut-wise-status-tap-water-connections-rural-households-under-jal-jeevan-mission-jjm-29
     resource_scope: state_ut
