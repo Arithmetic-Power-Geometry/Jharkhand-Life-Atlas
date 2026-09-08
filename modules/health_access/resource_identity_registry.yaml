@@ -1,9 +1,46 @@
 module_id: health_access
 registry_id: JLA_HEALTH_RESOURCE_IDENTITY_V1
 purpose: >-
-  Record canonical authoritative resource-page identities separately from machine
-  payload identities so a stable official resource URL can be verified without
-  implying that bytes or an API endpoint have been acquired.
+  Record canonical authoritative resource-page identities separately from catalog API
+  identity and machine payload identities so stable official metadata can be verified
+  without implying that bytes or a resource Data API endpoint have been acquired.
+
+catalog_evidence:
+  catalog_url: https://data.gov.in/catalog/hospital-directory-national-health-portal
+  catalog_api_id: e48a8bcf-ff56-4f39-839d-095827ba2a18
+  catalog_api_url: https://www.data.gov.in/apis/e48a8bcf-ff56-4f39-839d-095827ba2a18
+  catalog_api_identity_state: verified_from_official_catalog_link
+  catalog_api_verified_on: '2026-09-08'
+  catalog_api_payload_retrieved: false
+  catalog_api_retrieval_note: >-
+    The official Catalog API link resolves this identifier, but retrieval timed out in
+    the verification environment. This is catalog-level identity only and is not a
+    resource UUID, resource Data API endpoint, or raw-data acquisition.
+
+rights_evidence:
+  platform_license: Government Open Data License - India
+  license_url: https://data.gov.in/godl
+  platform_terms_url: https://www.data.gov.in/terms-of-use
+  reviewed_on: '2026-09-08'
+  review_state: platform_and_catalog_rights_verified_resource_payload_still_requires_snapshot_attribution
+  permitted_uses:
+    - lawful_commercial_and_noncommercial_use
+    - adaptation_and_derivative_works
+    - publication_and_value_addition
+  obligations:
+    - acknowledge_data_provider
+    - acknowledge_source
+    - acknowledge_license
+    - include_dataset_DOI_URL_or_URI
+    - do_not_imply_provider_endorsement
+  exclusions:
+    - personal_information
+    - nonshareable_or_sensitive_data
+    - third_party_or_other_excluded_intellectual_property
+  publication_note: >-
+    JLA must preserve provider/source/license attribution for each acquired snapshot and
+    must not publish person-level or otherwise excluded data merely because catalog
+    metadata is public.
 
 resources:
   - source_id: OGD_NIN_HEALTH_FACILITIES_GEO_2026
@@ -29,6 +66,7 @@ resources:
     evidence_notes:
       - Official OGD catalog currently enumerates this titled resource and reports an 11 August 2026 update.
       - The canonical data.gov.in resource slug is independently referenced by long-lived downstream provenance records, but no current raw/API endpoint identifier has been established in JLA.
+      - The catalog API identifier recorded above is not this resource's machine identifier.
 
   - source_id: OGD_NHP_HOSPITAL_GEO_2026
     catalog_url: https://data.gov.in/catalog/hospital-directory-national-health-portal
@@ -53,6 +91,7 @@ resources:
     evidence_notes:
       - Official OGD resource page resolves for this canonical slug.
       - Live catalog metadata reports an 11 August 2026 update while an indexed resource-page snapshot can show an older date; JLA does not use either metadata view as a substitute for payload identity.
+      - The catalog API identifier recorded above is not this resource's machine identifier.
 
 state_contract:
   unresolved:
@@ -70,6 +109,7 @@ state_contract:
 
 rules:
   - canonical_resource_page_is_not_machine_payload
+  - catalog_api_identity_is_not_resource_payload_identity
   - catalog_data_api_button_does_not_establish_api_identifier
   - never_construct_resource_uuid_from_title_or_slug
   - never_construct_api_endpoint_without_authoritative_identifier
@@ -77,5 +117,6 @@ rules:
   - machine_identity_requires_authoritative_evidence_url_and_verification_timestamp
   - successful_byte_retrieval_and_hash_are_required_before_acquired_status
   - publication_requires_shared_source_snapshot_gate
+  - rights_review_does_not_substitute_for_payload_validation
   - missing_values_remain_null
   - no_person_level_health_data
