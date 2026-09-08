@@ -14,6 +14,10 @@ import json
 from pathlib import Path
 from typing import Any
 
+from jla.ogd_identity import classify_ogd_url
+
+_OGD_API_RETRIEVAL_METHODS = {"ogd_data_api", "official_ogd_data_api"}
+
 
 def _normalise_text(value: Any) -> str:
     return " ".join(str(value).strip().casefold().split())
@@ -78,6 +82,24 @@ def build_acquisition_receipt(path: str | Path, *, state_field: str, state_value
     }
 
 
+def _validate_retrieval_identity(*, retrieval_method: str, exact_resource_or_api_url: str) -> None:
+    """Fail closed when an OGD API receipt lacks an observed machine endpoint.
+
+    Catalog pages, API-description pages, resource-page slugs, and guessed UUIDs are
+    not machine-payload evidence. For an OGD Data API retrieval, the exact URL stored
+    in the receipt must itself be an explicitly observed
+    ``api.data.gov.in/resource/<uuid>`` endpoint as classified by ``ogd_identity``.
+    """
+    if retrieval_method not in _OGD_API_RETRIEVAL_METHODS:
+        return
+    identity = classify_ogd_url(exact_resource_or_api_url)
+    if not identity.machine_payload_endpoint or identity.explicit_id is None:
+        raise ValueError(
+            "OGD Data API retrieval requires an explicitly observed "
+            "api.data.gov.in/resource/<uuid> machine endpoint; catalog and resource-page URLs are not payload evidence"
+        )
+
+
 def build_source_snapshot_draft(
     path: str | Path,
     *, module_id: str, source_id: str, source_title: str, publisher: str,
@@ -94,6 +116,10 @@ def build_source_snapshot_draft(
     Review-dependent fields deliberately remain pending, so this draft cannot itself
     satisfy the acquired-source gate.
     """
+    _validate_retrieval_identity(
+        retrieval_method=retrieval_method,
+        exact_resource_or_api_url=exact_resource_or_api_url,
+    )
     receipt = build_acquisition_receipt(path, state_field=state_field, state_value=state_value)
     receipt["retrieval"].update({"retrieved_at_utc": retrieved_at_utc, "retrieval_method": retrieval_method})
     receipt["observed_payload"]["source_record_identity_field_or_strategy"] = source_record_identity_field_or_strategy

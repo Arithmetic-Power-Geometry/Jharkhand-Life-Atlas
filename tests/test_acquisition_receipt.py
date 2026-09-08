@@ -54,28 +54,34 @@ def test_receipt_rejects_empty_and_unsupported_payloads(tmp_path):
         build_acquisition_receipt(unsupported, state_field="state")
 
 
+def _snapshot_kwargs(exact_resource_or_api_url: str, retrieval_method: str) -> dict:
+    return {
+        "module_id": "health_access",
+        "source_id": "TEST_HEALTH",
+        "source_title": "Test public health payload",
+        "publisher": "Government test publisher",
+        "authoritative_source_url": "https://data.gov.in/catalog/example",
+        "exact_resource_or_api_url": exact_resource_or_api_url,
+        "retrieved_at_utc": "2026-09-08T00:00:00Z",
+        "retrieval_method": retrieval_method,
+        "publication_class": "OPEN_WITH_ATTRIBUTION",
+        "licence_or_terms": "Government Open Data License - India",
+        "licence_url_or_terms_url": "https://data.gov.in/godl",
+        "attribution_requirement": "required",
+        "source_reference_period": "2026-08",
+        "source_geography_vintage": "source_declared_current",
+        "smallest_authoritative_reusable_granularity": "facility",
+        "source_record_identity_field_or_strategy": "facility_id",
+        "state_field": "State",
+    }
+
+
 def test_snapshot_draft_matches_contract_shape_but_cannot_self_publish(tmp_path):
     path = tmp_path / "health.csv"
     path.write_text("State,facility_id,beds\nJharkhand,H1,\nBihar,H2,10\n", encoding="utf-8")
     draft = build_source_snapshot_draft(
         path,
-        module_id="health_access",
-        source_id="TEST_HEALTH",
-        source_title="Test public health payload",
-        publisher="Government test publisher",
-        authoritative_source_url="https://example.gov/catalog",
-        exact_resource_or_api_url="https://example.gov/resource.csv",
-        retrieved_at_utc="2026-09-08T00:00:00Z",
-        retrieval_method="official_csv_download",
-        publication_class="OPEN_WITH_ATTRIBUTION",
-        licence_or_terms="Government Open Data License - India",
-        licence_url_or_terms_url="https://example.gov/licence",
-        attribution_requirement="required",
-        source_reference_period="2026-08",
-        source_geography_vintage="source_declared_current",
-        smallest_authoritative_reusable_granularity="facility",
-        source_record_identity_field_or_strategy="facility_id",
-        state_field="State",
+        **_snapshot_kwargs("https://example.gov/resource.csv", "official_csv_download"),
     )
     assert draft["contract"] == "JLA_SOURCE_SNAPSHOT_V1"
     assert draft["observed_payload"]["record_count_after_jharkhand_filter"] == 1
@@ -87,3 +93,25 @@ def test_snapshot_draft_matches_contract_shape_but_cannot_self_publish(tmp_path)
     assert "rights.rights_review_status is not verified" in errors
     assert "observed_payload.null_semantics_reviewed must be true" in errors
     assert any(error.startswith("validation.") for error in errors)
+
+
+def test_ogd_data_api_receipt_rejects_catalog_or_resource_page_identity(tmp_path):
+    path = tmp_path / "health.json"
+    path.write_text(json.dumps({"records": [{"State": "Jharkhand", "facility_id": "H1"}]}), encoding="utf-8")
+    invalid_urls = [
+        "https://data.gov.in/apis/e48a8bcf-ff56-4f39-839d-095827ba2a18",
+        "https://www.data.gov.in/resource/national-hospital-directory-geo-code-and-additional-parameters-updated-till-last-month",
+    ]
+    for url in invalid_urls:
+        with pytest.raises(ValueError, match="explicitly observed"):
+            build_source_snapshot_draft(path, **_snapshot_kwargs(url, "official_ogd_data_api"))
+
+
+def test_ogd_data_api_receipt_accepts_only_explicit_machine_resource_endpoint(tmp_path):
+    path = tmp_path / "health.json"
+    path.write_text(json.dumps({"records": [{"State": "Jharkhand", "facility_id": "H1"}]}), encoding="utf-8")
+    endpoint = "https://api.data.gov.in/resource/a33198d9-84ec-43db-870f-c1e899a0695d?api-key=example&format=json"
+    draft = build_source_snapshot_draft(path, **_snapshot_kwargs(endpoint, "official_ogd_data_api"))
+    assert draft["source_identity"]["exact_resource_or_api_url"] == endpoint
+    assert draft["retrieval"]["retrieval_method"] == "official_ogd_data_api"
+    assert source_snapshot_is_acquired(draft) is False
