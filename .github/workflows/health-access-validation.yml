@@ -9,12 +9,14 @@ on:
       - 'tests/test_source_snapshot*.py'
       - 'tests/test_acquisition*.py'
       - 'tests/test_ogd_identity.py'
+      - 'tests/test_geography_crosswalk.py'
       - 'data/curated/health_access/**'
       - 'app_pages/**'
       - 'scripts/**'
       - 'jla/source_snapshot.py'
       - 'jla/acquisition.py'
       - 'jla/ogd_identity.py'
+      - 'jla/geography_crosswalk.py'
       - 'config/source_snapshot_contract.yaml'
       - 'config/acquisition_queue.yaml'
       - '.github/workflows/health-access-validation.yml'
@@ -25,12 +27,14 @@ on:
       - 'tests/test_source_snapshot*.py'
       - 'tests/test_acquisition*.py'
       - 'tests/test_ogd_identity.py'
+      - 'tests/test_geography_crosswalk.py'
       - 'data/curated/health_access/**'
       - 'app_pages/**'
       - 'scripts/**'
       - 'jla/source_snapshot.py'
       - 'jla/acquisition.py'
       - 'jla/ogd_identity.py'
+      - 'jla/geography_crosswalk.py'
       - 'config/source_snapshot_contract.yaml'
       - 'config/acquisition_queue.yaml'
       - '.github/workflows/health-access-validation.yml'
@@ -46,9 +50,9 @@ jobs:
           python-version: '3.13'
       - name: Install dependencies
         run: pip install -r requirements.txt pytest
-      - name: Compile Module 2 and shared acquisition code
+      - name: Compile Module 2 and shared acquisition/geography code
         run: python -m compileall -q modules/health_access app_pages scripts jla
-      - name: Run every Module 2 and shared acquisition-governance test
-        run: pytest -q tests/test_health*.py tests/test_source_snapshot*.py tests/test_acquisition*.py tests/test_ogd_identity.py
+      - name: Run Module 2, acquisition, provenance, and geography tests
+        run: pytest -q tests/test_health*.py tests/test_source_snapshot*.py tests/test_acquisition*.py tests/test_ogd_identity.py tests/test_geography_crosswalk.py
       - name: Run repository validation
         run: python scripts/check.py
