@@ -6,17 +6,21 @@ on:
     paths:
       - 'modules/education_access/**'
       - 'tests/test_education*.py'
+      - 'tests/test_geography_crosswalk.py'
       - 'data/curated/education_access/**'
       - 'app_pages/**'
       - 'scripts/**'
+      - 'jla/geography_crosswalk.py'
       - '.github/workflows/education-access-validation.yml'
   pull_request:
     paths:
       - 'modules/education_access/**'
       - 'tests/test_education*.py'
+      - 'tests/test_geography_crosswalk.py'
       - 'data/curated/education_access/**'
       - 'app_pages/**'
       - 'scripts/**'
+      - 'jla/geography_crosswalk.py'
       - '.github/workflows/education-access-validation.yml'
   workflow_dispatch:
 
@@ -30,9 +34,9 @@ jobs:
           python-version: '3.13'
       - name: Install dependencies
         run: pip install -r requirements.txt pytest
-      - name: Compile Module 5 code
-        run: python -m compileall -q modules/education_access app_pages scripts
-      - name: Run every Module 5 test
-        run: pytest -q tests/test_education*.py
+      - name: Compile Module 5 and shared geography code
+        run: python -m compileall -q modules/education_access app_pages scripts jla
+      - name: Run Module 5 and shared geography tests
+        run: pytest -q tests/test_education*.py tests/test_geography_crosswalk.py
       - name: Run repository validation
         run: python scripts/check.py
