@@ -1,3 +1,4 @@
+import csv
 import streamlit as st
 from pathlib import Path
 import yaml
@@ -17,6 +18,17 @@ def progress_label(value):
     if "ready" in text or "complete" in text:
         return "✅"
     return "🔄"
+
+
+def load_source_coverage(module_path):
+    path = Path(module_path) / "source_coverage.csv"
+    if not path.exists():
+        return []
+    try:
+        with path.open("r", encoding="utf-8", newline="") as handle:
+            return list(csv.DictReader(handle))
+    except Exception:
+        return []
 
 
 hero(
@@ -172,6 +184,21 @@ for number, (module_id, planned_name) in enumerate(roadmap, start=1):
             if m.get("completion_gate"):
                 st.markdown("**What remains before RESEARCH-READY**")
                 st.warning(m["completion_gate"])
+
+            source_coverage = load_source_coverage(m.get("_path", ""))
+            if source_coverage:
+                verified_sources = sum(1 for row in source_coverage if str(row.get("catalog_or_resource_verified", "")).strip().lower() == "yes")
+                acquired_sources = sum(1 for row in source_coverage if str(row.get("raw_file_ingested", "")).strip().lower() == "yes")
+                published_sources = sum(1 for row in source_coverage if str(row.get("curated_output_published", "")).strip().lower() == "yes")
+                s1, s2, s3 = st.columns(3)
+                s1.metric("Verified source references", f"{verified_sources}/{len(source_coverage)}")
+                s2.metric("Raw sources acquired", f"{acquired_sources}/{len(source_coverage)}")
+                s3.metric("Curated sources published", f"{published_sources}/{len(source_coverage)}")
+                st.caption("Source-reference verification is not payload acquisition. Raw acquisition is not publication. JLA keeps these evidence states separate and fail-closed.")
+                with st.expander("Verified evidence coverage and blockers", expanded=(module_id == "health_access")):
+                    visible_columns = ["source_id", "role", "authority", "reference_year", "geography", "publication_status"]
+                    display_rows = [{key: row.get(key, "") for key in visible_columns} for row in source_coverage]
+                    st.dataframe(display_rows, width="stretch", hide_index=True)
 
             data = module_indicators(m.get("_path", ""))
             if data is not None:
