@@ -14,7 +14,7 @@ _UUID = re.compile(
     r"^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-5][0-9a-fA-F]{3}-"
     r"[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$"
 )
-_ALLOWED_HOSTS = {"data.gov.in", "www.data.gov.in", "api.data.gov.in"}
+_MACHINE_HOST = "api.data.gov.in"
 
 
 @dataclass(frozen=True)
@@ -24,6 +24,17 @@ class OGDIdentity:
     identity_kind: str
     explicit_id: str | None
     machine_payload_endpoint: bool
+
+
+def _is_official_ogd_host(host: str) -> bool:
+    """Recognize the national OGD domain and its official state/portal subdomains.
+
+    OGD exposes authoritative resource pages on hosts such as ``ap.data.gov.in`` and
+    ``punjab.data.gov.in`` in addition to the national ``data.gov.in`` host. These
+    mirrors may establish page provenance, but only ``api.data.gov.in`` can qualify
+    as a machine-resource endpoint in this classifier.
+    """
+    return host == "data.gov.in" or host.endswith(".data.gov.in")
 
 
 def classify_ogd_url(url: str) -> OGDIdentity:
@@ -40,16 +51,16 @@ def classify_ogd_url(url: str) -> OGDIdentity:
         return OGDIdentity(str(url), False, "invalid", None, False)
 
     host = (parsed.hostname or "").lower()
-    if parsed.scheme not in {"http", "https"} or host not in _ALLOWED_HOSTS:
+    if parsed.scheme not in {"http", "https"} or not _is_official_ogd_host(host):
         return OGDIdentity(str(url), False, "untrusted_or_invalid", None, False)
 
     parts = [part for part in parsed.path.split("/") if part]
     if len(parts) >= 2 and parts[0] == "apis" and _UUID.fullmatch(parts[1]):
         return OGDIdentity(str(url), True, "catalog_api", parts[1].lower(), False)
 
-    if len(parts) >= 2 and parts[0] == "resource":
+    if len(parts) >= 2 and parts[0] in {"resource", "resources"}:
         explicit = parts[1].lower() if _UUID.fullmatch(parts[1]) else None
-        if host == "api.data.gov.in" and explicit:
+        if host == _MACHINE_HOST and parts[0] == "resource" and explicit:
             return OGDIdentity(str(url), True, "machine_resource_candidate", explicit, True)
         return OGDIdentity(str(url), True, "resource_page", explicit, False)
 
