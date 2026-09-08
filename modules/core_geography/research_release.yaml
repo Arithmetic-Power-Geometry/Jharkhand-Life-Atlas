@@ -41,20 +41,32 @@ scientific_integrity:
   person_level_data_in_release: false
   third_party_licensing_preserved_separately: true
 paper_support_assets:
-  statistics_inputs: ready_from_verified_module_metadata_and_curated_outputs
-  figures_tables_inputs: preparation_required
+  statistics_inputs: ready_from_verified_curated_outputs
+  statistics_generator: modules/core_geography/research_stats.py
+  figures_tables_inputs: reproducibly_generated_from_verified_curated_outputs
+  manuscript_asset_generator: modules/core_geography/research_assets.py
+  generated_asset_contract:
+    - manuscript_statistics.json
+    - table_descriptive_statistics.csv
+    - figure_geography_counts_long.csv
+    - asset_semantics.json
+  figure_semantics: >-
+    Census 2011 and current LGD are explicit distinct geography vintages. Generated
+    figure inputs assert no cross-vintage administrative equivalence and must not be
+    plotted or described as a one-to-one continuity series without independent evidence.
   data_dictionary: ready
   data_dictionary_path: modules/core_geography/DATA_DICTIONARY.md
   technical_validation: repository_tests_and_module_validation_available
   usage_examples: ready
   usage_examples_path: modules/core_geography/RESEARCH_USAGE.md
-  reproducibility_assets: ingestion_and_sync_code_available
+  reproducibility_assets: ingestion_sync_statistics_and_manuscript_asset_code_available
   citation_readiness: CITATION_cff_available
   doi_readiness: preparation_required
   manuscript_support_documentation: preparation_required
 release_gate:
   - Recompute all manuscript statistics directly from release artifacts before submission.
   - Generate tables and figures from version-pinned curated outputs, never by manual transcription.
+  - Keep Census 2011 and current LGD as distinct administrative vintages unless an official evidence-backed crosswalk supports a linkage.
   - Keep the field-level data dictionary synchronized with the production schema, temporal views, provenance, null semantics, and licensing.
   - Record a clean reproducibility run and green CI for the exact release commit/tag.
   - Archive only redistributable artifacts and preserve source-specific attribution and licence terms.
