@@ -1,14 +1,21 @@
 from pathlib import Path
+import csv
 import re
 import yaml
 
 ROOT = Path(__file__).resolve().parents[1]
 PATH = ROOT / "modules" / "health_access" / "resource_identity_registry.yaml"
+COVERAGE_PATH = ROOT / "modules" / "health_access" / "source_coverage.csv"
 SHA256_RE = re.compile(r"^[0-9a-f]{64}$")
 
 
 def load_registry():
     return yaml.safe_load(PATH.read_text(encoding="utf-8"))
+
+
+def load_coverage():
+    with COVERAGE_PATH.open(encoding="utf-8", newline="") as handle:
+        return {row["source_id"]: row for row in csv.DictReader(handle)}
 
 
 def test_health_resource_identity_registry_is_transition_safe_and_fail_closed():
@@ -94,3 +101,34 @@ def test_priority_health_resources_have_distinct_canonical_slugs():
     assert len(slugs) == len(set(slugs))
     assert any("nin-health-faclities" in slug for slug in slugs)
     assert any("national-hospital-directory" in slug for slug in slugs)
+
+
+def test_health_source_coverage_cannot_outrun_resource_identity_registry():
+    """Public coverage truth must never claim more evidence than the registry proves."""
+    coverage = load_coverage()
+    resources = load_registry()["resources"]
+
+    for resource in resources:
+        source_id = resource["source_id"]
+        assert source_id in coverage, f"{source_id} missing from Health source_coverage.csv"
+        row = coverage[source_id]
+
+        assert row["catalog_or_resource_verified"] == "yes"
+        expected_raw = "yes" if resource["raw_payload_acquired"] else "no"
+        assert row["raw_file_ingested"] == expected_raw
+
+        if resource["machine_payload_identity_state"] != "acquired_verified":
+            assert row["curated_output_published"] == "no"
+        if not resource["publication_allowed"]:
+            assert row["curated_output_published"] == "no"
+
+
+def test_health_coverage_publication_is_fail_closed_for_unacquired_priority_sources():
+    coverage = load_coverage()
+    priority_ids = {resource["source_id"] for resource in load_registry()["resources"]}
+
+    for source_id in priority_ids:
+        row = coverage[source_id]
+        if row["raw_file_ingested"] == "no":
+            assert row["curated_output_published"] == "no"
+            assert row["publication_status"].startswith(("pending_", "blocked_", "catalog_"))
