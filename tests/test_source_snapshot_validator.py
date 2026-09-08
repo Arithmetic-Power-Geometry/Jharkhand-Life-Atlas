@@ -5,6 +5,7 @@ from jla.source_snapshot import source_snapshot_is_acquired, validate_source_sna
 
 def valid_snapshot():
     return {
+        "contract": "JLA_SOURCE_SNAPSHOT_V1",
         "source_identity": {
             "module_id": "health_access",
             "source_id": "TEST_SOURCE",
