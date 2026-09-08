@@ -50,15 +50,40 @@ def test_health_resource_identity_registry_is_transition_safe_and_fail_closed():
             assert resource["schema_inspected"] is True
 
 
+def test_catalog_api_identity_is_not_mistaken_for_resource_identity():
+    data = load_registry()
+    catalog = data["catalog_evidence"]
+    assert catalog["catalog_api_id"] == "e48a8bcf-ff56-4f39-839d-095827ba2a18"
+    assert catalog["catalog_api_url"].startswith("https://www.data.gov.in/apis/")
+    assert catalog["catalog_api_identity_state"] == "verified_from_official_catalog_link"
+    assert catalog["catalog_api_payload_retrieved"] is False
+    for resource in data["resources"]:
+        assert resource["machine_resource_id"] != catalog["catalog_api_id"]
+        assert resource["raw_payload_acquired"] is False
+
+
+def test_health_rights_review_records_godl_obligations_and_exclusions():
+    rights = load_registry()["rights_evidence"]
+    assert rights["platform_license"] == "Government Open Data License - India"
+    assert rights["license_url"].startswith("https://data.gov.in/")
+    obligations = set(rights["obligations"])
+    assert {"acknowledge_data_provider", "acknowledge_source", "acknowledge_license"} <= obligations
+    exclusions = set(rights["exclusions"])
+    assert "personal_information" in exclusions
+    assert "nonshareable_or_sensitive_data" in exclusions
+
+
 def test_registry_forbids_guessing_machine_identifiers():
     rules = set(load_registry()["rules"])
     assert "canonical_resource_page_is_not_machine_payload" in rules
+    assert "catalog_api_identity_is_not_resource_payload_identity" in rules
     assert "catalog_data_api_button_does_not_establish_api_identifier" in rules
     assert "never_construct_resource_uuid_from_title_or_slug" in rules
     assert "never_construct_api_endpoint_without_authoritative_identifier" in rules
     assert "machine_identity_requires_authoritative_evidence_url_and_verification_timestamp" in rules
     assert "successful_byte_retrieval_and_hash_are_required_before_acquired_status" in rules
     assert "publication_requires_shared_source_snapshot_gate" in rules
+    assert "rights_review_does_not_substitute_for_payload_validation" in rules
     assert "missing_values_remain_null" in rules
     assert "no_person_level_health_data" in rules
 
