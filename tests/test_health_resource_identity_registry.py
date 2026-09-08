@@ -3,6 +3,8 @@ import csv
 import re
 import yaml
 
+from jla.ogd_identity import classify_ogd_url
+
 ROOT = Path(__file__).resolve().parents[1]
 PATH = ROOT / "modules" / "health_access" / "resource_identity_registry.yaml"
 COVERAGE_PATH = ROOT / "modules" / "health_access" / "source_coverage.csv"
@@ -45,6 +47,11 @@ def test_health_resource_identity_registry_is_transition_safe_and_fail_closed():
             assert resource["machine_payload_url"].startswith("https://")
             assert resource["identity_evidence_url"].startswith("https://")
             assert resource["identity_verified_at"]
+
+            machine_identity = classify_ogd_url(resource["machine_payload_url"])
+            assert machine_identity.machine_payload_endpoint is True
+            assert machine_identity.identity_kind == "machine_resource_candidate"
+            assert machine_identity.explicit_id == resource["machine_resource_id"].lower()
 
         if state == "resolved_unretrieved":
             assert resource["raw_payload_acquired"] is False
