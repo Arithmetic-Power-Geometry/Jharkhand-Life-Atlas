@@ -1,7 +1,12 @@
 import streamlit as st
 from jla.ui import hero, section_note
 from jla.data import sources, variables, source_coverage
-from jla.acquisition import acquisition_queue, acquisition_queue_status
+from jla.acquisition import (
+    acquisition_queue,
+    acquisition_queue_status,
+    health_resource_identities,
+    health_resource_identity_status,
+)
 
 hero(
     "Sources, methods & responsible use",
@@ -44,6 +49,18 @@ with t3:
     st.dataframe(acquisition_queue(), width="stretch", hide_index=True)
     st.warning(
         "A source remains unpublished until its exact payload identity, rights, immutable snapshot/hash, observed schema, Jharkhand filter, temporal/geographic linkage, null semantics, validation and module-specific publication gate are verified."
+    )
+
+    st.markdown("#### Health machine-payload identity")
+    health_status = health_resource_identity_status()
+    h1, h2, h3, h4 = st.columns(4)
+    h1.metric("Priority Health resources", health_status["resource_count"])
+    h2.metric("Machine identities resolved", health_status["machine_identities_resolved"])
+    h3.metric("Raw payloads acquired", health_status["raw_payloads_acquired"])
+    h4.metric("Publishable resources", health_status["publishable_resources"])
+    st.dataframe(health_resource_identities(), width="stretch", hide_index=True)
+    st.caption(
+        "Canonical resource pages can be verified while machine resource IDs and raw payloads remain unresolved. JLA never guesses identifiers from titles or slugs, and unresolved values remain null."
     )
 
 with t4:
