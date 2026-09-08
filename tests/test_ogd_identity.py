@@ -35,6 +35,37 @@ def test_slug_or_title_never_generates_identifier():
     assert explicit_machine_resource_id(url) is None
 
 
+def test_official_state_ogd_subdomain_is_trusted_for_page_provenance_only():
+    for url in (
+        "https://ap.data.gov.in/resource/stateut-wise-number-households-individual-household-latrines",
+        "https://punjab.data.gov.in/resource/stateut-and-district-wise-individual-household-latrines",
+    ):
+        identity = classify_ogd_url(url)
+        assert identity.official_host is True
+        assert identity.identity_kind == "resource_page"
+        assert identity.machine_payload_endpoint is False
+        assert explicit_machine_resource_id(url) is None
+
+
+def test_state_subdomain_cannot_impersonate_machine_api_even_with_uuid_path():
+    url = "https://ap.data.gov.in/resource/123e4567-e89b-42d3-a456-426614174000"
+    identity = classify_ogd_url(url)
+    assert identity.official_host is True
+    assert identity.identity_kind == "resource_page"
+    assert identity.explicit_id == "123e4567-e89b-42d3-a456-426614174000"
+    assert identity.machine_payload_endpoint is False
+    assert explicit_machine_resource_id(url) is None
+
+
+def test_plural_resources_slug_is_resource_page_not_machine_endpoint():
+    url = "https://data.gov.in/resources/nin-health-faclities-geo-code-and-additional-parameters-updated-till-last-month"
+    identity = classify_ogd_url(url)
+    assert identity.official_host is True
+    assert identity.identity_kind == "resource_page"
+    assert identity.explicit_id is None
+    assert identity.machine_payload_endpoint is False
+
+
 def test_non_official_host_is_rejected():
     identity = classify_ogd_url(
         "https://example.org/resource/123e4567-e89b-42d3-a456-426614174000"
@@ -43,3 +74,11 @@ def test_non_official_host_is_rejected():
     assert identity.identity_kind == "untrusted_or_invalid"
     assert identity.explicit_id is None
     assert explicit_machine_resource_id(identity.url) is None
+
+
+def test_lookalike_data_gov_domain_is_rejected():
+    identity = classify_ogd_url(
+        "https://evildata.gov.in.example.org/resource/123e4567-e89b-42d3-a456-426614174000"
+    )
+    assert identity.official_host is False
+    assert identity.machine_payload_endpoint is False
