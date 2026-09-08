@@ -27,11 +27,51 @@ def _gate_module_id(gate: dict) -> str:
     return value.strip()
 
 
+def _criterion_truth(module_dir: Path, name: str, item: dict) -> bool:
+    """Return explicit criterion truth without translating absence into success.
+
+    Two governed criterion contracts exist in the repository:
+    * ``satisfied: bool`` paired with explicit ``evidence``; and
+    * ``passed: bool`` paired with an explicit ``requirement``.
+
+    Supporting both is schema compatibility, not gate weakening: a criterion must carry
+    one explicit boolean truth field and the corresponding auditable text field. Mixed,
+    absent, or non-boolean truth fields fail closed.
+    """
+    assert isinstance(item, dict), f"{module_dir.name}:{name} must be a mapping"
+
+    has_satisfied = "satisfied" in item
+    has_passed = "passed" in item
+    assert has_satisfied != has_passed, (
+        f"{module_dir.name}:{name} must declare exactly one of satisfied or passed"
+    )
+
+    if has_satisfied:
+        value = item.get("satisfied")
+        assert isinstance(value, bool), (
+            f"{module_dir.name}:{name}.satisfied must be boolean"
+        )
+        evidence = item.get("evidence")
+        assert isinstance(evidence, str) and evidence.strip(), (
+            f"{module_dir.name}:{name} must carry explicit evidence"
+        )
+        return value
+
+    value = item.get("passed")
+    assert isinstance(value, bool), f"{module_dir.name}:{name}.passed must be boolean"
+    requirement = item.get("requirement")
+    assert isinstance(requirement, str) and requirement.strip(), (
+        f"{module_dir.name}:{name} must carry an explicit requirement"
+    )
+    return value
+
+
 def _gate_truth(module_dir: Path, gate: dict) -> tuple[bool, bool]:
     """Return (gate_complete, all_satisfied) for every governed gate schema.
 
     Supported schemas are intentionally fail-closed:
     * criteria.<name>.satisfied with explicit evidence;
+    * criteria.<name>.passed with explicit requirement;
     * publication_gate.<name>: bool plus complete: bool;
     * requirements.<name>.passed plus publication_ready: bool.
 
@@ -43,16 +83,11 @@ def _gate_truth(module_dir: Path, gate: dict) -> tuple[bool, bool]:
         assert isinstance(criteria, dict) and criteria, (
             f"{module_dir.name}: completion gate criteria must be a non-empty mapping"
         )
-        for name, item in criteria.items():
-            assert isinstance(item, dict), f"{module_dir.name}:{name} must be a mapping"
-            assert isinstance(item.get("satisfied"), bool), (
-                f"{module_dir.name}:{name}.satisfied must be boolean"
-            )
-            evidence = item.get("evidence")
-            assert isinstance(evidence, str) and evidence.strip(), (
-                f"{module_dir.name}:{name} must carry explicit evidence"
-            )
-        all_satisfied = all(item["satisfied"] for item in criteria.values())
+        truths = [
+            _criterion_truth(module_dir, name, item)
+            for name, item in criteria.items()
+        ]
+        all_satisfied = all(truths)
         gate_complete = str(gate.get("status", "")).strip().lower() == "complete"
         return gate_complete, all_satisfied
 
@@ -107,8 +142,8 @@ def test_every_completion_gate_agrees_with_module_status():
     """A gated module may never claim COMPLETE while any publication gate is open.
 
     This is deliberately repository-wide so newly added modules inherit the rule.
-    Explicit-evidence criteria, boolean publication gates, and requirement/pass gates
-    are all supported without weakening their contracts.
+    Explicit-evidence criteria, requirement criteria, boolean publication gates, and
+    requirement/pass gates are all supported without weakening their contracts.
     """
     gated_modules = 0
 
