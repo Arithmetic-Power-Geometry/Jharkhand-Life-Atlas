@@ -8,11 +8,13 @@ on:
       - 'tests/test_health*.py'
       - 'tests/test_source_snapshot*.py'
       - 'tests/test_acquisition*.py'
+      - 'tests/test_ogd_identity.py'
       - 'data/curated/health_access/**'
       - 'app_pages/**'
       - 'scripts/**'
       - 'jla/source_snapshot.py'
       - 'jla/acquisition.py'
+      - 'jla/ogd_identity.py'
       - 'config/source_snapshot_contract.yaml'
       - 'config/acquisition_queue.yaml'
       - '.github/workflows/health-access-validation.yml'
@@ -22,11 +24,13 @@ on:
       - 'tests/test_health*.py'
       - 'tests/test_source_snapshot*.py'
       - 'tests/test_acquisition*.py'
+      - 'tests/test_ogd_identity.py'
       - 'data/curated/health_access/**'
       - 'app_pages/**'
       - 'scripts/**'
       - 'jla/source_snapshot.py'
       - 'jla/acquisition.py'
+      - 'jla/ogd_identity.py'
       - 'config/source_snapshot_contract.yaml'
       - 'config/acquisition_queue.yaml'
       - '.github/workflows/health-access-validation.yml'
@@ -45,6 +49,6 @@ jobs:
       - name: Compile Module 2 and shared acquisition code
         run: python -m compileall -q modules/health_access app_pages scripts jla
       - name: Run every Module 2 and shared acquisition-governance test
-        run: pytest -q tests/test_health*.py tests/test_source_snapshot*.py tests/test_acquisition*.py
+        run: pytest -q tests/test_health*.py tests/test_source_snapshot*.py tests/test_acquisition*.py tests/test_ogd_identity.py
       - name: Run repository validation
         run: python scripts/check.py
