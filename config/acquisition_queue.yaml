@@ -20,9 +20,9 @@ workstreams:
     module_id: health_access
     source_id: OGD_NIN_HEALTH_FACILITIES_GEO_2026
     objective: resolve_exact_official_csv_or_data_api_and_acquire_payload
-    current_state: canonical_resource_slug_corroborated_machine_payload_identity_not_acquired
+    current_state: catalog_api_identity_and_rights_verified_resource_machine_payload_identity_not_acquired
     next_evidence:
-      - authoritative_machine_download_or_data_api_identifier
+      - authoritative_resource_machine_download_or_data_api_identifier
       - successful_payload_retrieval
       - retrieved_at_utc
       - byte_count_or_canonical_api_page_hashes
@@ -37,9 +37,9 @@ workstreams:
     module_id: health_access
     source_id: OGD_NHP_HOSPITAL_GEO_2026
     objective: independently_acquire_and_compare_second_official_hospital_directory
-    current_state: official_resource_page_resolved_machine_payload_identity_not_acquired
+    current_state: catalog_api_identity_and_rights_verified_resource_machine_payload_identity_not_acquired
     next_evidence:
-      - authoritative_machine_download_or_data_api_identifier
+      - authoritative_resource_machine_download_or_data_api_identifier
       - successful_payload_retrieval
       - immutable_snapshot_identity
       - observed_schema
