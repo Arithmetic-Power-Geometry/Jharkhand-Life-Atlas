@@ -2,6 +2,8 @@ from pathlib import Path
 
 import yaml
 
+from jla.ogd_identity import classify_ogd_url
+
 
 MODULE_FILES = {
     "water_access": Path("modules/water_access/acquisition_candidates.yaml"),
@@ -27,6 +29,20 @@ def test_priority_candidate_files_are_fail_closed():
             required = set(candidate["required_before_use"])
             assert any(item in required for item in {"acquire_exact_payload", "acquire_exact_csv_payload"})
             assert "preserve_missing_as_null" in required
+
+
+def test_priority_ogd_candidate_pages_are_official_but_not_machine_payload_evidence():
+    for path in MODULE_FILES.values():
+        data = _load(path)
+        for candidate in data["candidates"]:
+            url = candidate.get("resource_url")
+            if not url or "data.gov.in" not in url:
+                continue
+            identity = classify_ogd_url(url)
+            assert identity.official_host is True
+            assert identity.identity_kind == "resource_page"
+            assert identity.machine_payload_endpoint is False
+            assert candidate["acquisition_state"] != "acquired_verified"
 
 
 def test_water_state_context_cannot_be_disaggregated():
