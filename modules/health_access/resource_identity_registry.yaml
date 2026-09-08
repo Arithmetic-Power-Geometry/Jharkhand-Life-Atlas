@@ -1,0 +1,57 @@
+module_id: health_access
+registry_id: JLA_HEALTH_RESOURCE_IDENTITY_V1
+purpose: >-
+  Record canonical authoritative resource-page identities separately from machine
+  payload identities so a stable official resource URL can be verified without
+  implying that bytes or an API endpoint have been acquired.
+
+resources:
+  - source_id: OGD_NIN_HEALTH_FACILITIES_GEO_2026
+    catalog_url: https://data.gov.in/catalog/hospital-directory-national-health-portal
+    canonical_resource_url: https://data.gov.in/resources/nin-health-faclities-geo-code-and-additional-parameters-updated-till-last-month
+    canonical_slug: nin-health-faclities-geo-code-and-additional-parameters-updated-till-last-month
+    authoritative_owner: National Institute of Health and Family Welfare (NIHFW), New Delhi
+    live_catalog_updated_on: '2026-08-11'
+    granularity: Monthly
+    catalog_offers_data_api: true
+    catalog_offers_csv_through_url: true
+    resource_page_identity_state: canonical_slug_independently_corroborated
+    machine_payload_identity_state: unresolved
+    raw_payload_acquired: false
+    raw_sha256: null
+    raw_bytes: null
+    schema_inspected: false
+    publication_allowed: false
+    evidence_notes:
+      - Official OGD catalog currently enumerates this titled resource and reports an 11 August 2026 update.
+      - The canonical data.gov.in resource slug is independently referenced by long-lived downstream provenance records, but no current raw/API endpoint identifier has been established in JLA.
+
+  - source_id: OGD_NHP_HOSPITAL_GEO_2026
+    catalog_url: https://data.gov.in/catalog/hospital-directory-national-health-portal
+    canonical_resource_url: https://www.data.gov.in/resource/national-hospital-directory-geo-code-and-additional-parameters-updated-till-last-month
+    canonical_slug: national-hospital-directory-geo-code-and-additional-parameters-updated-till-last-month
+    authoritative_owner: National Institute of Health and Family Welfare (NIHFW), New Delhi
+    live_catalog_updated_on: '2026-08-11'
+    granularity: Monthly
+    catalog_offers_data_api: true
+    catalog_offers_csv: true
+    resource_page_identity_state: official_resource_page_resolved
+    machine_payload_identity_state: unresolved
+    raw_payload_acquired: false
+    raw_sha256: null
+    raw_bytes: null
+    schema_inspected: false
+    publication_allowed: false
+    evidence_notes:
+      - Official OGD resource page resolves for this canonical slug.
+      - Live catalog metadata reports an 11 August 2026 update while an indexed resource-page snapshot can show an older date; JLA does not use either metadata view as a substitute for payload identity.
+
+rules:
+  - canonical_resource_page_is_not_machine_payload
+  - catalog_data_api_button_does_not_establish_api_identifier
+  - never_construct_resource_uuid_from_title_or_slug
+  - never_construct_api_endpoint_without_authoritative_identifier
+  - downstream_references_can_corroborate_slug_identity_but_not_payload_currency
+  - successful_byte_retrieval_and_hash_are_required_before_acquired_status
+  - missing_values_remain_null
+  - no_person_level_health_data
