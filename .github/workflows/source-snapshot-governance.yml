@@ -1,0 +1,42 @@
+name: source-snapshot-governance
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'jla/source_snapshot.py'
+      - 'jla/acquisition.py'
+      - 'config/source_snapshot_contract.yaml'
+      - 'config/acquisition_queue.yaml'
+      - 'tests/test_source_snapshot*.py'
+      - 'tests/test_acquisition*.py'
+      - 'scripts/**'
+      - '.github/workflows/source-snapshot-governance.yml'
+  pull_request:
+    paths:
+      - 'jla/source_snapshot.py'
+      - 'jla/acquisition.py'
+      - 'config/source_snapshot_contract.yaml'
+      - 'config/acquisition_queue.yaml'
+      - 'tests/test_source_snapshot*.py'
+      - 'tests/test_acquisition*.py'
+      - 'scripts/**'
+      - '.github/workflows/source-snapshot-governance.yml'
+  workflow_dispatch:
+
+jobs:
+  validate-source-snapshot-governance:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - name: Install dependencies
+        run: pip install -r requirements.txt pytest
+      - name: Compile shared acquisition code
+        run: python -m compileall -q jla scripts
+      - name: Run source snapshot and acquisition governance tests
+        run: pytest -q tests/test_source_snapshot*.py tests/test_acquisition*.py
+      - name: Run repository validation
+        run: python scripts/check.py
