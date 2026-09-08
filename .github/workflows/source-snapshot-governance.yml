@@ -6,6 +6,7 @@ on:
     paths:
       - 'jla/source_snapshot.py'
       - 'jla/acquisition.py'
+      - 'jla/acquisition_receipt.py'
       - 'jla/ogd_identity.py'
       - 'config/source_snapshot_contract.yaml'
       - 'config/acquisition_queue.yaml'
@@ -23,6 +24,7 @@ on:
     paths:
       - 'jla/source_snapshot.py'
       - 'jla/acquisition.py'
+      - 'jla/acquisition_receipt.py'
       - 'jla/ogd_identity.py'
       - 'config/source_snapshot_contract.yaml'
       - 'config/acquisition_queue.yaml'
