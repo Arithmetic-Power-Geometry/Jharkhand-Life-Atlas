@@ -1,15 +1,18 @@
 """Validation helpers for authoritative source snapshots.
 
-A source may be discovered without being acquired.  This module implements the
+A source may be discovered without being acquired. This module implements the
 shared fail-closed checks defined by ``config/source_snapshot_contract.yaml`` so
 module pipelines can make that distinction consistently.
 """
 
 from __future__ import annotations
 
+from datetime import datetime
 import re
 from typing import Any, Mapping
+from urllib.parse import urlparse
 
+_CONTRACT_ID = "JLA_SOURCE_SNAPSHOT_V1"
 _SHA256_RE = re.compile(r"^[0-9a-f]{64}$")
 
 _REQUIRED_SECTIONS = (
@@ -72,14 +75,42 @@ def _is_present(value: Any) -> bool:
     return value is not None and value != "" and value != [] and value != {}
 
 
+def _is_http_url(value: Any) -> bool:
+    if not isinstance(value, str):
+        return False
+    parsed = urlparse(value)
+    return parsed.scheme in {"http", "https"} and bool(parsed.netloc)
+
+
+def _is_utc_timestamp(value: Any) -> bool:
+    if not isinstance(value, str) or not value.endswith("Z"):
+        return False
+    try:
+        parsed = datetime.fromisoformat(value[:-1] + "+00:00")
+    except ValueError:
+        return False
+    return parsed.utcoffset() is not None and parsed.utcoffset().total_seconds() == 0
+
+
+def _is_nonnegative_int(value: Any) -> bool:
+    return isinstance(value, int) and not isinstance(value, bool) and value >= 0
+
+
+def _is_positive_int(value: Any) -> bool:
+    return isinstance(value, int) and not isinstance(value, bool) and value > 0
+
+
 def validate_source_snapshot(snapshot: Mapping[str, Any]) -> list[str]:
     """Return fail-closed validation errors for an acquired source snapshot.
 
     An empty error list means the manifest contains the minimum evidence needed
-    to be treated as *acquired*.  It does not by itself make a module complete.
+    to be treated as *acquired*. It does not by itself make a module complete.
     """
 
     errors: list[str] = []
+
+    if snapshot.get("contract") != _CONTRACT_ID:
+        errors.append(f"contract must equal {_CONTRACT_ID}")
 
     for section in _REQUIRED_SECTIONS:
         payload = snapshot.get(section)
@@ -90,9 +121,18 @@ def validate_source_snapshot(snapshot: Mapping[str, Any]) -> list[str]:
             if not _is_present(payload.get(field)):
                 errors.append(f"missing field: {section}.{field}")
 
+    source_identity = snapshot.get("source_identity") or {}
+    for field in ("authoritative_source_url", "exact_resource_or_api_url"):
+        value = source_identity.get(field)
+        if value is not None and not _is_http_url(value):
+            errors.append(f"source_identity.{field} must be an http(s) URL")
+
     retrieval = snapshot.get("retrieval") or {}
+    retrieved_at = retrieval.get("retrieved_at_utc")
+    if retrieved_at is not None and not _is_utc_timestamp(retrieved_at):
+        errors.append("retrieval.retrieved_at_utc must be an ISO-8601 UTC timestamp ending in Z")
     byte_count = retrieval.get("byte_count")
-    if byte_count is not None and (not isinstance(byte_count, int) or byte_count <= 0):
+    if byte_count is not None and not _is_positive_int(byte_count):
         errors.append("retrieval.byte_count must be a positive integer")
     sha256 = retrieval.get("sha256")
     if sha256 is not None and not _SHA256_RE.fullmatch(str(sha256).lower()):
@@ -102,9 +142,9 @@ def validate_source_snapshot(snapshot: Mapping[str, Any]) -> list[str]:
     before = observed.get("record_count_before_jharkhand_filter")
     after = observed.get("record_count_after_jharkhand_filter")
     for field, value in (("before", before), ("after", after)):
-        if value is not None and (not isinstance(value, int) or value < 0):
+        if value is not None and not _is_nonnegative_int(value):
             errors.append(f"observed_payload record count {field} must be a non-negative integer")
-    if isinstance(before, int) and isinstance(after, int) and after > before:
+    if _is_nonnegative_int(before) and _is_nonnegative_int(after) and after > before:
         errors.append("Jharkhand-filtered record count cannot exceed source record count")
     if observed.get("null_semantics_reviewed") is not True:
         errors.append("observed_payload.null_semantics_reviewed must be true")
@@ -113,6 +153,9 @@ def validate_source_snapshot(snapshot: Mapping[str, Any]) -> list[str]:
         errors.append("observed_payload.observed_schema must be structured")
 
     rights = snapshot.get("rights") or {}
+    terms_url = rights.get("licence_url_or_terms_url")
+    if terms_url is not None and not _is_http_url(terms_url):
+        errors.append("rights.licence_url_or_terms_url must be an http(s) URL")
     if str(rights.get("rights_review_status", "")).lower() not in _VERIFIED_STATUSES:
         errors.append("rights.rights_review_status is not verified")
 
@@ -137,6 +180,9 @@ def validate_source_snapshot(snapshot: Mapping[str, Any]) -> list[str]:
             for field in ("crosswalk_source", "crosswalk_evidence_url", "relationship_type", "review_status"):
                 if not _is_present(crosswalk.get(field)):
                     errors.append(f"missing field: temporal_crosswalk.{field}")
+            crosswalk_url = crosswalk.get("crosswalk_evidence_url")
+            if crosswalk_url is not None and not _is_http_url(crosswalk_url):
+                errors.append("temporal_crosswalk.crosswalk_evidence_url must be an http(s) URL")
             relationship = str(crosswalk.get("relationship_type", "")).lower()
             review = str(crosswalk.get("review_status", "")).lower()
             if relationship == "equivalent" and review != "verified_equivalent":
