@@ -28,11 +28,15 @@ def _gate_module_id(gate: dict) -> str:
 
 
 def _gate_truth(module_dir: Path, gate: dict) -> tuple[bool, bool]:
-    """Return (gate_complete, all_satisfied) for either governed gate schema.
+    """Return (gate_complete, all_satisfied) for every governed gate schema.
 
-    Newer gates use criteria.<name>.satisfied with explicit evidence. Earlier gates
-    use publication_gate.<name>: bool plus complete: bool. Both are fail-closed and
-    remain supported until the earlier modules are migrated deliberately.
+    Supported schemas are intentionally fail-closed:
+    * criteria.<name>.satisfied with explicit evidence;
+    * publication_gate.<name>: bool plus complete: bool;
+    * requirements.<name>.passed plus publication_ready: bool.
+
+    A schema is accepted only when its required booleans are explicit. This preserves
+    the repository-wide completion invariant while older modules are migrated deliberately.
     """
     criteria = gate.get("criteria")
     if criteria is not None:
@@ -53,33 +57,58 @@ def _gate_truth(module_dir: Path, gate: dict) -> tuple[bool, bool]:
         return gate_complete, all_satisfied
 
     publication_gate = gate.get("publication_gate")
-    assert isinstance(publication_gate, dict) and publication_gate, (
-        f"{module_dir.name}: completion gate must contain criteria or publication_gate"
+    if publication_gate is not None:
+        assert isinstance(publication_gate, dict) and publication_gate, (
+            f"{module_dir.name}: publication_gate must be a non-empty mapping"
+        )
+        for name, value in publication_gate.items():
+            assert isinstance(value, bool), (
+                f"{module_dir.name}:publication_gate.{name} must be boolean"
+            )
+
+        all_satisfied = all(publication_gate.values())
+        complete_value = gate.get("complete")
+        assert isinstance(complete_value, bool), (
+            f"{module_dir.name}: legacy completion gate must declare boolean complete"
+        )
+        status_complete = str(gate.get("status", "")).strip().lower() == "complete"
+        assert complete_value == status_complete, (
+            f"{module_dir.name}: completion gate complete/status fields disagree"
+        )
+        return complete_value, all_satisfied
+
+    requirements = gate.get("requirements")
+    assert isinstance(requirements, dict) and requirements, (
+        f"{module_dir.name}: completion gate must contain criteria, publication_gate, or requirements"
     )
-    for name, value in publication_gate.items():
-        assert isinstance(value, bool), (
-            f"{module_dir.name}:publication_gate.{name} must be boolean"
+    for name, item in requirements.items():
+        assert isinstance(item, dict), f"{module_dir.name}:requirements.{name} must be a mapping"
+        assert isinstance(item.get("passed"), bool), (
+            f"{module_dir.name}:requirements.{name}.passed must be boolean"
+        )
+        rule = item.get("rule")
+        assert isinstance(rule, str) and rule.strip(), (
+            f"{module_dir.name}:requirements.{name} must carry an explicit rule"
         )
 
-    all_satisfied = all(publication_gate.values())
-    complete_value = gate.get("complete")
-    assert isinstance(complete_value, bool), (
-        f"{module_dir.name}: legacy completion gate must declare boolean complete"
+    all_satisfied = all(item["passed"] for item in requirements.values())
+    publication_ready = gate.get("publication_ready")
+    assert isinstance(publication_ready, bool), (
+        f"{module_dir.name}: requirements gate must declare boolean publication_ready"
     )
     status_complete = str(gate.get("status", "")).strip().lower() == "complete"
-    # Either field may express completion, but contradictory completion truth is invalid.
-    assert complete_value == status_complete, (
-        f"{module_dir.name}: completion gate complete/status fields disagree"
+    assert publication_ready == status_complete, (
+        f"{module_dir.name}: publication_ready/status fields disagree"
     )
-    return complete_value, all_satisfied
+    return publication_ready, all_satisfied
 
 
 def test_every_completion_gate_agrees_with_module_status():
     """A gated module may never claim COMPLETE while any publication gate is open.
 
     This is deliberately repository-wide so newly added modules inherit the rule.
-    Both the explicit-evidence criteria schema and the earlier boolean publication_gate
-    schema are supported without weakening either contract.
+    Explicit-evidence criteria, boolean publication gates, and requirement/pass gates
+    are all supported without weakening their contracts.
     """
     gated_modules = 0
 
