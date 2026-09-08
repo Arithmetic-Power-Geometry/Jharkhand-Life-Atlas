@@ -6,20 +6,34 @@ on:
     paths:
       - 'jla/source_snapshot.py'
       - 'jla/acquisition.py'
+      - 'jla/ogd_identity.py'
       - 'config/source_snapshot_contract.yaml'
       - 'config/acquisition_queue.yaml'
+      - 'modules/health_access/resource_identity_registry.yaml'
+      - 'modules/water_access/acquisition_candidates.yaml'
+      - 'modules/sanitation_hygiene/acquisition_candidates.yaml'
+      - 'modules/education_access/acquisition_candidates.yaml'
       - 'tests/test_source_snapshot*.py'
       - 'tests/test_acquisition*.py'
+      - 'tests/test_ogd_identity.py'
+      - 'tests/test_priority_acquisition_candidates.py'
       - 'scripts/**'
       - '.github/workflows/source-snapshot-governance.yml'
   pull_request:
     paths:
       - 'jla/source_snapshot.py'
       - 'jla/acquisition.py'
+      - 'jla/ogd_identity.py'
       - 'config/source_snapshot_contract.yaml'
       - 'config/acquisition_queue.yaml'
+      - 'modules/health_access/resource_identity_registry.yaml'
+      - 'modules/water_access/acquisition_candidates.yaml'
+      - 'modules/sanitation_hygiene/acquisition_candidates.yaml'
+      - 'modules/education_access/acquisition_candidates.yaml'
       - 'tests/test_source_snapshot*.py'
       - 'tests/test_acquisition*.py'
+      - 'tests/test_ogd_identity.py'
+      - 'tests/test_priority_acquisition_candidates.py'
       - 'scripts/**'
       - '.github/workflows/source-snapshot-governance.yml'
   workflow_dispatch:
@@ -36,7 +50,12 @@ jobs:
         run: pip install -r requirements.txt pytest
       - name: Compile shared acquisition code
         run: python -m compileall -q jla scripts
-      - name: Run source snapshot and acquisition governance tests
-        run: pytest -q tests/test_source_snapshot*.py tests/test_acquisition*.py
+      - name: Run shared acquisition and OGD identity governance tests
+        run: >-
+          pytest -q
+          tests/test_source_snapshot*.py
+          tests/test_acquisition*.py
+          tests/test_ogd_identity.py
+          tests/test_priority_acquisition_candidates.py
       - name: Run repository validation
         run: python scripts/check.py
