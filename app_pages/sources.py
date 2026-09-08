@@ -7,6 +7,7 @@ from jla.acquisition import (
     health_resource_identities,
     health_resource_identity_status,
 )
+from jla.repository_truth import repository_truth_status
 
 hero(
     "Sources, methods & responsible use",
@@ -15,12 +16,13 @@ hero(
 
 src = sources()
 
-t1, t2, t3, t4, t5 = st.tabs([
+t1, t2, t3, t4, t5, t6 = st.tabs([
     "Coverage audit",
     "Source registry",
     "Acquisition queue",
     "Governance gate",
     "Variable registry",
+    "Repository truth",
 ])
 
 with t1:
@@ -109,6 +111,34 @@ with t4:
 
 with t5:
     st.dataframe(variables(), width="stretch", hide_index=True)
+
+with t6:
+    truth = repository_truth_status()
+    module_truth = truth["modules"]
+    manifest = truth["manifest"]
+    st.markdown("### Live repository truth")
+    st.caption(truth["truth_rule"])
+    r1, r2, r3, r4 = st.columns(4)
+    r1.metric("Roadmap modules", module_truth["roadmap_modules"])
+    r2.metric("Implemented", module_truth["implemented_modules"])
+    r3.metric("Research-ready", module_truth["complete_modules"])
+    r4.metric("Planned", module_truth["planned_modules"])
+    st.write(
+        f"**In development:** {module_truth['in_development_modules']} · "
+        f"**Complete:** {module_truth['complete_modules']} · "
+        f"**Planned:** {module_truth['planned_modules']}"
+    )
+    if manifest["is_current_inventory"]:
+        st.success("MANIFEST.json matches the current repository file inventory.")
+    else:
+        st.warning(
+            "MANIFEST.json does not match the current repository file inventory and is therefore not treated as live repository truth. "
+            f"Declared files: {manifest['declared_files']}; current files: {manifest['actual_files']}; "
+            f"unlisted current files: {len(manifest['unlisted_files'])}; missing declared files: {len(manifest['missing_declared_files'])}."
+        )
+    st.caption(
+        "Module labels are computed from the roadmap and live module contracts. A module is counted as research-ready only when its repository contract is marked complete; publication evidence and CI must still remain valid for that exact main state."
+    )
 
 st.info(
     "JLA keeps Census 2011 geography separate from current Jharkhand administrative/LGD geography. Similar names do not imply identical geographic entities or time periods."
