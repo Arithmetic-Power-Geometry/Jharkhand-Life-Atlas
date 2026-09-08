@@ -4,12 +4,18 @@ purpose: >-
   Define the minimum evidence required before any discovered external source may be
   treated as acquired JLA evidence. This contract applies across all roadmap modules.
 
+required_top_level:
+  contract: JLA_SOURCE_SNAPSHOT_V1
+
 principles:
   - catalog_metadata_is_not_acquired_data
   - resource_page_metadata_is_not_acquired_data
   - preview_rows_or_fields_are_not_full_schema_verification
   - failed_or_partial_requests_do_not_satisfy_acquisition
   - immutable_snapshot_identity_precedes_cleaning
+  - retrieval_time_must_be_explicit_utc
+  - source_and_terms_references_must_be_resolvable_http_or_https_urls
+  - byte_and_record_counts_must_be_real_integers_not_boolean_placeholders
   - missing_values_remain_null_unless_source_explicitly_encodes_zero
   - source_and_geography_vintages_are_preserved
   - historical_and_current_geographies_are_not_name_only_joined
