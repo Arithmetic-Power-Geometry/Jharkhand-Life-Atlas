@@ -6,17 +6,29 @@ on:
     paths:
       - 'modules/health_access/**'
       - 'tests/test_health*.py'
+      - 'tests/test_source_snapshot*.py'
+      - 'tests/test_acquisition*.py'
       - 'data/curated/health_access/**'
       - 'app_pages/**'
       - 'scripts/**'
+      - 'jla/source_snapshot.py'
+      - 'jla/acquisition.py'
+      - 'config/source_snapshot_contract.yaml'
+      - 'config/acquisition_queue.yaml'
       - '.github/workflows/health-access-validation.yml'
   pull_request:
     paths:
       - 'modules/health_access/**'
       - 'tests/test_health*.py'
+      - 'tests/test_source_snapshot*.py'
+      - 'tests/test_acquisition*.py'
       - 'data/curated/health_access/**'
       - 'app_pages/**'
       - 'scripts/**'
+      - 'jla/source_snapshot.py'
+      - 'jla/acquisition.py'
+      - 'config/source_snapshot_contract.yaml'
+      - 'config/acquisition_queue.yaml'
       - '.github/workflows/health-access-validation.yml'
   workflow_dispatch:
 
@@ -30,9 +42,9 @@ jobs:
           python-version: '3.13'
       - name: Install dependencies
         run: pip install -r requirements.txt pytest
-      - name: Compile Module 2 code
-        run: python -m compileall -q modules/health_access app_pages scripts
-      - name: Run every Module 2 test
-        run: pytest -q tests/test_health*.py
+      - name: Compile Module 2 and shared acquisition code
+        run: python -m compileall -q modules/health_access app_pages scripts jla
+      - name: Run every Module 2 and shared acquisition-governance test
+        run: pytest -q tests/test_health*.py tests/test_source_snapshot*.py tests/test_acquisition*.py
       - name: Run repository validation
         run: python scripts/check.py
