@@ -17,6 +17,10 @@ resources:
     catalog_offers_csv_through_url: true
     resource_page_identity_state: canonical_slug_independently_corroborated
     machine_payload_identity_state: unresolved
+    machine_resource_id: null
+    machine_payload_url: null
+    identity_evidence_url: null
+    identity_verified_at: null
     raw_payload_acquired: false
     raw_sha256: null
     raw_bytes: null
@@ -37,6 +41,10 @@ resources:
     catalog_offers_csv: true
     resource_page_identity_state: official_resource_page_resolved
     machine_payload_identity_state: unresolved
+    machine_resource_id: null
+    machine_payload_url: null
+    identity_evidence_url: null
+    identity_verified_at: null
     raw_payload_acquired: false
     raw_sha256: null
     raw_bytes: null
@@ -46,12 +54,28 @@ resources:
       - Official OGD resource page resolves for this canonical slug.
       - Live catalog metadata reports an 11 August 2026 update while an indexed resource-page snapshot can show an older date; JLA does not use either metadata view as a substitute for payload identity.
 
+state_contract:
+  unresolved:
+    requires_machine_identity: false
+    raw_payload_acquired: false
+    publication_allowed: false
+  resolved_unretrieved:
+    requires_machine_identity: true
+    raw_payload_acquired: false
+    publication_allowed: false
+  acquired_verified:
+    requires_machine_identity: true
+    raw_payload_acquired: true
+    publication_allowed_requires_source_snapshot_gate: true
+
 rules:
   - canonical_resource_page_is_not_machine_payload
   - catalog_data_api_button_does_not_establish_api_identifier
   - never_construct_resource_uuid_from_title_or_slug
   - never_construct_api_endpoint_without_authoritative_identifier
   - downstream_references_can_corroborate_slug_identity_but_not_payload_currency
+  - machine_identity_requires_authoritative_evidence_url_and_verification_timestamp
   - successful_byte_retrieval_and_hash_are_required_before_acquired_status
+  - publication_requires_shared_source_snapshot_gate
   - missing_values_remain_null
   - no_person_level_health_data
