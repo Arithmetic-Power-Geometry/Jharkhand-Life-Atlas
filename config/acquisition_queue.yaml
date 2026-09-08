@@ -20,9 +20,10 @@ workstreams:
     module_id: health_access
     source_id: OGD_NIN_HEALTH_FACILITIES_GEO_2026
     objective: resolve_exact_official_csv_or_data_api_and_acquire_payload
-    current_state: resource_discovered_payload_not_acquired
+    current_state: canonical_resource_slug_corroborated_machine_payload_identity_not_acquired
     next_evidence:
-      - exact_resource_or_api_url
+      - authoritative_machine_download_or_data_api_identifier
+      - successful_payload_retrieval
       - retrieved_at_utc
       - byte_count_or_canonical_api_page_hashes
       - sha256
@@ -36,9 +37,10 @@ workstreams:
     module_id: health_access
     source_id: OGD_NHP_HOSPITAL_GEO_2026
     objective: independently_acquire_and_compare_second_official_hospital_directory
-    current_state: resource_page_resolved_raw_payload_not_acquired
+    current_state: official_resource_page_resolved_machine_payload_identity_not_acquired
     next_evidence:
-      - exact_resource_or_api_url
+      - authoritative_machine_download_or_data_api_identifier
+      - successful_payload_retrieval
       - immutable_snapshot_identity
       - observed_schema
       - record_count_before_and_after_jharkhand_filter
