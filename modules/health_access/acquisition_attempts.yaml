@@ -111,6 +111,23 @@ attempts:
     schema_inspected: false
     publication_effect: none_gate_remains_closed
 
+  - attempted_utc: '2026-09-09T20:50:00Z'
+    source_id: OGD_NFHS5_DISTRICT_FACTSHEETS_2019_2021
+    resource_url: https://www.data.gov.in/resource/india-districts-factsheets-national-family-health-survey-nfhs-5-2019-2021-provisional
+    resource_identity_verified: true
+    live_resource_observation: "Current official OGD resource evidence advertises an XLS download and preview, reports the district factsheet workbook at about 740 KB, and states that no Data API exists for this resource."
+    direct_asset_candidate: https://data.gov.in/files/ogdpv2dms/s3fs-public/datafile/NFHS_5_India_Districts_Factsheet_Data.xls
+    direct_asset_candidate_basis: "Independent scholarly dataset documentation cites this exact data.gov.in static file path as the source workbook. This supports endpoint discovery only; it does not by itself establish current authoritative payload identity."
+    direct_asset_fetch_result: request_failed_timeout_or_transport_failure
+    endpoint_status: candidate_not_promoted_to_verified_payload_identity
+    acquisition_result: no_payload_acquired
+    blocker_class: authoritative_xls_asset_unreachable_in_current_execution_path
+    raw_sha256: null
+    raw_bytes: null
+    schema_inspected: false
+    publication_effect: none_gate_remains_closed
+    next_safe_action: "Retry only the official data.gov.in XLS path/resource-page download control in a later execution environment. On success, hash bytes and inspect workbook schema before any curated publication."
+
 rules:
   - catalog_metadata_is_not_raw_data
   - resource_page_metadata_is_not_raw_data
@@ -122,6 +139,7 @@ rules:
   - failed_requests_do_not_satisfy_acquisition
   - hashes_and_byte_counts_exist_only_after_real_payload_acquisition
   - exact_resource_or_api_identifiers_are_never_inferred_from_titles_or_search_snippets
+  - third_party_citations_may_aid_endpoint_discovery_but_never_establish_authoritative_payload_identity
   - inconsistent_catalog_rendering_is_recorded_as_a_blocker_not_bypassed
   - never_create_placeholder_payloads
   - missing_values_are_never_imputed_as_zero
