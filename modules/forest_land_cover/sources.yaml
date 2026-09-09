@@ -36,6 +36,17 @@ sources:
     schema_status: pending
     publication_status: blocked
     notes: "Only authoritative reusable aggregate or spatial evidence may proceed. Sensitive conservation locations and person-level records remain excluded."
+  - id: lgd_geography
+    authority: "Ministry of Panchayati Raj, Government of India"
+    source_type: governed_shared_geography_dependency
+    discovery_url: "https://lgdirectory.gov.in/"
+    candidate_scope: "Current administrative codes and hierarchy used only for evidence-backed geographic linkage"
+    acquisition_status: governed_in_core_geography
+    rights_status: governed_by_existing_core_geography_review
+    geography_status: current_administrative_vintage_only
+    schema_status: governed_in_core_geography
+    publication_status: shared_dependency_not_thematic_output
+    notes: "LGD is a shared dependency, not a Forest & Land Cover thematic observation. Never infer equivalence to Census 2011 or another historical geography from names alone; cross-vintage linkage requires explicit evidence."
 rights_policy:
   default: fail_closed
   rule: "Public access or visualization is not sufficient permission to redistribute; verify exact product/resource rights, attribution, restrictions and conservation-sensitivity boundaries."
