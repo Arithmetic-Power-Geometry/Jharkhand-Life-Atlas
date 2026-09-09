@@ -1,3 +1,4 @@
+import csv
 from pathlib import Path
 import yaml
 
@@ -40,6 +41,33 @@ def test_module15_sources_do_not_claim_unacquired_payloads():
     assert "not_yet_acquired" in text or "not_yet_selected" in text
     assert "pending" in text
     assert "blocked" in text
+
+
+def test_module15_source_coverage_matches_registered_sources_and_is_closed():
+    source_ids = {item["id"] for item in _yaml("sources.yaml")["sources"]}
+    with (MODULE / "source_coverage.csv").open(newline="", encoding="utf-8") as handle:
+        rows = list(csv.DictReader(handle))
+    assert {row["source_id"] for row in rows} == source_ids
+    assert rows
+    for row in rows:
+        assert row["curated_output_published"] == "no"
+        assert row["publication_status"].strip()
+        assert row["notes"].strip()
+        if row["source_id"] != "lgd_geography":
+            assert row["raw_file_ingested"] == "no"
+
+
+def test_module15_remote_sensing_evidence_keeps_product_semantics_explicit():
+    with (MODULE / "source_coverage.csv").open(newline="", encoding="utf-8") as handle:
+        rows = {row["source_id"]: row for row in csv.DictReader(handle)}
+    bhuvan = rows["nrsc_bhuvan_lulc"]
+    assert bhuvan["catalog_or_resource_verified"] == "yes"
+    assert bhuvan["raw_file_ingested"] == "no"
+    for term in ["epoch", "resolution", "class legend", "classification method"]:
+        assert term in bhuvan["notes"].lower()
+    fsi = rows["fsi_isfr_2023"]
+    assert "assessment" in fsi["notes"].lower()
+    assert "report presence alone" in fsi["notes"].lower()
 
 
 def test_module15_sensitive_spatial_data_boundary():
