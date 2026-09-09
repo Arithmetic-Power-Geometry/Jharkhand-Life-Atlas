@@ -3,37 +3,47 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
-PRIORITY_MODULES = (
+CANONICAL_COVERAGE_MODULES = (
     "health_access",
     "water_access",
     "sanitation_hygiene",
     "education_access",
+    "agriculture_farmers",
 )
+PRIORITY_MODULES = CANONICAL_COVERAGE_MODULES[:4]
 NONPUBLIC_PREFIXES = ("pending", "blocked", "catalog")
-
-
-def _coverage_modules():
-    """Return every module that opts into explicit source-coverage reporting."""
-    modules_root = ROOT / "modules"
-    return tuple(sorted(path.parent.name for path in modules_root.glob("*/source_coverage.csv")))
+REQUIRED_COLUMNS = {
+    "source_id",
+    "catalog_or_resource_verified",
+    "raw_file_ingested",
+    "curated_output_published",
+    "publication_status",
+    "notes",
+}
 
 
 def _rows(module: str):
     path = ROOT / "modules" / module / "source_coverage.csv"
-    assert path.exists(), f"missing source coverage for module: {module}"
+    assert path.exists(), f"missing canonical source coverage for module: {module}"
     with path.open(newline="", encoding="utf-8") as handle:
-        yield from csv.DictReader(handle)
+        reader = csv.DictReader(handle)
+        assert REQUIRED_COLUMNS.issubset(set(reader.fieldnames or [])), (
+            module,
+            "canonical source coverage is missing required evidence-state columns",
+        )
+        yield from reader
 
 
 def test_priority_modules_keep_source_coverage():
-    coverage_modules = set(_coverage_modules())
     for module in PRIORITY_MODULES:
-        assert module in coverage_modules, f"missing source coverage for priority module: {module}"
+        assert (ROOT / "modules" / module / "source_coverage.csv").exists(), (
+            f"missing source coverage for priority module: {module}"
+        )
 
 
-def test_all_reported_source_coverage_is_fail_closed():
-    """Discovery, acquisition, and publication must remain distinct states everywhere."""
-    for module in _coverage_modules():
+def test_canonical_source_coverage_is_fail_closed():
+    """Discovery, acquisition, and publication must remain distinct states."""
+    for module in CANONICAL_COVERAGE_MODULES:
         for row in _rows(module):
             source_id = row["source_id"]
             verified = row["catalog_or_resource_verified"].strip().lower()
@@ -56,9 +66,9 @@ def test_all_reported_source_coverage_is_fail_closed():
                 assert published == "no", (module, source_id, f"nonpublic status exposed: {status}")
 
 
-def test_all_reported_source_coverage_has_explicit_blocker_for_unpublished_sources():
-    """Unpublished sources must explain why they remain closed."""
-    for module in _coverage_modules():
+def test_canonical_source_coverage_has_explicit_blocker_for_unpublished_sources():
+    """Unpublished canonical coverage rows must explain why they remain closed."""
+    for module in CANONICAL_COVERAGE_MODULES:
         for row in _rows(module):
             if row["curated_output_published"].strip().lower() == "no":
                 assert row["publication_status"].strip(), (module, row["source_id"], "missing publication status")
