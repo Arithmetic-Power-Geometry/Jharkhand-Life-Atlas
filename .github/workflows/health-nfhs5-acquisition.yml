@@ -25,8 +25,42 @@ jobs:
       - name: Install acquisition dependencies
         run: python -m pip install --disable-pip-version-check pandas requests xlrd
       - name: Acquire official NFHS-5 district workbook and inspect Jharkhand rows
-        run: python modules/health_access/acquire_nfhs5_district.py --output-dir build/health_nfhs5
+        id: acquire
+        continue-on-error: true
+        run: |
+          mkdir -p build/health_nfhs5
+          python modules/health_access/acquire_nfhs5_district.py --output-dir build/health_nfhs5 2>&1 | tee build/health_nfhs5/acquisition.log
+          exit ${PIPESTATUS[0]}
+      - name: Record authoritative-source access blocker
+        if: steps.acquire.outcome == 'failure'
+        run: |
+          python - <<'PY'
+          import json
+          from datetime import datetime, timezone
+          from pathlib import Path
+
+          out = Path('build/health_nfhs5')
+          log_path = out / 'acquisition.log'
+          payload = {
+              'contract': 'JLA_ACQUISITION_BLOCKER_V1',
+              'source_id': 'OGD_NFHS5_DISTRICT_FACTSHEETS_2019_2021',
+              'authority': 'Ministry of Health and Family Welfare / International Institute for Population Sciences',
+              'resource_page': 'https://www.data.gov.in/resource/india-districts-factsheets-national-family-health-survey-nfhs-5-2019-2021-provisional',
+              'observed_at_utc': datetime.now(timezone.utc).isoformat(),
+              'status': 'blocked_external_authoritative_payload_access',
+              'raw_payload_acquired': False,
+              'sha256_available': False,
+              'observed_schema_available': False,
+              'publication_allowed': False,
+              'missing_values_may_be_converted_to_zero': False,
+              'resolution_rule': 'Retry only the authoritative OGD payload/API; do not substitute mirrors or infer payload identity.',
+              'workflow_log': log_path.name,
+          }
+          (out / 'acquisition_blocker.json').write_text(json.dumps(payload, indent=2), encoding='utf-8')
+          print(json.dumps(payload, indent=2))
+          PY
       - name: Verify acquisition receipt is fail-closed
+        if: steps.acquire.outcome == 'success'
         run: |
           python - <<'PY'
           import json
@@ -41,7 +75,24 @@ jobs:
           assert r['geography']['direct_name_equivalence_to_other_vintages_allowed'] is False
           print(json.dumps(r, indent=2))
           PY
-      - name: Upload governed acquisition candidate
+      - name: Verify external blocker remains fail-closed
+        if: steps.acquire.outcome == 'failure'
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p = Path('build/health_nfhs5/acquisition_blocker.json')
+          r = json.loads(p.read_text(encoding='utf-8'))
+          assert r['contract'] == 'JLA_ACQUISITION_BLOCKER_V1'
+          assert r['raw_payload_acquired'] is False
+          assert r['sha256_available'] is False
+          assert r['observed_schema_available'] is False
+          assert r['publication_allowed'] is False
+          assert r['missing_values_may_be_converted_to_zero'] is False
+          print(json.dumps(r, indent=2))
+          PY
+      - name: Upload governed acquisition evidence
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: health-nfhs5-authoritative-acquisition
