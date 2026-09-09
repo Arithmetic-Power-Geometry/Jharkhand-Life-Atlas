@@ -12,7 +12,7 @@ sources:
     geography_status: pending_exact_jharkhand_unit_grid_and_vintage_review
     schema_status: portal_documented_real_payload_not_yet_inspected
     publication_status: blocked
-    notes: "Portal display is not equivalent to a captured reusable dataset. JLA must identify exact downloadable/service endpoints, hash permitted snapshots, inspect product metadata and validate unit/time semantics before publication."
+    notes: "Portal display is not equivalent to a captured reusable dataset. JLA must identify exact downloadable/service endpoints, hash permitted snapshots, inspect product metadata and validate unit/time semantics before publication. Do not infer Jharkhand coverage for any product whose documented scope is narrower."
   - id: nrsc_nadams_agricultural_drought
     authority: "National Remote Sensing Centre, ISRO / Mahalanobis National Crop Forecast Centre, Ministry of Agriculture & Farmers’ Welfare"
     source_type: official_agricultural_drought_monitoring_programme
@@ -37,6 +37,17 @@ sources:
     schema_status: pending_exact_product_payload_or_report_inspection
     publication_status: blocked
     notes: "Index values and drought categories require exact accumulation window, baseline period, thresholds, units/product metadata and assessment date; no inference from narrative documentation alone."
+  - id: lgd_geography
+    authority: "Ministry of Panchayati Raj, Government of India"
+    source_type: governed_shared_geography_dependency
+    discovery_url: "https://lgdirectory.gov.in/"
+    candidate_scope: "Current administrative codes and hierarchy used only for evidence-backed geographic linkage"
+    acquisition_status: governed_in_core_geography
+    rights_status: governed_by_existing_core_geography_review
+    geography_status: current_administrative_vintage_only
+    schema_status: governed_in_core_geography
+    publication_status: shared_dependency_not_thematic_output
+    notes: "LGD is a shared dependency, not a Drought & Water Stress thematic observation. Never infer equivalence to Census 2011 or a historical drought-assessment geography from names alone; cross-vintage linkage requires explicit evidence."
 rights_policy:
   default: fail_closed
   rule: "Verify exact portal/API/product/report terms, attribution and redistribution permissions before publishing captured values or derived extracts. Public visualization alone is not sufficient permission to redistribute a dataset."
