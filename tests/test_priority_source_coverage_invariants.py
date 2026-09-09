@@ -15,6 +15,7 @@ CANONICAL_COVERAGE_MODULES = (
     "roads_transport_accessibility",
     "banking_financial_access",
     "digital_connectivity",
+    "electricity_energy",
 )
 PRIORITY_MODULES = CANONICAL_COVERAGE_MODULES[:4]
 NONPUBLIC_PREFIXES = ("pending", "blocked", "catalog")
