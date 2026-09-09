@@ -1,4 +1,5 @@
 from pathlib import Path
+import csv
 import yaml
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -40,6 +41,28 @@ def test_module14_sources_do_not_claim_unacquired_payloads():
     assert "not_yet_acquired" in text or "not_yet_selected" in text
     assert "pending" in text
     assert "blocked" in text
+
+
+def test_module14_source_coverage_matches_registered_sources_and_is_closed():
+    source_ids = {row["id"] for row in _yaml("sources.yaml")["sources"]}
+    with (MODULE / "source_coverage.csv").open(newline="", encoding="utf-8") as handle:
+        rows = list(csv.DictReader(handle))
+    assert {row["source_id"] for row in rows} == source_ids
+    assert rows
+    for row in rows:
+        assert row["curated_output_published"] == "no"
+        assert row["publication_status"].strip()
+        assert row["notes"].strip()
+
+
+def test_module14_geography_dependency_is_not_thematic_output():
+    with (MODULE / "source_coverage.csv").open(newline="", encoding="utf-8") as handle:
+        rows = {row["source_id"]: row for row in csv.DictReader(handle)}
+    lgd = rows["lgd_geography"]
+    assert lgd["raw_file_ingested"] == "yes"
+    assert lgd["curated_output_published"] == "no"
+    assert "dependency" in lgd["publication_status"]
+    assert "names alone" in lgd["notes"].lower()
 
 
 def test_module14_privacy_boundary_blocks_person_level_records():
