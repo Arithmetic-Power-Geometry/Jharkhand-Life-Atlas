@@ -1,4 +1,5 @@
 from pathlib import Path
+import csv
 import yaml
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -38,6 +39,17 @@ def test_module13_sources_do_not_claim_unacquired_payloads():
     text = (MODULE / "sources.yaml").read_text(encoding="utf-8").lower()
     assert "not_yet_acquired" in text or "not_yet_selected" in text
     assert "pending" in text
+
+
+def test_module13_source_coverage_matches_registered_sources_and_stays_unpublished():
+    registered = {item["id"] for item in _yaml("sources.yaml")["sources"]}
+    with (MODULE / "source_coverage.csv").open(newline="", encoding="utf-8") as handle:
+        rows = list(csv.DictReader(handle))
+    assert {row["source_id"] for row in rows} == registered
+    assert all(row["catalog_or_resource_verified"] == "yes" for row in rows)
+    assert all(row["raw_file_ingested"] == "no" for row in rows)
+    assert all(row["curated_output_published"] == "no" for row in rows)
+    assert all(row["publication_status"].startswith("blocked") for row in rows)
 
 
 def test_module13_privacy_boundary_blocks_person_level_financial_records():
