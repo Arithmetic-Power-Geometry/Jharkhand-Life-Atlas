@@ -62,7 +62,8 @@ paper_support_assets:
   reproducibility_assets: ingestion_sync_statistics_and_manuscript_asset_code_available
   citation_readiness: CITATION_cff_available
   doi_readiness: preparation_required
-  manuscript_support_documentation: preparation_required
+  manuscript_support_documentation: ready
+  manuscript_support_documentation_path: modules/core_geography/MANUSCRIPT_SUPPORT.md
 release_gate:
   - Recompute all manuscript statistics directly from release artifacts before submission.
   - Generate tables and figures from version-pinned curated outputs, never by manual transcription.

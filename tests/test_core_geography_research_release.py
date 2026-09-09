@@ -6,6 +6,7 @@ import yaml
 ROOT = Path(__file__).resolve().parents[1]
 MODULE = ROOT / "modules" / "core_geography" / "module.yaml"
 RELEASE = ROOT / "modules" / "core_geography" / "research_release.yaml"
+MANUSCRIPT_SUPPORT = ROOT / "modules" / "core_geography" / "MANUSCRIPT_SUPPORT.md"
 
 
 def _load(path):
@@ -40,3 +41,15 @@ def test_research_release_preserves_temporal_and_licensing_governance():
     assert integrity["historical_and_current_geography_kept_distinct"] is True
     assert integrity["person_level_data_in_release"] is False
     assert integrity["third_party_licensing_preserved_separately"] is True
+
+
+def test_manuscript_support_documentation_is_real_and_fail_closed():
+    release = _load(RELEASE)
+    support = release["paper_support_assets"]
+    assert support["manuscript_support_documentation"] == "ready"
+    assert support["manuscript_support_documentation_path"] == "modules/core_geography/MANUSCRIPT_SUPPORT.md"
+    assert MANUSCRIPT_SUPPORT.exists()
+    text = MANUSCRIPT_SUPPORT.read_text(encoding="utf-8")
+    assert "no cross-vintage administrative equivalence is inferred" in text
+    assert "not evidence of journal submission" in text
+    assert "missing" in text.lower()
