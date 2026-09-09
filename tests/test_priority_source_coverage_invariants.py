@@ -19,6 +19,7 @@ CANONICAL_COVERAGE_MODULES = (
     "forest_land_cover",
     "drought_water_stress",
     "markets_essential_services",
+    "weather_climate",
 )
 PRIORITY_MODULES = CANONICAL_COVERAGE_MODULES[:4]
 NONPUBLIC_PREFIXES = ("pending", "blocked", "catalog")
