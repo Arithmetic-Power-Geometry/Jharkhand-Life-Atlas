@@ -9,6 +9,7 @@ CANONICAL_COVERAGE_MODULES = (
     "sanitation_hygiene",
     "education_access",
     "agriculture_farmers",
+    "nutrition_food_security",
 )
 PRIORITY_MODULES = CANONICAL_COVERAGE_MODULES[:4]
 NONPUBLIC_PREFIXES = ("pending", "blocked", "catalog")
