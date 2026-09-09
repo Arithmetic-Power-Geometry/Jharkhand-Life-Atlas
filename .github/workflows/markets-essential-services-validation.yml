@@ -6,6 +6,7 @@ on:
     paths:
       - 'modules/markets_essential_services/**'
       - 'tests/test_markets_essential_services*.py'
+      - 'tests/test_priority_source_coverage_invariants.py'
       - 'app_pages/**'
       - 'pyproject.toml'
       - '.github/workflows/markets-essential-services-validation.yml'
@@ -13,6 +14,7 @@ on:
     paths:
       - 'modules/markets_essential_services/**'
       - 'tests/test_markets_essential_services*.py'
+      - 'tests/test_priority_source_coverage_invariants.py'
       - 'app_pages/**'
       - 'pyproject.toml'
       - '.github/workflows/markets-essential-services-validation.yml'
@@ -28,4 +30,5 @@ jobs:
       - run: pip install -e . pytest pyyaml
       - run: python -m compileall modules/markets_essential_services
       - run: pytest -q tests/test_markets_essential_services*.py
+      - run: pytest -q tests/test_priority_source_coverage_invariants.py
       - run: pytest -q
