@@ -1,3 +1,4 @@
+import csv
 from pathlib import Path
 import yaml
 
@@ -38,6 +39,32 @@ def test_module11_sources_do_not_claim_unacquired_payloads():
     text = (MODULE / "sources.yaml").read_text(encoding="utf-8").lower()
     assert "not_yet_acquired" in text or "not_yet_selected" in text
     assert "pending" in text
+
+
+def test_module11_source_coverage_matches_registered_sources_and_is_closed():
+    source_ids = {item["id"] for item in _yaml("sources.yaml")["sources"]}
+    with (MODULE / "source_coverage.csv").open(newline="", encoding="utf-8") as handle:
+        rows = list(csv.DictReader(handle))
+    assert {row["source_id"] for row in rows} == source_ids
+    assert rows
+    for row in rows:
+        assert row["curated_output_published"] == "no"
+        assert row["publication_status"].strip()
+        assert row["notes"].strip()
+        if row["source_id"] != "lgd_geography":
+            assert row["raw_file_ingested"] == "no"
+
+
+def test_module11_dynamic_and_forecast_evidence_cannot_masquerade_as_observed():
+    with (MODULE / "source_coverage.csv").open(newline="", encoding="utf-8") as handle:
+        rows = {row["source_id"]: row for row in csv.DictReader(handle)}
+    saubhagya = rows["saubhagya_dashboard"]
+    assert saubhagya["catalog_or_resource_verified"] == "yes"
+    assert saubhagya["raw_file_ingested"] == "no"
+    assert "dynamic" in saubhagya["notes"].lower()
+    cea = rows["cea_statistics_and_api"]
+    assert "forecast" in cea["notes"].lower()
+    assert "observed" in cea["notes"].lower()
 
 
 def test_module11_privacy_boundary_blocks_person_level_energy_records():
