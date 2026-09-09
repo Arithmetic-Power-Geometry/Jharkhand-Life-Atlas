@@ -6,6 +6,7 @@ on:
     paths:
       - 'modules/maternal_child_health/**'
       - 'tests/test_maternal_child_health*.py'
+      - 'tests/test_priority_source_coverage_invariants.py'
       - 'data/curated/maternal_child_health/**'
       - 'app_pages/**'
       - 'scripts/**'
@@ -14,6 +15,7 @@ on:
     paths:
       - 'modules/maternal_child_health/**'
       - 'tests/test_maternal_child_health*.py'
+      - 'tests/test_priority_source_coverage_invariants.py'
       - 'data/curated/maternal_child_health/**'
       - 'app_pages/**'
       - 'scripts/**'
@@ -34,5 +36,7 @@ jobs:
         run: python -m compileall -q modules/maternal_child_health app_pages scripts
       - name: Run every Module 6 test
         run: pytest -q tests/test_maternal_child_health*.py
+      - name: Run canonical source-coverage safeguards
+        run: pytest -q tests/test_priority_source_coverage_invariants.py
       - name: Run repository validation
         run: python scripts/check.py
