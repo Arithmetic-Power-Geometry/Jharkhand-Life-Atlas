@@ -1,3 +1,4 @@
+import csv
 from pathlib import Path
 import yaml
 
@@ -40,6 +41,32 @@ def test_module17_sources_do_not_claim_unacquired_payloads():
     assert "not_yet_acquired" in text or "not_yet_selected" in text
     assert "pending" in text
     assert "blocked" in text
+
+
+def test_module17_source_coverage_matches_registry_and_is_closed():
+    source_ids = {item["id"] for item in _yaml("sources.yaml")["sources"]}
+    with (MODULE / "source_coverage.csv").open(newline="", encoding="utf-8") as handle:
+        rows = list(csv.DictReader(handle))
+    assert {row["source_id"] for row in rows} == source_ids
+    assert rows
+    for row in rows:
+        assert row["curated_output_published"] == "no"
+        assert row["publication_status"].strip()
+        assert row["notes"].strip()
+        if row["source_id"] != "lgd_geography":
+            assert row["raw_file_ingested"] == "no"
+
+
+def test_module17_preserves_drought_type_product_and_time_semantics():
+    with (MODULE / "source_coverage.csv").open(newline="", encoding="utf-8") as handle:
+        rows = {row["source_id"]: row for row in csv.DictReader(handle)}
+    hydrological = rows["nrsc_nhp_hydrological_drought"]
+    agricultural = rows["nrsc_nadams_agricultural_drought"]
+    meteorological = rows["imd_drought_indices"]
+    assert "narrower" in hydrological["notes"].lower()
+    assert "must not be relabelled" in agricultural["notes"].lower()
+    for term in ["accumulation window", "baseline/reference period", "assessment date"]:
+        assert term in meteorological["notes"].lower()
 
 
 def test_module17_forbids_false_precision_and_missing_as_zero():
