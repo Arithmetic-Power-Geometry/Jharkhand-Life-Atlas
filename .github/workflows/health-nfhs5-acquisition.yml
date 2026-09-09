@@ -9,6 +9,8 @@ on:
       - 'modules/health_access/source_coverage.csv'
       - '.github/workflows/health-nfhs5-acquisition.yml'
   workflow_dispatch:
+  schedule:
+    - cron: '17 */6 * * *'
 
 permissions:
   contents: read
@@ -101,7 +103,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: health-nfhs5-authoritative-acquisition
+          name: health-nfhs5-authoritative-acquisition-${{ github.run_id }}
           path: build/health_nfhs5/
           if-no-files-found: error
-          retention-days: 30
+          retention-days: 90
