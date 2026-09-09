@@ -131,7 +131,7 @@ sources:
     publication_class: OPEN_WITH_ATTRIBUTION
     license: Government Open Data License - India
     license_url: https://www.data.gov.in/sites/default/files/Gazette_Notification_OGDL.pdf
-    license_review_status: reviewed_ogd_catalog_and_platform
+    license_review_status: reviewed_ogdl_catalog_and_platform
     license_checked_on: 2026-09-09
     attribution_required: true
     acquisition_status: resource_verified_payload_not_acquired
