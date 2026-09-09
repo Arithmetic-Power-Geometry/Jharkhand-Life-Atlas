@@ -119,6 +119,24 @@ sources:
     acquisition_status: catalog_verified_payload_not_acquired
     notes: "Official OGD catalog is materially newer than the Jharkhand-specific HMIS catalog and is therefore registered as a parallel acquisition candidate. It must not silently replace the Jharkhand-specific series. Before use, acquire and hash the exact payload/resource, inspect the observed schema and period semantics, explicitly filter State/UT=Jharkhand, verify district geography vintage and record identity, compare overlap with the Jharkhand-specific catalog, preserve missing as null, and prohibit any village/facility allocation of district aggregates."
 
+  - source_id: OGD_NFHS5_DISTRICT_FACTSHEETS_2019_2021
+    title: National Family Health Survey-5 (NFHS-5) — India Districts Factsheet Data (Provisional)
+    publisher: Ministry of Health and Family Welfare / International Institute for Population Sciences
+    url: https://www.data.gov.in/catalog/national-family-health-survey-5-nfhs-5-india-districts-factsheet-data-provisional
+    role: district_health_nutrition_outcome_context
+    reference_year: 2019-2021
+    resource_updated_on: 2026-08-11
+    advertised_access: [xls_download, data_api, preview]
+    advertised_granularity: district
+    publication_class: OPEN_WITH_ATTRIBUTION
+    license: Government Open Data License - India
+    license_url: https://www.data.gov.in/sites/default/files/Gazette_Notification_OGDL.pdf
+    license_review_status: reviewed_ogd_catalog_and_platform
+    license_checked_on: 2026-09-09
+    attribution_required: true
+    acquisition_status: resource_verified_payload_not_acquired
+    notes: "Official OGD district factsheet resource for NFHS-5 2019-2021. The source documents suppression/low-sample annotations: figures in parentheses may be based on 25-49 unweighted cases and an asterisk denotes percentages not shown for fewer than 25 unweighted cases. Before curation acquire and hash the exact XLS/API payload, inspect the observed schema, explicitly filter Jharkhand, preserve survey-period and district-vintage semantics, and retain suppression/uncertainty annotations. District estimates must never be allocated to villages, facilities or persons."
+
   - source_id: ABDM_HFR
     title: Ayushman Bharat Digital Mission — Health Facility Registry
     publisher: National Health Authority, Government of India
