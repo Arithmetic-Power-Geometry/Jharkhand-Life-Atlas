@@ -6,6 +6,7 @@ on:
     paths:
       - 'modules/livelihood_employment_poverty/**'
       - 'tests/test_livelihood_employment_poverty*.py'
+      - 'tests/test_priority_source_coverage_invariants.py'
       - 'app_pages/**'
       - 'pyproject.toml'
       - '.github/workflows/livelihood-employment-poverty-validation.yml'
@@ -13,6 +14,7 @@ on:
     paths:
       - 'modules/livelihood_employment_poverty/**'
       - 'tests/test_livelihood_employment_poverty*.py'
+      - 'tests/test_priority_source_coverage_invariants.py'
       - 'app_pages/**'
       - 'pyproject.toml'
       - '.github/workflows/livelihood-employment-poverty-validation.yml'
@@ -28,4 +30,6 @@ jobs:
       - run: pip install -e . pytest pyyaml
       - run: python -m compileall modules/livelihood_employment_poverty
       - run: pytest -q tests/test_livelihood_employment_poverty*.py
+      - name: Run canonical source-coverage safeguards
+        run: pytest -q tests/test_priority_source_coverage_invariants.py
       - run: pytest -q
