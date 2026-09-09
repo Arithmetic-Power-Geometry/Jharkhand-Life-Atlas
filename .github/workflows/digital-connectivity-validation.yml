@@ -6,6 +6,7 @@ on:
     paths:
       - 'modules/digital_connectivity/**'
       - 'tests/test_digital_connectivity*.py'
+      - 'tests/test_priority_source_coverage_invariants.py'
       - 'app_pages/**'
       - 'pyproject.toml'
       - '.github/workflows/digital-connectivity-validation.yml'
@@ -13,6 +14,7 @@ on:
     paths:
       - 'modules/digital_connectivity/**'
       - 'tests/test_digital_connectivity*.py'
+      - 'tests/test_priority_source_coverage_invariants.py'
       - 'app_pages/**'
       - 'pyproject.toml'
       - '.github/workflows/digital-connectivity-validation.yml'
@@ -28,4 +30,5 @@ jobs:
       - run: pip install -e . pytest pyyaml
       - run: python -m compileall modules/digital_connectivity
       - run: pytest -q tests/test_digital_connectivity*.py
+      - run: pytest -q tests/test_priority_source_coverage_invariants.py
       - run: pytest -q
