@@ -1,0 +1,50 @@
+name: health-nfhs5-acquisition
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'modules/health_access/acquire_nfhs5_district.py'
+      - 'modules/health_access/sources.yaml'
+      - 'modules/health_access/source_coverage.csv'
+      - '.github/workflows/health-nfhs5-acquisition.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  acquire-and-inspect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install acquisition dependencies
+        run: python -m pip install --disable-pip-version-check pandas requests xlrd
+      - name: Acquire official NFHS-5 district workbook and inspect Jharkhand rows
+        run: python modules/health_access/acquire_nfhs5_district.py --output-dir build/health_nfhs5
+      - name: Verify acquisition receipt is fail-closed
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p = Path('build/health_nfhs5/nfhs5_acquisition_receipt.json')
+          r = json.loads(p.read_text(encoding='utf-8'))
+          assert r['contract'] == 'JLA_SOURCE_SNAPSHOT_V1'
+          assert r['byte_count'] > 50000
+          assert len(r['sha256']) == 64
+          assert r['jharkhand_candidate_rows'] >= 20
+          assert r['publication_allowed'] is False
+          assert r['geography']['direct_name_equivalence_to_other_vintages_allowed'] is False
+          print(json.dumps(r, indent=2))
+          PY
+      - name: Upload governed acquisition candidate
+        uses: actions/upload-artifact@v4
+        with:
+          name: health-nfhs5-authoritative-acquisition
+          path: build/health_nfhs5/
+          if-no-files-found: error
+          retention-days: 30
