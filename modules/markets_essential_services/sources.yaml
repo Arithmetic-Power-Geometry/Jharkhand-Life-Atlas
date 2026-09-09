@@ -36,6 +36,17 @@ sources:
     schema_status: pending
     publication_status: blocked
     notes: "GODL-India applies to eligible published OGD resources, but JLA still requires resource-level attribution, third-party boundary review, exact payload capture, hashing and schema/geography validation."
+  - id: lgd_geography
+    authority: "Ministry of Panchayati Raj, Government of India"
+    source_type: shared_governed_geography_dependency
+    discovery_url: "https://lgdirectory.gov.in/"
+    candidate_scope: "Current administrative identifiers used only through the governed Core Geography service"
+    acquisition_status: existing_shared_dependency
+    rights_status: governed_by_core_geography
+    geography_status: current_vintage_only_crosswalk_required_for_historical_data
+    schema_status: governed_by_core_geography
+    publication_status: shared_dependency_not_thematic_output
+    notes: "LGD is not a Module 14 thematic observation. Current LGD units must never be treated as equivalent to Census 2011 or other historical geographies from names alone; evidence-backed temporal crosswalks are required."
 rights_policy:
   default: fail_closed
   rule: "Public visibility is not sufficient permission to republish; verify exact resource-level rights and attribution before redistribution."
