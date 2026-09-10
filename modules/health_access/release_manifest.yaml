@@ -1,0 +1,93 @@
+module_id: health_access
+module_number: 2
+title: Health & Healthcare Access
+status: IN_DEVELOPMENT
+status_rule: >-
+  COMPLETE is permitted only after every strict publication gate passes and CI is green on the exact main head.
+
+published_evidence:
+  - evidence_id: CENSUS_DCHB_JH_2011_HEALTH
+    reference_year: 2011
+    geography_vintage: Census_2011
+    geography_level: village
+    row_count: 32394
+    source_native_field_count: 69
+    curated_path: data/curated/health_access/census_health_access_2011.csv
+    provenance_path: data/curated/health_access/census_health_access_2011.provenance.json
+    publication_state: validated_source_native_historical_extract
+    allowed_claims:
+      - historical_source_native_health_amenity_evidence
+    prohibited_claims:
+      - current_facility_inventory
+      - current_service_availability
+      - current_geography_equivalence
+      - inferred_missing_as_zero
+
+priority_acquisition_queue:
+  - source_id: OGD_NIN_HEALTH_FACILITIES_GEO_2026
+    priority: 1
+    required_before_publication:
+      - exact_authoritative_machine_resource_identity
+      - reusable_payload_or_auditable_api_response
+      - retrieval_timestamp
+      - immutable_snapshot_or_request_provenance
+      - sha256_when_bytes_are_captured
+      - observed_schema
+      - rights_and_attribution_confirmation
+      - explicit_jharkhand_filter
+      - source_record_identity_preservation
+      - evidence_backed_geography_linkage
+      - validation_tests
+  - source_id: OGD_NHP_HOSPITAL_GEO_2026
+    priority: 2
+    required_before_publication:
+      - independent_exact_resource_identity
+      - independent_payload_capture
+      - independent_hash_and_schema_inspection
+      - no_assumed_equivalence_with_NIN_resource
+  - source_id: OGD_HEALTH_CENTRES_DIRECTORY
+    priority: 3
+    required_before_publication:
+      - exact_dated_authoritative_package
+      - immutable_snapshot
+      - observed_schema
+      - historical_vintage_preservation
+  - source_id: OGD_HMIS_ALL_STATES_DISTRICTS_2025
+    priority: 4
+    required_before_publication:
+      - exact_authoritative_payload
+      - explicit_state_filter_Jharkhand
+      - district_vintage_validation
+      - period_and_indicator_semantics
+      - no_allocation_to_villages_or_facilities
+  - source_id: OGD_NFHS5_DISTRICT_FACTSHEET
+    priority: 5
+    required_before_publication:
+      - exact_authoritative_payload
+      - suppression_and_low_sample_semantics
+      - district_vintage_validation
+      - no_disaggregation_below_supported_geography
+
+hard_invariants:
+  missing_values: preserve_as_null
+  missing_to_zero: forbidden
+  person_level_health_data: forbidden
+  district_to_village_allocation: forbidden
+  district_to_facility_allocation: forbidden
+  guessed_coordinates: forbidden
+  name_only_geography_equivalence: forbidden
+  name_only_record_equivalence: forbidden
+  unsupported_derived_outputs: forbidden
+
+completion_requirements:
+  - authoritative_payloads_admitted_for_declared_scope
+  - resource_level_rights_review_complete
+  - immutable_provenance_and_hashes_complete
+  - observed_schemas_recorded
+  - temporal_and_geographic_linkage_validated
+  - supported_indicators_validated
+  - tests_green
+  - streamlit_truth_synchronized
+  - research_ready_downloads_and_reports_available
+  - source_coverage_registry_synchronized
+  - exact_main_head_ci_green
