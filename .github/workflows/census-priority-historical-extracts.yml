@@ -1,0 +1,67 @@
+name: census-priority-historical-extracts
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/build_census2011_priority_extracts.py'
+      - 'modules/core_geography/amenity_domain_field_inventory.json'
+      - 'data/curated/core_geography/village_amenities_2011.csv'
+      - '.github/workflows/census-priority-historical-extracts.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - name: Build source-native historical priority extracts
+        run: python scripts/build_census2011_priority_extracts.py
+      - name: Validate provenance and row identity
+        run: |
+          python - <<'PY'
+          import csv, json
+          from pathlib import Path
+          items = {
+              'water_access': ('data/curated/water_access/census_water_access_2011.csv', 27),
+              'sanitation_hygiene': ('data/curated/sanitation_hygiene/census_sanitation_hygiene_2011.csv', 11),
+              'education_access': ('data/curated/education_access/census_education_access_2011.csv', 40),
+          }
+          source = Path('data/curated/core_geography/village_amenities_2011.csv')
+          with source.open(encoding='utf-8-sig', newline='') as f:
+              source_rows = sum(1 for _ in csv.DictReader(f))
+          assert source_rows >= 30000
+          for module, (csv_path, nfields) in items.items():
+              p = Path(csv_path)
+              prov = json.loads(p.with_suffix('.provenance.json').read_text())
+              assert prov['status'] == 'validated_source_native_historical_extract'
+              assert prov['module'] == module
+              assert prov['reference_year'] == 2011
+              assert prov['row_count'] == source_rows
+              assert prov['thematic_field_count'] == nfields
+              assert 'never converted to zero' in prov['missing_rule']
+              assert 'no current-geography equivalence inferred' in prov['geography_rule']
+              with p.open(encoding='utf-8', newline='') as f:
+                  rows = sum(1 for _ in csv.DictReader(f))
+              assert rows == source_rows
+          PY
+      - name: Commit validated historical extracts
+        run: |
+          targets='data/curated/water_access data/curated/sanitation_hygiene data/curated/education_access'
+          if [ -z "$(git status --porcelain -- $targets)" ]; then
+            echo 'Historical extracts unchanged.'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add $targets
+          git commit -m 'Publish validated Census 2011 priority evidence'
+          git push origin HEAD:main
