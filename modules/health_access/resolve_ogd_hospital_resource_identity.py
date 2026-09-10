@@ -18,7 +18,7 @@ import re
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
-from urllib.parse import urlparse
+from urllib.parse import urljoin, urlparse
 
 import requests
 
@@ -36,6 +36,7 @@ RESOURCE_URL_UUID_RE = re.compile(
     re.IGNORECASE,
 )
 URL_RE = re.compile(r"https?://[^\s\"'<>]+", re.IGNORECASE)
+RELATIVE_URL_RE = re.compile(r"[\"'](/[^\"'<>\s]+)[\"']")
 DATA_SUFFIXES = (".csv", ".xls", ".xlsx", ".zip", ".json", ".geojson")
 CATALOG_ID = "e48a8bcf-ff56-4f39-839d-095827ba2a18"
 
@@ -82,14 +83,7 @@ def _fetch(session: requests.Session, url: str) -> dict[str, Any]:
 
 
 def _decode_common_web_escapes(text: str) -> str:
-    """Normalize only deterministic web-string escapes before evidence scanning.
-
-    Official React/JSON page shells can encode literal URLs as ``https:\/\/...`` or
-    ``https:\u002F\u002F...``. Decoding those representation-level escapes does not
-    invent an identifier or endpoint; it merely restores characters that are already
-    present in the authoritative response. We intentionally avoid generic
-    ``unicode_escape`` decoding because it could transform unrelated content.
-    """
+    """Normalize only deterministic web-string escapes before evidence scanning."""
     decoded = html.unescape(text)
     replacements = {
         r"\/": "/",
@@ -128,28 +122,47 @@ def _is_official_data_host(host: str) -> bool:
     return h in {"data.gov.in", "www.data.gov.in", "api.data.gov.in"} or h.endswith(".data.gov.in")
 
 
-def _explicit_official_payload_urls(text: str) -> list[str]:
-    """Return only literal official data URLs that look like downloadable payloads.
+def _looks_like_payload_url(url: str) -> bool:
+    parsed = urlparse(url)
+    if not _is_official_data_host(parsed.netloc):
+        return False
+    lower_path = parsed.path.casefold()
+    lower_query = parsed.query.casefold()
+    explicit_file = lower_path.endswith(DATA_SUFFIXES)
+    explicit_api = parsed.netloc.casefold() == "api.data.gov.in" and "/resource/" in lower_path
+    explicit_export = "format=csv" in lower_query or "format=json" in lower_query
+    return explicit_file or explicit_api or explicit_export
 
-    This is intentionally conservative. Relative links, JavaScript-generated URLs,
-    title-derived paths and third-party mirrors are not promoted. Representation-level
-    JSON/JavaScript escapes are decoded only after being observed in authoritative
-    content; no path, identifier, host or query value is synthesized.
-    """
+
+def _explicit_official_payload_urls(text: str) -> list[str]:
+    """Return literal absolute official data URLs that look like payloads."""
     found: set[str] = set()
     decoded = _decode_common_web_escapes(text)
     for match in URL_RE.finditer(decoded):
         url = match.group(0).rstrip(".,);]}")
-        parsed = urlparse(url)
-        if not _is_official_data_host(parsed.netloc):
-            continue
-        lower_path = parsed.path.casefold()
-        lower_query = parsed.query.casefold()
-        explicit_file = lower_path.endswith(DATA_SUFFIXES)
-        explicit_api = parsed.netloc.casefold() == "api.data.gov.in" and "/resource/" in lower_path
-        explicit_export = "format=csv" in lower_query or "format=json" in lower_query
-        if explicit_file or explicit_api or explicit_export:
+        if _looks_like_payload_url(url):
             found.add(url)
+    return sorted(found)
+
+
+def _explicit_relative_official_payload_urls(text: str, base_url: str) -> list[str]:
+    """Resolve only literal root-relative payload links observed on an official page.
+
+    ``urljoin`` supplies only the already-observed page origin. No resource ID, path,
+    filename or query parameter is synthesized. Protocol-relative and non-root-relative
+    strings are intentionally excluded.
+    """
+    base = urlparse(base_url)
+    if not _is_official_data_host(base.netloc):
+        return []
+    found: set[str] = set()
+    decoded = _decode_common_web_escapes(text)
+    origin = f"{base.scheme or 'https'}://{base.netloc}/"
+    for match in RELATIVE_URL_RE.finditer(decoded):
+        relative = match.group(1).rstrip(".,);]}")
+        absolute = urljoin(origin, relative)
+        if _looks_like_payload_url(absolute):
+            found.add(absolute)
     return sorted(found)
 
 
@@ -188,8 +201,6 @@ def resolve(output_dir: Path) -> dict[str, Any]:
             if not text:
                 continue
 
-            # Strong evidence path: explicit machine resource URL or explicit
-            # official downloadable data URL on the canonical page for this target.
             if _is_target_page(page, target):
                 evidence_url = page.get("final_url", page["requested_url"])
                 for resource_id in _explicit_resource_url_uuids(text):
@@ -198,15 +209,15 @@ def resolve(output_dir: Path) -> dict[str, Any]:
                         "evidence_type": "explicit_machine_resource_url_on_canonical_target_page",
                         "context": f"authoritative canonical target page explicitly contains machine resource URL for {resource_id}",
                     })
-                for payload_url in _explicit_official_payload_urls(text):
+                payload_urls = set(_explicit_official_payload_urls(text))
+                payload_urls.update(_explicit_relative_official_payload_urls(text, evidence_url))
+                for payload_url in sorted(payload_urls):
                     direct_payloads.setdefault(payload_url, []).append({
                         "evidence_url": evidence_url,
                         "evidence_type": "explicit_official_payload_url_on_canonical_target_page",
                         "context": "authoritative canonical target page explicitly contains this downloadable/API data URL",
                     })
 
-            # Secondary UUID evidence path: UUID appears in authoritative content
-            # with strong local title/slug context. Multiple candidates fail closed.
             for item in _uuid_contexts(text):
                 if item["uuid"] == CATALOG_ID:
                     continue
@@ -258,7 +269,7 @@ def resolve(output_dir: Path) -> dict[str, Any]:
 
     public_fetch = [{k: v for k, v in page.items() if k != "text"} for page in fetched]
     report = {
-        "contract": "JLA_OGD_RESOURCE_IDENTITY_RESOLUTION_V2",
+        "contract": "JLA_OGD_RESOURCE_IDENTITY_RESOLUTION_V3",
         "resolved_at_utc": datetime.now(timezone.utc).isoformat(),
         "catalog_api_control": CATALOG_API_CONTROL,
         "catalog_resource_list": CATALOG_RESOURCE_LIST,
@@ -268,7 +279,8 @@ def resolve(output_dir: Path) -> dict[str, Any]:
             "decode_only_representation_level_web_escapes_observed_in_authoritative_content",
             "probe_both_singular_and_plural_canonical_ogd_resource_surfaces",
             "accept_only_explicit_identifier_tied_to_target_in_authoritative_content",
-            "accept_only_explicit_official_payload_url_observed_on_canonical_target_page",
+            "accept_absolute_or_root_relative_payload_url_only_when_literal_on_canonical_target_page",
+            "relative_payload_resolution_supplies_origin_only_and_never_synthesizes_path_id_filename_or_query",
             "canonical_target_page_may_supply_explicit_machine_resource_url_evidence",
             "catalog_api_identifier_is_not_resource_identifier",
             "identity_resolution_does_not_mean_payload_acquisition_or_publication",
