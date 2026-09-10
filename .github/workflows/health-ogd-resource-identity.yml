@@ -1,0 +1,59 @@
+name: health-ogd-resource-identity
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'modules/health_access/resolve_ogd_hospital_resource_identity.py'
+      - 'modules/health_access/resource_identity_registry.yaml'
+      - '.github/workflows/health-ogd-resource-identity.yml'
+  workflow_dispatch:
+  schedule:
+    - cron: '11 */6 * * *'
+
+permissions:
+  contents: read
+
+jobs:
+  resolve-authoritative-identity:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install resolver dependency
+        run: python -m pip install --disable-pip-version-check requests
+      - name: Resolve resource identity from explicit official evidence
+        run: |
+          mkdir -p build/health_resource_identity
+          python modules/health_access/resolve_ogd_hospital_resource_identity.py --output-dir build/health_resource_identity | tee build/health_resource_identity/run.log
+      - name: Enforce fail-closed identity semantics
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p = Path('build/health_resource_identity/hospital_resource_identity_resolution.json')
+          r = json.loads(p.read_text(encoding='utf-8'))
+          assert r['contract'] == 'JLA_OGD_RESOURCE_IDENTITY_RESOLUTION_V1'
+          assert 'never_construct_resource_uuid_from_title_or_slug' in r['rules']
+          for source_id, item in r['resources'].items():
+              assert item['publication_allowed'] is False
+              assert item['raw_payload_acquired'] is False
+              assert item['schema_inspected'] is False
+              if item['status'] == 'resolved_from_explicit_authoritative_evidence':
+                  rid = item['machine_resource_id']
+                  assert isinstance(rid, str) and len(rid) == 36
+                  assert rid != 'e48a8bcf-ff56-4f39-839d-095827ba2a18'
+                  assert item['identity_evidence']
+          print(json.dumps(r['resources'], indent=2))
+          PY
+      - name: Upload governed identity evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: health-ogd-resource-identity-${{ github.run_id }}
+          path: build/health_resource_identity/
+          if-no-files-found: error
+          retention-days: 90
