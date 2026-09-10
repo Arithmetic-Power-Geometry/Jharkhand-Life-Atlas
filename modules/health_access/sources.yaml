@@ -119,6 +119,26 @@ sources:
     acquisition_status: catalog_verified_payload_not_acquired
     notes: "Official OGD catalog is materially newer than the Jharkhand-specific HMIS catalog and is therefore registered as a parallel acquisition candidate. It must not silently replace the Jharkhand-specific series. Before use, acquire and hash the exact payload/resource, inspect the observed schema and period semantics, explicitly filter State/UT=Jharkhand, verify district geography vintage and record identity, compare overlap with the Jharkhand-specific catalog, preserve missing as null, and prohibit any village/facility allocation of district aggregates."
 
+  - source_id: OGD_HMIS_QUARTERLY_FACILITY_EXTREMES_2026
+    title: All India Level Quarterly Maximum and Minimum Performing Public Health Facilities on Selected Data Items
+    publisher: Ministry of Health and Family Welfare, Department of Health and Family Welfare, Government of India
+    url: https://www.data.gov.in/catalog/all-india-level-quarterly-maximum-and-minimum-performing-public-health-facilities-selected
+    role: facility_level_service_performance_context
+    reference_year: time_series
+    catalog_published_on: 2021-05-31
+    catalog_updated_on: 2026-06-11
+    advertised_granularity: quarterly_facility_selected_indicator_extremes
+    advertised_topics: [deliveries, c_section_deliveries, ipd_attendance, opd_attendance, major_operations, minor_operations]
+    advertised_access: [catalog_api, zip_download]
+    publication_class: OPEN_WITH_ATTRIBUTION
+    license: Government Open Data License - India
+    license_url: https://www.data.gov.in/godl
+    license_review_status: reviewed_ogdl_catalog_and_platform
+    license_checked_on: 2026-09-11
+    attribution_required: true
+    acquisition_status: catalog_verified_payload_not_acquired
+    notes: "Official OGD catalog was freshly verified on 2026-09-11 and reports an update date of 2026-06-11. This source is only a facility-performance context candidate: it reports selected maximum/minimum-performing public facilities and must never be treated as a complete facility census, general quality ranking, or denominator for access estimates. Before use, acquire and hash the exact resource payloads, inspect observed period/indicator/facility/state fields, explicitly retain only records that authoritatively identify Jharkhand, preserve null/suppression semantics, validate facility and geography identity, and publish only source-supported metrics."
+
   - source_id: OGD_NFHS5_DISTRICT_FACTSHEETS_2019_2021
     title: National Family Health Survey-5 (NFHS-5) — India Districts Factsheet Data (Provisional)
     publisher: Ministry of Health and Family Welfare / International Institute for Population Sciences
