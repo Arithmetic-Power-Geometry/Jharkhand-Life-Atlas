@@ -1,8 +1,8 @@
 id: health_access
 name: Health & Healthcare Access
-version: 0.3.0
+version: 0.4.0
 status: active
-description: "Authoritative, place-linked health-facility, service-capacity and healthcare-access evidence for Jharkhand."
+description: "Authoritative, place-linked health-facility, service-capacity and healthcare-access evidence for Jharkhand. A validated source-native Census 2011 village Health extract is now published while current/differently dated official sources remain fail-closed pending acquisition and temporal linkage."
 geography:
   primary: place
   supports: [state, district, subdistrict, block, panchayat, village, town, facility]
@@ -23,13 +23,18 @@ principles:
   - no_person_level_health_records
   - historical_and_current_geographies_not_silently_merged
 scope:
+  census_2011_health_amenities: validated_source_native_extract_published_32394_rows_69_health_fields
   facility_inventory: fail_closed_official_ogd_ingestion_engine_ready_source_file_acquisition_pending
-  public_health_capacity: pending_authoritative_ingest
+  public_health_capacity: historical_census_evidence_published_current_authoritative_ingest_pending
   service_activity: fail_closed_hmis_ingestion_engine_ready_source_file_acquisition_pending
-  access_indicators: pending_verified_facility_geography
-  private_facilities: source_discovery_and_rights_review
+  access_indicators: historical_source_fields_available_current_indicators_pending_verified_facility_geography
+  private_facilities: historical_census_fields_available_current_source_discovery_and_rights_review
   quality_certification: source_discovery_and_rights_review
 engineering:
+  census2011_health_extract: modules/health_access/build_census2011_health_extract.py
+  census2011_health_output: data/curated/health_access/census_health_access_2011.csv
+  census2011_health_provenance: data/curated/health_access/census_health_access_2011.provenance.json
+  census2011_geography_rule: source_native_2011_only_no_current_equivalence
   hmis_district_ingest: modules/health_access/ingest_hmis.py
   hmis_link_rule: unique_exact_normalized_name_to_census2011_district
   hmis_fuzzy_linking: prohibited
@@ -39,4 +44,4 @@ engineering:
   facility_source_identity: source_provided_identifier_required
   missing_numeric_policy: preserve_null_never_zero
   official_download_host_allowlist: data.gov.in
-completion_gate: "Do not mark complete until acquisition, rights review, provenance, geographic linking, schema, indicators, validation, tests, Streamlit, downloads/reports and CI are verified on main."
+completion_gate: "Do not mark complete until current/differently dated acquisition, rights review, provenance, geographic linking, schema, indicators, validation, tests, Streamlit, downloads/reports and CI are verified on main. The validated Census 2011 historical extract is publishable evidence but does not by itself satisfy the full Module 2 completion gate."
