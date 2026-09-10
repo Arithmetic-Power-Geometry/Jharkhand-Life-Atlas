@@ -4,6 +4,7 @@ from modules.health_access.resolve_ogd_hospital_resource_identity import (
     _explicit_relative_official_payload_urls,
     _explicit_resource_url_uuids,
     _is_target_page,
+    _structured_target_candidates,
 )
 
 
@@ -62,6 +63,56 @@ def test_relative_navigation_link_is_not_mistaken_for_payload():
         text,
         "https://www.data.gov.in/resources/hospital-directory",
     ) == []
+
+
+def test_structured_json_accepts_explicit_uuid_only_in_target_bound_object():
+    target = TARGETS["OGD_NHP_HOSPITAL_GEO_2026"]
+    rid = "123e4567-e89b-42d3-a456-426614174000"
+    text = (
+        '{"resources":['
+        '{"title":"National Hospital Directory with Geo Code and additional parameters (updated till last month)",'
+        f'"resource_id":"{rid}"}},'
+        '{"title":"Unrelated resource","resource_id":"223e4567-e89b-42d3-a456-426614174000"}'
+        ']}'
+    )
+    assert _structured_target_candidates(text, target) == [
+        {
+            "kind": "resource_id",
+            "value": rid,
+            "evidence_type": "explicit_machine_resource_id_in_target_bound_authoritative_json_object",
+        }
+    ]
+
+
+def test_structured_json_rejects_parent_catalog_uuid_as_child_identity():
+    target = TARGETS["OGD_NHP_HOSPITAL_GEO_2026"]
+    unrelated = "223e4567-e89b-42d3-a456-426614174000"
+    text = (
+        '{"catalog_id":"e48a8bcf-ff56-4f39-839d-095827ba2a18",'
+        '"resources":['
+        '{"title":"National Hospital Directory with Geo Code and additional parameters (updated till last month)"},'
+        f'{{"title":"Other resource","resource_id":"{unrelated}"}}'
+        ']}'
+    )
+    assert _structured_target_candidates(text, target) == []
+
+
+def test_structured_json_accepts_explicit_official_payload_in_target_object():
+    target = TARGETS["OGD_NIN_HEALTH_FACILITIES_GEO_2026"]
+    url = "https://www.data.gov.in/sites/default/files/nin_health_facilities.csv"
+    text = (
+        '{"resource":{'
+        '"title":"NIN Health Faclities with Geo Code and additional parameters (updated till last month)",'
+        f'"download":"{url}"'
+        '}}'
+    )
+    assert _structured_target_candidates(text, target) == [
+        {
+            "kind": "payload_url",
+            "value": url,
+            "evidence_type": "explicit_official_payload_url_in_target_bound_authoritative_json_object",
+        }
+    ]
 
 
 def test_plural_resources_surface_is_canonical_target_evidence():
