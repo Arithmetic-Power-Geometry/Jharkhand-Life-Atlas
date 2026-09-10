@@ -77,17 +77,46 @@ def _fetch(session: requests.Session, url: str) -> dict[str, Any]:
     return record
 
 
+def _decode_common_web_escapes(text: str) -> str:
+    """Normalize only deterministic web-string escapes before evidence scanning.
+
+    Official React/JSON page shells can encode literal URLs as ``https:\/\/...`` or
+    ``https:\u002F\u002F...``. Decoding those representation-level escapes does not
+    invent an identifier or endpoint; it merely restores characters that are already
+    present in the authoritative response. We intentionally avoid generic
+    ``unicode_escape`` decoding because it could transform unrelated content.
+    """
+    decoded = html.unescape(text)
+    replacements = {
+        r"\/": "/",
+        r"\u002F": "/",
+        r"\u002f": "/",
+        r"\u003A": ":",
+        r"\u003a": ":",
+        r"\u003F": "?",
+        r"\u003f": "?",
+        r"\u0026": "&",
+        r"\u003D": "=",
+        r"\u003d": "=",
+    }
+    for escaped, literal in replacements.items():
+        decoded = decoded.replace(escaped, literal)
+    return decoded
+
+
 def _uuid_contexts(text: str) -> list[dict[str, str]]:
     contexts: list[dict[str, str]] = []
-    for match in UUID_RE.finditer(text):
+    normalized = _decode_common_web_escapes(text)
+    for match in UUID_RE.finditer(normalized):
         start = max(0, match.start() - 500)
-        end = min(len(text), match.end() + 500)
-        contexts.append({"uuid": match.group(0).lower(), "context": text[start:end]})
+        end = min(len(normalized), match.end() + 500)
+        contexts.append({"uuid": match.group(0).lower(), "context": normalized[start:end]})
     return contexts
 
 
 def _explicit_resource_url_uuids(text: str) -> list[str]:
-    return sorted({m.group(1).lower() for m in RESOURCE_URL_UUID_RE.finditer(text) if m.group(1).lower() != CATALOG_ID})
+    normalized = _decode_common_web_escapes(text)
+    return sorted({m.group(1).lower() for m in RESOURCE_URL_UUID_RE.finditer(normalized) if m.group(1).lower() != CATALOG_ID})
 
 
 def _is_official_data_host(host: str) -> bool:
@@ -99,12 +128,12 @@ def _explicit_official_payload_urls(text: str) -> list[str]:
     """Return only literal official data URLs that look like downloadable payloads.
 
     This is intentionally conservative. Relative links, JavaScript-generated URLs,
-    title-derived paths and third-party mirrors are not promoted. HTML entities are
-    decoded only after a literal absolute URL has been observed in authoritative
-    content.
+    title-derived paths and third-party mirrors are not promoted. Representation-level
+    JSON/JavaScript escapes are decoded only after being observed in authoritative
+    content; no path, identifier, host or query value is synthesized.
     """
     found: set[str] = set()
-    decoded = html.unescape(text).replace("\\/", "/")
+    decoded = _decode_common_web_escapes(text)
     for match in URL_RE.finditer(decoded):
         url = match.group(0).rstrip(".,);]}")
         parsed = urlparse(url)
@@ -232,6 +261,7 @@ def resolve(output_dir: Path) -> dict[str, Any]:
         "rules": [
             "never_construct_resource_uuid_from_title_or_slug",
             "never_construct_download_url_from_title_or_slug",
+            "decode_only_representation_level_web_escapes_observed_in_authoritative_content",
             "accept_only_explicit_identifier_tied_to_target_in_authoritative_content",
             "accept_only_explicit_official_payload_url_observed_on_canonical_target_page",
             "canonical_target_page_may_supply_explicit_machine_resource_url_evidence",
