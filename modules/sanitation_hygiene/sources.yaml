@@ -1,4 +1,17 @@
 sources:
+  - id: CENSUS_DCHB_JH_2011_SANITATION
+    title: Jharkhand District Census Handbooks — village sanitation and hygiene amenities
+    publisher: Office of the Registrar General & Census Commissioner, India
+    authority: shared_governed_historical_source
+    url: https://censusindia.gov.in/nada/index.php/catalog/?sk=Jharkhand
+    scope: source-native Census 2011 village sanitation/hygiene amenity fields carried in the validated Module 1 DCHB extract
+    smallest_reusable_granularity: census_2011_village
+    reference_year: 2011
+    rights_status: governed_by_existing_conservative_census_derived_policy
+    acquisition_status: existing_shared_dependency_acquired_and_validated
+    publishable: false
+    notes: "Reuse only through the governed Module 1 village_amenities_2011.csv source and only after exact observed-header selection of sanitation/hygiene-related source fields. A Module 4 curated projection has not yet been published. Preserve Census 2011 geography, source spelling/semantics and missing values; do not infer current SBM-G/ODF status or current LGD equivalence from names."
+
   - id: SBMG_OFFICIAL_DASHBOARD
     title: Swachh Bharat Mission (Grameen) 2.0 official dashboard and village progress reports
     publisher: Department of Drinking Water and Sanitation, Ministry of Jal Shakti, Government of India
