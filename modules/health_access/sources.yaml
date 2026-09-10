@@ -127,6 +127,8 @@ sources:
     reference_year: time_series
     catalog_published_on: 2021-05-31
     catalog_updated_on: 2026-06-11
+    catalog_api_id: efc4b11e-30ca-4e02-a168-902d34c2e7a0
+    catalog_api_resolution_status: authoritative_control_resolved_identifier_but_request_timed_out_2026_09_11
     advertised_granularity: quarterly_facility_selected_indicator_extremes
     advertised_topics: [deliveries, c_section_deliveries, ipd_attendance, opd_attendance, major_operations, minor_operations]
     advertised_access: [catalog_api, zip_download]
@@ -137,7 +139,7 @@ sources:
     license_checked_on: 2026-09-11
     attribution_required: true
     acquisition_status: catalog_verified_payload_not_acquired
-    notes: "Official OGD catalog was freshly verified on 2026-09-11 and reports an update date of 2026-06-11. This source is only a facility-performance context candidate: it reports selected maximum/minimum-performing public facilities and must never be treated as a complete facility census, general quality ranking, or denominator for access estimates. Before use, acquire and hash the exact resource payloads, inspect observed period/indicator/facility/state fields, explicitly retain only records that authoritatively identify Jharkhand, preserve null/suppression semantics, validate facility and geography identity, and publish only source-supported metrics."
+    notes: "Official OGD catalog was freshly verified on 2026-09-11 and reports an update date of 2026-06-11. The authoritative Catalog API control resolved identifier efc4b11e-30ca-4e02-a168-902d34c2e7a0, although the API fetch timed out during verification; this identifier is catalog metadata only and does not establish payload acquisition. This source is only a facility-performance context candidate: it reports selected maximum/minimum-performing public facilities and must never be treated as a complete facility census, general quality ranking, or denominator for access estimates. Before use, acquire and hash the exact resource payloads, inspect observed period/indicator/facility/state fields, explicitly retain only records that authoritatively identify Jharkhand, preserve null/suppression semantics, validate facility and geography identity, and publish only source-supported metrics."
 
   - source_id: OGD_NFHS5_DISTRICT_FACTSHEETS_2019_2021
     title: National Family Health Survey-5 (NFHS-5) — India Districts Factsheet Data (Provisional)
