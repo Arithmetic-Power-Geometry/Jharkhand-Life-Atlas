@@ -52,5 +52,7 @@ def test_current_gate_records_real_acquisition_and_publication_gaps():
     assert gate["authoritative_acquisition"]["satisfied"] is False
     assert gate["geographic_linkage"]["satisfied"] is False
     assert gate["indicators"]["satisfied"] is False
-    assert gate["streamlit_presentation"]["satisfied"] is False
+    # Historical Census 2011 Health evidence is now provenance-gated in Streamlit,
+    # while full research-ready reports/current production outputs remain open.
+    assert gate["streamlit_presentation"]["satisfied"] is True
     assert gate["downloadable_data_reports"]["satisfied"] is False
