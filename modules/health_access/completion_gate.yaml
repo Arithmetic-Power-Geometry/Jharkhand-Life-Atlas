@@ -1,47 +1,56 @@
 module: health_access
 protocol_version: 1
 status: open
+verified_partial_evidence:
+  historical_census_2011:
+    status: validated_source_native_historical_extract
+    data: data/curated/health_access/census_health_access_2011.csv
+    provenance: data/curated/health_access/census_health_access_2011.provenance.json
+    row_count: 32394
+    health_field_count: 69
+    reference_year: 2011
+    rule: "Direct source-native projection only; preserve missing as null/blank representation and do not infer current availability or current-geography equivalence."
 criteria:
   authoritative_acquisition:
     satisfied: false
-    evidence: "Preferred 2026 OGD facility payload and Jharkhand HMIS source files are not yet acquired and schema-verified."
+    evidence: "A governed Census 2011 Health source and validated historical extract exist, but the preferred 2026 OGD facility payload and production HMIS/NFHS/current sources are not yet all acquired and schema-verified."
   rights_licence_review:
     satisfied: true
-    evidence: "OGD sources are reviewed under Government Open Data License - India with attribution; restricted ABDM HFR remains excluded pending terms/export rights."
+    evidence: "The historical Census extract follows JLA's conservative derived-use policy; OGD sources are reviewed under Government Open Data License - India with attribution; restricted ABDM HFR remains excluded pending terms/export rights."
   smallest_authoritative_reusable_granularity:
     satisfied: false
-    evidence: "Facility-level OGD source is identified but payload acquisition is pending."
+    evidence: "Village-level historical Census evidence is published at source-native grain, but the preferred current facility-level OGD payload remains pending acquisition."
   cleaning_engineering:
     satisfied: false
-    evidence: "Fail-closed facility and HMIS ingestion engines exist; production source payloads have not yet been processed."
+    evidence: "The Census 2011 Health extract has been processed through a validated direct-projection path with missingness preserved. Fail-closed facility and HMIS ingestion engines exist, but production current/differently dated payloads have not yet been fully processed."
   geographic_linkage:
     satisfied: false
-    evidence: "Current/differently dated facility geography requires an evidence-backed temporal crosswalk; name equality alone is prohibited."
+    evidence: "The historical extract remains explicitly on Census 2011 source-native geography. Current/differently dated facility geography still requires evidence-backed temporal crosswalks; name equality alone is prohibited."
   provenance:
     satisfied: false
-    evidence: "Source registry and acquisition ledger exist, but production retrieval hashes/API request provenance are pending."
+    evidence: "The validated Census 2011 Health extract records source/output SHA-256 provenance. Production retrieval hashes/API request provenance for current/differently dated Health sources remain pending."
   schema:
     satisfied: true
-    evidence: "modules/health_access/schema.yaml defines facility and service-activity grains and missing-value rules."
+    evidence: "modules/health_access/schema.yaml defines facility and service-activity grains and missing-value rules; the historical Census extract also has observed source-native field selection recorded in provenance."
   indicators:
     satisfied: false
-    evidence: "No production health indicator outputs may be published before authoritative acquisition and linkage."
+    evidence: "A validated historical evidence table exists, but no unsupported derived current Health indicators may be published before authoritative acquisition, valid denominators/periods and geographic support are established."
   validation:
     satisfied: false
-    evidence: "Validation logic/tests exist, but production outputs do not yet exist."
+    evidence: "The Census 2011 Health extract has validated row/field counts, hashes and provenance semantics. Full Module 2 validation remains open because current/differently dated production outputs do not yet satisfy the publication gate."
   tests:
     satisfied: true
-    evidence: "Dedicated health tests are present and the health-access-validation workflow executes every tests/test_health_access_*.py file."
+    evidence: "Dedicated Health tests are present and the health-access-validation workflow executes the Module 2 test suite. Final completion still requires re-verification on the exact main head."
   streamlit_presentation:
-    satisfied: false
-    evidence: "No production Module 2 health dataset is yet available for presentation."
+    satisfied: true
+    evidence: "Streamlit Research exposes the validated Census 2011 Health dataset only when its provenance status is validated_source_native_historical_extract and labels it as historical evidence rather than a current facility inventory."
   downloadable_data_reports:
     satisfied: false
-    evidence: "No production Module 2 health dataset/report may be released before acquisition and validation."
+    evidence: "A provenance-gated historical Health CSV download exists. The full completion criterion remains open until required research-ready reports and any additional validated production datasets are available."
   documentation:
     satisfied: true
-    evidence: "Module README, source registry, schema and acquisition ledger are present."
+    evidence: "Module README, source registry, schema, acquisition ledger and historical-extract provenance are present and synchronized with repository truth."
   green_ci_on_main:
     satisfied: true
-    evidence: "Dedicated health-access-validation run 34029825695 for main commit 373aa3fc31207bacab6030c173aea93559dc5b12 completed successfully on 2026-09-06 after running the wildcard Module 2 test suite; this criterion must be re-verified at final completion."
-completion_rule: "status may become complete only when every criterion is satisfied and final CI is green on main."
+    evidence: "Dedicated Health validation has passed on main after the historical evidence integration; this criterion must be re-verified on the exact final completion head before status changes to COMPLETE."
+completion_rule: "status may become complete only when every criterion is satisfied and final CI is green on the exact main head."
