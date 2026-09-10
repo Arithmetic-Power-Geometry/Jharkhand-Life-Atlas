@@ -38,7 +38,7 @@ jobs:
           PY
       - name: Commit deterministic observed-schema inventory
         run: |
-          if git diff --quiet -- modules/core_geography/amenity_domain_field_inventory.json; then
+          if [ -z "$(git status --porcelain -- modules/core_geography/amenity_domain_field_inventory.json)" ]; then
             echo 'Inventory unchanged.'
             exit 0
           fi
