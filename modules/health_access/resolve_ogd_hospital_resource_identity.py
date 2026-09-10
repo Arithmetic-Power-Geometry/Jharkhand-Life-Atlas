@@ -1,21 +1,24 @@
-"""Resolve Health OGD machine-resource identities from explicit official evidence only.
+"""Resolve Health OGD payload identities from explicit official evidence only.
 
-This resolver deliberately does *not* construct resource UUIDs from titles/slugs.
-It inspects the verified official OGD catalog API control, the catalog's own
-resource-list view, and canonical resource pages and accepts a UUID only when the
-same explicit identifier is tied to the registered resource by authoritative page
-content/hyperlinks. Results remain unpublished acquisition evidence until raw bytes
-are separately acquired, hashed, schema-inspected and validated.
+This resolver deliberately does *not* construct resource UUIDs or download URLs
+from titles/slugs. It inspects the verified official OGD catalog API control,
+the catalog's resource-list view, and canonical resource pages. It accepts either
+(1) an explicit machine-resource UUID tied to the target in authoritative content,
+or (2) an explicit downloadable data URL observed on that target's canonical
+official page. Results remain unpublished acquisition evidence until bytes are
+separately acquired, hashed, schema-inspected and validated.
 """
 from __future__ import annotations
 
 import argparse
 import hashlib
+import html
 import json
 import re
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
+from urllib.parse import urlparse
 
 import requests
 
@@ -32,6 +35,8 @@ RESOURCE_URL_UUID_RE = re.compile(
     r"(?:api\.data\.gov\.in/resource/|data\.gov\.in/(?:resource|resources)/)([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-5][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12})",
     re.IGNORECASE,
 )
+URL_RE = re.compile(r"https?://[^\s\"'<>]+", re.IGNORECASE)
+DATA_SUFFIXES = (".csv", ".xls", ".xlsx", ".zip", ".json", ".geojson")
 CATALOG_ID = "e48a8bcf-ff56-4f39-839d-095827ba2a18"
 
 TARGETS = {
@@ -85,6 +90,36 @@ def _explicit_resource_url_uuids(text: str) -> list[str]:
     return sorted({m.group(1).lower() for m in RESOURCE_URL_UUID_RE.finditer(text) if m.group(1).lower() != CATALOG_ID})
 
 
+def _is_official_data_host(host: str) -> bool:
+    h = host.casefold().split(":", 1)[0]
+    return h in {"data.gov.in", "www.data.gov.in", "api.data.gov.in"} or h.endswith(".data.gov.in")
+
+
+def _explicit_official_payload_urls(text: str) -> list[str]:
+    """Return only literal official data URLs that look like downloadable payloads.
+
+    This is intentionally conservative. Relative links, JavaScript-generated URLs,
+    title-derived paths and third-party mirrors are not promoted. HTML entities are
+    decoded only after a literal absolute URL has been observed in authoritative
+    content.
+    """
+    found: set[str] = set()
+    decoded = html.unescape(text).replace("\\/", "/")
+    for match in URL_RE.finditer(decoded):
+        url = match.group(0).rstrip(".,);]}")
+        parsed = urlparse(url)
+        if not _is_official_data_host(parsed.netloc):
+            continue
+        lower_path = parsed.path.casefold()
+        lower_query = parsed.query.casefold()
+        explicit_file = lower_path.endswith(DATA_SUFFIXES)
+        explicit_api = parsed.netloc.casefold() == "api.data.gov.in" and "/resource/" in lower_path
+        explicit_export = "format=csv" in lower_query or "format=json" in lower_query
+        if explicit_file or explicit_api or explicit_export:
+            found.add(url)
+    return sorted(found)
+
+
 def _is_tied_to_target(context: str, target: dict[str, Any]) -> bool:
     c = context.casefold()
     slug = target["slug"].casefold()
@@ -114,24 +149,31 @@ def resolve(output_dir: Path) -> dict[str, Any]:
     results: dict[str, Any] = {}
     for source_id, target in TARGETS.items():
         candidates: dict[str, list[dict[str, str]]] = {}
+        direct_payloads: dict[str, list[dict[str, str]]] = {}
         for page in fetched:
             text = page.get("text")
             if not text:
                 continue
 
-            # Strongest evidence path: an explicit machine resource URL embedded in
-            # the canonical authoritative page for this exact registered target.
+            # Strong evidence path: explicit machine resource URL or explicit
+            # official downloadable data URL on the canonical page for this target.
             if _is_target_page(page, target):
+                evidence_url = page.get("final_url", page["requested_url"])
                 for resource_id in _explicit_resource_url_uuids(text):
                     candidates.setdefault(resource_id, []).append({
-                        "evidence_url": page.get("final_url", page["requested_url"]),
+                        "evidence_url": evidence_url,
                         "evidence_type": "explicit_machine_resource_url_on_canonical_target_page",
                         "context": f"authoritative canonical target page explicitly contains machine resource URL for {resource_id}",
                     })
+                for payload_url in _explicit_official_payload_urls(text):
+                    direct_payloads.setdefault(payload_url, []).append({
+                        "evidence_url": evidence_url,
+                        "evidence_type": "explicit_official_payload_url_on_canonical_target_page",
+                        "context": "authoritative canonical target page explicitly contains this downloadable/API data URL",
+                    })
 
-            # Secondary evidence path: UUID appears in authoritative content with
-            # strong local title/slug context. This remains fail-closed if multiple
-            # candidates survive.
+            # Secondary UUID evidence path: UUID appears in authoritative content
+            # with strong local title/slug context. Multiple candidates fail closed.
             for item in _uuid_contexts(text):
                 if item["uuid"] == CATALOG_ID:
                     continue
@@ -148,6 +190,19 @@ def resolve(output_dir: Path) -> dict[str, Any]:
                 "status": "resolved_from_explicit_authoritative_evidence",
                 "machine_resource_id": resource_id,
                 "machine_api_url": f"https://api.data.gov.in/resource/{resource_id}",
+                "direct_payload_url": None,
+                "identity_evidence": evidence,
+                "raw_payload_acquired": False,
+                "schema_inspected": False,
+                "publication_allowed": False,
+            }
+        elif not candidates and len(direct_payloads) == 1:
+            payload_url, evidence = next(iter(direct_payloads.items()))
+            results[source_id] = {
+                "status": "resolved_direct_payload_url_from_explicit_authoritative_evidence",
+                "machine_resource_id": None,
+                "machine_api_url": None,
+                "direct_payload_url": payload_url,
                 "identity_evidence": evidence,
                 "raw_payload_acquired": False,
                 "schema_inspected": False,
@@ -155,9 +210,14 @@ def resolve(output_dir: Path) -> dict[str, Any]:
             }
         else:
             results[source_id] = {
-                "status": "unresolved" if not candidates else "ambiguous_multiple_explicit_candidates",
+                "status": (
+                    "unresolved"
+                    if not candidates and not direct_payloads
+                    else "ambiguous_multiple_explicit_candidates"
+                ),
                 "machine_resource_id": None,
                 "candidate_ids": sorted(candidates),
+                "candidate_direct_payload_urls": sorted(direct_payloads),
                 "raw_payload_acquired": False,
                 "schema_inspected": False,
                 "publication_allowed": False,
@@ -165,13 +225,15 @@ def resolve(output_dir: Path) -> dict[str, Any]:
 
     public_fetch = [{k: v for k, v in page.items() if k != "text"} for page in fetched]
     report = {
-        "contract": "JLA_OGD_RESOURCE_IDENTITY_RESOLUTION_V1",
+        "contract": "JLA_OGD_RESOURCE_IDENTITY_RESOLUTION_V2",
         "resolved_at_utc": datetime.now(timezone.utc).isoformat(),
         "catalog_api_control": CATALOG_API_CONTROL,
         "catalog_resource_list": CATALOG_RESOURCE_LIST,
         "rules": [
             "never_construct_resource_uuid_from_title_or_slug",
+            "never_construct_download_url_from_title_or_slug",
             "accept_only_explicit_identifier_tied_to_target_in_authoritative_content",
+            "accept_only_explicit_official_payload_url_observed_on_canonical_target_page",
             "canonical_target_page_may_supply_explicit_machine_resource_url_evidence",
             "catalog_api_identifier_is_not_resource_identifier",
             "identity_resolution_does_not_mean_payload_acquisition_or_publication",
