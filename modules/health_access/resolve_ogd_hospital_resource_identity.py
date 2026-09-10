@@ -1,11 +1,11 @@
 """Resolve Health OGD machine-resource identities from explicit official evidence only.
 
 This resolver deliberately does *not* construct resource UUIDs from titles/slugs.
-It inspects the verified official OGD catalog API control plus canonical resource
-pages and accepts a UUID only when the same explicit identifier is tied to the
-registered resource by authoritative page content/hyperlinks. Results remain
-unpublished acquisition evidence until raw bytes are separately acquired,
-hashed, schema-inspected and validated.
+It inspects the verified official OGD catalog API control, the catalog's own
+resource-list view, and canonical resource pages and accepts a UUID only when the
+same explicit identifier is tied to the registered resource by authoritative page
+content/hyperlinks. Results remain unpublished acquisition evidence until raw bytes
+are separately acquired, hashed, schema-inspected and validated.
 """
 from __future__ import annotations
 
@@ -16,12 +16,18 @@ import re
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
-from urllib.parse import urljoin
 
 import requests
 
 CATALOG_API_CONTROL = "https://www.data.gov.in/apis/e48a8bcf-ff56-4f39-839d-095827ba2a18"
 CATALOG_PAGE = "https://www.data.gov.in/catalog/hospital-directory-national-health-portal"
+# Exact resource-list view exposed by the official OGD catalog. This is evidence to
+# inspect, not a template from which a resource UUID may be constructed.
+CATALOG_RESOURCE_LIST = (
+    "https://www.data.gov.in/catalog/hospital-directory-national-health-portal"
+    "?filters%5Bfield_catalog_reference%5D=323881&format=json&limit=6&offset=0"
+    "&sort%5Bcreated%5D=desc"
+)
 USER_AGENT = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0 Safari/537.36"
 UUID_RE = re.compile(r"\b[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-5][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}\b")
 
@@ -86,7 +92,7 @@ def resolve(output_dir: Path) -> dict[str, Any]:
     session.headers.update({"User-Agent": USER_AGENT, "Accept-Language": "en-US,en;q=0.9"})
 
     fetched: list[dict[str, Any]] = []
-    for url in [CATALOG_PAGE, CATALOG_API_CONTROL]:
+    for url in [CATALOG_PAGE, CATALOG_RESOURCE_LIST, CATALOG_API_CONTROL]:
         fetched.append(_fetch(session, url))
     for target in TARGETS.values():
         for url in target["resource_urls"]:
@@ -137,6 +143,7 @@ def resolve(output_dir: Path) -> dict[str, Any]:
         "contract": "JLA_OGD_RESOURCE_IDENTITY_RESOLUTION_V1",
         "resolved_at_utc": datetime.now(timezone.utc).isoformat(),
         "catalog_api_control": CATALOG_API_CONTROL,
+        "catalog_resource_list": CATALOG_RESOURCE_LIST,
         "rules": [
             "never_construct_resource_uuid_from_title_or_slug",
             "accept_only_explicit_identifier_tied_to_target_in_authoritative_content",
