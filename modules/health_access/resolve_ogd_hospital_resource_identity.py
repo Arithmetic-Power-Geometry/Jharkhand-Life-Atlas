@@ -45,6 +45,8 @@ TARGETS = {
         "slug": "nin-health-faclities-geo-code-and-additional-parameters-updated-till-last-month",
         "resource_urls": [
             "https://www.data.gov.in/resource/nin-health-faclities-geo-code-and-additional-parameters-updated-till-last-month",
+            "https://data.gov.in/resource/nin-health-faclities-geo-code-and-additional-parameters-updated-till-last-month",
+            "https://www.data.gov.in/resources/nin-health-faclities-geo-code-and-additional-parameters-updated-till-last-month",
             "https://data.gov.in/resources/nin-health-faclities-geo-code-and-additional-parameters-updated-till-last-month",
         ],
     },
@@ -54,6 +56,8 @@ TARGETS = {
         "resource_urls": [
             "https://www.data.gov.in/resource/national-hospital-directory-geo-code-and-additional-parameters-updated-till-last-month",
             "https://data.gov.in/resource/national-hospital-directory-geo-code-and-additional-parameters-updated-till-last-month",
+            "https://www.data.gov.in/resources/national-hospital-directory-geo-code-and-additional-parameters-updated-till-last-month",
+            "https://data.gov.in/resources/national-hospital-directory-geo-code-and-additional-parameters-updated-till-last-month",
         ],
     },
 }
@@ -262,6 +266,7 @@ def resolve(output_dir: Path) -> dict[str, Any]:
             "never_construct_resource_uuid_from_title_or_slug",
             "never_construct_download_url_from_title_or_slug",
             "decode_only_representation_level_web_escapes_observed_in_authoritative_content",
+            "probe_both_singular_and_plural_canonical_ogd_resource_surfaces",
             "accept_only_explicit_identifier_tied_to_target_in_authoritative_content",
             "accept_only_explicit_official_payload_url_observed_on_canonical_target_page",
             "canonical_target_page_may_supply_explicit_machine_resource_url_evidence",
