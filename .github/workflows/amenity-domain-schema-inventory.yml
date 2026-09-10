@@ -1,0 +1,49 @@
+name: amenity-domain-schema-inventory
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/build_amenity_domain_inventory.py'
+      - 'data/curated/core_geography/village_amenities_2011.csv'
+      - '.github/workflows/amenity-domain-schema-inventory.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  inventory:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - name: Build observed source-header inventory
+        run: python scripts/build_amenity_domain_inventory.py
+      - name: Validate inventory is metadata only
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p = Path('modules/core_geography/amenity_domain_field_inventory.json')
+          x = json.loads(p.read_text())
+          assert x['status'] == 'observed_schema_inventory_not_publication_approval'
+          assert x['publication_rule'].startswith('inventory is metadata only')
+          assert set(x['domains']) == {'water_access', 'sanitation_hygiene', 'education_access'}
+          assert all(x['domains'][d]['candidate_field_count'] > 0 for d in x['domains'])
+          PY
+      - name: Commit deterministic observed-schema inventory
+        run: |
+          if git diff --quiet -- modules/core_geography/amenity_domain_field_inventory.json; then
+            echo 'Inventory unchanged.'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add modules/core_geography/amenity_domain_field_inventory.json
+          git commit -m 'Record observed Census amenity domain fields'
+          git push origin HEAD:main
