@@ -36,8 +36,9 @@ jobs:
           from pathlib import Path
           p = Path('build/health_resource_identity/hospital_resource_identity_resolution.json')
           r = json.loads(p.read_text(encoding='utf-8'))
-          assert r['contract'] == 'JLA_OGD_RESOURCE_IDENTITY_RESOLUTION_V1'
+          assert r['contract'] == 'JLA_OGD_RESOURCE_IDENTITY_RESOLUTION_V2'
           assert 'never_construct_resource_uuid_from_title_or_slug' in r['rules']
+          assert 'never_construct_download_url_from_title_or_slug' in r['rules']
           for source_id, item in r['resources'].items():
               assert item['publication_allowed'] is False
               assert item['raw_payload_acquired'] is False
@@ -46,6 +47,11 @@ jobs:
                   rid = item['machine_resource_id']
                   assert isinstance(rid, str) and len(rid) == 36
                   assert rid != 'e48a8bcf-ff56-4f39-839d-095827ba2a18'
+                  assert item['identity_evidence']
+              if item['status'] == 'resolved_direct_payload_url_from_explicit_authoritative_evidence':
+                  url = item['direct_payload_url']
+                  assert isinstance(url, str) and url.startswith('https://')
+                  assert '.data.gov.in/' in url or url.startswith('https://data.gov.in/') or url.startswith('https://www.data.gov.in/')
                   assert item['identity_evidence']
           print(json.dumps(r['resources'], indent=2))
           PY
