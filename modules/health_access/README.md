@@ -10,6 +10,7 @@ JLA now publishes a validated source-native Census 2011 Health extract derived o
 
 - `data/curated/health_access/census_health_access_2011.csv`
 - `data/curated/health_access/census_health_access_2011.provenance.json`
+- `modules/health_access/RESEARCH_USE_CENSUS2011.md` — research-use, reproducibility and interpretation guidance
 - **32,394 rows**
 - **69 source-native health fields**
 - reference year: **2011**
