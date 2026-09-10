@@ -1,0 +1,59 @@
+name: health-census2011-curation
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'modules/health_access/build_census2011_health_extract.py'
+      - 'data/curated/core_geography/village_amenities_2011.csv'
+      - '.github/workflows/health-census2011-curation.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  curate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Build source-native historical Health extract
+        run: python modules/health_access/build_census2011_health_extract.py
+      - name: Validate generated evidence
+        run: |
+          python - <<'PY'
+          import csv, hashlib, json
+          from pathlib import Path
+          source = Path('data/curated/core_geography/village_amenities_2011.csv')
+          output = Path('data/curated/health_access/census_health_access_2011.csv')
+          report = json.loads(Path('data/curated/health_access/census_health_access_2011.provenance.json').read_text())
+          assert report['status'] == 'validated_source_native_historical_extract'
+          assert report['reference_year'] == 2011
+          assert report['row_count'] > 0
+          assert report['health_field_count'] >= 60
+          with source.open(encoding='utf-8-sig', newline='') as f:
+              src_rows = sum(1 for _ in f) - 1
+          with output.open(encoding='utf-8', newline='') as f:
+              reader = csv.DictReader(f)
+              rows = list(reader)
+          assert len(rows) == src_rows == report['row_count']
+          assert {r['reference_year'] for r in rows if r['reference_year']} == {'2011'}
+          # The builder is a direct projection. Missing values stay blank/null and
+          # are never filled with zero; no present/current availability field exists.
+          assert 'current_availability' not in (reader.fieldnames or [])
+          h = hashlib.sha256(output.read_bytes()).hexdigest()
+          assert h == report['output_sha256']
+          print(f"validated {len(rows)} source-native Census 2011 Health rows")
+          PY
+      - name: Commit curated evidence when changed
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add data/curated/health_access/census_health_access_2011.csv data/curated/health_access/census_health_access_2011.provenance.json
+          if git diff --cached --quiet; then
+            echo 'No curated evidence changes.'
+          else
+            git commit -m 'Add validated Census 2011 Health evidence extract'
+            git push origin HEAD:main
+          fi
