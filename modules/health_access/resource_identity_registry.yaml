@@ -87,6 +87,38 @@ verified_identity_probe:
     No resource identifier or direct download URL may be guessed from a title, slug,
     catalog identifier, HTML structure, mirror, or downstream copy.
 
+fresh_web_verification:
+  verified_on: '2026-09-11'
+  authoritative_catalog_view:
+    url: https://www.data.gov.in/catalog/hospital-directory-national-health-portal?filters%5Bfield_catalog_reference%5D=323881&format=json&limit=6&offset=0&sort%5Bcreated%5D=desc
+    observations:
+      - NIN Health Faclities with Geo Code and additional parameters is enumerated by the official catalog.
+      - The catalog view reports Updated On 11/08/2026 for the NIN resource.
+      - The catalog view reports Updated On 11/08/2026 for a National Hospital Directory resource entry.
+      - Data API controls are advertised by the catalog view, but no machine resource UUID was established by this verification.
+  authoritative_resource_view:
+    url: https://www.data.gov.in/resource/national-hospital-directory-geo-code-and-additional-parameters-updated-till-last-month
+    observations:
+      - The standalone official resource surface remains resolvable.
+      - Indexed/cached representations of this surface can expose a different update date than the live catalog listing.
+  consistency_state: authoritative_metadata_views_not_sufficiently_consistent_to_establish_payload_currency
+  publication_effect: none
+  raw_payload_acquired: false
+  schema_inspected: false
+  required_resolution:
+    - obtain_exact_authoritative_machine_resource_identity
+    - capture_raw_bytes_or_auditable_API_response
+    - record_retrieval_timestamp_and_request_identity
+    - hash_captured_bytes
+    - inspect_observed_schema
+    - explicitly_filter_Jharkhand
+    - validate_temporal_and_geographic_semantics
+  rule: >-
+    Conflicting or stale official metadata views must fail closed. JLA may record the
+    conflict as provenance evidence, but must not select a date, infer payload currency,
+    construct an endpoint, or publish current facility records until the machine payload
+    itself is acquired and validated.
+
 resources:
   - source_id: OGD_NIN_HEALTH_FACILITIES_GEO_2026
     catalog_url: https://data.gov.in/catalog/hospital-directory-national-health-portal
@@ -174,5 +206,6 @@ rules:
   - successful_byte_retrieval_and_hash_are_required_before_acquired_status
   - publication_requires_shared_source_snapshot_gate
   - rights_review_does_not_substitute_for_payload_validation
+  - conflicting_authoritative_metadata_views_fail_closed
   - missing_values_remain_null
   - no_person_level_health_data
