@@ -1,0 +1,68 @@
+name: education-udise-acquisition
+
+on:
+  push:
+    paths:
+      - 'modules/education_access/acquire_udise_state_infrastructure.py'
+      - '.github/workflows/education-udise-acquisition.yml'
+  workflow_dispatch:
+  schedule:
+    - cron: '17 5 * * 3'
+
+permissions:
+  contents: read
+
+jobs:
+  acquire:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install requests
+      - name: Acquire authoritative UDISE aggregate snapshot
+        id: acquire
+        continue-on-error: true
+        run: python modules/education_access/acquire_udise_state_infrastructure.py --output-dir build/education_udise
+      - name: Record fail-closed blocker if upstream acquisition fails
+        if: steps.acquire.outcome != 'success'
+        run: |
+          mkdir -p build/education_udise
+          python - <<'PY'
+          import json
+          from datetime import datetime, timezone
+          from pathlib import Path
+          Path('build/education_udise/acquisition_blocker.json').write_text(json.dumps({
+            'contract':'JLA_EXTERNAL_SOURCE_BLOCKER_V1',
+            'source_id':'OGD_UDISE_INFRASTRUCTURE_2023_24_STATE',
+            'recorded_at_utc':datetime.now(timezone.utc).isoformat(),
+            'raw_payload_acquired':False,
+            'sha256':None,
+            'schema_inspected':False,
+            'publication_allowed':False,
+            'reason':'authoritative OGD payload was not exposed or retrievable; mirrors and inferred URLs are prohibited'
+          }, indent=2), encoding='utf-8')
+          PY
+      - name: Assert acquisition truth
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path('build/education_udise/udise_acquisition_receipt.json')
+          b=Path('build/education_udise/acquisition_blocker.json')
+          assert p.exists() ^ b.exists()
+          if p.exists():
+            r=json.loads(p.read_text())
+            assert r['sha256'] and r['byte_count'] > 0
+            assert r['publication_allowed'] is False
+            assert r['sensitive_person_level_data'] is False
+          else:
+            r=json.loads(b.read_text())
+            assert r['raw_payload_acquired'] is False and r['publication_allowed'] is False
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: education-udise-acquisition
+          path: build/education_udise/**
