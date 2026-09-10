@@ -128,6 +128,51 @@ attempts:
     publication_effect: none_gate_remains_closed
     next_safe_action: "Retry only the official data.gov.in XLS path/resource-page download control in a later execution environment. On success, hash bytes and inspect workbook schema before any curated publication."
 
+  - attempted_utc: '2026-09-10T02:51:30Z'
+    source_id: OGD_HEALTH_DIRECTORY_MACHINE_IDENTITY_RESOLUTION
+    workflow_head_sha: 8f0b321a607a84080d79c37267d8f636dd855851
+    workflow_run_id: 34431015174
+    workflow_result: success
+    artifact_digest: sha256:a48274a076dc5059e69bc175b3d03f41125b92abccb7b16cfcd24e7f8a3e7216
+    authoritative_fetches:
+      - url: https://www.data.gov.in/catalog/hospital-directory-national-health-portal
+        status_code: 200
+        byte_count: 1021621
+        sha256: 198ee2cf3b6a8421426eac9de4971026f159eede3df158dc5e3bcfd03aa8fa9e
+      - url: https://www.data.gov.in/catalog/hospital-directory-national-health-portal?filters%5Bfield_catalog_reference%5D=323881&format=json&limit=6&offset=0&sort%5Bcreated%5D=desc
+        status_code: 200
+        byte_count: 1021578
+        sha256: 8d7f86b06f2d171e8509a103af659a470cd565e3b864d19bc46706a6de89f692
+      - url: https://www.data.gov.in/apis/e48a8bcf-ff56-4f39-839d-095827ba2a18
+        status_code: 200
+        byte_count: 995962
+        sha256: fb207711b30c5d5b0dbaea56b831cdc95112d347ad8ea19aa4fedb6496da0951
+      - url: https://www.data.gov.in/resource/nin-health-faclities-geo-code-and-additional-parameters-updated-till-last-month
+        status_code: 200
+        byte_count: 999415
+        sha256: 09af62d2bdb1380d37c81c2e1e8a6d66b9e3d95932497a499d6742fb3e80fc4a
+      - url: https://www.data.gov.in/resource/national-hospital-directory-geo-code-and-additional-parameters-updated-till-last-month
+        status_code: 200
+        byte_count: 1000421
+        sha256: 7104026cc200324d2c0345a182b60c8e2140c71830afbfa1c443c58e4fa1550a
+    resolution_results:
+      OGD_NIN_HEALTH_FACILITIES_GEO_2026:
+        machine_resource_id: null
+        candidate_ids: []
+        status: unresolved
+      OGD_NHP_HOSPITAL_GEO_2026:
+        machine_resource_id: null
+        candidate_ids: []
+        status: unresolved
+    acquisition_result: authoritative_pages_retrieved_and_hashed_but_no_machine_payload_identity_exposed
+    blocker_class: official_pages_do_not_expose_an_unambiguous_machine_resource_uuid_in_retrieved_content
+    raw_payload_acquired: false
+    raw_sha256: null
+    raw_bytes: null
+    schema_inspected: false
+    publication_effect: none_gate_remains_closed
+    next_safe_action: "Continue independent authoritative acquisition paths such as official CSV/download controls or machine-readable OGD endpoints; never synthesize a UUID from the title, slug, catalog identifier, or page content."
+
 rules:
   - catalog_metadata_is_not_raw_data
   - resource_page_metadata_is_not_raw_data
