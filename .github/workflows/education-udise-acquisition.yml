@@ -2,67 +2,111 @@ name: education-udise-acquisition
 
 on:
   push:
+    branches: [main]
     paths:
       - 'modules/education_access/acquire_udise_state_infrastructure.py'
+      - 'modules/education_access/acquisition_candidates.yaml'
+      - 'modules/education_access/source_coverage.csv'
       - '.github/workflows/education-udise-acquisition.yml'
   workflow_dispatch:
   schedule:
-    - cron: '17 5 * * 3'
+    - cron: '17 */6 * * *'
 
 permissions:
   contents: read
 
 jobs:
-  acquire:
+  acquire-and-inspect:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - run: pip install requests
-      - name: Acquire authoritative UDISE aggregate snapshot
+      - name: Install acquisition dependency
+        run: python -m pip install --disable-pip-version-check requests
+      - name: Acquire authoritative UDISE+ state infrastructure evidence
         id: acquire
         continue-on-error: true
-        run: python modules/education_access/acquire_udise_state_infrastructure.py --output-dir build/education_udise
-      - name: Record fail-closed blocker if upstream acquisition fails
-        if: steps.acquire.outcome != 'success'
         run: |
           mkdir -p build/education_udise
+          python modules/education_access/acquire_udise_state_infrastructure.py --output-dir build/education_udise 2>&1 | tee build/education_udise/acquisition.log
+          exit ${PIPESTATUS[0]}
+      - name: Record authoritative-source access blocker
+        if: steps.acquire.outcome == 'failure'
+        run: |
           python - <<'PY'
           import json
           from datetime import datetime, timezone
           from pathlib import Path
-          Path('build/education_udise/acquisition_blocker.json').write_text(json.dumps({
-            'contract':'JLA_EXTERNAL_SOURCE_BLOCKER_V1',
-            'source_id':'OGD_UDISE_INFRASTRUCTURE_2023_24_STATE',
-            'recorded_at_utc':datetime.now(timezone.utc).isoformat(),
-            'raw_payload_acquired':False,
-            'sha256':None,
-            'schema_inspected':False,
-            'publication_allowed':False,
-            'reason':'authoritative OGD payload was not exposed or retrievable; mirrors and inferred URLs are prohibited'
-          }, indent=2), encoding='utf-8')
+
+          out = Path('build/education_udise')
+          payload = {
+              'contract': 'JLA_ACQUISITION_BLOCKER_V1',
+              'source_id': 'OGD_UDISE_INFRASTRUCTURE_2023_24_STATE',
+              'authority': 'Ministry of Education, Department of School Education & Literacy / Open Government Data Platform India',
+              'resource_page': 'https://www.data.gov.in/resource/stateuts-wise-number-school-infrastructure-highlights-udise-data-during-2023-24',
+              'observed_at_utc': datetime.now(timezone.utc).isoformat(),
+              'status': 'blocked_external_authoritative_payload_resolution_or_access',
+              'raw_payload_acquired': False,
+              'sha256_available': False,
+              'observed_schema_available': False,
+              'publication_allowed': False,
+              'missing_values_may_be_converted_to_zero': False,
+              'school_level_inference_allowed': False,
+              'student_or_staff_person_level_data_allowed': False,
+              'lower_geography_disaggregation_allowed': False,
+              'resolution_rule': 'Retry only authoritative OGD links exposed by the official resource page; never infer a download URL, substitute mirrors, or disaggregate the state row.',
+              'workflow_log': 'acquisition.log',
+          }
+          (out / 'acquisition_blocker.json').write_text(json.dumps(payload, indent=2), encoding='utf-8')
+          print(json.dumps(payload, indent=2))
           PY
-      - name: Assert acquisition truth
+      - name: Verify acquired UDISE evidence remains unpublished pending validation
+        if: steps.acquire.outcome == 'success'
         run: |
           python - <<'PY'
           import json
           from pathlib import Path
-          p=Path('build/education_udise/udise_acquisition_receipt.json')
-          b=Path('build/education_udise/acquisition_blocker.json')
-          assert p.exists() ^ b.exists()
-          if p.exists():
-            r=json.loads(p.read_text())
-            assert r['sha256'] and r['byte_count'] > 0
-            assert r['publication_allowed'] is False
-            assert r['sensitive_person_level_data'] is False
-          else:
-            r=json.loads(b.read_text())
-            assert r['raw_payload_acquired'] is False and r['publication_allowed'] is False
+
+          r = json.loads(Path('build/education_udise/udise_acquisition_receipt.json').read_text(encoding='utf-8'))
+          assert r['contract'] == 'JLA_SOURCE_SNAPSHOT_V1'
+          assert r['source_id'] == 'OGD_UDISE_INFRASTRUCTURE_2023_24_STATE'
+          assert r['byte_count'] > 500
+          assert len(r['sha256']) == 64
+          assert r['publication_allowed'] is False
+          assert r['geography']['source_granularity'] == 'state_ut'
+          assert r['geography']['lower_geography_disaggregation_allowed'] is False
+          assert r['sensitive_person_level_data'] is False
+          schema = json.loads(Path('build/education_udise/udise_observed_schema.json').read_text(encoding='utf-8'))
+          assert schema['contract'] == 'JLA_OBSERVED_SCHEMA_V1'
+          assert schema['jharkhand_rows'] == 1
+          print(json.dumps(r, indent=2))
           PY
-      - uses: actions/upload-artifact@v4
+      - name: Verify blocker remains fail-closed
+        if: steps.acquire.outcome == 'failure'
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          r = json.loads(Path('build/education_udise/acquisition_blocker.json').read_text(encoding='utf-8'))
+          assert r['raw_payload_acquired'] is False
+          assert r['sha256_available'] is False
+          assert r['observed_schema_available'] is False
+          assert r['publication_allowed'] is False
+          assert r['missing_values_may_be_converted_to_zero'] is False
+          assert r['school_level_inference_allowed'] is False
+          assert r['student_or_staff_person_level_data_allowed'] is False
+          assert r['lower_geography_disaggregation_allowed'] is False
+          print(json.dumps(r, indent=2))
+          PY
+      - name: Upload governed acquisition evidence
+        if: always()
+        uses: actions/upload-artifact@v4
         with:
-          name: education-udise-acquisition
-          path: build/education_udise/**
+          name: education-udise-authoritative-acquisition-${{ github.run_id }}
+          path: build/education_udise/
+          if-no-files-found: error
+          retention-days: 90
