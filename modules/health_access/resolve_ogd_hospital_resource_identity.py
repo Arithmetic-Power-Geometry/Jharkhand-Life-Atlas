@@ -21,8 +21,6 @@ import requests
 
 CATALOG_API_CONTROL = "https://www.data.gov.in/apis/e48a8bcf-ff56-4f39-839d-095827ba2a18"
 CATALOG_PAGE = "https://www.data.gov.in/catalog/hospital-directory-national-health-portal"
-# Exact resource-list view exposed by the official OGD catalog. This is evidence to
-# inspect, not a template from which a resource UUID may be constructed.
 CATALOG_RESOURCE_LIST = (
     "https://www.data.gov.in/catalog/hospital-directory-national-health-portal"
     "?filters%5Bfield_catalog_reference%5D=323881&format=json&limit=6&offset=0"
@@ -30,6 +28,11 @@ CATALOG_RESOURCE_LIST = (
 )
 USER_AGENT = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0 Safari/537.36"
 UUID_RE = re.compile(r"\b[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-5][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}\b")
+RESOURCE_URL_UUID_RE = re.compile(
+    r"(?:api\.data\.gov\.in/resource/|data\.gov\.in/(?:resource|resources)/)([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-5][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12})",
+    re.IGNORECASE,
+)
+CATALOG_ID = "e48a8bcf-ff56-4f39-839d-095827ba2a18"
 
 TARGETS = {
     "OGD_NIN_HEALTH_FACILITIES_GEO_2026": {
@@ -72,18 +75,28 @@ def _fetch(session: requests.Session, url: str) -> dict[str, Any]:
 def _uuid_contexts(text: str) -> list[dict[str, str]]:
     contexts: list[dict[str, str]] = []
     for match in UUID_RE.finditer(text):
-        start = max(0, match.start() - 300)
-        end = min(len(text), match.end() + 300)
+        start = max(0, match.start() - 500)
+        end = min(len(text), match.end() + 500)
         contexts.append({"uuid": match.group(0).lower(), "context": text[start:end]})
     return contexts
+
+
+def _explicit_resource_url_uuids(text: str) -> list[str]:
+    return sorted({m.group(1).lower() for m in RESOURCE_URL_UUID_RE.finditer(text) if m.group(1).lower() != CATALOG_ID})
 
 
 def _is_tied_to_target(context: str, target: dict[str, Any]) -> bool:
     c = context.casefold()
     slug = target["slug"].casefold()
     title_tokens = [t for t in re.split(r"[^a-z0-9]+", target["title"].casefold()) if len(t) >= 5]
-    # Require strong explicit target evidence in the same local authoritative context.
     return slug in c or sum(token in c for token in title_tokens) >= max(4, len(title_tokens) // 2)
+
+
+def _is_target_page(page: dict[str, Any], target: dict[str, Any]) -> bool:
+    requested = str(page.get("requested_url", "")).rstrip("/").casefold()
+    final = str(page.get("final_url", "")).rstrip("/").casefold()
+    target_urls = {str(u).rstrip("/").casefold() for u in target["resource_urls"]}
+    return requested in target_urls or final in target_urls
 
 
 def resolve(output_dir: Path) -> dict[str, Any]:
@@ -105,15 +118,30 @@ def resolve(output_dir: Path) -> dict[str, Any]:
             text = page.get("text")
             if not text:
                 continue
+
+            # Strongest evidence path: an explicit machine resource URL embedded in
+            # the canonical authoritative page for this exact registered target.
+            if _is_target_page(page, target):
+                for resource_id in _explicit_resource_url_uuids(text):
+                    candidates.setdefault(resource_id, []).append({
+                        "evidence_url": page.get("final_url", page["requested_url"]),
+                        "evidence_type": "explicit_machine_resource_url_on_canonical_target_page",
+                        "context": f"authoritative canonical target page explicitly contains machine resource URL for {resource_id}",
+                    })
+
+            # Secondary evidence path: UUID appears in authoritative content with
+            # strong local title/slug context. This remains fail-closed if multiple
+            # candidates survive.
             for item in _uuid_contexts(text):
-                if item["uuid"] == "e48a8bcf-ff56-4f39-839d-095827ba2a18":
-                    # Verified catalog API identity; explicitly not a resource UUID.
+                if item["uuid"] == CATALOG_ID:
                     continue
                 if _is_tied_to_target(item["context"], target):
                     candidates.setdefault(item["uuid"], []).append({
                         "evidence_url": page.get("final_url", page["requested_url"]),
+                        "evidence_type": "uuid_with_strong_local_target_context",
                         "context": item["context"],
                     })
+
         if len(candidates) == 1:
             resource_id, evidence = next(iter(candidates.items()))
             results[source_id] = {
@@ -135,10 +163,7 @@ def resolve(output_dir: Path) -> dict[str, Any]:
                 "publication_allowed": False,
             }
 
-    public_fetch = []
-    for page in fetched:
-        public_fetch.append({k: v for k, v in page.items() if k != "text"})
-
+    public_fetch = [{k: v for k, v in page.items() if k != "text"} for page in fetched]
     report = {
         "contract": "JLA_OGD_RESOURCE_IDENTITY_RESOLUTION_V1",
         "resolved_at_utc": datetime.now(timezone.utc).isoformat(),
@@ -147,6 +172,7 @@ def resolve(output_dir: Path) -> dict[str, Any]:
         "rules": [
             "never_construct_resource_uuid_from_title_or_slug",
             "accept_only_explicit_identifier_tied_to_target_in_authoritative_content",
+            "canonical_target_page_may_supply_explicit_machine_resource_url_evidence",
             "catalog_api_identifier_is_not_resource_identifier",
             "identity_resolution_does_not_mean_payload_acquisition_or_publication",
         ],
