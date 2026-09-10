@@ -20,7 +20,7 @@ def load_coverage():
 
 def test_health_resource_identity_registry_is_transition_safe_and_fail_closed():
     data = load_registry()
-    assert data["registry_id"] == "JLA_HEALTH_RESOURCE_IDENTITY_V1"
+    assert data["registry_id"] == "JLA_HEALTH_RESOURCE_IDENTITY_V2"
     assert len(data["resources"]) >= 2
     allowed_states = set(data["state_contract"])
 
@@ -34,6 +34,17 @@ def test_health_resource_identity_registry_is_transition_safe_and_fail_closed():
             assert resource["machine_payload_url"] is None
             assert resource["identity_evidence_url"] is None
             assert resource["identity_verified_at"] is None
+            assert resource["raw_payload_acquired"] is False
+            assert resource["raw_sha256"] is None
+            assert resource["raw_bytes"] is None
+            assert resource["schema_inspected"] is False
+            assert resource["publication_allowed"] is False
+
+        if state == "unresolved_after_authoritative_probe":
+            assert resource["machine_resource_id"] is None
+            assert resource["machine_payload_url"] is None
+            assert resource["identity_evidence_url"].startswith("https://www.data.gov.in/")
+            assert resource["identity_verified_at"]
             assert resource["raw_payload_acquired"] is False
             assert resource["raw_sha256"] is None
             assert resource["raw_bytes"] is None
@@ -86,6 +97,7 @@ def test_registry_forbids_guessing_machine_identifiers():
     assert "catalog_api_identity_is_not_resource_payload_identity" in rules
     assert "catalog_data_api_button_does_not_establish_api_identifier" in rules
     assert "never_construct_resource_uuid_from_title_or_slug" in rules
+    assert "never_construct_download_url_from_title_or_slug" in rules
     assert "never_construct_api_endpoint_without_authoritative_identifier" in rules
     assert "machine_identity_requires_authoritative_evidence_url_and_verification_timestamp" in rules
     assert "successful_byte_retrieval_and_hash_are_required_before_acquired_status" in rules
