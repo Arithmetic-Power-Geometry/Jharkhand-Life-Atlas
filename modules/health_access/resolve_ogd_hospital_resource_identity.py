@@ -173,6 +173,63 @@ def _is_tied_to_target(context: str, target: dict[str, Any]) -> bool:
     return slug in c or sum(token in c for token in title_tokens) >= max(4, len(title_tokens) // 2)
 
 
+def _structured_target_candidates(text: str, target: dict[str, Any]) -> list[dict[str, str]]:
+    """Extract explicit IDs/URLs only from JSON objects that identify the target.
+
+    This closes a gap where an authoritative catalog endpoint returns structured JSON
+    rather than HTML.  The function never derives an ID from a title: a candidate is
+    accepted only when the same JSON object both identifies the target and contains an
+    explicit resource UUID, official machine-resource URL, or official payload URL.
+    Parent objects are not allowed to donate IDs to child records, preventing cross-row
+    association inside resource arrays.
+    """
+    try:
+        root = json.loads(text)
+    except (json.JSONDecodeError, TypeError):
+        return []
+
+    found: list[dict[str, str]] = []
+
+    def walk(node: Any) -> None:
+        if isinstance(node, dict):
+            scalar_parts = [str(v) for v in node.values() if isinstance(v, (str, int, float))]
+            scalar_text = " ".join(scalar_parts)
+            if _is_tied_to_target(scalar_text, target):
+                explicit_ids = set(_explicit_resource_url_uuids(scalar_text))
+                payload_urls = set(_explicit_official_payload_urls(scalar_text))
+                for key, value in node.items():
+                    if not isinstance(value, str):
+                        continue
+                    key_cf = str(key).casefold()
+                    value_cf = value.strip().casefold()
+                    if key_cf in {"resource_id", "resource_uuid", "uuid"} and UUID_RE.fullmatch(value.strip()):
+                        candidate = value_cf
+                        if candidate != CATALOG_ID:
+                            explicit_ids.add(candidate)
+                for resource_id in sorted(explicit_ids):
+                    found.append({
+                        "kind": "resource_id",
+                        "value": resource_id,
+                        "evidence_type": "explicit_machine_resource_id_in_target_bound_authoritative_json_object",
+                    })
+                for payload_url in sorted(payload_urls):
+                    found.append({
+                        "kind": "payload_url",
+                        "value": payload_url,
+                        "evidence_type": "explicit_official_payload_url_in_target_bound_authoritative_json_object",
+                    })
+            for child in node.values():
+                if isinstance(child, (dict, list)):
+                    walk(child)
+        elif isinstance(node, list):
+            for child in node:
+                walk(child)
+
+    walk(root)
+    unique = {(item["kind"], item["value"], item["evidence_type"]): item for item in found}
+    return [unique[key] for key in sorted(unique)]
+
+
 def _is_target_page(page: dict[str, Any], target: dict[str, Any]) -> bool:
     requested = str(page.get("requested_url", "")).rstrip("/").casefold()
     final = str(page.get("final_url", "")).rstrip("/").casefold()
@@ -200,9 +257,20 @@ def resolve(output_dir: Path) -> dict[str, Any]:
             text = page.get("text")
             if not text:
                 continue
+            evidence_url = page.get("final_url", page["requested_url"])
+
+            for item in _structured_target_candidates(text, target):
+                evidence = {
+                    "evidence_url": evidence_url,
+                    "evidence_type": item["evidence_type"],
+                    "context": "target and explicit machine identity occur in the same authoritative JSON object",
+                }
+                if item["kind"] == "resource_id":
+                    candidates.setdefault(item["value"], []).append(evidence)
+                elif item["kind"] == "payload_url":
+                    direct_payloads.setdefault(item["value"], []).append(evidence)
 
             if _is_target_page(page, target):
-                evidence_url = page.get("final_url", page["requested_url"])
                 for resource_id in _explicit_resource_url_uuids(text):
                     candidates.setdefault(resource_id, []).append({
                         "evidence_url": evidence_url,
@@ -223,7 +291,7 @@ def resolve(output_dir: Path) -> dict[str, Any]:
                     continue
                 if _is_tied_to_target(item["context"], target):
                     candidates.setdefault(item["uuid"], []).append({
-                        "evidence_url": page.get("final_url", page["requested_url"]),
+                        "evidence_url": evidence_url,
                         "evidence_type": "uuid_with_strong_local_target_context",
                         "context": item["context"],
                     })
@@ -269,7 +337,7 @@ def resolve(output_dir: Path) -> dict[str, Any]:
 
     public_fetch = [{k: v for k, v in page.items() if k != "text"} for page in fetched]
     report = {
-        "contract": "JLA_OGD_RESOURCE_IDENTITY_RESOLUTION_V3",
+        "contract": "JLA_OGD_RESOURCE_IDENTITY_RESOLUTION_V4",
         "resolved_at_utc": datetime.now(timezone.utc).isoformat(),
         "catalog_api_control": CATALOG_API_CONTROL,
         "catalog_resource_list": CATALOG_RESOURCE_LIST,
@@ -279,6 +347,8 @@ def resolve(output_dir: Path) -> dict[str, Any]:
             "decode_only_representation_level_web_escapes_observed_in_authoritative_content",
             "probe_both_singular_and_plural_canonical_ogd_resource_surfaces",
             "accept_only_explicit_identifier_tied_to_target_in_authoritative_content",
+            "structured_json_candidates_require_target_and_explicit_identity_in_same_object",
+            "structured_json_parent_objects_cannot_donate_identity_to_child_resource_records",
             "accept_absolute_or_root_relative_payload_url_only_when_literal_on_canonical_target_page",
             "relative_payload_resolution_supplies_origin_only_and_never_synthesizes_path_id_filename_or_query",
             "canonical_target_page_may_supply_explicit_machine_resource_url_evidence",
