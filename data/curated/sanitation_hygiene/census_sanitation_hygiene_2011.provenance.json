@@ -1,0 +1,42 @@
+{
+  "blank_counts": {
+    "closed_drainage_status_a_1_na_2": 3030,
+    "community_toilet_complex_excluding_bath_for_general_public_status_a_1_na_2": 3043,
+    "community_toilet_complex_including_bath_for_general_public_status_a_1_na_2": 3042,
+    "is_the_area_covered_under_total_sanitation_campaign_tsc_status_a_1_na_2": 3042,
+    "no_drainage_status_a_1_na_2": 3029,
+    "no_system_garbage_on_road_street_status_a_1_na_2": 3052,
+    "open_drainage_status_a_1_na_2": 3032,
+    "open_kuccha_drainage_status_a_1_na_2": 3036,
+    "open_pucca_drainage_covered_with_tiles_slabs_status_a_1_na_2": 3036,
+    "open_pucca_drainage_uncovered_status_a_1_na_2": 3039,
+    "whether_drain_water_is_discharged_directly_into_water_bodies_or_to_sewar_plant_for_water_bodies_1_sewar_plants_2": 3043
+  },
+  "derivation_rule": "direct reviewed field projection only; no imputation, aggregation, semantic recoding, or current-status inference",
+  "geography_rule": "Census 2011 source-native geography only; no current-geography equivalence inferred",
+  "missing_rule": "source missing values preserved as empty/null representation; never converted to zero",
+  "module": "sanitation_hygiene",
+  "output": "data/curated/sanitation_hygiene/census_sanitation_hygiene_2011.csv",
+  "output_sha256": "f8ebd0433426c76f5a8304049fb982f7408e1e8ab0440f9d0739682a50369e53",
+  "reference_year": 2011,
+  "row_count": 32394,
+  "schema_inventory": "modules/core_geography/amenity_domain_field_inventory.json",
+  "schema_inventory_source_sha256": "d1e49a0ca337dedd6076e7071adce92574d0c48ae9e78b52c7cb7335424006c4",
+  "source": "data/curated/core_geography/village_amenities_2011.csv",
+  "source_sha256": "d1e49a0ca337dedd6076e7071adce92574d0c48ae9e78b52c7cb7335424006c4",
+  "status": "validated_source_native_historical_extract",
+  "thematic_field_count": 11,
+  "thematic_fields": [
+    "closed_drainage_status_a_1_na_2",
+    "open_drainage_status_a_1_na_2",
+    "no_drainage_status_a_1_na_2",
+    "open_pucca_drainage_covered_with_tiles_slabs_status_a_1_na_2",
+    "open_pucca_drainage_uncovered_status_a_1_na_2",
+    "open_kuccha_drainage_status_a_1_na_2",
+    "whether_drain_water_is_discharged_directly_into_water_bodies_or_to_sewar_plant_for_water_bodies_1_sewar_plants_2",
+    "is_the_area_covered_under_total_sanitation_campaign_tsc_status_a_1_na_2",
+    "community_toilet_complex_including_bath_for_general_public_status_a_1_na_2",
+    "community_toilet_complex_excluding_bath_for_general_public_status_a_1_na_2",
+    "no_system_garbage_on_road_street_status_a_1_na_2"
+  ]
+}
