@@ -1,5 +1,5 @@
 module_id: health_access
-registry_id: JLA_HEALTH_RESOURCE_IDENTITY_V1
+registry_id: JLA_HEALTH_RESOURCE_IDENTITY_V2
 purpose: >-
   Record canonical authoritative resource-page identities separately from catalog API
   identity and machine payload identities so stable official metadata can be verified
@@ -13,8 +13,8 @@ catalog_evidence:
   catalog_api_verified_on: '2026-09-08'
   catalog_api_payload_retrieved: false
   catalog_api_retrieval_note: >-
-    The official Catalog API link resolves this identifier, but retrieval timed out in
-    the verification environment. This is catalog-level identity only and is not a
+    The official Catalog API link resolves this identifier. A later controlled probe on
+    2026-09-10 retrieved the HTML shell at this URL, but it still did not establish a
     resource UUID, resource Data API endpoint, or raw-data acquisition.
 
 rights_evidence:
@@ -42,6 +42,51 @@ rights_evidence:
     must not publish person-level or otherwise excluded data merely because catalog
     metadata is public.
 
+verified_identity_probe:
+  probed_at_utc: '2026-09-10T12:53:11Z'
+  workflow_head: b81289d58d76c24cb4948b985476802d5f82a097
+  workflow_result: success
+  resolver_contract: JLA_OGD_RESOURCE_IDENTITY_RESOLUTION_V2
+  authoritative_fetches:
+    - url: https://www.data.gov.in/catalog/hospital-directory-national-health-portal
+      status_code: 200
+      content_type: text/html; charset=utf-8
+      byte_count: 1021621
+      sha256: 198ee2cf3b6a8421426eac9de4971026f159eede3df158dc5e3bcfd03aa8fa9e
+    - url: https://www.data.gov.in/catalog/hospital-directory-national-health-portal?filters%5Bfield_catalog_reference%5D=323881&format=json&limit=6&offset=0&sort%5Bcreated%5D=desc
+      status_code: 200
+      content_type: text/html; charset=utf-8
+      byte_count: 1021578
+      sha256: 8d7f86b06f2d171e8509a103af659a470cd565e3b864d19bc46706a6de89f692
+    - url: https://www.data.gov.in/apis/e48a8bcf-ff56-4f39-839d-095827ba2a18
+      status_code: 200
+      content_type: text/html; charset=utf-8
+      byte_count: 995962
+      sha256: fb207711b30c5d5b0dbaea56b831cdc95112d347ad8ea19aa4fedb6496da0951
+    - url: https://www.data.gov.in/resource/nin-health-faclities-geo-code-and-additional-parameters-updated-till-last-month
+      status_code: 200
+      content_type: text/html; charset=utf-8
+      byte_count: 999415
+      sha256: 09af62d2bdb1380d37c81c2e1e8a6d66b9e3d95932497a499d6742fb3e80fc4a
+    - url: https://www.data.gov.in/resource/national-hospital-directory-geo-code-and-additional-parameters-updated-till-last-month
+      status_code: 200
+      content_type: text/html; charset=utf-8
+      byte_count: 1000421
+      sha256: 7104026cc200324d2c0345a182b60c8e2140c71830afbfa1c443c58e4fa1550a
+  result:
+    nin_health_facilities_machine_resource_id: null
+    nin_health_facilities_direct_payload_url: null
+    national_hospital_machine_resource_id: null
+    national_hospital_direct_payload_url: null
+    raw_payload_acquired: false
+    schema_inspected: false
+    publication_allowed: false
+  interpretation: >-
+    This is immutable evidence about what the controlled resolver observed from the
+    authoritative OGD surfaces at this retrieval time. It is not the thematic payload.
+    No resource identifier or direct download URL may be guessed from a title, slug,
+    catalog identifier, HTML structure, mirror, or downstream copy.
+
 resources:
   - source_id: OGD_NIN_HEALTH_FACILITIES_GEO_2026
     catalog_url: https://data.gov.in/catalog/hospital-directory-national-health-portal
@@ -53,11 +98,11 @@ resources:
     catalog_offers_data_api: true
     catalog_offers_csv_through_url: true
     resource_page_identity_state: canonical_slug_independently_corroborated
-    machine_payload_identity_state: unresolved
+    machine_payload_identity_state: unresolved_verified_2026_09_10
     machine_resource_id: null
     machine_payload_url: null
     identity_evidence_url: null
-    identity_verified_at: null
+    identity_verified_at: '2026-09-10T12:53:11Z'
     raw_payload_acquired: false
     raw_sha256: null
     raw_bytes: null
@@ -65,6 +110,7 @@ resources:
     publication_allowed: false
     evidence_notes:
       - Official OGD catalog currently enumerates this titled resource and reports an 11 August 2026 update.
+      - A controlled authoritative-page probe on 2026-09-10 found no explicit resource UUID or direct payload URL admissible under the resolver contract.
       - The canonical data.gov.in resource slug is independently referenced by long-lived downstream provenance records, but no current raw/API endpoint identifier has been established in JLA.
       - The catalog API identifier recorded above is not this resource's machine identifier.
 
@@ -78,11 +124,11 @@ resources:
     catalog_offers_data_api: true
     catalog_offers_csv: true
     resource_page_identity_state: official_resource_page_resolved
-    machine_payload_identity_state: unresolved
+    machine_payload_identity_state: unresolved_verified_2026_09_10
     machine_resource_id: null
     machine_payload_url: null
     identity_evidence_url: null
-    identity_verified_at: null
+    identity_verified_at: '2026-09-10T12:53:11Z'
     raw_payload_acquired: false
     raw_sha256: null
     raw_bytes: null
@@ -90,6 +136,7 @@ resources:
     publication_allowed: false
     evidence_notes:
       - Official OGD resource page resolves for this canonical slug.
+      - A controlled authoritative-page probe on 2026-09-10 found no explicit resource UUID or direct payload URL admissible under the resolver contract.
       - Live catalog metadata reports an 11 August 2026 update while an indexed resource-page snapshot can show an older date; JLA does not use either metadata view as a substitute for payload identity.
       - The catalog API identifier recorded above is not this resource's machine identifier.
 
@@ -112,6 +159,7 @@ rules:
   - catalog_api_identity_is_not_resource_payload_identity
   - catalog_data_api_button_does_not_establish_api_identifier
   - never_construct_resource_uuid_from_title_or_slug
+  - never_construct_download_url_from_title_or_slug
   - never_construct_api_endpoint_without_authoritative_identifier
   - downstream_references_can_corroborate_slug_identity_but_not_payload_currency
   - machine_identity_requires_authoritative_evidence_url_and_verification_timestamp
