@@ -58,9 +58,10 @@ jobs:
               'live_resource_access': {
                   'xls_download_advertised': True,
                   'preview_advertised': True,
-                  'data_api_available': False,
+                  'data_api_advertised': True,
+                  'exact_data_api_identity_verified': False,
               },
-              'resolution_rule': 'Retry only the authoritative OGD XLS payload/download path; the live resource page states that no Data API exists. Do not substitute mirrors or infer payload identity.',
+              'resolution_rule': 'Retry only authoritative OGD delivery paths. The live OGD listing advertises XLS/download, preview and Data API access, but JLA must verify the exact resource/API identity before using an API fallback. Do not substitute mirrors or infer payload identity.',
               'workflow_log': log_path.name,
           }
           (out / 'acquisition_blocker.json').write_text(json.dumps(payload, indent=2), encoding='utf-8')
@@ -96,7 +97,8 @@ jobs:
           assert r['observed_schema_available'] is False
           assert r['publication_allowed'] is False
           assert r['missing_values_may_be_converted_to_zero'] is False
-          assert r['live_resource_access']['data_api_available'] is False
+          assert r['live_resource_access']['data_api_advertised'] is True
+          assert r['live_resource_access']['exact_data_api_identity_verified'] is False
           print(json.dumps(r, indent=2))
           PY
       - name: Upload governed acquisition evidence
