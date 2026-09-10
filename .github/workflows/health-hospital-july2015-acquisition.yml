@@ -1,0 +1,56 @@
+name: health-hospital-july2015-acquisition
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'modules/health_access/acquire_ogd_hospital_july2015.py'
+      - '.github/workflows/health-hospital-july2015-acquisition.yml'
+  workflow_dispatch:
+  schedule:
+    - cron: '23 */6 * * *'
+
+permissions:
+  contents: read
+
+jobs:
+  acquire-official-resource:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install dependency
+        run: python -m pip install --disable-pip-version-check requests
+      - name: Acquire only explicit official OGD payload
+        run: |
+          mkdir -p build/health_hospital_july2015
+          python modules/health_access/acquire_ogd_hospital_july2015.py --output-dir build/health_hospital_july2015 | tee build/health_hospital_july2015/run.log
+      - name: Enforce fail-closed publication semantics
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p = Path('build/health_hospital_july2015/hospital_directory_july2015_acquisition.json')
+          r = json.loads(p.read_text(encoding='utf-8'))
+          assert r['contract'] == 'JLA_HEALTH_OFFICIAL_PAYLOAD_ACQUISITION_V1'
+          assert r['publication_allowed'] is False
+          assert 'never_guess_resource_uuid_or_download_url' in r['rules']
+          if r['raw_payload_acquired']:
+              assert r['raw_sha256'] and len(r['raw_sha256']) == 64
+              assert r['raw_byte_count'] > 0
+              assert r['raw_payload_url'].startswith(('https://data.gov.in/', 'https://www.data.gov.in/', 'https://api.data.gov.in/'))
+          else:
+              assert r.get('blocker')
+          print(json.dumps({k: r.get(k) for k in ('source_id','raw_payload_acquired','raw_sha256','raw_byte_count','observed_format','observed_schema','blocker')}, indent=2))
+          PY
+      - name: Upload immutable acquisition evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: health-hospital-july2015-${{ github.run_id }}
+          path: build/health_hospital_july2015/
+          if-no-files-found: error
+          retention-days: 90
