@@ -98,10 +98,10 @@ resources:
     catalog_offers_data_api: true
     catalog_offers_csv_through_url: true
     resource_page_identity_state: canonical_slug_independently_corroborated
-    machine_payload_identity_state: unresolved_verified_2026_09_10
+    machine_payload_identity_state: unresolved_after_authoritative_probe
     machine_resource_id: null
     machine_payload_url: null
-    identity_evidence_url: null
+    identity_evidence_url: https://www.data.gov.in/resource/nin-health-faclities-geo-code-and-additional-parameters-updated-till-last-month
     identity_verified_at: '2026-09-10T12:53:11Z'
     raw_payload_acquired: false
     raw_sha256: null
@@ -124,10 +124,10 @@ resources:
     catalog_offers_data_api: true
     catalog_offers_csv: true
     resource_page_identity_state: official_resource_page_resolved
-    machine_payload_identity_state: unresolved_verified_2026_09_10
+    machine_payload_identity_state: unresolved_after_authoritative_probe
     machine_resource_id: null
     machine_payload_url: null
-    identity_evidence_url: null
+    identity_evidence_url: https://www.data.gov.in/resource/national-hospital-directory-geo-code-and-additional-parameters-updated-till-last-month
     identity_verified_at: '2026-09-10T12:53:11Z'
     raw_payload_acquired: false
     raw_sha256: null
@@ -143,14 +143,22 @@ resources:
 state_contract:
   unresolved:
     requires_machine_identity: false
+    requires_probe_evidence: false
+    raw_payload_acquired: false
+    publication_allowed: false
+  unresolved_after_authoritative_probe:
+    requires_machine_identity: false
+    requires_probe_evidence: true
     raw_payload_acquired: false
     publication_allowed: false
   resolved_unretrieved:
     requires_machine_identity: true
+    requires_probe_evidence: true
     raw_payload_acquired: false
     publication_allowed: false
   acquired_verified:
     requires_machine_identity: true
+    requires_probe_evidence: true
     raw_payload_acquired: true
     publication_allowed_requires_source_snapshot_gate: true
 
