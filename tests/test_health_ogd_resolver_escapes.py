@@ -1,6 +1,7 @@
 from modules.health_access.resolve_ogd_hospital_resource_identity import (
     TARGETS,
     _explicit_official_payload_urls,
+    _explicit_relative_official_payload_urls,
     _explicit_resource_url_uuids,
     _is_target_page,
 )
@@ -40,6 +41,27 @@ def test_catalog_uuid_is_still_excluded_after_escape_normalization():
         f'\\u002Fresource\\u002F{catalog_id}"}}'
     )
     assert _explicit_resource_url_uuids(text) == []
+
+
+def test_relative_csv_link_is_resolved_only_from_official_page_origin():
+    text = '<a href="/sites/default/files/hospital_directory.csv">Download</a>'
+    assert _explicit_relative_official_payload_urls(
+        text,
+        "https://www.data.gov.in/resources/hospital-directory",
+    ) == ["https://www.data.gov.in/sites/default/files/hospital_directory.csv"]
+
+
+def test_relative_api_link_is_not_promoted_on_non_official_origin():
+    text = '<a href="/resource/123e4567-e89b-42d3-a456-426614174000?format=json">API</a>'
+    assert _explicit_relative_official_payload_urls(text, "https://example.org/page") == []
+
+
+def test_relative_navigation_link_is_not_mistaken_for_payload():
+    text = '<a href="/resource/not-a-payload">Preview</a>'
+    assert _explicit_relative_official_payload_urls(
+        text,
+        "https://www.data.gov.in/resources/hospital-directory",
+    ) == []
 
 
 def test_plural_resources_surface_is_canonical_target_evidence():
