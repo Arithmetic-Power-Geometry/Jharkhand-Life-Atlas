@@ -1,0 +1,66 @@
+name: health-hmis-pakur-2019-20-acquisition
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'modules/health_access/acquire_ogd_hmis_pakur_2019_20_november.py'
+      - '.github/workflows/health-hmis-pakur-2019-20-acquisition.yml'
+  workflow_dispatch:
+  schedule:
+    - cron: '17 */6 * * *'
+
+permissions:
+  contents: read
+
+jobs:
+  acquire-official-resource:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install dependency
+        run: python -m pip install --disable-pip-version-check requests
+      - name: Acquire exact official Pakur HMIS resource
+        run: |
+          mkdir -p build/health_hmis_pakur_2019_20_november
+          python modules/health_access/acquire_ogd_hmis_pakur_2019_20_november.py --output-dir build/health_hmis_pakur_2019_20_november | tee build/health_hmis_pakur_2019_20_november/run.log
+      - name: Enforce fail-closed evidence contract
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p = Path('build/health_hmis_pakur_2019_20_november/hmis_pakur_2019_20_november_acquisition.json')
+          r = json.loads(p.read_text(encoding='utf-8'))
+          assert r['contract'] == 'JLA_HEALTH_HMIS_PAKUR_OFFICIAL_PAYLOAD_ACQUISITION_V1'
+          assert r['publication_allowed'] is False
+          meta = r['authoritative_resource_metadata']
+          assert meta['resource_api_state'] == 'does_not_exist'
+          assert meta['advertised_format'] == 'csv'
+          assert meta['reference_period'] == '2019-20_november'
+          assert meta['provisional_figures'] is True
+          assert meta['expected_columns'] == ['Indicator', 'S.No.', 'Parameters', 'Type', 'SubDistrict - _Pakur - Total [(A+B) or (C+D)]']
+          assert 'preserve_missing_as_null' in r['rules']
+          assert 'subdistrict_aggregates_never_allocated_to_villages_facilities_or_persons' in r['rules']
+          assert 'aggregation_semantics_must_be_preserved' in r['rules']
+          if r['raw_payload_acquired']:
+              assert r['raw_sha256'] and len(r['raw_sha256']) == 64
+              assert r['raw_byte_count'] > 0
+              assert r['raw_payload_url'].startswith(('https://data.gov.in/', 'https://www.data.gov.in/', 'https://api.data.gov.in/'))
+              assert isinstance(r['observed_schema'], list) and len(r['observed_schema']) >= 5
+              assert r['authoritative_schema_fields_verified'] == meta['expected_columns']
+          else:
+              assert r.get('blocker')
+          print(json.dumps({k: r.get(k) for k in ('source_id','raw_payload_acquired','raw_sha256','raw_byte_count','observed_schema','blocker')}, indent=2))
+          PY
+      - name: Upload immutable acquisition evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: health-hmis-pakur-2019-20-${{ github.run_id }}
+          path: build/health_hmis_pakur_2019_20_november/
+          if-no-files-found: error
+          retention-days: 90
