@@ -54,7 +54,14 @@ def test_current_gate_records_real_education_publication_gaps():
         "geographic_linkage",
         "schema",
         "indicators",
-        "streamlit_presentation",
         "downloadable_data_reports",
     ]:
         assert gate[key]["satisfied"] is False
+
+    # Historical Census-2011 evidence is legitimately presented in Streamlit,
+    # but that partial presentation must never imply current UDISE+ completion.
+    assert gate["streamlit_presentation"]["satisfied"] is True
+    streamlit_evidence = gate["streamlit_presentation"]["evidence"].lower()
+    assert "census 2011" in streamlit_evidence
+    assert "historical" in streamlit_evidence
+    assert "udise+" in streamlit_evidence
