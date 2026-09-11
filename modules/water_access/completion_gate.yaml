@@ -1,47 +1,56 @@
 module: water_access
 protocol_version: 1
 status: open
+verified_partial_evidence:
+  historical_census_2011:
+    status: validated_source_native_historical_extract
+    data: data/curated/water_access/census_water_access_2011.csv
+    provenance: data/curated/water_access/census_water_access_2011.provenance.json
+    row_count: 32394
+    thematic_field_count: 27
+    reference_year: 2011
+    rule: "Direct reviewed source-native projection only; preserve missing as null/blank representation and do not infer current JJM coverage or current-geography equivalence."
 criteria:
   authoritative_acquisition:
     satisfied: false
-    evidence: "Official JJM/OGD source discovery is verified, but no selected Jharkhand production payload has yet been acquired and hash/schema verified."
+    evidence: "Validated Census 2011 village water evidence exists, but the selected current JJM/OGD production payload has not yet been acquired and hash/schema verified."
   rights_licence_review:
     satisfied: false
-    evidence: "NDSAP/GODL-India applicability is identified for OGD resources, but exact resource-level licence/attribution metadata and any JJM portal export terms must be verified before reuse."
+    evidence: "The historical Census extract follows JLA's conservative derived-use policy. NDSAP/GODL-India applicability is identified for OGD resources, but exact current resource-level licence/attribution metadata and any JJM portal export terms still require verification before reuse."
   smallest_authoritative_reusable_granularity:
     satisfied: false
-    evidence: "Village/habitation-level evidence is described by official sources, but the smallest lawful reusable production payload has not yet been acquired."
+    evidence: "Village-level historical evidence is published at source-native grain; the smallest lawful reusable current JJM/OGD production payload remains pending acquisition."
   cleaning_engineering:
     satisfied: false
-    evidence: "No production water payload has yet been ingested; cleaning rules must preserve nulls and source semantics."
+    evidence: "The Census 2011 Water extract is a validated direct projection with missingness preserved. Current production water payload processing remains pending."
   geographic_linkage:
     satisfied: false
-    evidence: "Current JJM geography must be linked through evidence-backed identifiers/crosswalks to the shared geographic backbone; historical and current geography cannot be silently merged."
+    evidence: "The historical extract remains explicitly on Census 2011 source-native geography. Current JJM geography must be linked through evidence-backed identifiers/crosswalks; historical and current geography cannot be silently merged."
   provenance:
     satisfied: false
-    evidence: "Source registry exists, but production retrieval URL/API parameters, retrieval timestamp, payload hash and transformation lineage are pending."
+    evidence: "The validated Census 2011 Water extract records source/output SHA-256 provenance. Current production retrieval URL/API parameters, retrieval timestamp, payload hash and transformation lineage remain pending."
   schema:
     satisfied: false
-    evidence: "Module contract exists, but a production schema grounded in acquired source fields has not yet been finalized."
+    evidence: "Historical source-native field selection is recorded in provenance, but the current production schema must be finalized from an actually acquired JJM/OGD payload."
   indicators:
     satisfied: false
-    evidence: "No Module 3 indicator may be published until source acquisition, geography and denominator semantics are verified."
+    evidence: "Historical source fields are available without unsupported recoding. No current Module 3 indicator may be published until source acquisition, geography and denominator semantics are verified."
   validation:
     satisfied: false
-    evidence: "Production validation cannot pass before authoritative payload ingestion and linkage."
+    evidence: "The Census 2011 Water extract has validated row/field counts, hashes and provenance semantics. Full Module 3 validation remains open because current production outputs do not yet satisfy the publication gate."
   tests:
     satisfied: false
-    evidence: "Module-specific publication-gate tests are being established; ingestion and indicator tests remain pending."
+    evidence: "Historical-extract and governance validation exists, but completion still requires production ingestion, geographic-linkage and indicator tests on the final exact main head."
   streamlit_presentation:
-    satisfied: false
-    evidence: "Streamlit may show IN DEVELOPMENT metadata only; no unfinished water evidence may be presented as a published dataset."
+    satisfied: true
+    evidence: "Streamlit Research exposes the validated Census 2011 Water dataset only when its provenance status, reference year, output path and hashes pass the historical-evidence gate, and labels it as historical rather than current JJM coverage."
   downloadable_data_reports:
     satisfied: false
-    evidence: "No Module 3 research-ready download/report exists yet."
+    evidence: "A provenance-gated historical Water CSV download exists. A complete research-ready report set and validated current/differently dated Water outputs remain pending."
   documentation:
     satisfied: false
-    evidence: "Source inventory and module contract exist; schema, methods, provenance and usage documentation remain incomplete."
+    evidence: "Source inventory, module contract and historical provenance exist; complete current-source methods, schema, validation and usage documentation remain open."
   green_ci_on_main:
     satisfied: false
-    evidence: "Final module completion requires a verified green CI run on the exact main commit that satisfies every publication criterion."
+    evidence: "Final module completion requires verified green CI on the exact main commit satisfying every publication criterion."
 completion_rule: "status may become complete only when every criterion is satisfied and final CI is green on main."
