@@ -46,7 +46,7 @@ jobs:
           from pathlib import Path
           p = Path('build/health_hmis_quarterly/acquisition_receipt.json')
           r = json.loads(p.read_text(encoding='utf-8'))
-          assert r['contract'] == 'JLA_SOURCE_PROBE_V1'
+          assert r['contract'] == 'JLA_SOURCE_PROBE_V2'
           assert r['source_id'] == 'OGD_HMIS_QUARTERLY_FACILITY_EXTREMES_2026'
           assert r['catalog_id'] == 'efc4b11e-30ca-4e02-a168-902d34c2e7a0'
           assert r['raw_control_response_acquired'] is True
@@ -54,10 +54,18 @@ jobs:
           assert len(r['sha256']) == 64
           assert r['publication_allowed'] is False
           assert r['curated_output_created'] is False
+          assert r['raw_thematic_payload_acquired'] is False
+          assert r['observed_schema_available'] is False
+          assert r['machine_resource_identity_resolved'] is False
           assert r['jharkhand_membership_inferred'] is False
           assert r['facility_completeness_inferred'] is False
           assert r['direct_geography_equivalence_allowed'] is False
           assert r['missing_values_may_be_converted_to_zero'] is False
+          assert r['observed_response_kind'] in {
+              'html_portal_shell', 'structured_json', 'opaque_non_json_non_html'
+          }
+          inv = Path('build/health_hmis_quarterly/observed_response_inventory.json')
+          assert inv.exists()
           print(json.dumps(r, indent=2))
           PY
       - name: Verify external-source blocker remains fail-closed
@@ -68,11 +76,12 @@ jobs:
           from pathlib import Path
           p = Path('build/health_hmis_quarterly/acquisition_blocker.json')
           r = json.loads(p.read_text(encoding='utf-8'))
-          assert r['contract'] == 'JLA_SOURCE_PROBE_V1'
+          assert r['contract'] == 'JLA_SOURCE_PROBE_V2'
           assert r['source_id'] == 'OGD_HMIS_QUARTERLY_FACILITY_EXTREMES_2026'
           assert r['raw_control_response_acquired'] is False
           assert r['sha256_available'] is False
           assert r['observed_schema_available'] is False
+          assert r['machine_resource_identity_resolved'] is False
           assert r['publication_allowed'] is False
           assert r['curated_output_created'] is False
           assert r['jharkhand_membership_inferred'] is False
