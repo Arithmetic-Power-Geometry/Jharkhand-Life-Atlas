@@ -84,3 +84,21 @@ def test_canonical_source_coverage_has_explicit_blocker_for_unpublished_sources(
             if row["curated_output_published"].strip().lower() == "no":
                 assert row["publication_status"].strip(), (module, row["source_id"], "missing publication status")
                 assert row["notes"].strip(), (module, row["source_id"], "missing blocker/method note")
+
+
+def test_nfhs5_live_access_contract_does_not_reinvent_an_api():
+    """Keep acquisition controls aligned with the verified live NFHS-5 resource page.
+
+    The authoritative OGD resource currently exposes an XLS download and preview
+    but explicitly states that a Data API does not exist. Future acquisition
+    engineering must therefore stay on verified authoritative export paths and
+    must not manufacture or infer an API identity from catalog metadata.
+    """
+    sources = (ROOT / "modules" / "health_access" / "sources.yaml").read_text(encoding="utf-8")
+    workflow = (ROOT / ".github" / "workflows" / "health-nfhs5-acquisition.yml").read_text(encoding="utf-8")
+
+    assert "source_id: OGD_NFHS5_DISTRICT_FACTSHEETS_2019_2021" in sources
+    assert "data_api_status: unavailable_on_live_resource_page" in sources
+    assert "'data_api_advertised': False" in workflow
+    assert "'data_api_status': 'explicitly_unavailable_on_live_resource_page'" in workflow
+    assert "synthesize an API UUID" in workflow
