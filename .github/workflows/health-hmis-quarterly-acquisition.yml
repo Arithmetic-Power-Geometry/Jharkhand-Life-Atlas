@@ -1,0 +1,91 @@
+name: health-hmis-quarterly-acquisition
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'modules/health_access/acquire_hmis_quarterly_facility_extremes.py'
+      - 'modules/health_access/sources.yaml'
+      - 'modules/health_access/source_coverage.csv'
+      - '.github/workflows/health-hmis-quarterly-acquisition.yml'
+  workflow_dispatch:
+  schedule:
+    - cron: '41 */6 * * *'
+
+permissions:
+  contents: read
+
+jobs:
+  probe-authoritative-catalog:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install acquisition dependency
+        run: python -m pip install --disable-pip-version-check requests
+      - name: Compile acquisition probe
+        run: python -m py_compile modules/health_access/acquire_hmis_quarterly_facility_extremes.py
+      - name: Probe exact authoritative OGD catalog API control
+        id: acquire
+        continue-on-error: true
+        run: |
+          mkdir -p build/health_hmis_quarterly
+          python modules/health_access/acquire_hmis_quarterly_facility_extremes.py \
+            --output-dir build/health_hmis_quarterly \
+            --timeout 45 \
+            2>&1 | tee build/health_hmis_quarterly/acquisition.log
+          exit ${PIPESTATUS[0]}
+      - name: Verify successful control snapshot remains non-publishable
+        if: steps.acquire.outcome == 'success'
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p = Path('build/health_hmis_quarterly/acquisition_receipt.json')
+          r = json.loads(p.read_text(encoding='utf-8'))
+          assert r['contract'] == 'JLA_SOURCE_PROBE_V1'
+          assert r['source_id'] == 'OGD_HMIS_QUARTERLY_FACILITY_EXTREMES_2026'
+          assert r['catalog_id'] == 'efc4b11e-30ca-4e02-a168-902d34c2e7a0'
+          assert r['raw_control_response_acquired'] is True
+          assert r['byte_count'] > 0
+          assert len(r['sha256']) == 64
+          assert r['publication_allowed'] is False
+          assert r['curated_output_created'] is False
+          assert r['jharkhand_membership_inferred'] is False
+          assert r['facility_completeness_inferred'] is False
+          assert r['direct_geography_equivalence_allowed'] is False
+          assert r['missing_values_may_be_converted_to_zero'] is False
+          print(json.dumps(r, indent=2))
+          PY
+      - name: Verify external-source blocker remains fail-closed
+        if: steps.acquire.outcome == 'failure'
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p = Path('build/health_hmis_quarterly/acquisition_blocker.json')
+          r = json.loads(p.read_text(encoding='utf-8'))
+          assert r['contract'] == 'JLA_SOURCE_PROBE_V1'
+          assert r['source_id'] == 'OGD_HMIS_QUARTERLY_FACILITY_EXTREMES_2026'
+          assert r['raw_control_response_acquired'] is False
+          assert r['sha256_available'] is False
+          assert r['observed_schema_available'] is False
+          assert r['publication_allowed'] is False
+          assert r['curated_output_created'] is False
+          assert r['jharkhand_membership_inferred'] is False
+          assert r['facility_completeness_inferred'] is False
+          assert r['direct_geography_equivalence_allowed'] is False
+          assert r['missing_values_may_be_converted_to_zero'] is False
+          print(json.dumps(r, indent=2))
+          PY
+      - name: Upload governed acquisition evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: health-hmis-quarterly-authoritative-probe-${{ github.run_id }}
+          path: build/health_hmis_quarterly/
+          if-no-files-found: error
+          retention-days: 90
