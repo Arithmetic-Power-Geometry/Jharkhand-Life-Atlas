@@ -53,5 +53,9 @@ def test_current_gate_records_real_water_publication_gaps():
     assert gate["geographic_linkage"]["satisfied"] is False
     assert gate["schema"]["satisfied"] is False
     assert gate["indicators"]["satisfied"] is False
-    assert gate["streamlit_presentation"]["satisfied"] is False
+    assert gate["streamlit_presentation"]["satisfied"] is True
+    presentation = gate["streamlit_presentation"]["evidence"].lower()
+    assert "census 2011" in presentation
+    assert "historical" in presentation
+    assert "current jjm" in presentation
     assert gate["downloadable_data_reports"]["satisfied"] is False
