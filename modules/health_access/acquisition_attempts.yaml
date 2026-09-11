@@ -173,6 +173,27 @@ attempts:
     publication_effect: none_gate_remains_closed
     next_safe_action: "Continue independent authoritative acquisition paths such as official CSV/download controls or machine-readable OGD endpoints; never synthesize a UUID from the title, slug, catalog identifier, or page content."
 
+  - attempted_utc: '2026-09-11T01:52:48Z'
+    source_id: OGD_HMIS_QUARTERLY_FACILITY_EXTREMES_2026
+    workflow_head_sha: 82a210f05a76dd1015df47e0e22edee11a71439c
+    workflow_run_id: 34552421618
+    workflow_result: success
+    artifact_name: health-hmis-quarterly-authoritative-probe-34552421618
+    artifact_digest: sha256:1cb1b38faf5eb283ee0ee97fbfd86b752e9ee444b4f1eccedee3e2cf680ff678
+    authoritative_control_url: https://www.data.gov.in/apis/e48a8bcf-ff56-4f39-839d-095827ba2a18
+    control_http_status: 200
+    control_payload_kind: text_html_catalog_shell
+    control_byte_count: 995962
+    control_sha256: e5650be3b27bfe061ab7d36f70d8b26179e50766ab6e1d8c6189d9692123acad
+    acquisition_result: authoritative_catalog_control_snapshotted_exact_thematic_resource_payload_unresolved
+    raw_payload_acquired: false
+    raw_sha256: null
+    raw_bytes: null
+    schema_inspected: false
+    publication_effect: none_gate_remains_closed
+    blocker_class: catalog_control_is_not_a_schema_bearing_thematic_payload
+    next_safe_action: "Resolve an exact authoritative resource-level payload or export before any facility-level curation. Do not infer Jharkhand membership, facility completeness, performance ranking, or machine resource identity from the catalog shell."
+
 rules:
   - catalog_metadata_is_not_raw_data
   - resource_page_metadata_is_not_raw_data
