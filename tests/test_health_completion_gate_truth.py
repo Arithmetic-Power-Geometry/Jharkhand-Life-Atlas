@@ -7,6 +7,7 @@ import yaml
 ROOT = Path(__file__).resolve().parents[1]
 GATE = ROOT / "modules" / "health_access" / "completion_gate.yaml"
 PROVENANCE = ROOT / "data" / "curated" / "health_access" / "census_health_access_2011.provenance.json"
+REPORT = ROOT / "modules" / "health_access" / "HISTORICAL_EVIDENCE_REPORT.md"
 
 
 def test_health_gate_acknowledges_validated_historical_evidence():
@@ -19,6 +20,8 @@ def test_health_gate_acknowledges_validated_historical_evidence():
     assert historical["row_count"] == provenance["row_count"] == 32394
     assert historical["health_field_count"] == provenance["health_field_count"] == 69
     assert historical["reference_year"] == provenance["reference_year"] == 2011
+    assert historical["report"] == "modules/health_access/HISTORICAL_EVIDENCE_REPORT.md"
+    assert REPORT.is_file()
 
 
 def test_health_gate_remains_fail_closed_for_full_completion():
@@ -39,4 +42,7 @@ def test_health_gate_records_streamlit_historical_download_truth():
     assert presentation["satisfied"] is True
     assert "validated Census 2011 Health dataset" in presentation["evidence"]
     assert downloads["satisfied"] is False
-    assert "historical Health CSV download exists" in downloads["evidence"]
+    evidence = downloads["evidence"]
+    assert "historical Health CSV download" in evidence
+    assert "research-ready historical evidence report" in evidence
+    assert "additional validated production datasets/reports" in evidence
