@@ -36,9 +36,11 @@ jobs:
           from pathlib import Path
           p = Path('build/health_resource_identity/hospital_resource_identity_resolution.json')
           r = json.loads(p.read_text(encoding='utf-8'))
-          assert r['contract'] == 'JLA_OGD_RESOURCE_IDENTITY_RESOLUTION_V2'
+          assert r['contract'] == 'JLA_OGD_RESOURCE_IDENTITY_RESOLUTION_V4'
           assert 'never_construct_resource_uuid_from_title_or_slug' in r['rules']
           assert 'never_construct_download_url_from_title_or_slug' in r['rules']
+          assert 'structured_json_candidates_require_target_and_explicit_identity_in_same_object' in r['rules']
+          assert 'identity_resolution_does_not_mean_payload_acquisition_or_publication' in r['rules']
           for source_id, item in r['resources'].items():
               assert item['publication_allowed'] is False
               assert item['raw_payload_acquired'] is False
