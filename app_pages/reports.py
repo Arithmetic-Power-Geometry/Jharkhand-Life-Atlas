@@ -1,9 +1,15 @@
+from pathlib import Path
+import json
+
 import streamlit as st
 from jla.ui import hero, section_note
 from jla.data import places, sources, optional_core_table
 from jla.reports import pdf_report, html_report
 
-hero("Generate report", "Create a portable evidence profile with source references, Module 1 evidence-layer status and interpretation safeguards.")
+hero(
+    "Generate report",
+    "Create a portable evidence profile with source references, Module 1 evidence-layer status, validated thematic-evidence coverage and interpretation safeguards.",
+)
 p = places()
 s = sources()
 
@@ -33,6 +39,51 @@ def _match(table, field, value):
     except Exception:
         return None
 
+
+def _validated_historical_evidence():
+    """Return only thematic datasets whose committed provenance passes the public historical gate.
+
+    This intentionally reports evidence availability only. It never joins thematic values to a
+    selected current place or infers temporal/geographic equivalence from names.
+    """
+    candidates = [
+        (2, "Health", "health_access", "census_health_access_2011"),
+        (3, "Water", "water_access", "census_water_access_2011"),
+        (4, "Sanitation & Hygiene", "sanitation_hygiene", "census_sanitation_hygiene_2011"),
+        (5, "Education", "education_access", "census_education_access_2011"),
+    ]
+    verified = []
+    for number, label, slug, filename in candidates:
+        csv_path = Path(f"data/curated/{slug}/{filename}.csv")
+        provenance_path = csv_path.with_suffix(".provenance.json")
+        if not (csv_path.exists() and provenance_path.exists()):
+            continue
+        try:
+            meta = json.loads(provenance_path.read_text(encoding="utf-8"))
+        except Exception:
+            continue
+        if meta.get("status") != "validated_source_native_historical_extract":
+            continue
+        if int(meta.get("reference_year", 0)) != 2011:
+            continue
+        if meta.get("output") != str(csv_path):
+            continue
+        if not meta.get("output_sha256") or not meta.get("source_sha256"):
+            continue
+        verified.append(
+            {
+                "module": f"Module {number} — {label}",
+                "status": "validated historical evidence available",
+                "reference_year": 2011,
+                "rows": int(meta.get("row_count", 0)),
+                "source_native_fields": int(meta.get("health_field_count", meta.get("thematic_field_count", 0))),
+                "output_sha256": meta.get("output_sha256"),
+                "source_sha256": meta.get("source_sha256"),
+            }
+        )
+    return verified
+
+
 amen_match = _match(amenities, "census_village_code_2011", code)
 mdds_match = _match(mdds, "census_village_code_2011", code)
 temporal_match = _match(temporal, "census_village_code_2011", code)
@@ -46,10 +97,19 @@ summary = {
     "temporal_safeguard": "Census 2011 and current LGD are kept separate unless an authoritative code linkage is exposed.",
 }
 
+verified_thematic = _validated_historical_evidence()
+thematic_summary = {
+    "thematic_evidence_status": "validated historical datasets only",
+    "validated_thematic_modules": len(verified_thematic),
+    "modules": "; ".join(x["module"] for x in verified_thematic) if verified_thematic else "none",
+    "interpretation_guard": "Availability here does not imply current service status and does not authorize Census-2011/current-LGD equivalence.",
+}
+
 try:
-    report_rows = row.to_dicts() + [summary]
+    report_rows = row.to_dicts() + [summary, thematic_summary] + verified_thematic
 except Exception:
-    report_rows = row + [summary] if isinstance(row, list) else [summary]
+    base_rows = row if isinstance(row, list) else []
+    report_rows = base_rows + [summary, thematic_summary] + verified_thematic
 
 module_source_ids = {
     "CENSUS_LOCATION_DIR_2011",
@@ -64,7 +124,19 @@ try:
 except Exception:
     refs = s
 
-section_note("Reports preserve the distinction between missing evidence and zero, and between historical Census geography and current LGD administration.")
+section_note(
+    "Reports preserve the distinction between missing evidence and zero, historical Census geography and current LGD administration, and validated historical thematic evidence versus current service availability."
+)
+
+if verified_thematic:
+    st.markdown("### Validated thematic evidence included in report metadata")
+    for item in verified_thematic:
+        st.caption(
+            f"{item['module']} · {item['rows']:,} rows · {item['source_native_fields']} source-native fields · reference year 2011"
+        )
+    st.info(
+        "These thematic datasets are reported as evidence coverage only. This report does not silently join their 2011 observations to current administrative units or reinterpret them as current conditions."
+    )
 
 if st.button("Prepare report", type="primary"):
     pdf = pdf_report(f"Evidence Profile — {name}", report_rows, refs, release="1.2.0")
