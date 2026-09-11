@@ -93,12 +93,22 @@ sources:
     license: Government Open Data License - India
     license_url: https://www.data.gov.in/sites/default/files/Gazette_Notification_OGDL.pdf
     license_review_status: reviewed_ogdl_catalog
-    license_checked_on: 2026-09-06
+    license_checked_on: 2026-09-11
     attribution_required: true
     catalog_published_on: 2020-12-23
     catalog_updated_on: 2021-05-25
     catalog_api_resource_id: f7daca9b-92d4-4c6c-886a-91bf94a7e27e
-    notes: "Official catalog is explicitly released under NDSAP and the OGD platform applies GODL-India. District-level service/activity indicators only; never allocate district aggregates to villages or facilities. Preserve period, district, indicator and source metadata. Individual inspected historical resources may expose CSV download without a resource API."
+    inspected_resource_url: https://www.data.gov.in/resource/item-wise-hmis-report-district-level-jharkhand-upto-december-2014-15
+    inspected_resource_published_on: 2021-01-08
+    inspected_resource_updated_on: 2021-01-08
+    inspected_resource_file_size: 102 KB
+    inspected_resource_granularity: monthly
+    inspected_resource_access: [csv_download, preview]
+    inspected_resource_data_api_status: unavailable
+    inspected_resource_reporting_period: "2014-2015 through December; provisional; source status timestamp 2016-01-29 14:00"
+    inspected_resource_fields: [Indicator, S.No., Parameters, Type, "District - _Jharkhand"]
+    acquisition_status: exact_authoritative_historical_resource_page_verified_payload_bytes_not_acquired
+    notes: "Fresh authoritative resource-level verification on 2026-09-11 established a specific Jharkhand HMIS resource page for reporting through December 2014-15. The official page advertises a 102 KB CSV download and preview, states that no resource Data API exists, and exposes district-level fields. This advances resource identity but does not constitute payload acquisition: JLA still requires the exact CSV bytes, retrieval timestamp, SHA-256, observed payload schema and period/geography validation. District aggregates must never be allocated to villages or facilities, and missing values must remain null."
 
   - source_id: OGD_HMIS_ALL_STATES_DISTRICTS_2025
     title: Item-wise HMIS report of all States and Districts Across the Months
