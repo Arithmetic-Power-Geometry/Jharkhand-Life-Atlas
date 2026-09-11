@@ -35,15 +35,26 @@ jobs:
           from pathlib import Path
           p = Path('build/health_hmis_jharkhand_2014_15/hmis_jharkhand_2014_15_acquisition.json')
           r = json.loads(p.read_text(encoding='utf-8'))
-          assert r['contract'] == 'JLA_HEALTH_HMIS_OFFICIAL_PAYLOAD_ACQUISITION_V1'
+          assert r['contract'] == 'JLA_HEALTH_HMIS_OFFICIAL_PAYLOAD_ACQUISITION_V2'
           assert r['publication_allowed'] is False
+          meta = r['authoritative_resource_metadata']
+          assert meta['resource_api_state'] == 'does_not_exist'
+          assert meta['advertised_format'] == 'csv'
+          assert meta['reference_period'] == '2014-15_upto_december'
+          assert meta['provisional_figures'] is True
+          assert meta['expected_columns'] == ['Indicator', 'S.No.', 'Parameters', 'Type', 'District - _Jharkhand']
+          assert 'do_not_chase_resource_api_when_official_page_states_api_does_not_exist' in r['rules']
+          assert 'explicit_official_csv_link_required' in r['rules']
+          assert 'observed_schema_must_match_authoritative_resource_metadata' in r['rules']
+          assert 'provisional_source_status_must_be_preserved' in r['rules']
           assert 'preserve_missing_as_null' in r['rules']
           assert 'district_aggregates_never_allocated_to_villages_or_facilities' in r['rules']
           if r['raw_payload_acquired']:
               assert r['raw_sha256'] and len(r['raw_sha256']) == 64
               assert r['raw_byte_count'] > 0
               assert r['raw_payload_url'].startswith(('https://data.gov.in/', 'https://www.data.gov.in/', 'https://api.data.gov.in/'))
-              assert isinstance(r['observed_schema'], list) and len(r['observed_schema']) >= 2
+              assert isinstance(r['observed_schema'], list) and len(r['observed_schema']) >= 5
+              assert r['authoritative_schema_fields_verified'] == meta['expected_columns']
           else:
               assert r.get('blocker')
           print(json.dumps({k: r.get(k) for k in ('source_id','raw_payload_acquired','raw_sha256','raw_byte_count','observed_schema','blocker')}, indent=2))
