@@ -51,7 +51,17 @@ workstreams:
     module_id: health_access
     source_id: OGD_HMIS_JH_DISTRICT
     objective: acquire_exact_district_HMIS_time_series_payload
-    current_state: exact_official_2014_15_resource_page_verified_csv_download_advertised_payload_bytes_not_acquired
+    current_state: governed_exact_resource_probe_green_resource_page_retrieved_but_no_explicit_authoritative_csv_link_exposed
+    acquisition_probe:
+      workflow: health-hmis-jharkhand-2014-15-acquisition
+      run_id: 34595947946
+      head_sha: 8449cb541e5e243711dd6ebddba196630ca08bf0
+      resource_page_http_status: 200
+      resource_page_bytes: 1000489
+      resource_page_sha256: 4204f1dd20406a968885670c366abf160e4a0022e76da81ebc6e5bf968eb2e82
+      raw_payload_acquired: false
+      blocker: no_explicit_authoritative_csv_payload_admitted_from_resource_page
+      publication_allowed: false
     next_evidence:
       - exact_authoritative_csv_download_endpoint_or_bytes
       - successful_payload_retrieval
