@@ -5,6 +5,7 @@ import yaml
 from jla.ui import hero, badges, section_note
 from jla.modules import discover_modules
 from jla.data import module_indicators, core_research_tables, optional_core_table
+from jla.acquisition import health_resource_identities, health_resource_identity_status
 
 
 def humanize(value):
@@ -199,6 +200,22 @@ for number, (module_id, planned_name) in enumerate(roadmap, start=1):
                     visible_columns = ["source_id", "role", "authority", "reference_year", "geography", "publication_status"]
                     display_rows = [{key: row.get(key, "") for key in visible_columns} for row in source_coverage]
                     st.dataframe(display_rows, width="stretch", hide_index=True)
+
+            if module_id == "health_access":
+                identity_status = health_resource_identity_status()
+                st.markdown("**Current authoritative facility acquisition state**")
+                h1, h2, h3, h4 = st.columns(4)
+                h1.metric("Tracked current resources", identity_status["resource_count"])
+                h2.metric("Machine identities resolved", identity_status["machine_identities_resolved"])
+                h3.metric("Raw payloads acquired", identity_status["raw_payloads_acquired"])
+                h4.metric("Publishable current resources", identity_status["publishable_resources"])
+                st.caption("These counters come from the governed Health resource-identity registry. A resource page or current catalog date is not counted as a machine payload, schema inspection, or publication permission.")
+                identity_rows = health_resource_identities()
+                if identity_rows.height:
+                    with st.expander("Current Health resource identity and acquisition blockers", expanded=True):
+                        st.dataframe(identity_rows, width="stretch", hide_index=True)
+                        if identity_status["raw_payloads_acquired"] == 0:
+                            st.warning("Current facility publication remains blocked until an exact authoritative machine payload is acquired, hashed, schema-inspected, explicitly filtered to Jharkhand, and linked through evidence-backed geography. No identifier or geography equivalence is inferred from names alone.")
 
             data = module_indicators(m.get("_path", ""))
             if data is not None:
