@@ -38,5 +38,5 @@ def test_health_dictionary_covers_governed_historical_fields_and_provenance():
     assert "never converted to zero" in text
     assert "Census-2011 identifiers remain Census-2011 identifiers" in text
     assert "names alone are insufficient" in text
-    assert "not a current facility inventory" in text
+    assert "**not** a current facility inventory" in text
     assert "no person-level health records" in text
