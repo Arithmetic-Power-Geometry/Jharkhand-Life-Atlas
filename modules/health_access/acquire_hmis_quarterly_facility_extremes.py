@@ -1,11 +1,17 @@
 #!/usr/bin/env python3
 """Fail-closed acquisition probe for the official OGD quarterly HMIS facility-extremes catalog.
 
-This script snapshots only bytes returned by the exact authoritative OGD control URL pinned
-in sources.yaml. It records SHA-256 and classifies the *observed* response rather than
-assuming that an `/apis/<uuid>` URL returned machine-readable API metadata. HTML portal
-shells are preserved as evidence but are explicitly non-schema-bearing and cannot satisfy
-resource identity, payload acquisition, or publication gates.
+This script snapshots bytes returned by the exact authoritative OGD control URL and the
+canonical catalog page pinned in sources.yaml. It records SHA-256 and classifies the
+*observed* responses rather than assuming that an `/apis/<uuid>` URL returned
+machine-readable API metadata. HTML portal shells are preserved as evidence but are
+explicitly non-schema-bearing and cannot satisfy resource identity, payload acquisition,
+or publication gates.
+
+The catalog-page pass exists only to inventory resource links that the authoritative page
+itself explicitly exposes. Candidate links are evidence for further resolution, not proof
+of resource identity and never a substitute for acquiring and inspecting the actual
+resource payload.
 
 No facility ranking, Jharkhand membership, geography linkage, completeness claim, missing
 value interpretation, or thematic publication is inferred from catalog/control metadata.
@@ -20,6 +26,7 @@ import re
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
+from urllib.parse import urljoin
 
 import requests
 
@@ -97,6 +104,62 @@ def classify_observed_response(payload: bytes, content_type: str | None) -> dict
     }
 
 
+def snapshot_authoritative_catalog_page(out: Path, timeout: float) -> dict[str, Any]:
+    """Snapshot the canonical catalog page and inventory only explicitly exposed links."""
+    result: dict[str, Any] = {
+        "catalog_page_url": CATALOG_PAGE,
+        "catalog_page_snapshot_acquired": False,
+        "resource_identity_resolved_from_catalog_page": False,
+    }
+    try:
+        response = requests.get(
+            CATALOG_PAGE,
+            timeout=timeout,
+            headers={"User-Agent": "Jharkhand-Life-Atlas/health-authoritative-acquisition"},
+        )
+        result["http_status"] = response.status_code
+        result["content_type"] = response.headers.get("content-type")
+        response.raise_for_status()
+        payload = response.content
+        if not payload:
+            raise RuntimeError("authoritative catalog page returned zero bytes")
+
+        page_path = out / "official_catalog_page_response.bin"
+        page_path.write_bytes(payload)
+        inventory = classify_observed_response(payload, result.get("content_type"))
+        hrefs = inventory.get("observed_resource_hrefs", [])
+        absolute_hrefs = list(dict.fromkeys(urljoin(CATALOG_PAGE, href) for href in hrefs))
+        result.update(
+            {
+                "catalog_page_snapshot_acquired": True,
+                "byte_count": len(payload),
+                "sha256": sha256_bytes(payload),
+                "snapshot": page_path.name,
+                "observed_response_kind": inventory.get("observed_response_kind"),
+                "explicit_resource_link_count": len(absolute_hrefs),
+                "explicit_resource_link_candidates": absolute_hrefs,
+                "explicit_resource_uuid_candidates": inventory.get("explicit_resource_uuid_candidates", []),
+                "resource_identity_resolved_from_catalog_page": False,
+                "publication_allowed": False,
+            }
+        )
+        (out / "catalog_page_inventory.json").write_text(
+            json.dumps(result, indent=2, sort_keys=True), encoding="utf-8"
+        )
+    except Exception as exc:
+        result.update(
+            {
+                "error_type": type(exc).__name__,
+                "error": str(exc)[:1000],
+                "publication_allowed": False,
+            }
+        )
+        (out / "catalog_page_blocker.json").write_text(
+            json.dumps(result, indent=2, sort_keys=True), encoding="utf-8"
+        )
+    return result
+
+
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--output-dir", required=True)
@@ -106,6 +169,10 @@ def main() -> int:
     out = Path(args.output_dir)
     out.mkdir(parents=True, exist_ok=True)
     observed_at = datetime.now(timezone.utc).isoformat()
+
+    # Probe the canonical page independently so a blocked control endpoint does not erase
+    # useful authoritative discovery evidence. This pass remains non-publishable.
+    catalog_page_probe = snapshot_authoritative_catalog_page(out, args.timeout)
 
     receipt: dict[str, Any] = {
         "contract": "JLA_SOURCE_PROBE_V2",
@@ -122,6 +189,9 @@ def main() -> int:
         "facility_completeness_inferred": False,
         "direct_geography_equivalence_allowed": False,
         "missing_values_may_be_converted_to_zero": False,
+        "catalog_page_snapshot_acquired": catalog_page_probe.get("catalog_page_snapshot_acquired", False),
+        "catalog_page_explicit_resource_link_count": catalog_page_probe.get("explicit_resource_link_count", 0),
+        "resource_identity_resolved_from_catalog_page": False,
     }
 
     try:
@@ -161,8 +231,7 @@ def main() -> int:
         if inventory["observed_response_kind"] == "html_portal_shell":
             receipt["status"] = "authoritative_control_snapshotted_html_shell_not_machine_resource_metadata"
             receipt["resolution_rule"] = (
-                "Preserve this response as immutable control evidence only. Continue to an exact official resource/download "
-                "endpoint explicitly exposed by authoritative metadata; never synthesize a resource UUID from the catalog UUID, title, slug, or HTML shell."
+                "Preserve this response as immutable control evidence only. Inspect only resource links explicitly exposed by the canonical authoritative catalog page, then continue to an exact official resource/download endpoint; never synthesize a resource UUID from the catalog UUID, title, slug, or HTML shell."
             )
         elif inventory["observed_response_kind"] == "structured_json":
             receipt["status"] = "authoritative_catalog_control_json_snapshotted_not_thematic_payload"
@@ -183,7 +252,7 @@ def main() -> int:
                 "machine_resource_identity_resolved": False,
                 "error_type": type(exc).__name__,
                 "error": str(exc)[:1000],
-                "resolution_rule": "Retry only the exact authoritative OGD control/catalog path or a resource endpoint explicitly resolved from authoritative metadata. Do not use mirrors, guessed resource IDs, scraped rankings, or name-only geography linkage.",
+                "resolution_rule": "Use only the exact authoritative OGD control/catalog path or a resource endpoint explicitly exposed by authoritative catalog-page evidence. Do not use mirrors, guessed resource IDs, scraped rankings, or name-only geography linkage.",
             }
         )
         (out / "acquisition_blocker.json").write_text(json.dumps(receipt, indent=2), encoding="utf-8")
