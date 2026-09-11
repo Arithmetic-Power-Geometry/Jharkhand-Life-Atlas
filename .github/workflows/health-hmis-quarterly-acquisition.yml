@@ -28,7 +28,7 @@ jobs:
         run: python -m pip install --disable-pip-version-check requests
       - name: Compile acquisition probe
         run: python -m py_compile modules/health_access/acquire_hmis_quarterly_facility_extremes.py
-      - name: Probe exact authoritative OGD catalog API control
+      - name: Probe exact authoritative OGD controls
         id: acquire
         continue-on-error: true
         run: |
@@ -38,6 +38,29 @@ jobs:
             --timeout 45 \
             2>&1 | tee build/health_hmis_quarterly/acquisition.log
           exit ${PIPESTATUS[0]}
+      - name: Verify catalog-page discovery remains non-publishable
+        if: always()
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          root = Path('build/health_hmis_quarterly')
+          inventory = root / 'catalog_page_inventory.json'
+          blocker = root / 'catalog_page_blocker.json'
+          assert inventory.exists() or blocker.exists(), 'catalog-page probe emitted no governed evidence'
+          p = inventory if inventory.exists() else blocker
+          r = json.loads(p.read_text(encoding='utf-8'))
+          assert r['catalog_page_url'].startswith('https://www.data.gov.in/catalog/')
+          assert r['resource_identity_resolved_from_catalog_page'] is False
+          assert r['publication_allowed'] is False
+          if r['catalog_page_snapshot_acquired']:
+              assert r['byte_count'] > 0
+              assert len(r['sha256']) == 64
+              assert isinstance(r['explicit_resource_link_candidates'], list)
+              assert r['explicit_resource_link_count'] == len(r['explicit_resource_link_candidates'])
+              assert all(u.startswith('https://www.data.gov.in/') for u in r['explicit_resource_link_candidates'])
+          print(json.dumps(r, indent=2))
+          PY
       - name: Verify successful control snapshot remains non-publishable
         if: steps.acquire.outcome == 'success'
         run: |
@@ -57,6 +80,7 @@ jobs:
           assert r['raw_thematic_payload_acquired'] is False
           assert r['observed_schema_available'] is False
           assert r['machine_resource_identity_resolved'] is False
+          assert r['resource_identity_resolved_from_catalog_page'] is False
           assert r['jharkhand_membership_inferred'] is False
           assert r['facility_completeness_inferred'] is False
           assert r['direct_geography_equivalence_allowed'] is False
@@ -82,6 +106,7 @@ jobs:
           assert r['sha256_available'] is False
           assert r['observed_schema_available'] is False
           assert r['machine_resource_identity_resolved'] is False
+          assert r['resource_identity_resolved_from_catalog_page'] is False
           assert r['publication_allowed'] is False
           assert r['curated_output_created'] is False
           assert r['jharkhand_membership_inferred'] is False
