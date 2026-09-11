@@ -110,6 +110,31 @@ sources:
     acquisition_status: exact_authoritative_historical_resource_page_verified_payload_bytes_not_acquired
     notes: "Fresh authoritative resource-level verification on 2026-09-11 established a specific Jharkhand HMIS resource page for reporting through December 2014-15. The official page advertises a 102 KB CSV download and preview, states that no resource Data API exists, and exposes district-level fields. This advances resource identity but does not constitute payload acquisition: JLA still requires the exact CSV bytes, retrieval timestamp, SHA-256, observed payload schema and period/geography validation. District aggregates must never be allocated to villages or facilities, and missing values must remain null."
 
+  - source_id: OGD_HMIS_PAKUR_2019_20_NOVEMBER
+    title: Item-wise Report for Pakur, Jharkhand for November 2019-20
+    publisher: Ministry of Health and Family Welfare, Government of India
+    url: https://www.data.gov.in/resource/item-wise-report-pakur-jharkhand-november-2019-20
+    role: subdistrict_service_activity_snapshot
+    reference_year: 2019-2020
+    resource_published_on: 2020-11-13
+    resource_updated_on: 2020-11-13
+    status_as_on: "2020-09-25T14:09:00+05:30"
+    granularity: monthly_subdistrict_aggregate
+    advertised_access: [csv_download, preview]
+    advertised_file_size: 54 KB
+    data_api_status: unavailable_on_live_resource_page
+    advertised_fields: [Indicator, S.No., Parameters, Type, "SubDistrict - _Pakur - Total [(A+B) or (C+D)]"]
+    provisional_figures: true
+    aggregation_semantics: "Total [(A+B) OR (C+D)] = [(Public Facilities + Private Facilities) OR (Rural Facilities + Urban Facilities)]"
+    publication_class: OPEN_WITH_ATTRIBUTION
+    license: Government Open Data License - India
+    license_url: https://www.data.gov.in/sites/default/files/Gazette_Notification_OGDL.pdf
+    license_review_status: reviewed_ogdl_resource_and_platform
+    license_checked_on: 2026-09-11
+    attribution_required: true
+    acquisition_status: governed_acquisition_active_payload_not_yet_admitted
+    notes: "Exact authoritative resource identity is verified and a fail-closed acquisition workflow is active. Admit only explicit OGD-hosted CSV bytes discovered from the official resource page, record retrieval time and SHA-256, and verify the observed schema before curation. Preserve provisional status, source aggregation semantics and nulls. Never allocate Pakur subdistrict aggregates to villages, facilities or persons; publication remains closed pending period, indicator and geography validation."
+
   - source_id: OGD_HMIS_ALL_STATES_DISTRICTS_2025
     title: Item-wise HMIS report of all States and Districts Across the Months
     publisher: Ministry of Health and Family Welfare, Government of India
