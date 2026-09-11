@@ -27,6 +27,7 @@ ALLOWED_HOSTS = {"data.gov.in", "www.data.gov.in", "api.data.gov.in"}
 USER_AGENT = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 Chrome/140 Safari/537.36"
 HREF_RE = re.compile(r"(?:href|src)\s*=\s*[\"']([^\"']+)[\"']", re.I)
 URL_RE = re.compile(r"https?://[^\s\"'<>]+", re.I)
+EXPECTED_COLUMNS = ["Indicator", "S.No.", "Parameters", "Type", "District - _Jharkhand"]
 
 
 def digest(data: bytes) -> str:
@@ -53,6 +54,10 @@ def candidate_links(html: str) -> list[str]:
     return sorted(out)
 
 
+def normalized_column(value: str) -> str:
+    return re.sub(r"\s+", " ", value.strip()).casefold()
+
+
 def inspect_csv(data: bytes, content_type: str, url: str) -> dict:
     result = {"url": url, "byte_count": len(data), "sha256": digest(data), "content_type": content_type}
     prefix = data[:512].lstrip().lower()
@@ -65,8 +70,25 @@ def inspect_csv(data: bytes, content_type: str, url: str) -> dict:
         header = next(reader)
         if not header or len(header) < 2:
             raise ValueError("CSV header is empty or implausibly narrow")
+        normalized = {normalized_column(x) for x in header}
+        missing_expected = [x for x in EXPECTED_COLUMNS if normalized_column(x) not in normalized]
         sample_count = sum(1 for _, _row in zip(range(50), reader))
-        result.update({"accepted": True, "format": "csv", "observed_columns": header, "sample_rows_read": sample_count})
+        if missing_expected:
+            result.update({
+                "accepted": False,
+                "reason": "schema_does_not_match_authoritative_resource_metadata",
+                "observed_columns": header,
+                "missing_expected_columns": missing_expected,
+                "sample_rows_read": sample_count,
+            })
+            return result
+        result.update({
+            "accepted": True,
+            "format": "csv",
+            "observed_columns": header,
+            "authoritative_schema_fields_verified": EXPECTED_COLUMNS,
+            "sample_rows_read": sample_count,
+        })
         return result
     except Exception as exc:
         result.update({"accepted": False, "reason": "not_parseable_csv", "parse_error": f"{type(exc).__name__}: {exc}"})
@@ -78,10 +100,22 @@ def run(output_dir: Path) -> dict:
     session = requests.Session()
     session.headers.update({"User-Agent": USER_AGENT, "Accept-Language": "en-US,en;q=0.9"})
     report = {
-        "contract": "JLA_HEALTH_HMIS_OFFICIAL_PAYLOAD_ACQUISITION_V1",
+        "contract": "JLA_HEALTH_HMIS_OFFICIAL_PAYLOAD_ACQUISITION_V2",
         "source_id": SOURCE_ID,
         "resource_page": RESOURCE_PAGE,
         "retrieved_at_utc": datetime.now(timezone.utc).isoformat(),
+        "authoritative_resource_metadata": {
+            "published_on": "2021-01-08",
+            "updated_on": "2021-01-08",
+            "reference_period": "2014-15_upto_december",
+            "status_as_on": "2016-01-29T14:00:00+05:30",
+            "granularity": "Monthly",
+            "advertised_format": "csv",
+            "advertised_file_size": "102 KB",
+            "resource_api_state": "does_not_exist",
+            "expected_columns": EXPECTED_COLUMNS,
+            "provisional_figures": True,
+        },
         "raw_payload_acquired": False,
         "raw_sha256": None,
         "raw_byte_count": None,
@@ -90,10 +124,14 @@ def run(output_dir: Path) -> dict:
         "rules": [
             "official_ogd_hosts_only",
             "never_guess_download_url_or_resource_id",
+            "do_not_chase_resource_api_when_official_page_states_api_does_not_exist",
+            "explicit_official_csv_link_required",
             "html_is_not_data",
             "hash_before_curation",
+            "observed_schema_must_match_authoritative_resource_metadata",
             "preserve_missing_as_null",
             "district_aggregates_never_allocated_to_villages_or_facilities",
+            "provisional_source_status_must_be_preserved",
             "publication_requires_period_indicator_geography_and_validation_gates",
         ],
         "attempts": [],
@@ -135,6 +173,7 @@ def run(output_dir: Path) -> dict:
                         "raw_payload_url": response.url,
                         "raw_payload_file": payload.name,
                         "observed_schema": attempt["observed_columns"],
+                        "authoritative_schema_fields_verified": attempt["authoritative_schema_fields_verified"],
                     })
                     break
             except requests.RequestException as exc:
