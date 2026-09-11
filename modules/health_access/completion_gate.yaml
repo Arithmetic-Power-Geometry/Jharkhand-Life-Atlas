@@ -18,7 +18,7 @@ criteria:
     evidence: "A governed Census 2011 Health source and validated historical extract exist, but the preferred 2026 OGD facility payload and production HMIS/NFHS/current sources are not yet all acquired and schema-verified."
   rights_licence_review:
     satisfied: true
-    evidence: "The historical Census extract follows JLA's conservative derived-use policy; OGD sources are reviewed under Government Open Data License - India with attribution; restricted ABDM HFR remains excluded pending terms/export rights."
+    evidence: "modules/health_access/RIGHTS_LICENCE_REVIEW.md records the source-scoped publication decision: the historical Census extract follows JLA's conservative derived-use policy; OGD sources are reviewed under Government Open Data License - India with attribution while each payload remains separately gated; restricted ABDM HFR remains excluded pending established export/republication rights."
   smallest_authoritative_reusable_granularity:
     satisfied: false
     evidence: "Village-level historical Census evidence is published at source-native grain, but the preferred current facility-level OGD payload remains pending acquisition."
@@ -51,7 +51,7 @@ criteria:
     evidence: "A provenance-gated historical Health CSV download and research-ready historical evidence report now exist. The full completion criterion remains open until required additional validated production datasets/reports for current or differently dated Health evidence are available."
   documentation:
     satisfied: true
-    evidence: "Module README, source registry, schema, acquisition ledger, historical-extract provenance, field-level Census-2011 data dictionary, resource-identity registry and the historical evidence research report are present and synchronized with repository truth."
+    evidence: "Module README, source registry, schema, acquisition ledger, historical-extract provenance, field-level Census-2011 data dictionary, resource-identity registry, rights/licence review and the historical evidence research report are present and synchronized with repository truth."
   green_ci_on_main:
     satisfied: true
     evidence: "Dedicated Health validation has passed on main after the historical evidence integration; this criterion must be re-verified on the exact final completion head before status changes to COMPLETE."
