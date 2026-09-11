@@ -54,7 +54,11 @@ def test_current_gate_records_real_sanitation_publication_gaps():
         "geographic_linkage",
         "schema",
         "indicators",
-        "streamlit_presentation",
         "downloadable_data_reports",
     ]:
         assert gate[key]["satisfied"] is False
+    assert gate["streamlit_presentation"]["satisfied"] is True
+    presentation = gate["streamlit_presentation"]["evidence"].lower()
+    assert "census 2011" in presentation
+    assert "historical" in presentation
+    assert "current sbm-g" in presentation
