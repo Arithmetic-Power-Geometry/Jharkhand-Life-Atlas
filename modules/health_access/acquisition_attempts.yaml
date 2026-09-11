@@ -99,7 +99,7 @@ attempts:
 
   - attempted_utc: '2026-09-07T22:46:00Z'
     source_id: OGD_HEALTH_DIRECTORY_LIVE_RESOURCE_ENUMERATION_AUDIT
-    catalog_query_url: https://www.data.gov.in/catalog/hospital-directory-national-health-portal?filters%5Bfield_catalog_reference%5D=323881&format=json&limit=6&offset=0&sort%5Bcreated%5D=desc
+    catalog_query_url: https://data.gov.in/catalog/hospital-directory-national-health-portal?filters%5Bfield_catalog_reference%5D=323881&format=json&limit=6&offset=0&sort%5Bcreated%5D=desc
     catalog_metadata_verified: true
     catalog_observation: "Fresh official/indexed catalog evidence still enumerates six resources and reports the NIN Health Facilities and National Hospital Directory monthly resources updated 2026-08-11, with CSV/Data API controls."
     direct_page_observation: "Opening the same parameterized catalog URL in the available retrieval path rendered the catalog shell but returned 'No Result Found' for the resource list, so no exact resource UUID, raw CSV endpoint, or API payload identity could be established from that response."
@@ -193,6 +193,25 @@ attempts:
     publication_effect: none_gate_remains_closed
     blocker_class: catalog_control_is_not_a_schema_bearing_thematic_payload
     next_safe_action: "Resolve an exact authoritative resource-level payload or export before any facility-level curation. Do not infer Jharkhand membership, facility completeness, performance ranking, or machine resource identity from the catalog shell."
+
+  - attempted_utc: '2026-09-11T11:49:00Z'
+    source_id: OGD_HMIS_JH_DISTRICT
+    workflow_head_sha: 8449cb541e5e243711dd6ebddba196630ca08bf0
+    workflow_run_id: 34595947946
+    workflow_result: success
+    authoritative_resource_page: https://www.data.gov.in/resource/item-wise-monthly-hmis-report-district-level-jharkhand-april-2014-march-2015
+    resource_page_http_status: 200
+    resource_page_byte_count: 1000489
+    resource_page_sha256: 4204f1dd20406a968885670c366abf160e4a0022e76da81ebc6e5bf968eb2e82
+    acquisition_result: authoritative_resource_page_snapshotted_but_no_explicit_csv_payload_admitted
+    blocker_class: no_explicit_authoritative_csv_payload_admitted_from_resource_page
+    raw_payload_acquired: false
+    raw_sha256: null
+    raw_bytes: null
+    schema_inspected: false
+    publication_effect: none_gate_remains_closed
+    geographic_rule: "District-level HMIS aggregates must remain district-level and must never be allocated to villages or facilities."
+    next_safe_action: "Continue only with an explicit authoritative CSV/download endpoint or authoritative payload bytes. Do not infer an endpoint from HTML, title, slug, catalog metadata, or mirrors."
 
 rules:
   - catalog_metadata_is_not_raw_data
