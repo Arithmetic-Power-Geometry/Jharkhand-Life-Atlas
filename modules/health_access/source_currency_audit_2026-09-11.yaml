@@ -1,0 +1,44 @@
+module_id: health_access
+audit_date: 2026-09-11
+audit_scope: current_official_ogd_health_facility_resource_currency
+source: https://data.gov.in/catalog/hospital-directory-national-health-portal
+publisher: Ministry of Health and Family Welfare / National Institute of Health and Family Welfare
+observations:
+  - source_id: OGD_NIN_HEALTH_FACILITIES_GEO_2026
+    title: NIN Health Facilities with Geo Code and additional parameters (updated till last month)
+    live_catalog_updated_on: 2026-08-11
+    advertised_granularity: monthly
+    advertised_access:
+      - csv_download_through_url
+      - data_api
+      - preview
+    resource_currency_verified: true
+    raw_payload_acquired: false
+    raw_sha256: null
+    schema_inspected: false
+    publication_effect: none_gate_remains_closed
+  - source_id: OGD_NHP_HOSPITAL_GEO_2026
+    title: National Hospital Directory with Geo Code and additional parameters (updated till last month)
+    live_catalog_updated_on: 2026-08-11
+    advertised_file_size: 9.9 MB
+    advertised_granularity: monthly
+    advertised_access:
+      - csv_download
+      - data_api
+      - preview
+    resource_currency_verified: true
+    raw_payload_acquired: false
+    raw_sha256: null
+    schema_inspected: false
+    publication_effect: none_gate_remains_closed
+interpretation:
+  - live_catalog_currency_is_metadata_not_payload_evidence
+  - advertised_download_or_api_controls_do_not_establish_machine_payload_identity
+  - no_resource_uuid_or_endpoint_may_be_inferred_from_titles_slugs_or_catalog_identifiers
+  - the_two_monthly_resources_must_be_acquired_and_validated_independently
+  - similar_update_dates_do_not_establish_record_equivalence
+  - explicit_jharkhand_filter_and_evidence_backed_geography_validation_are_required_before_curated_use
+  - missing_values_must_remain_null
+  - no_current_facility_inventory_or_access_indicator_may_be_published_from_catalog_metadata
+blocker: exact_authoritative_raw_payload_identity_and_bytes_not_yet_acquired
+next_safe_action: acquire an exact official CSV or Data API payload, record immutable bytes/request provenance and SHA-256, inspect observed schema, explicitly filter Jharkhand, validate facility/geography identity, then run publication gates.
