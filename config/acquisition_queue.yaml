@@ -51,13 +51,17 @@ workstreams:
     module_id: health_access
     source_id: OGD_HMIS_JH_DISTRICT
     objective: acquire_exact_district_HMIS_time_series_payload
-    current_state: catalog_and_api_resource_identifier_known_payload_not_acquired
+    current_state: exact_official_2014_15_resource_page_verified_csv_download_advertised_payload_bytes_not_acquired
     next_evidence:
-      - exact_resource_or_api_url
+      - exact_authoritative_csv_download_endpoint_or_bytes
+      - successful_payload_retrieval
+      - retrieved_at_utc
+      - sha256
+      - observed_payload_schema
       - period_semantics
       - indicator_dictionary
-      - immutable_snapshot_identity
       - district_geography_vintage
+      - missing_value_semantics
     publication_allowed: false
 
   - rank: 4
