@@ -2,12 +2,15 @@
 
 This module validates *evidence-backed* administrative-unit equivalence across
 vintages. It deliberately does not perform fuzzy/name matching and cannot create
-crosswalks from names alone.
+crosswalks from names alone. Cross-vintage claims must also carry an immutable
+SHA-256 fingerprint for the exact authoritative evidence snapshot used.
 """
 
 from __future__ import annotations
 
 from dataclasses import dataclass
+from datetime import date
+import re
 from typing import Iterable, Mapping
 from urllib.parse import urlparse
 
@@ -19,6 +22,8 @@ ALLOWED_RELATIONS = {
     "renamed_with_authoritative_evidence",
     "boundary_changed",
 }
+
+_SHA256_RE = re.compile(r"^[0-9a-fA-F]{64}$")
 
 
 @dataclass(frozen=True)
@@ -41,6 +46,23 @@ def _authoritative_url(value: object) -> bool:
     return host == "gov.in" or host.endswith(".gov.in") or host == "nic.in" or host.endswith(".nic.in")
 
 
+def _iso_date(value: object) -> bool:
+    if not _nonempty(value):
+        return False
+    raw = str(value).strip()
+    if len(raw) != 10:
+        return False
+    try:
+        parsed = date.fromisoformat(raw)
+    except ValueError:
+        return False
+    return parsed.isoformat() == raw
+
+
+def _sha256(value: object) -> bool:
+    return _nonempty(value) and bool(_SHA256_RE.fullmatch(str(value).strip()))
+
+
 def validate_crosswalk_record(record: Mapping[str, object]) -> CrosswalkDecision:
     """Validate one cross-vintage equivalence/relationship record.
 
@@ -48,8 +70,10 @@ def validate_crosswalk_record(record: Mapping[str, object]) -> CrosswalkDecision
     - source/target codes and vintages must be explicit;
     - names may be retained for display but cannot establish equivalence;
     - relation must be controlled;
-    - an authoritative government evidence URL and evidence date are mandatory;
-    - same-unit claims require an explicit evidence statement, not merely equal names.
+    - an authoritative government evidence URL is mandatory;
+    - evidence date must be a real ISO calendar date (YYYY-MM-DD);
+    - the exact evidence snapshot must have a SHA-256 fingerprint;
+    - same-unit claims require an explicit evidence reference, not merely equal names.
     """
 
     required = ("source_code", "source_vintage", "target_code", "target_vintage", "relation")
@@ -68,6 +92,12 @@ def validate_crosswalk_record(record: Mapping[str, object]) -> CrosswalkDecision
 
     if not _nonempty(record.get("evidence_date")):
         return CrosswalkDecision(False, "evidence_date_required")
+
+    if not _iso_date(record.get("evidence_date")):
+        return CrosswalkDecision(False, "evidence_date_must_be_iso_calendar_date")
+
+    if not _sha256(record.get("evidence_sha256")):
+        return CrosswalkDecision(False, "evidence_sha256_required")
 
     if not _nonempty(record.get("evidence_statement")):
         return CrosswalkDecision(False, "evidence_statement_required")
