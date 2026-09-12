@@ -8,10 +8,11 @@ machine-readable API metadata. HTML portal shells are preserved as evidence but 
 explicitly non-schema-bearing and cannot satisfy resource identity, payload acquisition,
 or publication gates.
 
-The catalog-page pass exists only to inventory resource links that the authoritative page
-itself explicitly exposes. Candidate links are evidence for further resolution, not proof
-of resource identity and never a substitute for acquiring and inspecting the actual
-resource payload.
+The catalog-page pass exists only to inventory resource links and acquisition controls
+that the authoritative page itself explicitly exposes. Candidate links are evidence for
+further resolution, not proof of resource identity and never a substitute for acquiring
+and inspecting the actual resource payload. Explicitly disabled Catalog API or Zip
+Download controls are recorded as authoritative negative evidence, not silently ignored.
 
 No facility ranking, Jharkhand membership, geography linkage, completeness claim, missing
 value interpretation, or thematic publication is inferred from catalog/control metadata.
@@ -38,6 +39,8 @@ CONTROL_URL = f"https://www.data.gov.in/apis/{CATALOG_ID}"
 UUID_RE = re.compile(r"\b[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\b", re.I)
 TITLE_RE = re.compile(r"<title[^>]*>(.*?)</title>", re.I | re.S)
 RESOURCE_HREF_RE = re.compile(r"href=[\"']([^\"']*(?:/resource/|/resources/)[^\"']*)[\"']", re.I)
+ANCHOR_RE = re.compile(r"<a\b([^>]*)>(.*?)</a>", re.I | re.S)
+HREF_RE = re.compile(r"\bhref\s*=\s*[\"']([^\"']*)[\"']", re.I)
 
 
 def sha256_bytes(payload: bytes) -> str:
@@ -55,6 +58,73 @@ def json_shape(value: Any, depth: int = 0) -> Any:
             return []
         return [json_shape(value[0], depth + 1)]
     return type(value).__name__
+
+
+def _normalize_markup_text(value: str) -> str:
+    """Collapse markup/whitespace for conservative control-label inspection."""
+    value = re.sub(r"<[^>]+>", " ", value)
+    return re.sub(r"\s+", " ", value).strip()
+
+
+def extract_catalog_acquisition_controls(text: str) -> dict[str, Any]:
+    """Inventory explicit OGD Catalog API / Zip Download controls without promotion.
+
+    Availability is true only when an explicitly labelled control has a non-placeholder
+    href and is not marked disabled. The function deliberately treats phrases such as
+    "Catalog API is not available" and "Zip Download is not available" as authoritative
+    negative evidence. Even an available control remains only a discovery candidate; it
+    does not by itself resolve a child-resource identity or acquire a thematic payload.
+    """
+    controls: dict[str, Any] = {
+        "catalog_api_control_present": False,
+        "catalog_api_available": False,
+        "catalog_api_href": None,
+        "zip_download_control_present": False,
+        "zip_download_available": False,
+        "zip_download_href": None,
+    }
+
+    for attrs, body in ANCHOR_RE.findall(text):
+        label = _normalize_markup_text(body).lower()
+        attrs_lower = attrs.lower()
+        href_match = HREF_RE.search(attrs)
+        href = href_match.group(1).strip() if href_match else None
+        disabled = (
+            "aria-disabled=\"true\"" in attrs_lower
+            or "aria-disabled='true'" in attrs_lower
+            or re.search(r"(?:^|\s)disabled(?:\s|=|$)", attrs_lower) is not None
+            or re.search(r"class\s*=\s*[\"'][^\"']*\bdisabled\b", attrs_lower, re.I) is not None
+        )
+        usable_href = bool(href and href not in {"#", "javascript:void(0)", "javascript:void(0);"})
+
+        if "catalog api" in label:
+            controls["catalog_api_control_present"] = True
+            controls["catalog_api_href"] = href
+            explicitly_unavailable = "not available" in label or "unavailable" in label
+            controls["catalog_api_available"] = bool(usable_href and not disabled and not explicitly_unavailable)
+
+        if "zip download" in label:
+            controls["zip_download_control_present"] = True
+            controls["zip_download_href"] = href
+            explicitly_unavailable = "not available" in label or "unavailable" in label
+            controls["zip_download_available"] = bool(usable_href and not disabled and not explicitly_unavailable)
+
+    lowered = _normalize_markup_text(text).lower()
+    if "catalog api is not available" in lowered:
+        controls["catalog_api_control_present"] = True
+        controls["catalog_api_available"] = False
+    if "zip download is not available" in lowered:
+        controls["zip_download_control_present"] = True
+        controls["zip_download_available"] = False
+
+    controls["authoritative_machine_download_control_available"] = bool(
+        controls["catalog_api_available"] or controls["zip_download_available"]
+    )
+    controls["authoritative_controls_explicitly_block_acquisition"] = bool(
+        (controls["catalog_api_control_present"] and not controls["catalog_api_available"])
+        and (controls["zip_download_control_present"] and not controls["zip_download_available"])
+    )
+    return controls
 
 
 def classify_observed_response(payload: bytes, content_type: str | None) -> dict[str, Any]:
@@ -83,6 +153,7 @@ def classify_observed_response(payload: bytes, content_type: str | None) -> dict
         uuids = list(dict.fromkeys(UUID_RE.findall(text)))[:100]
         hrefs = list(dict.fromkeys(RESOURCE_HREF_RE.findall(text)))[:100]
         explicit_resource_uuids = [u for u in uuids if u.lower() != CATALOG_ID.lower()]
+        controls = extract_catalog_acquisition_controls(text)
         return {
             "observed_response_kind": "html_portal_shell",
             "structured_json_observed": False,
@@ -92,6 +163,7 @@ def classify_observed_response(payload: bytes, content_type: str | None) -> dict
             "observed_resource_href_count": len(hrefs),
             "observed_resource_hrefs": hrefs,
             "explicit_resource_uuid_candidates": explicit_resource_uuids,
+            **controls,
             "observed_schema_available": False,
             "machine_resource_identity_resolved": False,
         }
@@ -105,7 +177,7 @@ def classify_observed_response(payload: bytes, content_type: str | None) -> dict
 
 
 def snapshot_authoritative_catalog_page(out: Path, timeout: float) -> dict[str, Any]:
-    """Snapshot the canonical catalog page and inventory only explicitly exposed links."""
+    """Snapshot the canonical catalog page and inventory only explicitly exposed controls/links."""
     result: dict[str, Any] = {
         "catalog_page_url": CATALOG_PAGE,
         "catalog_page_snapshot_acquired": False,
@@ -139,6 +211,18 @@ def snapshot_authoritative_catalog_page(out: Path, timeout: float) -> dict[str, 
                 "explicit_resource_link_count": len(absolute_hrefs),
                 "explicit_resource_link_candidates": absolute_hrefs,
                 "explicit_resource_uuid_candidates": inventory.get("explicit_resource_uuid_candidates", []),
+                "catalog_api_control_present": inventory.get("catalog_api_control_present", False),
+                "catalog_api_available": inventory.get("catalog_api_available", False),
+                "catalog_api_href": inventory.get("catalog_api_href"),
+                "zip_download_control_present": inventory.get("zip_download_control_present", False),
+                "zip_download_available": inventory.get("zip_download_available", False),
+                "zip_download_href": inventory.get("zip_download_href"),
+                "authoritative_machine_download_control_available": inventory.get(
+                    "authoritative_machine_download_control_available", False
+                ),
+                "authoritative_controls_explicitly_block_acquisition": inventory.get(
+                    "authoritative_controls_explicitly_block_acquisition", False
+                ),
                 "resource_identity_resolved_from_catalog_page": False,
                 "publication_allowed": False,
             }
@@ -170,8 +254,6 @@ def main() -> int:
     out.mkdir(parents=True, exist_ok=True)
     observed_at = datetime.now(timezone.utc).isoformat()
 
-    # Probe the canonical page independently so a blocked control endpoint does not erase
-    # useful authoritative discovery evidence. This pass remains non-publishable.
     catalog_page_probe = snapshot_authoritative_catalog_page(out, args.timeout)
 
     receipt: dict[str, Any] = {
@@ -191,6 +273,11 @@ def main() -> int:
         "missing_values_may_be_converted_to_zero": False,
         "catalog_page_snapshot_acquired": catalog_page_probe.get("catalog_page_snapshot_acquired", False),
         "catalog_page_explicit_resource_link_count": catalog_page_probe.get("explicit_resource_link_count", 0),
+        "catalog_page_catalog_api_available": catalog_page_probe.get("catalog_api_available", False),
+        "catalog_page_zip_download_available": catalog_page_probe.get("zip_download_available", False),
+        "catalog_page_authoritative_controls_explicitly_block_acquisition": catalog_page_probe.get(
+            "authoritative_controls_explicitly_block_acquisition", False
+        ),
         "resource_identity_resolved_from_catalog_page": False,
     }
 
@@ -231,7 +318,7 @@ def main() -> int:
         if inventory["observed_response_kind"] == "html_portal_shell":
             receipt["status"] = "authoritative_control_snapshotted_html_shell_not_machine_resource_metadata"
             receipt["resolution_rule"] = (
-                "Preserve this response as immutable control evidence only. Inspect only resource links explicitly exposed by the canonical authoritative catalog page, then continue to an exact official resource/download endpoint; never synthesize a resource UUID from the catalog UUID, title, slug, or HTML shell."
+                "Preserve this response as immutable control evidence only. Respect explicit disabled Catalog API/Zip Download controls on the canonical page, inspect only resource links explicitly exposed there, then continue to an exact official resource/download endpoint if one becomes available; never synthesize a resource UUID from the catalog UUID, title, slug, or HTML shell."
             )
         elif inventory["observed_response_kind"] == "structured_json":
             receipt["status"] = "authoritative_catalog_control_json_snapshotted_not_thematic_payload"
@@ -252,7 +339,7 @@ def main() -> int:
                 "machine_resource_identity_resolved": False,
                 "error_type": type(exc).__name__,
                 "error": str(exc)[:1000],
-                "resolution_rule": "Use only the exact authoritative OGD control/catalog path or a resource endpoint explicitly exposed by authoritative catalog-page evidence. Do not use mirrors, guessed resource IDs, scraped rankings, or name-only geography linkage.",
+                "resolution_rule": "Use only the exact authoritative OGD control/catalog path or a resource endpoint explicitly exposed by authoritative catalog-page evidence. Respect explicit disabled controls; do not use mirrors, guessed resource IDs, scraped rankings, or name-only geography linkage.",
             }
         )
         (out / "acquisition_blocker.json").write_text(json.dumps(receipt, indent=2), encoding="utf-8")
