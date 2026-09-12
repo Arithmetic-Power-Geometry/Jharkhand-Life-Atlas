@@ -1,0 +1,65 @@
+module_id: health_access
+evidence_type: authoritative_catalog_control_snapshot
+contract: JLA_HEALTH_OFFICIAL_CATALOG_CONTROL_EVIDENCE_V1
+source_id: OGD_HMIS_QUARTERLY_FACILITY_EXTREMES_2026
+recorded_date: '2026-09-12'
+workflow:
+  name: health-hmis-quarterly-acquisition
+  run_id: 34674622821
+  head_sha: 4cbee452508592b2122f86865952059c7c383491
+  conclusion: success
+  artifact:
+    id: 10291249878
+    name: health-hmis-quarterly-authoritative-probe-34674622821
+    sha256: 3965f46dcee7f74fe9a640d6254bbbe1d5090a0391c4bf8c8a40546c981fa4e7
+catalog_page:
+  url: https://www.data.gov.in/catalog/all-india-level-quarterly-maximum-and-minimum-performing-public-health-facilities-selected
+  http_status: 200
+  byte_count: 1022929
+  sha256: 43f3616d3aaef915bc24a5dff5545a987c9765a31f86be1b928d3b143bf56d03
+  observed_response_kind: html_portal_shell
+  explicit_resource_link_count: 0
+  explicit_resource_uuid_candidates: []
+  authoritative_controls:
+    catalog_api:
+      present: true
+      available: false
+      observed_text: Catalog API is not available
+    zip_download:
+      present: true
+      available: false
+      observed_text: Zip Download is not available
+    aria_disabled_marker_observed: true
+control_surface:
+  url: https://www.data.gov.in/apis/efc4b11e-30ca-4e02-a168-902d34c2e7a0
+  http_status: 200
+  byte_count: 995962
+  sha256: e5650be9ba05ae4c0775785730f2679d606245119f440e0e77db3a290f5f7c41
+  observed_response_kind: html_portal_shell
+  machine_resource_identity_resolved: false
+  observed_schema_available: false
+result:
+  raw_thematic_payload_acquired: false
+  machine_resource_identity_resolved: false
+  observed_schema_available: false
+  publication_allowed: false
+  blocker: authoritative_catalog_explicitly_disables_catalog_api_and_zip_download_and_exposes_no_child_resource_link
+governance:
+  - official_ogd_hosts_only
+  - disabled_controls_are_negative_evidence_not_payloads
+  - never_construct_child_resource_identity_from_catalog_uuid
+  - html_is_not_data
+  - preserve_missing_as_null
+  - no_name_only_geography_equivalence
+  - publication_requires_payload_hash_schema_rights_geography_and_validation_gates
+interpretation: >-
+  The authoritative OGD catalog page was successfully snapshotted and its own rendered
+  controls explicitly state that Catalog API and Zip Download are not available. The
+  page exposes no child resource link admitted by the governed resolver. This is verified
+  blocker evidence, not a Health dataset: it cannot satisfy authoritative acquisition,
+  observed-schema, geography, indicator, curation, or publication gates.
+next_safe_action: >-
+  Continue periodic authoritative probing. If the OGD page later exposes a non-disabled
+  machine control or explicit child resource/download link, acquire only that exact
+  official payload, hash the immutable bytes, inspect its observed schema, review rights,
+  and establish temporal/geographic linkage before any curated publication.
