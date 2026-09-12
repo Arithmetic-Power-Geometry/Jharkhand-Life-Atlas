@@ -10,6 +10,7 @@ def valid_record():
         "relation": "same_unit",
         "evidence_url": "https://lgdirectory.gov.in/example-authoritative-record",
         "evidence_date": "2026-09-08",
+        "evidence_sha256": "a" * 64,
         "evidence_statement": "Authoritative record explicitly establishes continuity.",
         "evidence_reference_id": "example-only-test-reference",
         "source_name": "Example Village",
@@ -26,6 +27,7 @@ def test_equal_names_alone_never_establish_equivalence():
     record = valid_record()
     record.pop("evidence_url")
     record.pop("evidence_date")
+    record.pop("evidence_sha256")
     record.pop("evidence_statement")
     record.pop("evidence_reference_id")
     decision = validate_crosswalk_record(record)
@@ -49,6 +51,22 @@ def test_same_unit_requires_explicit_reference_id():
     record = valid_record()
     record.pop("evidence_reference_id")
     assert validate_crosswalk_record(record).reason == "same_unit_requires_evidence_reference_id"
+
+
+def test_evidence_date_must_be_real_iso_calendar_date():
+    record = valid_record()
+    record["evidence_date"] = "2026-02-31"
+    assert validate_crosswalk_record(record).reason == "evidence_date_must_be_iso_calendar_date"
+
+
+def test_immutable_evidence_sha256_is_required():
+    record = valid_record()
+    record.pop("evidence_sha256")
+    assert validate_crosswalk_record(record).reason == "evidence_sha256_required"
+
+    record = valid_record()
+    record["evidence_sha256"] = "not-a-sha256"
+    assert validate_crosswalk_record(record).reason == "evidence_sha256_required"
 
 
 def test_filter_never_promotes_invalid_records():
