@@ -39,6 +39,25 @@ def test_nfhs5_metadata_never_upgrades_to_scientific_evidence():
     assert "person-level" in data["privacy_rule"]
 
 
+def test_nfhs5_official_suppression_semantics_are_fail_closed():
+    data = load_evidence()
+    resource = data["resource_observation"]
+    state = resource["source_metadata_state"]
+    suppression = resource["suppression_semantics"]
+    rules = set(data["rules"])
+
+    assert state["reference_url_of_resource"] == "observed_as_NA"
+    assert state["sourced_webservices_apis"] == "observed_as_NA"
+    assert resource["reference_url_of_resource"] is None
+    assert resource["sourced_webservices_apis"] is None
+    assert "25-49" in suppression["parenthesized_estimate_rule"]
+    assert "fewer than 25" in suppression["asterisk_rule"]
+    assert "null" in suppression["jla_handling"]
+    assert "never convert to zero" in suppression["jla_handling"]
+    assert "suppression_is_not_zero" in rules
+    assert "suppressed_values_must_not_be_reconstructed" in rules
+
+
 def test_nfhs5_rights_review_preserves_fail_closed_boundary():
     text = RIGHTS.read_text(encoding="utf-8")
     assert "NFHS-5 district factsheet" in text
