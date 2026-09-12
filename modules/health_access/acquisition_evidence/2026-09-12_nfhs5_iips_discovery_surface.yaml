@@ -1,0 +1,36 @@
+evidence_id: JLA_HEALTH_NFHS5_IIPS_DISCOVERY_SURFACE_2026_09_12
+module_id: health_access
+source_id: IIPS_NFHS5_STATE_FACTSHEETS_DISCOVERY
+observed_on: '2026-09-12'
+authority: International Institute for Population Sciences (IIPS), Ministry of Health and Family Welfare NFHS implementing institution
+official_page:
+  url: https://www.iipsindia.ac.in/content/india-and-stateuts-fact-sheets
+  title: India and State/UTs Fact Sheets
+  page_updated_as_displayed: '2026-09-10'
+  linked_nfhs5_fact_sheet_index: http://rchiips.org/nfhs/factsheet_NFHS-5.shtml
+observation:
+  page_confirms_nfhs5_fact_sheet_index: true
+  direct_jharkhand_payload_identity_observed: false
+  raw_payload_acquired: false
+  sha256: null
+  schema_inspected: false
+interpretation:
+  - The IIPS page is an authoritative NFHS-5 discovery surface and independently confirms the official State/UT fact-sheet index.
+  - This discovery record does not establish the identity of the still-missing Jharkhand district workbook advertised by OGD.
+  - No file URL, workbook bytes, resource UUID, district rows, indicator values, schema, or geography equivalence are inferred from the index link alone.
+  - A state-level factsheet or report, if later acquired, must be governed as a distinct source artifact and must not be substituted for a district-grain workbook.
+publication_allowed: false
+missing_value_rule: preserve source missing/suppressed cells as null; never convert missing to zero
+privacy_rule: do not expose person-level health data
+next_safe_actions:
+  - inspect the official NFHS-5 fact-sheet index for an explicit Jharkhand asset URL using an authoritative retrieval path
+  - if bytes are retrieved, record final URL, retrieval timestamp, byte count, content type, and SHA-256 before interpretation
+  - keep state-level and district-level artifacts source-distinct and grain-distinct
+  - preserve suppression semantics and refuse name-only current-geography equivalence
+rules:
+  - discovery_surface_is_not_payload
+  - state_fact_sheet_is_not_district_workbook
+  - metadata_is_not_indicator_data
+  - never_construct_unobserved_asset_url
+  - suppression_is_not_zero
+  - no_unsupported_derived_outputs
