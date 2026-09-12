@@ -12,10 +12,14 @@ verified_partial_evidence:
     health_field_count: 69
     reference_year: 2011
     rule: "Direct source-native projection only; preserve missing as null/blank representation and do not infer current availability or current-geography equivalence."
+  hmis_quarterly_catalog_blocker_2026_09_12:
+    status: immutable_official_control_surface_evidence
+    evidence: modules/health_access/acquisition_evidence/2026-09-12_hmis_quarterly_catalog_controls.yaml
+    rule: "The official OGD catalog/control surfaces are evidence about acquisition availability only. Disabled Catalog API/ZIP controls and absence of an explicit child resource identity must never be converted into a synthetic payload, resource UUID, schema, indicator, or publication claim."
 criteria:
   authoritative_acquisition:
     satisfied: false
-    evidence: "A governed Census 2011 Health source and validated historical extract exist, but the preferred 2026 OGD facility payload and production HMIS/NFHS/current sources are not yet all acquired and schema-verified."
+    evidence: "A governed Census 2011 Health source and validated historical extract exist. The 2026-09-12 immutable HMIS catalog-control snapshot verifies that the targeted quarterly HMIS catalog exposes disabled Catalog API/ZIP controls and no explicit reusable child resource identity; therefore no payload is inferred or published. The preferred 2026 OGD facility payload and production HMIS/NFHS/current sources are not yet all acquired and schema-verified."
   rights_licence_review:
     satisfied: true
     evidence: "modules/health_access/RIGHTS_LICENCE_REVIEW.md records the source-scoped publication decision: the historical Census extract follows JLA's conservative derived-use policy; OGD sources are reviewed under Government Open Data License - India with attribution while each payload remains separately gated; restricted ABDM HFR remains excluded pending established export/republication rights."
@@ -30,7 +34,7 @@ criteria:
     evidence: "The historical extract remains explicitly on Census 2011 source-native geography. Current/differently dated facility geography still requires evidence-backed temporal crosswalks; name equality alone is prohibited."
   provenance:
     satisfied: false
-    evidence: "The validated Census 2011 Health extract records source/output SHA-256 provenance. Production retrieval hashes/API request provenance for current/differently dated Health sources remain pending."
+    evidence: "The validated Census 2011 Health extract records source/output SHA-256 provenance, and the 2026-09-12 HMIS catalog/control blocker evidence records immutable hashes for the inspected official surfaces and workflow artifact. Production retrieval hashes/API request provenance for acquired current/differently dated Health payloads remain pending."
   schema:
     satisfied: true
     evidence: "modules/health_access/schema.yaml defines facility and service-activity grains and missing-value rules; the historical Census extract also has observed source-native field selection recorded in provenance and a field-level Census-2011 data dictionary synchronized to the governed builder."
@@ -42,7 +46,7 @@ criteria:
     evidence: "The Census 2011 Health extract has validated row/field counts, hashes and provenance semantics. Full Module 2 validation remains open because current/differently dated production outputs do not yet satisfy the publication gate."
   tests:
     satisfied: true
-    evidence: "Dedicated Health tests are present and the health-access-validation workflow executes the Module 2 test suite. The governed current-resource identity/status view is regression-tested to remain fail-closed while machine identifiers, payloads, schema inspection and publication permission are absent; the historical data dictionary is regression-tested against the exact 69-field governed builder and provenance hashes. Final completion still requires re-verification on the exact main head."
+    evidence: "Dedicated Health tests are present and the health-access-validation workflow executes the Module 2 test suite. The governed current-resource identity/status view is regression-tested to remain fail-closed while machine identifiers, payloads, schema inspection and publication permission are absent; the historical data dictionary is regression-tested against the exact 69-field governed builder and provenance hashes; immutable HMIS catalog blocker evidence is regression-tested for official URLs, hashes, disabled controls, non-inference and publication denial. Final completion still requires re-verification on the exact main head."
   streamlit_presentation:
     satisfied: true
     evidence: "Streamlit Research exposes the validated Census 2011 Health dataset only when its provenance status is validated_source_native_historical_extract and labels it as historical evidence rather than a current facility inventory. The Modules view separately exposes governed current-facility acquisition counters and blockers directly from the Health resource-identity registry; unresolved resources remain visibly non-publishable."
@@ -51,8 +55,8 @@ criteria:
     evidence: "A provenance-gated historical Health CSV download and research-ready historical evidence report now exist. The full completion criterion remains open until required additional validated production datasets/reports for current or differently dated Health evidence are available."
   documentation:
     satisfied: true
-    evidence: "Module README, source registry, schema, acquisition ledger, historical-extract provenance, field-level Census-2011 data dictionary, resource-identity registry, rights/licence review and the historical evidence research report are present and synchronized with repository truth."
+    evidence: "Module README, source registry, schema, acquisition ledger, historical-extract provenance, field-level Census-2011 data dictionary, resource-identity registry, rights/licence review, historical evidence research report, and immutable 2026-09-12 HMIS catalog/control blocker evidence are present and synchronized with repository truth."
   green_ci_on_main:
     satisfied: true
-    evidence: "On exact main commit df17ac5298e85938004bf7c0730a887bfc7ebc29, both health-access-validation run 34668724321 and repository-wide tests run 34668724364 completed successfully. This establishes the CI criterion without changing any scientific completion gate; any later main head must be re-verified independently before a final COMPLETE decision."
+    evidence: "On exact main commit fe10800c0da267b8125dc28e80511794c5490a16, health-access-validation run 34681808560 and repository-wide tests run 34681808573 both completed successfully on 2026-09-12. This establishes the CI criterion for that verified head without changing any scientific completion gate; any later main head must be re-verified independently before a final COMPLETE decision."
 completion_rule: "status may become complete only when every criterion is satisfied and final CI is green on the exact main head."
