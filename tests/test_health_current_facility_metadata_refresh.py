@@ -27,6 +27,23 @@ def test_current_facility_refresh_is_metadata_only_and_non_publishable():
     assert evidence["geography_linkage_established"] is False
 
 
+def test_live_catalog_sandbox_state_fails_closed():
+    evidence = _load()
+    live = evidence["live_catalog_observation"]
+    assert live["resource_listing_state"] == "no_result_found"
+    assert live["sandbox_warning_present"] is True
+    assert "sandbox environment" in live["sandbox_warning_text"].lower()
+    assert "incomplete or inaccurate" in live["sandbox_warning_text"].lower()
+    assert live["catalog_api_control_present"] is True
+    assert live["zip_download_control_present"] is True
+    assert "cannot establish production payload identity" in live["interpretation"]
+
+    rules = set(evidence["rules"])
+    assert "sandbox_surface_not_production_payload_authority" in rules
+    assert "live_no_result_does_not_erase_indexed_metadata" in rules
+    assert "indexed_metadata_does_not_override_live_payload_absence" in rules
+
+
 def test_advertised_controls_do_not_become_machine_payload_identity():
     evidence = _load()
     observations = evidence["verified_metadata_observations"]
