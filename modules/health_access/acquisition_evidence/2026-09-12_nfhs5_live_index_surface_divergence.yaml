@@ -1,0 +1,42 @@
+evidence_id: JLA_HEALTH_NFHS5_LIVE_INDEX_SURFACE_DIVERGENCE_2026_09_12
+module_id: health_access
+source_id: OGD_NFHS5_DISTRICT_FACTSHEETS_2019_2021
+observed_on: '2026-09-12'
+authority: Ministry of Health and Family Welfare / International Institute for Population Sciences / OGD Platform India
+catalog_url: https://www.data.gov.in/catalog/national-family-health-survey-5-nfhs-5-india-districts-factsheet-data-provisional
+observation:
+  live_catalog_surface:
+    catalog_api_control_visible: true
+    zip_download_control_visible: true
+    resource_listing_text: No Result Found
+    raw_payload_acquired: false
+    resource_identity_acquired: false
+  indexed_catalog_record:
+    resource_title: India Districts Factsheets of National Family Health Survey (NFHS) - 5, 2019-2021 (Provisional)
+    advertised_format: XLS
+    advertised_file_size: 740 KB
+    advertised_data_api_control: true
+    reference_period: 2019-2021
+    raw_payload_acquired: false
+interpretation:
+  state: authoritative_surface_divergence_fail_closed
+  rule: >-
+    The live catalog surface and indexed OGD representation disagree about whether a child resource is currently rendered. This is acquisition-state evidence, not payload evidence. JLA must not choose either representation as proof of workbook possession, must not synthesize a resource UUID or download endpoint, and must keep publication closed until exact authoritative workbook bytes are retrieved and hashed.
+publication_allowed: false
+raw_payload_acquired: false
+raw_sha256: null
+schema_inspected: false
+geography_linkage_established: false
+missing_value_rule: preserve source missing/suppressed values as null; never convert missing to zero
+privacy_rule: do not expose person-level health data
+next_safe_actions:
+  - retry the official download control only through a path that returns exact source bytes
+  - on acquisition record final authoritative URL, retrieval timestamp, content type, byte count and SHA-256
+  - inspect workbook sheets and suppression annotations before extracting Jharkhand district rows
+  - validate NFHS district vintage before any linkage to current administrative geography
+rules:
+  - live_surface_divergence_is_not_payload
+  - indexed_metadata_is_not_payload
+  - never_construct_resource_endpoint_from_catalog_metadata
+  - no_publication_without_exact_bytes_and_hash
+  - suppression_is_not_zero
