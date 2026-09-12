@@ -22,6 +22,14 @@ For an OGD payload to become publishable, JLA must retain provider/source attrib
 
 Rights review does **not** establish that a current resource is scientifically usable. The current NIN/NHP hospital-directory resources remain non-publishable until the exact authoritative machine resource identity and payload are captured, hashes/provenance recorded, observed schema inspected, Jharkhand filtering verified, geographic/temporal semantics validated and the shared source-snapshot gate passes.
 
+## NFHS-5 district factsheet publication boundary
+
+The authoritative OGD catalogue identifies the NFHS-5 India Districts Factsheets resource as Ministry of Health and Family Welfare / IIPS content released through the OGD Platform under the Government Open Data License - India. Repository evidence also records the exact official Catalog API link identity `6f1094bb-24f4-4fe4-8063-cf4cb733279c`.
+
+That catalog/API identity does not authorize publication of an unacquired or unverified workbook. JLA therefore keeps `publication_allowed: false` until the raw workbook bytes are retrieved through an authoritative route, hashed, inspected and validated. The identifier is not treated as a resource UUID or payload identity, and JLA does not construct an endpoint from it.
+
+If the NFHS-5 workbook is acquired, its source annotations and suppression semantics must be preserved. In particular, values withheld because of small unweighted case counts must remain suppressed/null rather than being converted to zero or otherwise imputed without an explicitly validated method. District rows must remain tied to their NFHS-5 reference geography until evidence-backed temporal crosswalks exist.
+
 ## Historical Census Health publication boundary
 
 The committed `data/curated/health_access/census_health_access_2011.csv` is admitted only as a validated source-native historical extract. Its publication decision does not authorize any of the following claims:
@@ -43,5 +51,7 @@ If provider identity, licence applicability, payload identity, attribution requi
 - Government Open Data License - India: https://data.gov.in/godl
 - OGD Platform India Terms of Use: https://www.data.gov.in/terms-of-use
 - Hospital Directory catalogue: https://data.gov.in/catalog/hospital-directory-national-health-portal
+- NFHS-5 district factsheet catalogue: https://www.data.gov.in/catalog/national-family-health-survey-5-nfhs-5-india-districts-factsheet-data-provisional
+- NFHS-5 official Catalog API link observed on 2026-09-12: https://www.data.gov.in/apis/6f1094bb-24f4-4fe4-8063-cf4cb733279c
 
 This review records the governance decision only. It does not claim acquisition, schema inspection or scientific validity for any payload that has not independently passed those gates.
