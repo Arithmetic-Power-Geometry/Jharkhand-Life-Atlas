@@ -1,0 +1,33 @@
+audit_contract: JLA_AUTHORITATIVE_DISCOVERY_AUDIT_V1
+module_id: health_access
+source_id: IIPS_NFHS5_FACTSHEET_DISCOVERY_2026_09_12
+audited_utc: '2026-09-12T14:47:00Z'
+authority:
+  organization: International Institute for Population Sciences (IIPS)
+  parent_context: Autonomous Organization of Ministry of Health and Family Welfare, Government of India
+  official_landing_url: https://www.iipsindia.ac.in/content/india-and-stateuts-fact-sheets
+  delegated_nfhs_url: http://rchiips.org/nfhs/factsheet_NFHS-5.shtml
+observations:
+  - "The official IIPS landing page is titled 'India and State/UTs Fact Sheets'."
+  - "The official page explicitly directs users to the RCHIIPS NFHS-5 factsheet URL."
+  - "The IIPS page reports 'Page Updated : 10/09/2026'."
+  - "A fresh retrieval attempt against the delegated RCHIIPS NFHS-5 page timed out in the available retrieval path; no workbook, CSV, PDF, API payload, resource UUID, or schema-bearing bytes were acquired from that delegated page."
+retrieval_result:
+  landing_page_verified: true
+  delegated_page_payload_acquired: false
+  raw_payload_acquired: false
+  raw_sha256: null
+  raw_bytes: null
+  schema_inspected: false
+  jharkhand_rows_extracted: false
+  publication_allowed: false
+boundary_rules:
+  - "The IIPS landing page establishes an authoritative discovery chain, not possession of the NFHS-5 district workbook."
+  - "A page-updated date is discovery metadata and must not be treated as the NFHS-5 survey reference period or payload publication date."
+  - "Do not infer or construct a district factsheet payload URL, resource identifier, workbook identity, or current administrative linkage from the landing page or delegated URL."
+  - "Do not publish indicators until exact authoritative payload bytes are acquired, hashed, schema-inspected, geographically validated, and passed through JLA publication gates."
+  - "Suppressed, unavailable, blank, or otherwise missing NFHS values must remain null; never convert them to zero."
+relationship_to_existing_ogd_candidate:
+  status: independent_authoritative_discovery_support_only
+  note: "This IIPS discovery chain neither verifies nor invalidates the existing data.gov.in static XLS candidate. Each payload identity must be established from authoritative bytes independently."
+next_safe_action: "Retry the official RCHIIPS factsheet surface and official data.gov.in XLS/download control in an execution path that can return exact source bytes. On successful acquisition, snapshot the bytes immutably, compute SHA-256, inspect workbook schema and suppression annotations, extract only explicit Jharkhand district rows, and validate geography vintage before any JLA publication."
