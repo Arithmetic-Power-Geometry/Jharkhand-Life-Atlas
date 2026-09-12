@@ -17,11 +17,21 @@ resource_observation:
   advertised_data_api_control: true
   latest_indexed_resource_update_observed: '2026-08-11'
   reference_period: 2019-2021
+  reference_url_of_resource: null
   sourced_webservices_apis: null
+  source_metadata_state:
+    reference_url_of_resource: observed_as_NA
+    sourced_webservices_apis: observed_as_NA
+  suppression_semantics:
+    parenthesized_estimate_rule: figures in parentheses are based on 25-49 unweighted cases
+    asterisk_rule: percentage is not shown when based on fewer than 25 unweighted cases
+    jla_handling: preserve suppressed or unavailable percentage cells as null with source annotation; never convert to zero
 interpretation:
   - The official catalog API link establishes a catalog-level machine identity only.
   - The catalog API identifier is not treated as a resource UUID, workbook payload identity, or Data API resource identifier.
   - No API endpoint is constructed from this identifier beyond the exact official link target observed.
+  - The official resource metadata reports Reference URL of Resource and Sourced Webservices/APIs as NA; neither field supplies a reusable payload identity.
+  - The official catalog suppression notes are governance evidence only; they do not supply indicator values or authorize reconstruction of withheld percentages.
   - No raw workbook bytes were acquired in this evidence step.
   - No schema, district rows, indicator values, geography linkage, or publication permission are inferred from catalog metadata.
   - The pre-existing official XLS asset candidate remains fail-closed until authoritative bytes are actually retrieved, hashed, and inspected.
@@ -45,5 +55,7 @@ rules:
   - data_api_button_does_not_establish_resource_uuid
   - never_construct_resource_endpoint_from_catalog_identifier
   - metadata_is_not_payload
+  - suppression_is_not_zero
+  - suppressed_values_must_not_be_reconstructed
   - timeout_does_not_satisfy_acquisition
   - no_unsupported_derived_outputs
