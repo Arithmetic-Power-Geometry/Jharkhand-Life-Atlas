@@ -1,0 +1,71 @@
+evidence_id: JLA_HEALTH_CURRENT_FACILITY_METADATA_REFRESH_2026_09_13
+module_id: health_access
+observed_on: '2026-09-13'
+evidence_class: authoritative_metadata_only
+publication_allowed: false
+raw_payload_acquired: false
+raw_sha256: null
+schema_inspected: false
+geography_linkage_established: false
+
+source:
+  authority: National Institute of Health and Family Welfare (NIHFW), New Delhi
+  catalog_url: https://data.gov.in/catalog/hospital-directory-national-health-portal
+  indexed_catalog_view: https://data.gov.in/catalog/hospital-directory-national-health-portal?filters%5Bfield_catalog_reference%5D=323881&format=json&limit=6&offset=0&sort%5Bcreated%5D=desc
+  platform: Open Government Data Platform India
+  licence_context: Government Open Data License - India
+
+verified_metadata_observations:
+  nin_health_facilities:
+    title: NIN Health Faclities with Geo Code and additional parameters (updated till last month)
+    published_on: '2017-08-10'
+    indexed_updated_on: '2026-08-11'
+    granularity: Monthly
+    advertised_download: CSV through URL
+    advertised_data_api: true
+    high_value_dataset_badge: true
+    machine_resource_id: null
+    direct_payload_url: null
+  national_hospital_directory:
+    title: National Hospital Directory with Geo Code and additional parameters (updated till last month)
+    published_on: '2017-08-10'
+    indexed_updated_on: '2026-08-11'
+    granularity: Monthly
+    advertised_download: CSV
+    advertised_file_size: 9.9 MB
+    advertised_data_api: true
+    machine_resource_id: null
+    direct_payload_url: null
+    indexed_fields_observed:
+      - Sr_No
+      - Location_Coordinates
+      - Location
+      - Hospital_Name
+      - Hospital_Category
+
+interpretation:
+  - The authoritative OGD indexed catalog currently advertises two monthly facility resources with 11 August 2026 update metadata.
+  - Advertised download and Data API controls do not establish a machine resource UUID, API endpoint, or acquired payload.
+  - Indexed field labels are metadata evidence only and are not treated as an observed payload schema.
+  - The standalone live catalog/resource surfaces can render differently from indexed representations; JLA therefore keeps acquisition fail-closed.
+  - No facility row, Jharkhand subset, current-availability indicator, or cross-vintage geography relation is inferred from metadata alone.
+
+required_next_evidence:
+  - exact authoritative machine resource identity or official direct payload URL
+  - captured authoritative bytes or auditable API response
+  - retrieval timestamp, final URL, byte count, content type, and SHA-256
+  - observed payload schema inspection
+  - explicit Jharkhand filtering at source-native geography
+  - evidence-backed administrative-vintage linkage before cross-period comparison
+  - validation tests and source-snapshot gate before publication
+
+rules:
+  - metadata_is_not_payload
+  - advertised_download_is_not_acquisition
+  - data_api_control_is_not_machine_identity
+  - indexed_fields_are_not_payload_schema
+  - never_construct_resource_uuid_or_endpoint
+  - conflicting_authoritative_surfaces_fail_closed
+  - missing_values_remain_null
+  - no_person_level_health_data
+  - no_unsupported_derived_outputs
