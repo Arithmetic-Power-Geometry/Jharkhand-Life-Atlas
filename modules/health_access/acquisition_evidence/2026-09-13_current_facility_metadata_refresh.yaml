@@ -15,6 +15,14 @@ source:
   platform: Open Government Data Platform India
   licence_context: Government Open Data License - India
 
+live_catalog_observation:
+  resource_listing_state: no_result_found
+  sandbox_warning_present: true
+  sandbox_warning_text: This is a sandbox environment created for testing and demonstration purposes only. The content, data, and functionality may be incomplete or inaccurate.
+  catalog_api_control_present: true
+  zip_download_control_present: true
+  interpretation: Live rendering and indexed metadata disagree; the live sandbox-labelled surface cannot establish production payload identity or availability.
+
 verified_metadata_observations:
   nin_health_facilities:
     title: NIN Health Faclities with Geo Code and additional parameters (updated till last month)
@@ -45,13 +53,14 @@ verified_metadata_observations:
 
 interpretation:
   - The authoritative OGD indexed catalog currently advertises two monthly facility resources with 11 August 2026 update metadata.
+  - The live catalog surface currently renders no resources and explicitly labels itself a sandbox/testing environment whose content may be incomplete or inaccurate.
   - Advertised download and Data API controls do not establish a machine resource UUID, API endpoint, or acquired payload.
   - Indexed field labels are metadata evidence only and are not treated as an observed payload schema.
-  - The standalone live catalog/resource surfaces can render differently from indexed representations; JLA therefore keeps acquisition fail-closed.
+  - Conflicting live and indexed authoritative surfaces are treated as unresolved evidence, not reconciled by inference.
   - No facility row, Jharkhand subset, current-availability indicator, or cross-vintage geography relation is inferred from metadata alone.
 
 required_next_evidence:
-  - exact authoritative machine resource identity or official direct payload URL
+  - exact authoritative machine resource identity or official direct payload URL from a production source
   - captured authoritative bytes or auditable API response
   - retrieval timestamp, final URL, byte count, content type, and SHA-256
   - observed payload schema inspection
@@ -66,6 +75,9 @@ rules:
   - indexed_fields_are_not_payload_schema
   - never_construct_resource_uuid_or_endpoint
   - conflicting_authoritative_surfaces_fail_closed
+  - sandbox_surface_not_production_payload_authority
+  - live_no_result_does_not_erase_indexed_metadata
+  - indexed_metadata_does_not_override_live_payload_absence
   - missing_values_remain_null
   - no_person_level_health_data
   - no_unsupported_derived_outputs
