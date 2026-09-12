@@ -1,0 +1,52 @@
+module_id: health_access
+evidence_type: authoritative_acquisition_attempt
+contract: JLA_HEALTH_OFFICIAL_PAYLOAD_ACQUISITION_V1
+source_id: OGD_NHP_HOSPITAL_JULY_2015
+recorded_date: '2026-09-12'
+workflow:
+  name: health-hospital-july2015-acquisition
+  run_id: 34673754309
+  head_sha: 42b0c4584d1b3a9b5ba428e6ddeca028aa59da4e
+  conclusion: success
+resource_page:
+  url: https://www.data.gov.in/resource/hospital-directory-july-2015
+  retrieved_at_utc: '2026-09-12T04:43:50.159631+00:00'
+  http_status: 200
+  byte_count: 999530
+  sha256: 8449da26f4acdaae56b29fc944558c49d994c404a7f807a05abb0094a517a09c
+candidate_payloads:
+  - url: https://data.gov.in/sites/default/files/STQC.pdf
+    http_status: 200
+    content_type: application/pdf
+    byte_count: 122982
+    sha256: 5425b32ac7f592d6c1b8e705c6662a791f43a25acf16afd6b3f8424545a5c53b
+    accepted: false
+    rejection_reason: unrecognized_non_html_payload
+result:
+  raw_payload_acquired: false
+  raw_sha256: null
+  observed_schema: null
+  publication_allowed: false
+  blocker: no_explicit_authoritative_machine_payload_admitted_from_resource_page
+workflow_artifact:
+  name: health-hospital-july2015-34673754309
+  artifact_id: 10291990559
+  zip_sha256: 96a1ded8648afcedfb15dff1485cf3f6f6bf1d97f0eb4e973a8cbaa5905ae459
+governance:
+  - official_ogd_hosts_only
+  - never_guess_resource_uuid_or_download_url
+  - html_is_not_data
+  - hash_before_curation
+  - preserve_missing_as_null
+  - publication_requires_separate_geography_and_validation_gates
+  - rejected_candidates_do_not_satisfy_acquisition
+interpretation: >-
+  This record preserves provenance for a successful fail-closed acquisition workflow.
+  It is not a source snapshot of hospital data, does not establish a machine-readable
+  payload or observed dataset schema, and cannot satisfy the authoritative acquisition,
+  curation, indicator, geographic-linkage, or publication gates.
+next_safe_action: >-
+  Continue only through an explicit authoritative machine-readable OGD payload or
+  download control. On successful acquisition, hash immutable bytes, inspect the
+  observed schema, review source-scoped rights, and validate temporal/geographic
+  linkage before any curated publication.
