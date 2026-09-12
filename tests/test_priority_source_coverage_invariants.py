@@ -89,16 +89,18 @@ def test_canonical_source_coverage_has_explicit_blocker_for_unpublished_sources(
 def test_nfhs5_live_access_contract_does_not_reinvent_an_api():
     """Keep acquisition controls aligned with the verified live NFHS-5 resource page.
 
-    The authoritative OGD resource currently exposes an XLS download and preview
-    but explicitly states that a Data API does not exist. Future acquisition
-    engineering must therefore stay on verified authoritative export paths and
-    must not manufacture or infer an API identity from catalog metadata.
+    The authoritative OGD surface exposes an XLS download and preview and displays
+    a Data API control, while the resource metadata does not establish a sourced
+    webservice/API identity. The workflow must therefore distinguish an advertised
+    UI control from a verified machine endpoint and must never synthesize an API
+    UUID or infer an endpoint from catalog metadata.
     """
     sources = (ROOT / "modules" / "health_access" / "sources.yaml").read_text(encoding="utf-8")
     workflow = (ROOT / ".github" / "workflows" / "health-nfhs5-acquisition.yml").read_text(encoding="utf-8")
 
     assert "source_id: OGD_NFHS5_DISTRICT_FACTSHEETS_2019_2021" in sources
     assert "data_api_status: unavailable_on_live_resource_page" in sources
-    assert "'data_api_advertised': False" in workflow
-    assert "'data_api_status': 'explicitly_unavailable_on_live_resource_page'" in workflow
+    assert "'data_api_advertised': True" in workflow
+    assert "'data_api_status': 'advertised_on_current_official_ogd_surface_but_exact_machine_identity_not_verified'" in workflow
+    assert "'exact_data_api_identity_verified': False" in workflow
     assert "synthesize an API UUID" in workflow
