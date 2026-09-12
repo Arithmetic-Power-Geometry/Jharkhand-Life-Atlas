@@ -54,5 +54,5 @@ criteria:
     evidence: "Module README, source registry, schema, acquisition ledger, historical-extract provenance, field-level Census-2011 data dictionary, resource-identity registry, rights/licence review and the historical evidence research report are present and synchronized with repository truth."
   green_ci_on_main:
     satisfied: false
-    evidence: "The dedicated Health validation check is green on main commit 8bef2a0ea18294972917fa222f7e303a8812a87c, but the repository-wide tests check on that exact head is red. This criterion therefore fails closed until repository-wide CI is green on the exact current main head."
+    evidence: "Repository-wide tests are green on main commit 2fc094af4bc276dbc8ae13b8c5c44a3150f78df1 after the NFHS-5 contract regression fix. The dedicated Health validation was green on the most recent Health-validation head, but this criterion intentionally remains fail-closed until both checks are verified green on the same exact current main head."
 completion_rule: "status may become complete only when every criterion is satisfied and final CI is green on the exact main head."
