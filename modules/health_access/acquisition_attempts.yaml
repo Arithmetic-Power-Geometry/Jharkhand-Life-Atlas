@@ -213,6 +213,31 @@ attempts:
     geographic_rule: "District-level HMIS aggregates must remain district-level and must never be allocated to villages or facilities."
     next_safe_action: "Continue only with an explicit authoritative CSV/download endpoint or authoritative payload bytes. Do not infer an endpoint from HTML, title, slug, catalog metadata, or mirrors."
 
+  - attempted_utc: '2026-09-12T23:55:30Z'
+    source_id: OGD_NFHS5_DISTRICT_FACTSHEETS_2019_2021_LIVE_INDEX_DIVERGENCE
+    workflow_head_sha: d3cd900da841c13e9412e1aa9aa7dc6465fbc492
+    workflow_run_id: 34726636261
+    workflow_result: success
+    artifact_name: health-nfhs5-authoritative-acquisition-34726636261
+    artifact_digest: sha256:3be2e31cc0bdee53d8983fbccdd8728104ada1eafc69fd78ca00f32e0e9d7905
+    authoritative_resource_page: https://www.data.gov.in/resource/india-districts-factsheets-national-family-health-survey-nfhs-5-2019-2021-provisional
+    indexed_metadata_xls_advertised: true
+    indexed_metadata_file_size: "740 KB"
+    live_resource_rows_observed: false
+    live_surface_state: "No Result Found"
+    live_catalog_api_control_visible: true
+    live_zip_download_control_visible: true
+    catalog_api_identity_scope: catalog_only_not_resource_or_payload
+    exact_payload_identity_verified_from_live_surface: false
+    live_index_divergence: true
+    raw_payload_acquired: false
+    raw_sha256: null
+    raw_bytes: null
+    schema_inspected: false
+    publication_effect: none_gate_remains_closed
+    blocker_class: indexed_metadata_and_live_official_resource_surface_diverge_without_exact_payload_identity
+    resolution_rule: "Retry only an exact authoritative OGD asset identity that is independently evidenced, or an OGD API after its exact resource-level machine identity and request requirements are independently verified. Do not treat indexed metadata, catalog/API/ZIP controls, a catalog UUID, filename pattern, or page slug as payload identity; do not substitute mirrors or synthesize an endpoint."
+
 rules:
   - catalog_metadata_is_not_raw_data
   - resource_page_metadata_is_not_raw_data
