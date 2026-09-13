@@ -4,6 +4,7 @@
 This script deliberately emits no source rows and no values from privacy-risk columns.
 It checks the governed schema, counts source-label Jharkhand coverage, measures missingness
 for the candidate public projection, and diagnoses source geography identifier ambiguity.
+It also separates superficial label-normalization collisions from identifier ambiguity.
 It does not establish administrative equivalence or authorize publication.
 """
 
@@ -17,7 +18,7 @@ from pathlib import Path
 from typing import Iterable
 
 
-CONTRACT_NAME = "JLA_HEALTH_NHD_AGGREGATE_ROW_AUDIT_V1"
+CONTRACT_NAME = "JLA_HEALTH_NHD_AGGREGATE_ROW_AUDIT_V2"
 
 
 def _is_missing(value: object) -> bool:
@@ -64,6 +65,35 @@ def _ambiguity_summary(rows: Iterable[dict[str, str]], label_field: str, id_fiel
             and not ids_with_multiple_labels
         ),
         "administrative_equivalence_established": False,
+    }
+
+
+def _label_normalization_audit(rows: Iterable[dict[str, str]], label_field: str) -> dict:
+    """Report trim+casefold collisions without treating them as admin equivalence."""
+    normalized_to_raw: dict[str, set[str]] = defaultdict(set)
+    missing_count = 0
+    for row in rows:
+        raw = _nonmissing_text(row.get(label_field))
+        if raw is None:
+            missing_count += 1
+            continue
+        normalized_to_raw[raw.casefold()].add(raw)
+
+    collisions = {
+        normalized: sorted(raw_values)
+        for normalized, raw_values in sorted(normalized_to_raw.items())
+        if len(raw_values) > 1
+    }
+    return {
+        "label_field": label_field,
+        "normalization": "strip_then_casefold",
+        "raw_distinct_label_count": sum(len(values) for values in normalized_to_raw.values()),
+        "normalized_distinct_label_count": len(normalized_to_raw),
+        "missing_label_count": missing_count,
+        "normalization_collision_count": len(collisions),
+        "normalization_collisions": collisions,
+        "administrative_equivalence_established": False,
+        "rule": "normalization may diagnose spelling/case variants but cannot establish cross-vintage administrative equivalence",
     }
 
 
@@ -118,8 +148,9 @@ def audit_rows(csv_path: Path, contract_path: Path) -> dict:
         },
         "jharkhand_distinct_district_label_count": len(district_labels),
         "jharkhand_distinct_district_labels": district_labels,
+        "district_label_normalization_audit": _label_normalization_audit(jharkhand_rows, "District"),
         "candidate_projection_null_counts": null_counts,
-        "null_policy": "empty_or_whitespace_csv_cells_counted_as_missing; no zero filling performed",
+        "null_policy": "empty_or_whitespace_csv_cells counted as missing; no zero filling performed",
         "state_identifier_audit": _ambiguity_summary(jharkhand_rows, "State", "State_ID"),
         "district_identifier_audit": _ambiguity_summary(jharkhand_rows, "District", "District_ID"),
         "privacy_risk_columns_read_for_output": [],
@@ -131,6 +162,7 @@ def audit_rows(csv_path: Path, contract_path: Path) -> dict:
             "aggregate audit output contains no source rows",
             "privacy-risk source values are not emitted",
             "missing values remain missing and are never converted to zero",
+            "label normalization is diagnostic only and does not establish administrative equivalence",
             "source-label matching does not establish cross-vintage administrative equivalence",
             "source identifiers remain uninterpreted until independently evidenced crosswalk records exist",
             "passing this audit does not authorize publication",
