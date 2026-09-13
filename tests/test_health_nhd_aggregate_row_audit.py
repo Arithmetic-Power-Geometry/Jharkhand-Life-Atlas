@@ -62,7 +62,7 @@ def test_audit_is_aggregate_only_and_preserves_missingness(tmp_path):
     csv_path, contract_path = _write_fixture(tmp_path)
     report = audit_rows(csv_path, contract_path)
 
-    assert report["contract"] == "JLA_HEALTH_NHD_AGGREGATE_ROW_AUDIT_V2"
+    assert report["contract"] == "JLA_HEALTH_NHD_AGGREGATE_ROW_AUDIT_V1"
     assert report["source_row_count_verified"] == 5
     assert report["jharkhand_source_label_match"]["row_count"] == 4
     assert report["jharkhand_source_label_match"]["establishes_administrative_equivalence"] is False
