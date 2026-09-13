@@ -14,7 +14,7 @@ def _write_fixture(tmp_path: Path) -> tuple[Path, Path]:
         "contract": "TEST_NHD_SCHEMA_V1",
         "source_sha256": "a" * 64,
         "observed_columns": observed_columns,
-        "observed_data_row_count": 4,
+        "observed_data_row_count": 5,
         "candidate_public_projection": [
             "Hospital_Name", "State", "District", "Number_Doctor", "Total_Num_Beds",
             "State_ID", "District_ID",
@@ -46,6 +46,11 @@ def _write_fixture(tmp_path: Path) -> tuple[Path, Path]:
             "Nodal_Person_Info": "Person C", "State_ID": "20", "District_ID": "102",
         })
         writer.writerow({
+            "Hospital_Name": "C2", "State": "Jharkhand", "District": "khunti",
+            "Number_Doctor": "1", "Total_Num_Beds": "2", "Telephone": "334",
+            "Nodal_Person_Info": "Person C2", "State_ID": "20", "District_ID": "102",
+        })
+        writer.writerow({
             "Hospital_Name": "D", "State": "Bihar", "District": "Patna",
             "Number_Doctor": "5", "Total_Num_Beds": "20", "Telephone": "444",
             "Nodal_Person_Info": "Person D", "State_ID": "10", "District_ID": "201",
@@ -57,9 +62,9 @@ def test_audit_is_aggregate_only_and_preserves_missingness(tmp_path):
     csv_path, contract_path = _write_fixture(tmp_path)
     report = audit_rows(csv_path, contract_path)
 
-    assert report["contract"] == "JLA_HEALTH_NHD_AGGREGATE_ROW_AUDIT_V1"
-    assert report["source_row_count_verified"] == 4
-    assert report["jharkhand_source_label_match"]["row_count"] == 3
+    assert report["contract"] == "JLA_HEALTH_NHD_AGGREGATE_ROW_AUDIT_V2"
+    assert report["source_row_count_verified"] == 5
+    assert report["jharkhand_source_label_match"]["row_count"] == 4
     assert report["jharkhand_source_label_match"]["establishes_administrative_equivalence"] is False
     assert report["candidate_projection_null_counts"]["Number_Doctor"] == 2
     assert report["candidate_projection_null_counts"]["Total_Num_Beds"] == 0
@@ -77,6 +82,18 @@ def test_audit_detects_source_identifier_ambiguity(tmp_path):
     assert district["ids_with_multiple_labels_count"] == 1
     assert district["internally_one_to_one"] is False
     assert district["administrative_equivalence_established"] is False
+
+
+def test_audit_separates_casefold_collision_from_admin_equivalence(tmp_path):
+    csv_path, contract_path = _write_fixture(tmp_path)
+    report = audit_rows(csv_path, contract_path)
+
+    normalized = report["district_label_normalization_audit"]
+    assert normalized["raw_distinct_label_count"] == 3
+    assert normalized["normalized_distinct_label_count"] == 2
+    assert normalized["normalization_collision_count"] == 1
+    assert normalized["normalization_collisions"] == {"khunti": ["Khunti", "khunti"]}
+    assert normalized["administrative_equivalence_established"] is False
 
 
 def test_audit_never_emits_privacy_values(tmp_path):
