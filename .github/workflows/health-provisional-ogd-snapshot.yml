@@ -8,11 +8,13 @@ on:
     branches: [main]
     paths:
       - 'modules/health_access/capture_provisional_ogd_snapshot.py'
+      - 'modules/health_access/audit_nhd_candidate_rows.py'
       - 'modules/health_access/national_hospital_directory_candidate_schema.json'
       - 'jla/privacy.py'
       - '.github/workflows/health-provisional-ogd-snapshot.yml'
       - 'tests/test_health_provisional_snapshot_contract.py'
       - 'tests/test_health_nhd_candidate_schema_contract.py'
+      - 'tests/test_health_nhd_aggregate_row_audit.py'
 
 permissions:
   contents: read
@@ -125,19 +127,46 @@ jobs:
           }
           report_path.write_text(json.dumps(governed_report, indent=2, sort_keys=True) + '\n', encoding='utf-8')
           PY
+      - name: Run aggregate-only Jharkhand and source-ID structural audit
+        run: |
+          python modules/health_access/audit_nhd_candidate_rows.py \
+            --csv build/health_provisional_snapshot/hospital_directory.csv \
+            --contract modules/health_access/national_hospital_directory_candidate_schema.json \
+            --output build/health_provisional_snapshot/aggregate_row_audit.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          r = json.loads(Path('build/health_provisional_snapshot/aggregate_row_audit.json').read_text())
+          assert r['contract'] == 'JLA_HEALTH_NHD_AGGREGATE_ROW_AUDIT_V1'
+          assert r['source_rows_emitted'] is False
+          assert r['privacy_risk_columns_read_for_output'] == []
+          assert r['curated_dataset_emitted'] is False
+          assert r['geography_linkage_status'] == 'unresolved'
+          assert r['publication_allowed'] is False
+          assert r['jharkhand_source_label_match']['establishes_administrative_equivalence'] is False
+          assert r['state_identifier_audit']['administrative_equivalence_established'] is False
+          assert r['district_identifier_audit']['administrative_equivalence_established'] is False
+          print(json.dumps({
+              'jharkhand_rows': r['jharkhand_source_label_match']['row_count'],
+              'district_labels': r['jharkhand_distinct_district_label_count'],
+              'district_labels_with_multiple_ids': r['district_identifier_audit']['labels_with_multiple_ids_count'],
+              'district_ids_with_multiple_labels': r['district_identifier_audit']['ids_with_multiple_labels_count'],
+          }, indent=2))
+          PY
       - name: Remove raw candidate before artifact export
         run: |
           # The authoritative candidate contains contact/person fields. Preserve only
-          # cryptographic/schema/privacy receipts and logs; never export source rows.
+          # aggregate/cryptographic/schema/privacy receipts and logs; never export source rows.
           rm -f build/health_provisional_snapshot/hospital_directory.csv
           test ! -e build/health_provisional_snapshot/hospital_directory.csv
-      - name: Upload governed receipt, privacy projection report and run log only
+      - name: Upload governed aggregate receipts and run log only
         uses: actions/upload-artifact@v4
         with:
           name: health-provisional-ogd-snapshot-receipt-${{ github.run_id }}
           path: |
             build/health_provisional_snapshot/receipt.json
             build/health_provisional_snapshot/privacy_projection_report.json
+            build/health_provisional_snapshot/aggregate_row_audit.json
             build/health_provisional_snapshot/run.log
           if-no-files-found: error
           retention-days: 90
