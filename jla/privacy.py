@@ -14,7 +14,20 @@ from collections.abc import Iterable
 
 PRIVACY_RULES: tuple[tuple[str, tuple[str, ...]], ...] = (
     ("email", ("email", "e mail")),
-    ("telephone", ("telephone", "phone", "landline")),
+    (
+        "telephone",
+        (
+            "telephone",
+            "phone",
+            "landline",
+            "emergency num",
+            "emergency number",
+            "tollfree",
+            "toll free",
+            "helpline",
+            "fax",
+        ),
+    ),
     ("mobile", ("mobile", "cell number", "cell no")),
     (
         "named_person",
