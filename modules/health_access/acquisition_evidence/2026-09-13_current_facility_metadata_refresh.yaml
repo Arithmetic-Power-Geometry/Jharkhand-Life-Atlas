@@ -34,6 +34,7 @@ verified_metadata_observations:
     high_value_dataset_badge: true
     machine_resource_id: null
     direct_payload_url: null
+    identity_status: unresolved
   national_hospital_directory:
     title: National Hospital Directory with Geo Code and additional parameters (updated till last month)
     published_on: '2017-08-10'
@@ -44,6 +45,10 @@ verified_metadata_observations:
     advertised_data_api: true
     machine_resource_id: null
     direct_payload_url: null
+    identity_status: ambiguous_multiple_explicit_candidates
+    candidate_direct_payload_urls:
+      - https://data.gov.in/sites/default/files/datafile/hospital_directory.csv
+      - https://www.data.gov.in/files/ogdpv2dms/s3fs-public/datafile/hospital_directory.csv
     indexed_fields_observed:
       - Sr_No
       - Location_Coordinates
@@ -51,16 +56,33 @@ verified_metadata_observations:
       - Hospital_Name
       - Hospital_Category
 
+identity_probe_evidence:
+  workflow_run_id: 34738447883
+  workflow_head_sha: 66a88a793dbb9e1f9a2f84a6e9deee364272fd47
+  workflow_artifact_id: 10311901673
+  workflow_artifact_sha256: c7fe7e5c89c601e23147730aa9de03d354396d2a4e44a79bfb3e17b36ca8929f
+  contract: JLA_OGD_RESOURCE_IDENTITY_RESOLUTION_V4
+  resolved_at_utc: '2026-09-13T04:41:37.815635+00:00'
+  national_hospital_directory_status: ambiguous_multiple_explicit_candidates
+  nin_health_facilities_status: unresolved
+  publication_allowed: false
+  raw_payload_acquired: false
+  schema_inspected: false
+  rule: Two explicit official CSV candidates are stronger identity evidence than metadata-only advertising, but ambiguity must be resolved from authoritative evidence before acquisition, hashing, schema inspection, Jharkhand filtering, or publication.
+
 interpretation:
   - The authoritative OGD indexed catalog currently advertises two monthly facility resources with 11 August 2026 update metadata.
   - The live catalog surface currently renders no resources and explicitly labels itself a sandbox/testing environment whose content may be incomplete or inaccurate.
+  - The governed identity resolver found two explicit official direct-payload candidates for the National Hospital Directory resource; because more than one candidate remains, no canonical direct payload URL is selected.
+  - The NIN Health Facilities resource remains unresolved with no machine resource identity or explicit direct payload candidate.
   - Advertised download and Data API controls do not establish a machine resource UUID, API endpoint, or acquired payload.
   - Indexed field labels are metadata evidence only and are not treated as an observed payload schema.
   - Conflicting live and indexed authoritative surfaces are treated as unresolved evidence, not reconciled by inference.
-  - No facility row, Jharkhand subset, current-availability indicator, or cross-vintage geography relation is inferred from metadata alone.
+  - No facility row, Jharkhand subset, current-availability indicator, or cross-vintage geography relation is inferred from metadata or ambiguous identity evidence alone.
 
 required_next_evidence:
-  - exact authoritative machine resource identity or official direct payload URL from a production source
+  - authoritative disambiguation of the two explicit National Hospital Directory CSV candidates, or proof that they are byte-identical representations of the same production payload
+  - exact authoritative machine resource identity or canonical official direct payload URL from a production source
   - captured authoritative bytes or auditable API response
   - retrieval timestamp, final URL, byte count, content type, and SHA-256
   - observed payload schema inspection
@@ -78,6 +100,7 @@ rules:
   - sandbox_surface_not_production_payload_authority
   - live_no_result_does_not_erase_indexed_metadata
   - indexed_metadata_does_not_override_live_payload_absence
+  - ambiguous_multiple_explicit_candidates_do_not_permit_canonical_selection
   - missing_values_remain_null
   - no_person_level_health_data
   - no_unsupported_derived_outputs
