@@ -28,6 +28,24 @@ def test_privacy_classifier_uses_headers_only_and_finds_contact_fields() -> None
     assert "District" not in categories
 
 
+def test_privacy_classifier_catches_nonstandard_contact_channels_without_false_positive_counts() -> None:
+    header = [
+        "Emergency_Num",
+        "Tollfree",
+        "Helpline",
+        "Hospital_Fax",
+        "Number_Doctor",
+        "Total_Num_Beds",
+    ]
+    categories = {item["column"]: item["category"] for item in privacy_risk_columns(header)}
+    assert categories["Emergency_Num"] == "telephone"
+    assert categories["Tollfree"] == "telephone"
+    assert categories["Helpline"] == "telephone"
+    assert categories["Hospital_Fax"] == "telephone"
+    assert "Number_Doctor" not in categories
+    assert "Total_Num_Beds" not in categories
+
+
 def test_public_projection_report_is_row_value_free_and_fail_closed() -> None:
     report = public_projection_report(
         ["Hospital Name", "District", "Mobile Number", "Absent Column"],
