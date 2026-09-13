@@ -1,0 +1,117 @@
+{
+  "contract": "JLA_HEALTH_NHD_PERSISTED_AGGREGATE_EVIDENCE_V1",
+  "module": "health_access",
+  "status": "candidate_evidence_only",
+  "publication_allowed": false,
+  "source": {
+    "title": "National Hospital Directory candidate",
+    "requested_url": "https://data.gov.in/sites/default/files/datafile/hospital_directory.csv",
+    "final_url": "https://www.data.gov.in/sites/default/files/datafile/hospital_directory.csv",
+    "captured_at_utc": "2026-09-13T18:54:07.633064+00:00",
+    "sha256": "1ddcad9f9b922142a4374c7b89b70fb6cefd8a257448c70a61e1c07d98845134",
+    "byte_count": 10341256,
+    "content_type": "text/csv",
+    "observed_data_row_count": 30273,
+    "observed_column_count": 48,
+    "observed_row_width_mismatch_count": 0,
+    "canonical_source_identity_resolved": false
+  },
+  "ci_provenance": {
+    "workflow": "health-provisional-ogd-snapshot",
+    "run_id": 34776034912,
+    "head_sha": "38f7d106ce0cc6e24f404c7b861e00bd6b8ad984",
+    "conclusion": "success",
+    "artifact_id": 10323980681,
+    "artifact_name": "health-provisional-ogd-snapshot-receipt-34776034912",
+    "artifact_digest": "sha256:1fd50f9361fd2b907e6652b9fcb4b5ed1818b966165512207eb6047ec7b5e321"
+  },
+  "privacy": {
+    "header_audit_performed": true,
+    "privacy_risk_column_count": 13,
+    "source_rows_emitted": false,
+    "privacy_risk_values_emitted": false,
+    "raw_snapshot_exported_as_artifact": false,
+    "candidate_public_projection_header_gate_passed": true,
+    "candidate_public_projection_authorizes_publication": false
+  },
+  "jharkhand_aggregate_audit": {
+    "source_label_match_field": "State",
+    "source_label_match_rule": "strip_then_casefold_equals_jharkhand",
+    "row_count": 478,
+    "establishes_administrative_equivalence": false,
+    "raw_distinct_district_label_count": 25,
+    "normalized_distinct_district_label_count": 24,
+    "district_label_normalization_collision_count": 1,
+    "district_label_normalization_collisions": {
+      "khunti": ["Khunti", "khunti"]
+    },
+    "district_identifier_audit": {
+      "observed_label_count": 25,
+      "observed_id_count": 24,
+      "labels_with_multiple_ids_count": 5,
+      "labels_with_multiple_ids": [
+        "East Singhbhum",
+        "Hazaribag",
+        "Khunti",
+        "Ranchi",
+        "West Singhbhum"
+      ],
+      "ids_with_multiple_labels_count": 4,
+      "ids_with_multiple_labels": ["0", "357", "364", "369"],
+      "missing_label_or_id_pair_count": 0,
+      "internally_one_to_one": false,
+      "administrative_equivalence_established": false
+    },
+    "state_identifier_audit": {
+      "observed_label_count": 1,
+      "observed_id_count": 3,
+      "labels_with_multiple_ids_count": 1,
+      "labels_with_multiple_ids": ["Jharkhand"],
+      "ids_with_multiple_labels_count": 0,
+      "missing_label_or_id_pair_count": 0,
+      "internally_one_to_one": false,
+      "administrative_equivalence_established": false
+    },
+    "candidate_projection_null_counts": {
+      "Accreditation": 3,
+      "Ayush": 3,
+      "Discipline_Systems_of_Medicine": 0,
+      "District": 0,
+      "District_ID": 0,
+      "Emergency_Services": 3,
+      "Establised_Year": 3,
+      "Facilities": 0,
+      "Hospital_Care_Type": 0,
+      "Hospital_Category": 0,
+      "Hospital_Name": 0,
+      "Location": 0,
+      "Location_Coordinates": 0,
+      "Miscellaneous_Facilities": 3,
+      "Num_Bed_for_Eco_Weaker_Sec": 3,
+      "Num_Mediconsultant_or_Expert": 3,
+      "Number_Doctor": 3,
+      "Number_Private_Wards": 3,
+      "Pincode": 0,
+      "Specialties": 2,
+      "State": 0,
+      "State_ID": 0,
+      "Subdistrict": 0,
+      "Subtown": 3,
+      "Tariff_Range": 3,
+      "Total_Num_Beds": 0,
+      "Town": 3,
+      "Village": 3
+    },
+    "null_policy": "empty_or_whitespace_csv_cells_counted_as_missing; no zero filling performed"
+  },
+  "geography_linkage_status": "unresolved",
+  "curated_dataset_emitted": false,
+  "rules": [
+    "This file contains aggregate audit evidence only and no source rows.",
+    "Source identifiers remain uninterpreted until independently evidenced crosswalk records exist.",
+    "Label normalization is diagnostic only and cannot establish administrative equivalence.",
+    "Missing values remain missing and are never converted to zero.",
+    "Passing privacy or aggregate audits does not authorize publication.",
+    "Module 2 remains IN DEVELOPMENT until every strict publication gate and exact-head green CI are verified."
+  ]
+}
