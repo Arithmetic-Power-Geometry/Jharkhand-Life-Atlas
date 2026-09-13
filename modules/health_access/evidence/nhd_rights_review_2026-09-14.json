@@ -1,0 +1,53 @@
+{
+  "contract": "JLA_HEALTH_NHD_RIGHTS_REVIEW_V1",
+  "module": "health_access",
+  "source_id": "OGD_NHP_HOSPITAL_GEO_2026",
+  "reviewed_on": "2026-09-14",
+  "status": "reviewed_with_exclusions_and_remaining_gates",
+  "publication_allowed": false,
+  "license": {
+    "name": "Government Open Data License - India",
+    "official_license_url": "https://www.data.gov.in/sites/default/files/Gazette_Notification_OGDL.pdf",
+    "platform_statement_url": "https://data.gov.in/",
+    "platform_owner_statement": "Published datasets/resources and metadata on data.gov.in are licensed under the Government Open Data License - India by the respective Ministry/State/Department/Organization.",
+    "permits_lawful_reuse_adaptation_and_publication": true,
+    "attribution_required": true,
+    "attribution_must_include_provider_source_and_license": true,
+    "personal_information_excluded_from_license": true,
+    "other_non_shareable_sensitive_or_third_party_rights_data_excluded": true,
+    "license_scope_interpretation": "The OGD platform and OGDL establish a reusable open-data basis for covered non-sensitive data, but OGDL section 6 excludes personal information and other excluded categories. Presence of a field in a downloadable resource does not by itself prove that every field is safely redistributable under OGDL."
+  },
+  "payload_binding": {
+    "candidate_sha256": "1ddcad9f9b922142a4374c7b89b70fb6cefd8a257448c70a61e1c07d98845134",
+    "candidate_byte_count": 10341256,
+    "observed_data_row_count": 30273,
+    "observed_column_count": 48,
+    "privacy_risk_column_count": 13,
+    "privacy_risk_values_reviewed_or_exported": false,
+    "raw_snapshot_exported": false
+  },
+  "rights_decision": {
+    "covered_non_person_facility_fields_may_be_considered_for_reuse_with_attribution": true,
+    "personal_or_named_contact_fields_must_not_be_published_from_this_candidate": true,
+    "public_projection_must_pass_repository_privacy_gate": true,
+    "source_native_missingness_must_be_preserved": true,
+    "attribution_required_for_any_later_publication": true,
+    "rights_review_alone_authorizes_publication": false
+  },
+  "remaining_publication_gates": [
+    "canonical resource identity must be resolved against authoritative resource metadata",
+    "public projection must exclude all privacy-risk/person-contact fields",
+    "observed non-person fields must be semantically reviewed before curation",
+    "geographic identifiers must remain uninterpreted until evidence-backed crosswalk linkage is established",
+    "temporal/reference-period semantics must be recorded",
+    "scientific validation and provenance must pass",
+    "exact main-head CI must be green"
+  ],
+  "required_attribution_template": "[Data Provider], [Year of Publication], [Name of Data], Open Government Data Platform India, [Version/Date], [DOI/URL/URI]. Published under Government Open Data License - India: https://www.data.gov.in/sites/default/files/Gazette_Notification_OGDL.pdf",
+  "rules": [
+    "This review does not authorize redistribution of personal information.",
+    "No source row values are stored in this rights receipt.",
+    "Passing the rights gate does not establish source identity, geography equivalence, temporal validity or scientific validity.",
+    "Module 2 remains IN DEVELOPMENT until all strict publication gates are satisfied."
+  ]
+}
