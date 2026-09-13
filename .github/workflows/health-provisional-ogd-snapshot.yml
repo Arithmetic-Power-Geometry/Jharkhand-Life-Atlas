@@ -8,6 +8,7 @@ on:
     branches: [main]
     paths:
       - 'modules/health_access/capture_provisional_ogd_snapshot.py'
+      - 'jla/privacy.py'
       - '.github/workflows/health-provisional-ogd-snapshot.yml'
       - 'tests/test_health_provisional_snapshot_contract.py'
 
@@ -18,6 +19,11 @@ jobs:
   capture-provisional-authoritative-snapshot:
     runs-on: ubuntu-latest
     timeout-minutes: 20
+    env:
+      # Direct execution of module scripts puts modules/health_access on sys.path,
+      # not the repository root. Keep shared jla/* governance services importable
+      # without embedding path hacks in scientific acquisition code.
+      PYTHONPATH: ${{ github.workspace }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
