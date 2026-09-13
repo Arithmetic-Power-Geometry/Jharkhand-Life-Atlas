@@ -47,12 +47,22 @@ jobs:
           assert r['curated_dataset_emitted'] is False
           assert 'snapshot_is_candidate_level_evidence_not_canonical_source_selection' in r['rules']
           assert 'missing_values_must_remain_missing_and_must_never_be_silently_zero_filled' in r['rules']
+          assert 'no_person_level_sensitive_data_may_be_published' in r['rules']
           print(json.dumps({k:r[k] for k in ['sha256','byte_count','observed_column_count','observed_data_row_count']}, indent=2))
           PY
-      - name: Upload exact governed candidate snapshot and receipt
+      - name: Remove raw candidate before artifact export
+        run: |
+          # The authoritative candidate contains contact/person fields. Preserve its
+          # cryptographic receipt, schema observations and run log, but never export
+          # the raw source bytes from CI as a downloadable repository artifact.
+          rm -f build/health_provisional_snapshot/hospital_directory.csv
+          test ! -e build/health_provisional_snapshot/hospital_directory.csv
+      - name: Upload governed receipt and run log only
         uses: actions/upload-artifact@v4
         with:
-          name: health-provisional-ogd-snapshot-${{ github.run_id }}
-          path: build/health_provisional_snapshot/
+          name: health-provisional-ogd-snapshot-receipt-${{ github.run_id }}
+          path: |
+            build/health_provisional_snapshot/receipt.json
+            build/health_provisional_snapshot/run.log
           if-no-files-found: error
           retention-days: 90
