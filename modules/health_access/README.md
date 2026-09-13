@@ -41,6 +41,12 @@ The governed CI acquisition path has verified one retrievable official National 
 
 That receipt binds the source SHA-256, byte/row/column counts, successful CI run and artifact digest, privacy constraints, Jharkhand source-label row count, candidate-projection missingness counts and source geography ambiguity audit. It contains no source rows or privacy-risk source values. It is **candidate evidence only**: canonical source identity is unresolved, publication remains prohibited, and its source `State_ID`/`District_ID` values are not interpreted as LGD/Census/current administrative identifiers without independently evidenced crosswalks.
 
+A governed resource-specific rights review is also persisted in:
+
+- `modules/health_access/evidence/nhd_rights_review_2026-09-14.json`
+
+The review records that covered non-person facility fields may be considered for reuse under the Government Open Data License - India with required attribution, while personal information and named/contact fields remain excluded from publication. It is bound to the verified candidate hash and observed payload counts, stores no source row values, and explicitly **does not authorize publication by itself**. Canonical resource identity, privacy-safe public projection, semantic review, temporal validity, geography linkage, scientific validation and exact-main green CI remain separate mandatory gates.
+
 ABDM Health Facility Registry remains restricted pending a reusable official export/API and acceptable terms. JLA does not scrape or republish person-level or otherwise unsupported records.
 
 ## Hard scientific and governance rules
