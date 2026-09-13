@@ -8,9 +8,11 @@ on:
     branches: [main]
     paths:
       - 'modules/health_access/capture_provisional_ogd_snapshot.py'
+      - 'modules/health_access/national_hospital_directory_candidate_schema.json'
       - 'jla/privacy.py'
       - '.github/workflows/health-provisional-ogd-snapshot.yml'
       - 'tests/test_health_provisional_snapshot_contract.py'
+      - 'tests/test_health_nhd_candidate_schema_contract.py'
 
 permissions:
   contents: read
@@ -64,18 +66,78 @@ jobs:
           assert 'no_person_level_sensitive_data_may_be_published' in r['rules']
           print(json.dumps({k:r[k] for k in ['sha256','byte_count','observed_column_count','observed_data_row_count','observed_row_width_mismatch_count','privacy_risk_columns']}, indent=2))
           PY
+      - name: Enforce governed schema identity and privacy-safe candidate projection
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          from jla.privacy import privacy_risk_columns, public_projection_report
+
+          receipt_path = Path('build/health_provisional_snapshot/receipt.json')
+          contract_path = Path('modules/health_access/national_hospital_directory_candidate_schema.json')
+          report_path = Path('build/health_provisional_snapshot/privacy_projection_report.json')
+
+          receipt = json.loads(receipt_path.read_text(encoding='utf-8'))
+          contract = json.loads(contract_path.read_text(encoding='utf-8'))
+
+          # Any source-byte or schema drift must fail closed. Updating this contract
+          # requires an explicit evidence review rather than silently accepting drift.
+          assert receipt['sha256'] == contract['source_sha256']
+          assert receipt['byte_count'] == contract['source_byte_count']
+          assert receipt['observed_columns'] == contract['observed_columns']
+          assert receipt['observed_column_count'] == contract['observed_column_count']
+          assert receipt['observed_data_row_count'] == contract['observed_data_row_count']
+          assert receipt['observed_row_width_mismatch_count'] == contract['observed_row_width_mismatch_count']
+
+          risk_names = [item['column'] for item in privacy_risk_columns(receipt['observed_columns'])]
+          assert risk_names == contract['privacy_risk_columns']
+
+          projection = public_projection_report(
+              contract['candidate_public_projection'],
+              source_header=receipt['observed_columns'],
+          )
+          assert projection['privacy_gate_passed'] is True
+          assert projection['privacy_risk_columns'] == []
+          assert projection['missing_selected_columns'] == []
+          assert projection['row_values_inspected'] is False
+          assert projection['row_values_recorded'] is False
+
+          # Passing this privacy-only projection check does not authorize publication.
+          assert contract['candidate_status'] == 'non_canonical_candidate_evidence'
+          assert contract['publication_allowed'] is False
+          assert contract['curated_dataset_emitted'] is False
+          assert contract['geography_linkage_status'] == 'unresolved'
+          assert receipt['publication_allowed'] is False
+
+          governed_report = {
+              'contract': 'JLA_HEALTH_NHD_LIVE_SCHEMA_BINDING_V1',
+              'source_sha256': receipt['sha256'],
+              'observed_column_count': receipt['observed_column_count'],
+              'observed_data_row_count': receipt['observed_data_row_count'],
+              'observed_row_width_mismatch_count': receipt['observed_row_width_mismatch_count'],
+              'candidate_schema_contract': contract['contract'],
+              'candidate_status': contract['candidate_status'],
+              'privacy_projection': projection,
+              'geography_linkage_status': contract['geography_linkage_status'],
+              'publication_allowed': False,
+              'row_values_recorded': False,
+          }
+          report_path.write_text(json.dumps(governed_report, indent=2, sort_keys=True) + '\n', encoding='utf-8')
+          PY
       - name: Remove raw candidate before artifact export
         run: |
           # The authoritative candidate contains contact/person fields. Preserve only
           # cryptographic/schema/privacy receipts and logs; never export source rows.
           rm -f build/health_provisional_snapshot/hospital_directory.csv
           test ! -e build/health_provisional_snapshot/hospital_directory.csv
-      - name: Upload governed receipt and run log only
+      - name: Upload governed receipt, privacy projection report and run log only
         uses: actions/upload-artifact@v4
         with:
           name: health-provisional-ogd-snapshot-receipt-${{ github.run_id }}
           path: |
             build/health_provisional_snapshot/receipt.json
+            build/health_provisional_snapshot/privacy_projection_report.json
             build/health_provisional_snapshot/run.log
           if-no-files-found: error
           retention-days: 90
