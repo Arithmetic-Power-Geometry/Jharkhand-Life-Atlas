@@ -11,12 +11,13 @@ import argparse
 import csv
 import hashlib
 import json
-import re
 from datetime import datetime, timezone
 from pathlib import Path
 from urllib.parse import urlparse
 
 import requests
+
+from jla.privacy import privacy_risk_columns
 
 CONTRACT = "JLA_PROVISIONAL_OGD_SNAPSHOT_V2"
 MAX_BYTES = 100 * 1024 * 1024
@@ -32,28 +33,6 @@ def _looks_like_html(raw_path: Path) -> bool:
     with raw_path.open("rb") as f:
         prefix = f.read(4096).lstrip().lower()
     return prefix.startswith(b"<!doctype html") or prefix.startswith(b"<html") or b"<html" in prefix[:1024]
-
-
-def _normalized_header(value: str) -> str:
-    return re.sub(r"[^a-z0-9]+", " ", value.casefold()).strip()
-
-
-def _privacy_risk_columns(header: list[str]) -> list[dict[str, str]]:
-    """Classify header names only; never inspect/store row values for this audit."""
-    rules = (
-        ("email", ("email", "e mail")),
-        ("telephone", ("telephone", "phone")),
-        ("mobile", ("mobile",)),
-        ("named_person", ("nodal person", "contact person", "contact name", "person name")),
-    )
-    findings: list[dict[str, str]] = []
-    for column in header:
-        normalized = _normalized_header(column)
-        for category, needles in rules:
-            if any(needle in normalized for needle in needles):
-                findings.append({"column": column, "category": category})
-                break
-    return findings
 
 
 def capture(url: str, raw_path: Path) -> dict:
@@ -101,7 +80,7 @@ def capture(url: str, raw_path: Path) -> dict:
     except UnicodeDecodeError as exc:
         raise RuntimeError("CSV payload is not valid UTF-8/UTF-8-SIG") from exc
 
-    privacy_columns = _privacy_risk_columns(header)
+    privacy_columns = privacy_risk_columns(header)
     return {
         "contract": CONTRACT,
         "captured_at_utc": datetime.now(timezone.utc).isoformat(),
