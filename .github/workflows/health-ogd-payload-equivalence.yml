@@ -1,0 +1,77 @@
+name: health-ogd-payload-equivalence
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'modules/health_access/audit_ogd_payload_candidate_equivalence.py'
+      - 'modules/health_access/acquisition_evidence/2026-09-13_current_facility_metadata_refresh.yaml'
+      - '.github/workflows/health-ogd-payload-equivalence.yml'
+      - 'tests/test_health_ogd_payload_equivalence_contract.py'
+  workflow_dispatch:
+  schedule:
+    - cron: '37 */6 * * *'
+
+permissions:
+  contents: read
+
+jobs:
+  audit-authoritative-candidate-equivalence:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install audit dependency
+        run: python -m pip install --disable-pip-version-check requests
+      - name: Hash explicit authoritative Hospital Directory candidates
+        run: |
+          mkdir -p build/health_payload_equivalence
+          python modules/health_access/audit_ogd_payload_candidate_equivalence.py \
+            --source-id OGD_NHP_HOSPITAL_GEO_2026 \
+            --candidate 'https://data.gov.in/sites/default/files/datafile/hospital_directory.csv' \
+            --candidate 'https://www.data.gov.in/files/ogdpv2dms/s3fs-public/datafile/hospital_directory.csv' \
+            --output build/health_payload_equivalence/hospital_directory_candidate_equivalence.json \
+            | tee build/health_payload_equivalence/run.log
+      - name: Enforce fail-closed equivalence semantics
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p = Path('build/health_payload_equivalence/hospital_directory_candidate_equivalence.json')
+          r = json.loads(p.read_text(encoding='utf-8'))
+          assert r['contract'] == 'JLA_OGD_PAYLOAD_CANDIDATE_EQUIVALENCE_V1'
+          assert r['publication_allowed'] is False
+          assert r['raw_payload_acquired'] is False
+          assert r['raw_snapshot_persisted'] is False
+          assert r['schema_inspected'] is False
+          assert len(r['candidates']) == 2
+          assert 'multiple_candidates_require_all_successful_hashes_before_equivalence' in r['rules']
+          assert 'byte_equivalence_verification_is_not_raw_snapshot_acquisition' in r['rules']
+          assert 'byte_equivalence_verification_does_not_enable_publication' in r['rules']
+          if r['canonical_selection_permitted']:
+              assert r['all_candidates_verified'] is True
+              assert r['byte_identical'] is True
+              assert isinstance(r['shared_sha256'], str) and len(r['shared_sha256']) == 64
+              assert isinstance(r['shared_byte_count'], int) and r['shared_byte_count'] > 0
+              assert r['deterministic_preferred_candidate_url'] in [c['requested_url'] for c in r['candidates']]
+          else:
+              assert r['deterministic_preferred_candidate_url'] is None
+          print(json.dumps({
+              'all_candidates_verified': r['all_candidates_verified'],
+              'byte_identical': r['byte_identical'],
+              'canonical_selection_permitted': r['canonical_selection_permitted'],
+              'shared_sha256': r['shared_sha256'],
+              'shared_byte_count': r['shared_byte_count'],
+          }, indent=2))
+          PY
+      - name: Upload governed equivalence evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: health-ogd-payload-equivalence-${{ github.run_id }}
+          path: build/health_payload_equivalence/
+          if-no-files-found: error
+          retention-days: 90
