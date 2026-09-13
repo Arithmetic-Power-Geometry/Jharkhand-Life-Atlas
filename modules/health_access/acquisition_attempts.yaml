@@ -230,6 +230,7 @@ attempts:
     catalog_api_identity_scope: catalog_only_not_resource_or_payload
     exact_payload_identity_verified_from_live_surface: false
     live_index_divergence: true
+    acquisition_result: authoritative_metadata_snapshotted_live_surface_has_no_verified_payload
     raw_payload_acquired: false
     raw_sha256: null
     raw_bytes: null
