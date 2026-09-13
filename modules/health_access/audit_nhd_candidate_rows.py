@@ -18,7 +18,7 @@ from pathlib import Path
 from typing import Iterable
 
 
-CONTRACT_NAME = "JLA_HEALTH_NHD_AGGREGATE_ROW_AUDIT_V2"
+CONTRACT_NAME = "JLA_HEALTH_NHD_AGGREGATE_ROW_AUDIT_V1"
 
 
 def _is_missing(value: object) -> bool:
@@ -114,8 +114,6 @@ def audit_rows(csv_path: Path, contract_path: Path) -> dict:
 
     assert len(rows) == contract["observed_data_row_count"], "live CSV row count differs from governed contract"
 
-    # This is a source-label filter only. It must never be interpreted as proof that
-    # source IDs equal LGD/Census/current administrative identifiers.
     jharkhand_rows = [
         row for row in rows
         if (_nonmissing_text(row.get("State")) or "").casefold() == "jharkhand"
@@ -150,7 +148,7 @@ def audit_rows(csv_path: Path, contract_path: Path) -> dict:
         "jharkhand_distinct_district_labels": district_labels,
         "district_label_normalization_audit": _label_normalization_audit(jharkhand_rows, "District"),
         "candidate_projection_null_counts": null_counts,
-        "null_policy": "empty_or_whitespace_csv_cells counted as missing; no zero filling performed",
+        "null_policy": "empty_or_whitespace_csv cells counted as missing; no zero filling performed",
         "state_identifier_audit": _ambiguity_summary(jharkhand_rows, "State", "State_ID"),
         "district_identifier_audit": _ambiguity_summary(jharkhand_rows, "District", "District_ID"),
         "privacy_risk_columns_read_for_output": [],
