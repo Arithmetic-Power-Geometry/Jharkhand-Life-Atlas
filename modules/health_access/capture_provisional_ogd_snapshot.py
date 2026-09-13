@@ -27,6 +27,12 @@ def _official(url: str) -> bool:
     return url.startswith("https://") and (host in {"data.gov.in", "www.data.gov.in"} or host.endswith(".data.gov.in"))
 
 
+def _looks_like_html(raw_path: Path) -> bool:
+    with raw_path.open("rb") as f:
+        prefix = f.read(4096).lstrip().lower()
+    return prefix.startswith(b"<!doctype html") or prefix.startswith(b"<html") or b"<html" in prefix[:1024]
+
+
 def capture(url: str, raw_path: Path) -> dict:
     if not _official(url):
         raise ValueError("source must be an explicit HTTPS data.gov.in URL")
@@ -51,17 +57,29 @@ def capture(url: str, raw_path: Path) -> dict:
         final_url = r.url
     if n == 0:
         raise RuntimeError("empty payload")
+    if _looks_like_html(raw_path):
+        raise RuntimeError("authoritative endpoint returned HTML rather than a CSV payload")
 
     # Candidate-level schema observation only. No derived/public dataset is produced.
-    with raw_path.open("r", encoding="utf-8-sig", errors="replace", newline="") as f:
-        reader = csv.reader(f)
-        header = next(reader, [])
-        sample_rows = []
-        row_count = 0
-        for row in reader:
-            row_count += 1
-            if len(sample_rows) < 5:
-                sample_rows.append(row)
+    # Decode strictly: malformed bytes must not be silently replaced and then treated as
+    # an observed schema.
+    try:
+        with raw_path.open("r", encoding="utf-8-sig", errors="strict", newline="") as f:
+            reader = csv.reader(f)
+            header = next(reader, [])
+            if not header or not any(cell.strip() for cell in header):
+                raise RuntimeError("CSV payload has no non-empty header")
+            sample_rows = []
+            row_count = 0
+            width_mismatch_count = 0
+            for row in reader:
+                row_count += 1
+                if len(row) != len(header):
+                    width_mismatch_count += 1
+                if len(sample_rows) < 5:
+                    sample_rows.append(row)
+    except UnicodeDecodeError as exc:
+        raise RuntimeError("CSV payload is not valid UTF-8/UTF-8-SIG") from exc
 
     return {
         "contract": CONTRACT,
@@ -73,10 +91,12 @@ def capture(url: str, raw_path: Path) -> dict:
         "sha256": h.hexdigest(),
         "raw_snapshot_persisted": True,
         "raw_snapshot_filename": raw_path.name,
+        "payload_format_guarded": True,
         "schema_inspected": True,
         "observed_columns": header,
         "observed_column_count": len(header),
         "observed_data_row_count": row_count,
+        "observed_row_width_mismatch_count": width_mismatch_count,
         "sample_row_count": len(sample_rows),
         "canonical_source_identity_resolved": False,
         "publication_allowed": False,
@@ -84,6 +104,7 @@ def capture(url: str, raw_path: Path) -> dict:
         "rules": [
             "snapshot_is_candidate_level_evidence_not_canonical_source_selection",
             "exact_bytes_and_sha256_must_travel_together",
+            "html_or_malformed_text_must_never_be_treated_as_csv_evidence",
             "schema_observation_does_not_authorize_publication",
             "no_geographic_equivalence_may_be_inferred_from_names_alone",
             "missing_values_must_remain_missing_and_must_never_be_silently_zero_filled",
