@@ -33,6 +33,14 @@ The governed source inventory in `sources.yaml` includes official Census of Indi
 
 These resources are not treated as acquired merely because their official catalog/resource pages have been verified. Exact authoritative payload acquisition, immutable evidence capture, retrieval metadata, hash/API provenance, observed-schema inspection, rights/attribution checks and temporal/geographic validation are still required before publication.
 
+### National Hospital Directory candidate evidence
+
+The governed CI acquisition path has verified one retrievable official National Hospital Directory CSV candidate and now persists its **aggregate-only, non-row-level audit evidence** in:
+
+- `modules/health_access/evidence/nhd_jharkhand_aggregate_receipt_2026-09-13.json`
+
+That receipt binds the source SHA-256, byte/row/column counts, successful CI run and artifact digest, privacy constraints, Jharkhand source-label row count, candidate-projection missingness counts and source geography ambiguity audit. It contains no source rows or privacy-risk source values. It is **candidate evidence only**: canonical source identity is unresolved, publication remains prohibited, and its source `State_ID`/`District_ID` values are not interpreted as LGD/Census/current administrative identifiers without independently evidenced crosswalks.
+
 ABDM Health Facility Registry remains restricted pending a reusable official export/API and acceptable terms. JLA does not scrape or republish person-level or otherwise unsupported records.
 
 ## Hard scientific and governance rules
