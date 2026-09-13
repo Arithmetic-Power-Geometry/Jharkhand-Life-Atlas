@@ -31,30 +31,37 @@ jobs:
             --url 'https://data.gov.in/sites/default/files/datafile/hospital_directory.csv' \
             --raw build/health_provisional_snapshot/hospital_directory.csv \
             --receipt build/health_provisional_snapshot/receipt.json \
-            | tee build/health_provisional_snapshot/run.log
-      - name: Enforce non-canonical fail-closed boundary
+            > build/health_provisional_snapshot/run.log
+      - name: Enforce non-canonical privacy-safe fail-closed boundary
         run: |
           python - <<'PY'
           import json
           from pathlib import Path
           r = json.loads(Path('build/health_provisional_snapshot/receipt.json').read_text())
-          assert r['contract'] == 'JLA_PROVISIONAL_OGD_SNAPSHOT_V1'
+          assert r['contract'] == 'JLA_PROVISIONAL_OGD_SNAPSHOT_V2'
           assert r['raw_snapshot_persisted'] is True
+          assert r['raw_snapshot_scope'] == 'ephemeral_ci_workspace_only_not_artifact_export'
           assert r['schema_inspected'] is True
+          assert r['row_values_recorded_in_receipt'] is False
+          assert r['privacy_header_audit_performed'] is True
+          assert r['privacy_review_required'] is True
+          assert r['privacy_risk_column_count'] > 0
           assert len(r['sha256']) == 64 and r['byte_count'] > 0
           assert r['canonical_source_identity_resolved'] is False
           assert r['publication_allowed'] is False
           assert r['curated_dataset_emitted'] is False
           assert 'snapshot_is_candidate_level_evidence_not_canonical_source_selection' in r['rules']
+          assert 'raw_candidate_bytes_must_not_be_exported_as_ci_artifacts' in r['rules']
+          assert 'receipt_must_not_contain_source_row_values' in r['rules']
+          assert 'privacy_risk_columns_require_exclusion_or_explicit_rights_and_safety_review_before_any_public_projection' in r['rules']
           assert 'missing_values_must_remain_missing_and_must_never_be_silently_zero_filled' in r['rules']
           assert 'no_person_level_sensitive_data_may_be_published' in r['rules']
-          print(json.dumps({k:r[k] for k in ['sha256','byte_count','observed_column_count','observed_data_row_count']}, indent=2))
+          print(json.dumps({k:r[k] for k in ['sha256','byte_count','observed_column_count','observed_data_row_count','observed_row_width_mismatch_count','privacy_risk_columns']}, indent=2))
           PY
       - name: Remove raw candidate before artifact export
         run: |
-          # The authoritative candidate contains contact/person fields. Preserve its
-          # cryptographic receipt, schema observations and run log, but never export
-          # the raw source bytes from CI as a downloadable repository artifact.
+          # The authoritative candidate contains contact/person fields. Preserve only
+          # cryptographic/schema/privacy receipts and logs; never export source rows.
           rm -f build/health_provisional_snapshot/hospital_directory.csv
           test ! -e build/health_provisional_snapshot/hospital_directory.csv
       - name: Upload governed receipt and run log only
