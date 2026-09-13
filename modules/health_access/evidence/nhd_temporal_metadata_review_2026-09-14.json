@@ -1,0 +1,64 @@
+{
+  "contract": "JLA_HEALTH_NHD_TEMPORAL_METADATA_REVIEW_V1",
+  "module": "health_access",
+  "source_id": "OGD_NHP_HOSPITAL_GEO_2026",
+  "status": "candidate_metadata_evidence_only",
+  "publication_allowed": false,
+  "payload_binding": {
+    "candidate_sha256": "1ddcad9f9b922142a4374c7b89b70fb6cefd8a257448c70a61e1c07d98845134",
+    "candidate_byte_count": 10341256,
+    "observed_data_row_count": 30273,
+    "observed_column_count": 48
+  },
+  "official_resource_metadata": {
+    "resource_title": "National Hospital Directory with Geo Code and additional parameters (updated till last month)",
+    "resource_url": "https://www.data.gov.in/resource/national-hospital-directory-geo-code-and-additional-parameters-updated-till-last-month",
+    "catalog_title": "Hospital Directory (National Health Portal)",
+    "catalog_url": "https://data.gov.in/catalog/hospital-directory-national-health-portal",
+    "resource_published_on": "2017-08-10",
+    "resource_updated_on": "2025-06-02",
+    "resource_declared_granularity": "Monthly",
+    "resource_note": "NA/Blank: Not Available; data will be updated on regular interval",
+    "resource_reference_url": "http://www.nhp.gov.in/",
+    "contributing_organization": "National Institute of Health and Family Welfare (NIHFW), New Delhi",
+    "official_metadata_observed_on": "2026-09-14",
+    "evidence_method": "Official data.gov.in resource metadata page; values transcribed as metadata evidence only."
+  },
+  "temporal_interpretation": {
+    "resource_page_update_date_is_observation_date_for_every_record": false,
+    "resource_title_updated_till_last_month_establishes_record_level_reference_month": false,
+    "declared_monthly_granularity_establishes_record_level_update_timestamp": false,
+    "payload_download_time_establishes_record_reference_period": false,
+    "record_level_reference_period_verified": false,
+    "indicator_time_label_allowed": false,
+    "cross_period_comparison_allowed": false,
+    "reason": "The official page exposes resource-level publication/update metadata and declared granularity, but the governed candidate evidence does not establish a record-level observation/update date for each hospital. Resource-page freshness must not be silently assigned to rows or derived indicators."
+  },
+  "missingness_interpretation": {
+    "official_resource_note_treats_na_or_blank_as_not_available": true,
+    "blank_may_be_silently_converted_to_zero": false,
+    "blank_may_be_interpreted_as_absence_of_facility_or_service_without_field_specific_evidence": false,
+    "repository_null_policy": "Preserve source-native missingness as null; do not zero-fill."
+  },
+  "allowed_uses_before_temporal_resolution": [
+    "Payload integrity and schema audits",
+    "Privacy-safe aggregate diagnostics explicitly labelled candidate evidence",
+    "Geography ambiguity diagnostics that do not infer administrative equivalence",
+    "Development of validation code and fail-closed publication gates"
+  ],
+  "prohibited_uses_before_temporal_resolution": [
+    "Labeling hospital rows or indicators as 2025 observations solely from the resource Updated On date",
+    "Calling the payload current or latest at record level solely from the resource title",
+    "Time-series or before/after comparisons using an unverified row reference period",
+    "Publishing indicators that require a verified temporal denominator or reference period"
+  ],
+  "remaining_temporal_gate": "Obtain authoritative evidence that defines the payload/record reference period or a field-level update timestamp, then bind that evidence to the exact payload before any time-labelled scientific output is published.",
+  "rules": [
+    "Resource metadata and record observation time are separate evidence layers.",
+    "No row values are stored in this receipt.",
+    "No personal/contact values are reviewed or exported by this receipt.",
+    "Missing values remain null and are never silently converted to zero.",
+    "This temporal review does not resolve canonical source identity, geography linkage, semantic field validation, privacy publication review, or scientific indicator validity.",
+    "Module 2 remains IN DEVELOPMENT until every strict publication gate and exact-main green CI are verified."
+  ]
+}
