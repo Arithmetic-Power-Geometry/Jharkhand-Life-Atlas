@@ -1,10 +1,13 @@
 from jla.acquisition import health_resource_identities, health_resource_identity_status
 
 
-def test_health_identity_status_is_fail_closed_until_payloads_are_verified():
+def test_health_identity_status_distinguishes_verified_acquisition_from_publication():
     status = health_resource_identity_status()
     assert status["resource_count"] >= 2
-    assert status["raw_payloads_acquired"] == 0
+    # One authoritative NHD payload is byte-bound to the governed candidate.
+    # Acquisition evidence must not be collapsed back to zero simply because
+    # machine identity/publication gates remain unresolved.
+    assert status["raw_payloads_acquired"] == 1
     assert status["publishable_resources"] == 0
 
 
