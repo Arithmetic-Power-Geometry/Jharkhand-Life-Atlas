@@ -6,6 +6,7 @@ on:
     paths:
       - 'modules/health_access/audit_ogd_payload_candidate_equivalence.py'
       - 'modules/health_access/acquisition_evidence/2026-09-13_current_facility_metadata_refresh.yaml'
+      - 'modules/health_access/evidence/nhd_authoritative_resource_identity_review_2026-09-14.json'
       - '.github/workflows/health-ogd-payload-equivalence.yml'
       - 'tests/test_health_ogd_payload_equivalence_contract.py'
   workflow_dispatch:
@@ -33,6 +34,8 @@ jobs:
             --source-id OGD_NHP_HOSPITAL_GEO_2026 \
             --candidate 'https://data.gov.in/sites/default/files/datafile/hospital_directory.csv' \
             --candidate 'https://www.data.gov.in/files/ogdpv2dms/s3fs-public/datafile/hospital_directory.csv' \
+            --expected-sha256 '1ddcad9f9b922142a4374c7b89b70fb6cefd8a257448c70a61e1c07d98845134' \
+            --expected-byte-count 10341256 \
             --output build/health_payload_equivalence/hospital_directory_candidate_equivalence.json \
             | tee build/health_payload_equivalence/run.log
       - name: Enforce fail-closed equivalence semantics
@@ -48,20 +51,29 @@ jobs:
           assert r['raw_snapshot_persisted'] is False
           assert r['schema_inspected'] is False
           assert len(r['candidates']) == 2
+          assert r['governed_binding_required'] is True
+          assert r['expected_sha256'] == '1ddcad9f9b922142a4374c7b89b70fb6cefd8a257448c70a61e1c07d98845134'
+          assert r['expected_byte_count'] == 10341256
           assert 'multiple_candidates_require_all_successful_hashes_before_equivalence' in r['rules']
+          assert 'when_governed_binding_is_supplied_shared_bytes_must_match_expected_sha256_and_byte_count' in r['rules']
+          assert 'two_official_aliases_drifting_together_do_not_validate_the_governed_candidate' in r['rules']
           assert 'byte_equivalence_verification_is_not_raw_snapshot_acquisition' in r['rules']
           assert 'byte_equivalence_verification_does_not_enable_publication' in r['rules']
           if r['canonical_selection_permitted']:
               assert r['all_candidates_verified'] is True
               assert r['byte_identical'] is True
-              assert isinstance(r['shared_sha256'], str) and len(r['shared_sha256']) == 64
-              assert isinstance(r['shared_byte_count'], int) and r['shared_byte_count'] > 0
+              assert r['governed_binding_verified'] is True
+              assert r['shared_sha256'] == r['expected_sha256']
+              assert r['shared_byte_count'] == r['expected_byte_count']
               assert r['deterministic_preferred_candidate_url'] in [c['requested_url'] for c in r['candidates']]
           else:
               assert r['deterministic_preferred_candidate_url'] is None
+              if r['byte_identical'] is True:
+                  assert r['governed_binding_verified'] is False
           print(json.dumps({
               'all_candidates_verified': r['all_candidates_verified'],
               'byte_identical': r['byte_identical'],
+              'governed_binding_verified': r['governed_binding_verified'],
               'canonical_selection_permitted': r['canonical_selection_permitted'],
               'shared_sha256': r['shared_sha256'],
               'shared_byte_count': r['shared_byte_count'],
