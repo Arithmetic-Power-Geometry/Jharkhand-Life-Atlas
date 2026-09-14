@@ -1,0 +1,71 @@
+{
+  "contract": "JLA_HEALTH_NHD_SEMANTIC_CONTRACT_V1",
+  "module": "health_access",
+  "source_contract": "modules/health_access/national_hospital_directory_candidate_schema.json",
+  "status": "in_development_nonpublishing",
+  "publication_allowed": false,
+  "row_level_curated_dataset_emitted": false,
+  "null_policy": {
+    "source_missing_tokens": ["", "NA", "N/A", "Blank"],
+    "canonical_missing_representation": null,
+    "missing_to_zero_allowed": false,
+    "rule": "Missing, blank, unavailable, suppressed, unparsable, or semantically unresolved values remain null unless an authoritative source definition proves another interpretation."
+  },
+  "field_groups": {
+    "direct_source_labels": [
+      "Hospital_Name", "Hospital_Category", "Hospital_Care_Type", "Discipline_Systems_of_Medicine",
+      "State", "District", "Subdistrict", "Town", "Subtown", "Village", "Specialties", "Facilities",
+      "Accreditation", "Ayush", "Miscellaneous_Facilities", "Emergency_Services"
+    ],
+    "numeric_candidate_fields": [
+      "Establised_Year", "Number_Doctor", "Num_Mediconsultant_or_Expert", "Total_Num_Beds",
+      "Number_Private_Wards", "Num_Bed_for_Eco_Weaker_Sec"
+    ],
+    "geography_identifiers_uninterpreted": ["State_ID", "District_ID"],
+    "privacy_excluded": [
+      "Telephone", "Mobile_Number", "Emergency_Num", "Ambulance_Phone_No", "Bloodbank_Phone_No",
+      "Tollfree", "Helpline", "Hospital_Fax", "Hospital_Primary_Email_Id", "Hospital_Secondary_Email_Id",
+      "Nodal_Person_Info", "Nodal_Person_Tele", "Nodal_Person_Email_Id"
+    ]
+  },
+  "numeric_cleaning_rules": {
+    "parse_only_when_unambiguous": true,
+    "negative_counts_allowed": false,
+    "failed_parse_becomes_null": true,
+    "zero_is_observed_value_only": true,
+    "no_imputation": true,
+    "no_cross_field_backfill": true
+  },
+  "geography_rules": {
+    "source_labels_remain_source_native": true,
+    "source_ids_remain_uninterpreted": true,
+    "name_equality_establishes_equivalence": false,
+    "normalization_establishes_equivalence": false,
+    "authoritative_crosswalk_required": true,
+    "administrative_vintage_required": true
+  },
+  "temporal_rules": {
+    "resource_update_date_is_record_date": false,
+    "download_date_is_record_date": false,
+    "current_latest_claim_allowed": false,
+    "record_level_reference_period_required_for_time_labelled_indicators": true
+  },
+  "indicator_rules": {
+    "facility_counts_allowed_before_geography_resolution": false,
+    "district_rates_allowed_before_geography_resolution": false,
+    "bed_or_doctor_rates_allowed_without_valid_denominator_and_reference_period": false,
+    "derived_outputs_publication_allowed": false
+  },
+  "release_requirements": [
+    "canonical source identity resolved",
+    "rights/licence permits intended redistribution",
+    "immutable row-level source snapshot and provenance recorded",
+    "field semantics validated against authoritative documentation",
+    "null preservation and numeric parsing validated on observed rows",
+    "privacy projection validated",
+    "temporal reference period established",
+    "geography crosswalk established with authoritative vintage evidence",
+    "indicator definitions and denominators validated",
+    "tests and CI green on main"
+  ]
+}
