@@ -1,6 +1,6 @@
 # Module 2 Health — Rights & Licence Review
 
-Reviewed: 2026-09-12
+Reviewed: 2026-09-15
 Scope: publication decisions for Health & Healthcare Access evidence admitted or queued by JLA.
 
 ## Decision rule
@@ -20,7 +20,9 @@ A public catalogue page, API button, metadata record, or licence notice is not b
 
 For an OGD payload to become publishable, JLA must retain provider/source attribution, the Government Open Data License - India notice, and the authoritative dataset/resource URI or DOI when available. JLA must not imply provider endorsement. Personal information, non-shareable/sensitive information and third-party material outside the licence remain excluded.
 
-Rights review does **not** establish that a current resource is scientifically usable. The current NIN/NHP hospital-directory resources remain non-publishable until the exact authoritative machine resource identity and payload are captured, hashes/provenance recorded, observed schema inspected, Jharkhand filtering verified, geographic/temporal semantics validated and the shared source-snapshot gate passes.
+Rights review does **not** establish that a current resource is scientifically usable. For the National Hospital Directory, JLA has now captured and byte-bound one explicit primary official `data.gov.in` payload to the governed candidate at **10,341,256 bytes** with SHA-256 `1ddcad9f9b922142a4374c7b89b70fb6cefd8a257448c70a61e1c07d98845134`. That resolves acquisition and byte identity for that one primary payload only. Publication remains prohibited because deterministic canonical alias/resource identity, row-level temporal semantics, administrative-vintage/geographic linkage, systematic-zero field semantics, privacy-safe row curation, indicator validity and all downstream publication gates are not yet established. The alternate official alias remains unresolved and must not be inferred equivalent from naming or metadata alone.
+
+Durable non-publishing evidence for this state is recorded in `modules/health_access/evidence/nhd_primary_payload_binding_2026-09-14.json`, `modules/health_access/evidence/nhd_jharkhand_aggregate_receipt_2026-09-13.json`, `modules/health_access/evidence/nhd_authoritative_resource_identity_review_2026-09-14.json`, `modules/health_access/evidence/nhd_numeric_quality_review_2026-09-14.json`, `modules/health_access/evidence/nhd_temporal_metadata_review_2026-09-14.json`, `modules/health_access/evidence/nhd_rights_review_2026-09-14.json`, and `modules/health_access/evidence/nhd_field_semantics_review_2026-09-15.json`. None of these evidence receipts authorizes unsupported derived publication.
 
 ## NFHS-5 district factsheet publication boundary
 
@@ -44,7 +46,7 @@ Missing source values remain null/blank representations. Current or differently 
 
 ## Fail-closed outcomes
 
-If provider identity, licence applicability, payload identity, attribution requirements, sensitivity status or republication rights are unresolved, publication permission is `false`. A downstream mirror, cached copy, search result or filename is not sufficient to upgrade that state.
+If provider identity, licence applicability, payload identity, attribution requirements, sensitivity status or republication rights are unresolved, publication permission is `false`. A downstream mirror, cached copy, search result or filename is not sufficient to upgrade that state. Successful acquisition or a byte-level hash match is also insufficient by itself: scientific semantics, temporal support, geographic support, privacy-safe curation and validation remain independent mandatory gates.
 
 ## Authoritative references
 
@@ -54,4 +56,4 @@ If provider identity, licence applicability, payload identity, attribution requi
 - NFHS-5 district factsheet catalogue: https://www.data.gov.in/catalog/national-family-health-survey-5-nfhs-5-india-districts-factsheet-data-provisional
 - NFHS-5 official Catalog API link observed on 2026-09-12: https://www.data.gov.in/apis/6f1094bb-24f4-4fe4-8063-cf4cb733279c
 
-This review records the governance decision only. It does not claim acquisition, schema inspection or scientific validity for any payload that has not independently passed those gates.
+This review records the governance decision only. It does not claim scientific validity, geographic equivalence, temporal validity or publication readiness for any payload that has not independently passed those gates.
