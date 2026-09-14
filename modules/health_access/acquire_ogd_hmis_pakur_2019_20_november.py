@@ -28,6 +28,10 @@ ALLOWED_HOSTS = {"data.gov.in", "www.data.gov.in", "api.data.gov.in"}
 USER_AGENT = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 Chrome/140 Safari/537.36"
 HREF_RE = re.compile(r"(?:href|src)\s*=\s*[\"']([^\"']+)[\"']", re.I)
 URL_RE = re.compile(r"https?://[^\s\"'<>]+", re.I)
+NON_DATA_SUFFIXES = {
+    ".pdf", ".png", ".jpg", ".jpeg", ".gif", ".svg", ".webp", ".ico",
+    ".css", ".js", ".woff", ".woff2", ".ttf", ".eot",
+}
 EXPECTED_COLUMNS = [
     "Indicator",
     "S.No.",
@@ -54,6 +58,10 @@ def candidate_links(html: str) -> list[str]:
     for link in raw:
         url = urljoin(RESOURCE_PAGE, link).replace("&amp;", "&")
         if not approved(url) or url.rstrip("/") == RESOURCE_PAGE.rstrip("/"):
+            continue
+        parsed = urlparse(url)
+        path_suffix = Path(parsed.path).suffix.casefold()
+        if path_suffix in NON_DATA_SUFFIXES:
             continue
         low = url.casefold()
         if any(token in low for token in (".csv", "/files/", "download", "format=csv", "api.data.gov.in/resource/")):
@@ -134,6 +142,7 @@ def run(output_dir: Path) -> dict:
             "never_guess_download_url_or_resource_id",
             "do_not_chase_resource_api_when_official_page_states_api_does_not_exist",
             "explicit_official_csv_link_required",
+            "reject_obvious_non_data_assets_before_fetch",
             "html_is_not_data",
             "hash_before_curation",
             "observed_schema_must_match_authoritative_resource_metadata",
