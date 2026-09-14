@@ -4,8 +4,10 @@
 This script deliberately emits no source rows and no values from privacy-risk columns.
 It checks the governed schema, counts source-label Jharkhand coverage, measures missingness
 for the candidate public projection, and diagnoses source geography identifier ambiguity.
-It also separates superficial label-normalization collisions from identifier ambiguity.
-It does not establish administrative equivalence or authorize publication.
+Missingness is governed by the separate semantic contract so CI cannot silently diverge
+from the scientific null policy. It also separates superficial label-normalization
+collisions from identifier ambiguity. It does not establish administrative equivalence
+or authorize publication.
 """
 
 from __future__ import annotations
@@ -18,28 +20,50 @@ from pathlib import Path
 from typing import Iterable
 
 
-CONTRACT_NAME = "JLA_HEALTH_NHD_AGGREGATE_ROW_AUDIT_V1"
+CONTRACT_NAME = "JLA_HEALTH_NHD_AGGREGATE_ROW_AUDIT_V2"
+SEMANTIC_CONTRACT_NAME = "JLA_HEALTH_NHD_SEMANTIC_CONTRACT_V1"
 
 
-def _is_missing(value: object) -> bool:
-    """Treat only empty/whitespace CSV cells as missing; never coerce them to zero."""
-    return value is None or (isinstance(value, str) and value.strip() == "")
+def _missing_token_set(tokens: Iterable[object]) -> set[str]:
+    """Normalize governed textual missing tokens without inventing new sentinels."""
+    return {
+        str(token).strip().casefold()
+        for token in tokens
+        if token is not None and str(token).strip() != ""
+    }
 
 
-def _nonmissing_text(value: object) -> str | None:
-    if _is_missing(value):
+def _is_missing(value: object, missing_tokens: set[str]) -> bool:
+    """Apply governed missing tokens; never coerce a missing value to zero."""
+    if value is None:
+        return True
+    if isinstance(value, str):
+        text = value.strip()
+        if text == "":
+            return True
+        return text.casefold() in missing_tokens
+    return False
+
+
+def _nonmissing_text(value: object, missing_tokens: set[str]) -> str | None:
+    if _is_missing(value, missing_tokens):
         return None
     return str(value).strip()
 
 
-def _ambiguity_summary(rows: Iterable[dict[str, str]], label_field: str, id_field: str) -> dict:
+def _ambiguity_summary(
+    rows: Iterable[dict[str, str]],
+    label_field: str,
+    id_field: str,
+    missing_tokens: set[str],
+) -> dict:
     label_to_ids: dict[str, set[str]] = defaultdict(set)
     id_to_labels: dict[str, set[str]] = defaultdict(set)
     missing_pair_count = 0
 
     for row in rows:
-        label = _nonmissing_text(row.get(label_field))
-        source_id = _nonmissing_text(row.get(id_field))
+        label = _nonmissing_text(row.get(label_field), missing_tokens)
+        source_id = _nonmissing_text(row.get(id_field), missing_tokens)
         if label is None or source_id is None:
             missing_pair_count += 1
             continue
@@ -68,12 +92,16 @@ def _ambiguity_summary(rows: Iterable[dict[str, str]], label_field: str, id_fiel
     }
 
 
-def _label_normalization_audit(rows: Iterable[dict[str, str]], label_field: str) -> dict:
+def _label_normalization_audit(
+    rows: Iterable[dict[str, str]],
+    label_field: str,
+    missing_tokens: set[str],
+) -> dict:
     """Report trim+casefold collisions without treating them as admin equivalence."""
     normalized_to_raw: dict[str, set[str]] = defaultdict(set)
     missing_count = 0
     for row in rows:
-        raw = _nonmissing_text(row.get(label_field))
+        raw = _nonmissing_text(row.get(label_field), missing_tokens)
         if raw is None:
             missing_count += 1
             continue
@@ -97,8 +125,19 @@ def _label_normalization_audit(rows: Iterable[dict[str, str]], label_field: str)
     }
 
 
-def audit_rows(csv_path: Path, contract_path: Path) -> dict:
+def audit_rows(csv_path: Path, contract_path: Path, semantic_contract_path: Path) -> dict:
     contract = json.loads(contract_path.read_text(encoding="utf-8"))
+    semantic = json.loads(semantic_contract_path.read_text(encoding="utf-8"))
+
+    assert semantic["contract"] == SEMANTIC_CONTRACT_NAME
+    assert semantic["publication_allowed"] is False
+    assert semantic["row_level_curated_dataset_emitted"] is False
+    assert semantic["null_policy"]["canonical_missing_representation"] is None
+    assert semantic["null_policy"]["missing_to_zero_allowed"] is False
+
+    governed_missing_tokens = list(semantic["null_policy"]["source_missing_tokens"])
+    missing_tokens = _missing_token_set(governed_missing_tokens)
+
     observed_columns = contract["observed_columns"]
     projection = contract["candidate_public_projection"]
     privacy_risk = set(contract["privacy_risk_columns"])
@@ -116,11 +155,11 @@ def audit_rows(csv_path: Path, contract_path: Path) -> dict:
 
     jharkhand_rows = [
         row for row in rows
-        if (_nonmissing_text(row.get("State")) or "").casefold() == "jharkhand"
+        if (_nonmissing_text(row.get("State"), missing_tokens) or "").casefold() == "jharkhand"
     ]
 
     null_counts = {
-        column: sum(1 for row in jharkhand_rows if _is_missing(row.get(column)))
+        column: sum(1 for row in jharkhand_rows if _is_missing(row.get(column), missing_tokens))
         for column in projection
     }
 
@@ -128,13 +167,14 @@ def audit_rows(csv_path: Path, contract_path: Path) -> dict:
         {
             value
             for row in jharkhand_rows
-            if (value := _nonmissing_text(row.get("District"))) is not None
+            if (value := _nonmissing_text(row.get("District"), missing_tokens)) is not None
         }
     )
 
     return {
         "contract": CONTRACT_NAME,
         "candidate_schema_contract": contract["contract"],
+        "semantic_contract": semantic["contract"],
         "source_sha256_expected": contract["source_sha256"],
         "source_row_count_verified": len(rows),
         "source_column_count_verified": len(observed_columns),
@@ -146,11 +186,21 @@ def audit_rows(csv_path: Path, contract_path: Path) -> dict:
         },
         "jharkhand_distinct_district_label_count": len(district_labels),
         "jharkhand_distinct_district_labels": district_labels,
-        "district_label_normalization_audit": _label_normalization_audit(jharkhand_rows, "District"),
+        "district_label_normalization_audit": _label_normalization_audit(
+            jharkhand_rows, "District", missing_tokens
+        ),
         "candidate_projection_null_counts": null_counts,
-        "null_policy": "empty_or_whitespace_csv cells counted as missing; no zero filling performed",
-        "state_identifier_audit": _ambiguity_summary(jharkhand_rows, "State", "State_ID"),
-        "district_identifier_audit": _ambiguity_summary(jharkhand_rows, "District", "District_ID"),
+        "source_missing_tokens": governed_missing_tokens,
+        "canonical_missing_representation": None,
+        "missing_to_zero_allowed": False,
+        "zero_is_observed_value_only": semantic["numeric_cleaning_rules"]["zero_is_observed_value_only"],
+        "null_policy": "missing tokens are governed by the NHD semantic contract; no zero filling performed",
+        "state_identifier_audit": _ambiguity_summary(
+            jharkhand_rows, "State", "State_ID", missing_tokens
+        ),
+        "district_identifier_audit": _ambiguity_summary(
+            jharkhand_rows, "District", "District_ID", missing_tokens
+        ),
         "privacy_risk_columns_read_for_output": [],
         "source_rows_emitted": False,
         "curated_dataset_emitted": False,
@@ -159,7 +209,8 @@ def audit_rows(csv_path: Path, contract_path: Path) -> dict:
         "rules": [
             "aggregate audit output contains no source rows",
             "privacy-risk source values are not emitted",
-            "missing values remain missing and are never converted to zero",
+            "governed missing tokens remain null and are never converted to zero",
+            "zero is counted as an observed value only",
             "label normalization is diagnostic only and does not establish administrative equivalence",
             "source-label matching does not establish cross-vintage administrative equivalence",
             "source identifiers remain uninterpreted until independently evidenced crosswalk records exist",
@@ -172,10 +223,11 @@ def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--csv", type=Path, required=True)
     parser.add_argument("--contract", type=Path, required=True)
+    parser.add_argument("--semantic-contract", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
 
-    report = audit_rows(args.csv, args.contract)
+    report = audit_rows(args.csv, args.contract, args.semantic_contract)
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(report, indent=2, sort_keys=True) + "\n", encoding="utf-8")
 

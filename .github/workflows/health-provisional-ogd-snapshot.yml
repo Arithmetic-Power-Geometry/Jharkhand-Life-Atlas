@@ -10,6 +10,7 @@ on:
       - 'modules/health_access/capture_provisional_ogd_snapshot.py'
       - 'modules/health_access/audit_nhd_candidate_rows.py'
       - 'modules/health_access/national_hospital_directory_candidate_schema.json'
+      - 'modules/health_access/national_hospital_directory_semantic_contract.json'
       - 'jla/privacy.py'
       - '.github/workflows/health-provisional-ogd-snapshot.yml'
       - 'tests/test_health_provisional_snapshot_contract.py'
@@ -132,17 +133,23 @@ jobs:
           python modules/health_access/audit_nhd_candidate_rows.py \
             --csv build/health_provisional_snapshot/hospital_directory.csv \
             --contract modules/health_access/national_hospital_directory_candidate_schema.json \
+            --semantic-contract modules/health_access/national_hospital_directory_semantic_contract.json \
             --output build/health_provisional_snapshot/aggregate_row_audit.json
           python - <<'PY'
           import json
           from pathlib import Path
           r = json.loads(Path('build/health_provisional_snapshot/aggregate_row_audit.json').read_text())
-          assert r['contract'] == 'JLA_HEALTH_NHD_AGGREGATE_ROW_AUDIT_V1'
+          assert r['contract'] == 'JLA_HEALTH_NHD_AGGREGATE_ROW_AUDIT_V2'
+          assert r['semantic_contract'] == 'JLA_HEALTH_NHD_SEMANTIC_CONTRACT_V1'
           assert r['source_rows_emitted'] is False
           assert r['privacy_risk_columns_read_for_output'] == []
           assert r['curated_dataset_emitted'] is False
           assert r['geography_linkage_status'] == 'unresolved'
           assert r['publication_allowed'] is False
+          assert r['canonical_missing_representation'] is None
+          assert r['missing_to_zero_allowed'] is False
+          assert r['zero_is_observed_value_only'] is True
+          assert r['source_missing_tokens'] == ['', 'NA', 'N/A', 'Blank']
           assert r['jharkhand_source_label_match']['establishes_administrative_equivalence'] is False
           assert r['state_identifier_audit']['administrative_equivalence_established'] is False
           assert r['district_identifier_audit']['administrative_equivalence_established'] is False
@@ -151,6 +158,7 @@ jobs:
               'district_labels': r['jharkhand_distinct_district_label_count'],
               'district_labels_with_multiple_ids': r['district_identifier_audit']['labels_with_multiple_ids_count'],
               'district_ids_with_multiple_labels': r['district_identifier_audit']['ids_with_multiple_labels_count'],
+              'governed_missing_tokens': r['source_missing_tokens'],
           }, indent=2))
           PY
       - name: Remove raw candidate before artifact export
