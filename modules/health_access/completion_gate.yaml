@@ -27,7 +27,7 @@ verified_partial_evidence:
     evidence: modules/health_access/acquisition_evidence/2026-09-12_nfhs5_live_index_surface_divergence.yaml
     reference_period: 2019-2021
     publication_allowed: false
-    rule: "Do not synthesize a resource UUID or endpoint and keep publication closed until exact authoritative bytes are acquired and hashed."
+    rule: "Do not synthesize a resource UUID or endpoint; preserve missing or suppressed values as null; keep publication closed until exact authoritative bytes are acquired and hashed."
   national_hospital_directory_candidate_2026_09_13:
     status: verified_authoritative_candidate_nonpublishing
     schema_contract: modules/health_access/national_hospital_directory_candidate_schema.json
@@ -63,7 +63,7 @@ criteria:
     evidence: "Validated historical Census processing exists, and the NHD candidate now has a governed header-level privacy projection plus aggregate row audit. No publication-ready row-level NHD curated dataset has been emitted; missingness/null preservation, semantic cleaning, geography linkage, and field-level validation must be proven before release."
   geographic_linkage:
     satisfied: false
-    evidence: "NHD source geography is explicitly unresolved. The Jharkhand subset contains source identifier/label ambiguity, including labels mapping to multiple IDs and IDs mapping to multiple labels; normalization such as Khunti/khunti cannot establish administrative equivalence. State_ID and District_ID remain uninterpreted until independently evidenced crosswalk records establish vintage and meaning."
+    evidence: "NHD source geography is explicitly unresolved. The Jharkhand subset contains source identifier/label ambiguity, including labels mapping to multiple IDs and IDs mapping to multiple labels; normalization such as Khunti/khunti cannot establish administrative equivalence. State_ID and District_ID remain uninterpreted until independently evidenced crosswalk records establish vintage and meaning. NFHS-5 and other cross-vintage linkage also remain source-native; name equality alone is prohibited."
   provenance:
     satisfied: false
     evidence: "The NHD candidate has immutable SHA-256/size/schema evidence and a persisted aggregate receipt, while the historical Census extract has output/source provenance. Full Module 2 provenance remains open because canonical NHD source identity/equivalence and NFHS-5/other required production payload provenance are unresolved."
