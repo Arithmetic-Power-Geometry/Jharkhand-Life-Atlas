@@ -12,7 +12,7 @@ def _load_review():
 
 def test_temporal_review_is_bound_to_verified_candidate_and_nonpublishing():
     review = _load_review()
-    assert review["contract"] == "JLA_HEALTH_NHD_TEMPORAL_METADATA_REVIEW_V1"
+    assert review["contract"] == "JLA_HEALTH_NHD_TEMPORAL_METADATA_REVIEW_V2"
     assert review["module"] == "health_access"
     assert review["publication_allowed"] is False
     binding = review["payload_binding"]
@@ -29,9 +29,23 @@ def test_resource_freshness_cannot_be_promoted_to_record_reference_period():
     assert temporal["resource_title_updated_till_last_month_establishes_record_level_reference_month"] is False
     assert temporal["declared_monthly_granularity_establishes_record_level_update_timestamp"] is False
     assert temporal["payload_download_time_establishes_record_reference_period"] is False
+    assert temporal["metadata_updated_on_change_establishes_row_value_change"] is False
     assert temporal["record_level_reference_period_verified"] is False
     assert temporal["indicator_time_label_allowed"] is False
     assert temporal["cross_period_comparison_allowed"] is False
+
+
+def test_metadata_drift_is_explicit_and_not_row_level_time_evidence():
+    review = _load_review()
+    drift = review["metadata_drift_audit"]
+    assert drift["resource_metadata_changed_since_prior_review"] is True
+    assert drift["prior_repository_recorded_updated_on"] == "2025-06-02"
+    assert drift["current_official_updated_on"] == "2026-08-11"
+    assert drift["metadata_change_may_be_assigned_to_record_observation_time"] is False
+    assert drift["metadata_change_may_be_used_as_evidence_that_row_values_changed"] is False
+    recheck = drift["live_payload_identity_recheck"]
+    assert recheck["rerun_conclusion"] == "success"
+    assert recheck["artifact_digest"].startswith("sha256:")
 
 
 def test_official_blank_semantics_preserve_nulls_and_prohibit_zero_fill():
@@ -46,8 +60,14 @@ def test_official_blank_semantics_preserve_nulls_and_prohibit_zero_fill():
 def test_time_labelled_scientific_outputs_remain_blocked():
     review = _load_review()
     prohibited = "\n".join(review["prohibited_uses_before_temporal_resolution"]).lower()
-    assert "2025" in prohibited
+    assert "2026" in prohibited
     assert "current or latest" in prohibited
     assert "time-series" in prohibited
     assert "verified temporal" in prohibited
     assert "authoritative evidence" in review["remaining_temporal_gate"].lower()
+
+
+def test_temporal_receipt_stores_no_rows_or_personal_values():
+    review = _load_review()
+    assert "No row values are stored in this receipt." in review["rules"]
+    assert "No personal/contact values are reviewed or exported by this receipt." in review["rules"]
