@@ -26,7 +26,7 @@ def test_acquisition_queue_status_preserves_controlled_parallel_rules():
     assert "never_use_name_only_temporal_geography_equivalence" in rules
 
 
-def test_health_resource_identity_view_fails_closed_until_machine_payload_exists():
+def test_health_resource_identity_view_reflects_verified_primary_bytes_but_fails_closed():
     frame = health_resource_identities()
     status = health_resource_identity_status()
 
@@ -34,7 +34,8 @@ def test_health_resource_identity_view_fails_closed_until_machine_payload_exists
     assert status["resource_count"] == frame.height
     assert status["resource_count"] >= 2
     assert status["machine_identities_resolved"] == 0
-    assert status["raw_payloads_acquired"] == 0
+    assert status["raw_payloads_acquired"] == 1
+    assert status["official_payload_bindings_verified"] == 1
     assert status["publishable_resources"] == 0
 
     assert frame["source"].to_list() == [
@@ -42,9 +43,22 @@ def test_health_resource_identity_view_fails_closed_until_machine_payload_exists
         "OGD_NHP_HOSPITAL_GEO_2026",
     ]
     assert frame["machine_resource_id"].null_count() == frame.height
-    assert frame["raw_payload_acquired"].to_list() == [False] * frame.height
-    assert frame["schema_inspected"].to_list() == [False] * frame.height
+    assert frame["raw_payload_acquired"].to_list() == [False, True]
+    assert frame["official_payload_binding_verified"].to_list() == [False, True]
     assert frame["publication_allowed"].to_list() == [False] * frame.height
+
+    bound = frame.filter(frame["official_payload_binding_verified"]).row(0, named=True)
+    assert bound["raw_sha256"] == "1ddcad9f9b922142a4374c7b89b70fb6cefd8a257448c70a61e1c07d98845134"
+    assert bound["raw_bytes"] == 10341256
+    assert bound["schema_inspected"] is False
+
+
+def test_verified_official_bytes_do_not_imply_machine_identity_or_publication():
+    frame = health_resource_identities()
+    bound = frame.filter(frame["official_payload_binding_verified"]).row(0, named=True)
+    assert bound["machine_resource_id"] is None
+    assert "unresolved" in bound["machine_payload_state"]
+    assert bound["publication_allowed"] is False
 
 
 def test_health_resource_identity_view_exposes_only_authoritative_resource_urls():
