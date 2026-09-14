@@ -1,0 +1,66 @@
+{
+  "contract": "JLA_HEALTH_NHD_PRIMARY_PAYLOAD_BINDING_V1",
+  "module": "health_access",
+  "source_id": "OGD_NHP_HOSPITAL_GEO_2026",
+  "observed_on": "2026-09-14",
+  "publication_allowed": false,
+  "workflow_evidence": {
+    "run_id": 34846843959,
+    "head_sha": "b450f5bd416806f94def7c8264e7bdf7e32a0168",
+    "artifact_id": 10348620630,
+    "artifact_digest": "sha256:138d1898b2a26f2ea06a6e34b5c7e9fd678fc8c6708ea58d95c48b3c2e80de1a",
+    "workflow_conclusion": "success"
+  },
+  "governed_candidate": {
+    "sha256": "1ddcad9f9b922142a4374c7b89b70fb6cefd8a257448c70a61e1c07d98845134",
+    "byte_count": 10341256
+  },
+  "primary_authoritative_candidate": {
+    "requested_url": "https://data.gov.in/sites/default/files/datafile/hospital_directory.csv",
+    "final_url": "https://www.data.gov.in/sites/default/files/datafile/hospital_directory.csv",
+    "http_status": 200,
+    "content_type": "text/csv",
+    "sha256": "1ddcad9f9b922142a4374c7b89b70fb6cefd8a257448c70a61e1c07d98845134",
+    "byte_count": 10341256,
+    "matches_governed_candidate_sha256": true,
+    "matches_governed_candidate_byte_count": true,
+    "exact_governed_payload_binding_verified": true
+  },
+  "alternate_authoritative_candidate": {
+    "requested_url": "https://www.data.gov.in/files/ogdpv2dms/s3fs-public/datafile/hospital_directory.csv",
+    "http_status": 403,
+    "eligible_for_equivalence": false,
+    "sha256": null,
+    "byte_count": null,
+    "equivalence_to_primary_verified": false
+  },
+  "scientific_boundary": {
+    "one_explicit_official_payload_candidate_exactly_matches_governed_candidate": true,
+    "all_explicit_official_candidates_byte_equivalent": false,
+    "canonical_alias_selection_permitted": false,
+    "alternate_alias_equivalence_resolved": false,
+    "record_level_reference_period_verified": false,
+    "semantic_field_validation_established": false,
+    "geography_linkage_established": false,
+    "publication_ready": false
+  },
+  "privacy_and_storage": {
+    "raw_payload_persisted_in_this_receipt": false,
+    "source_rows_persisted_in_this_receipt": false,
+    "privacy_risk_values_persisted_in_this_receipt": false
+  },
+  "decision": {
+    "primary_official_payload_binding_can_be_treated_as_verified": true,
+    "alternate_alias_can_be_treated_as_equivalent": false,
+    "candidate_can_be_treated_as_canonical_publication_payload": false,
+    "publication_gate_remains_closed": true
+  },
+  "rules": [
+    "A successful exact hash-and-byte-count match to one explicit official data.gov.in payload is durable evidence for that candidate only.",
+    "HTTP 403 on the alternate official alias is missing equivalence evidence, not evidence of equality or inequality.",
+    "Partial authoritative retrieval never authorizes deterministic canonical alias selection.",
+    "This payload-identity result does not establish record-level time semantics, field semantics, geography linkage, indicator validity, or publication readiness.",
+    "Missing values remain null and are never silently converted to zero.",
+    "No raw source rows or privacy-risk values are stored in this receipt."
+  ]
+}
