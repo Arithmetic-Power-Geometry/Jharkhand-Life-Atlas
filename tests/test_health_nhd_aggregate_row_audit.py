@@ -27,7 +27,7 @@ def _write_fixture(tmp_path: Path) -> tuple[Path, Path, Path]:
     contract_path.write_text(json.dumps(contract), encoding="utf-8")
 
     semantic_contract = {
-        "contract": "JLA_HEALTH_NHD_SEMANTIC_CONTRACT_V1",
+        "contract": "JLA_HEALTH_NHD_SEMANTIC_CONTRACT_V2",
         "publication_allowed": False,
         "row_level_curated_dataset_emitted": False,
         "null_policy": {
@@ -86,7 +86,7 @@ def test_audit_is_aggregate_only_and_honors_governed_missing_tokens(tmp_path):
     report = audit_rows(csv_path, contract_path, semantic_path)
 
     assert report["contract"] == "JLA_HEALTH_NHD_AGGREGATE_ROW_AUDIT_V3"
-    assert report["semantic_contract"] == "JLA_HEALTH_NHD_SEMANTIC_CONTRACT_V1"
+    assert report["semantic_contract"] == "JLA_HEALTH_NHD_SEMANTIC_CONTRACT_V2"
     assert report["source_row_count_verified"] == 5
     assert report["jharkhand_source_label_match"]["row_count"] == 4
     assert report["jharkhand_source_label_match"]["establishes_administrative_equivalence"] is False
