@@ -36,6 +36,10 @@ verified_partial_evidence:
     numeric_quality_review: modules/health_access/evidence/nhd_numeric_quality_review_2026-09-14.json
     rights_review: modules/health_access/evidence/nhd_rights_review_2026-09-14.json
     temporal_review: modules/health_access/evidence/nhd_temporal_metadata_review_2026-09-14.json
+    authoritative_resource_identity_review: modules/health_access/evidence/nhd_authoritative_resource_identity_review_2026-09-14.json
+    catalog_resource_relationship_verified: true
+    candidate_payload_equivalence_to_current_resource_bytes_verified: false
+    canonical_payload_identity_resolved: false
     source_sha256: 1ddcad9f9b922142a4374c7b89b70fb6cefd8a257448c70a61e1c07d98845134
     source_byte_count: 10341256
     observed_data_row_count: 30273
@@ -58,17 +62,17 @@ verified_partial_evidence:
     publication_allowed: false
     geography_linkage_established: false
     record_level_reference_period_verified: false
-    rule: "Acquisition and schema verification do not imply publication readiness. Privacy/contact fields remain excluded; source district/state identifiers remain uninterpreted; missing values remain null; observed systematic zeros are not evidence of true absence and are not indicator-eligible without authoritative semantic validation; geography and temporal equivalence require independent authoritative evidence."
+    rule: "Authoritative data.gov.in catalog-resource parentage is verified, but metadata identity does not prove byte-level equivalence of the candidate to the current resource. Acquisition and schema verification do not imply publication readiness. Privacy/contact fields remain excluded; source district/state identifiers remain uninterpreted; missing values remain null; observed systematic zeros are not evidence of true absence and are not indicator-eligible without authoritative semantic validation; geography and temporal equivalence require independent authoritative evidence."
 criteria:
   authoritative_acquisition:
     satisfied: false
-    evidence: "The National Hospital Directory candidate is now genuinely acquired from an authoritative OGD host, hashed (SHA-256 1ddcad9f9b922142a4374c7b89b70fb6cefd8a257448c70a61e1c07d98845134), structurally inspected at 30,273 rows and 48 columns, and audited for 478 Jharkhand source-label rows. It remains a non-canonical, non-publishing candidate because official candidate identity/equivalence is unresolved, and NFHS-5 plus other required production Health evidence remain unacquired or unresolved."
+    evidence: "The National Hospital Directory candidate is genuinely acquired from an authoritative OGD host, hashed (SHA-256 1ddcad9f9b922142a4374c7b89b70fb6cefd8a257448c70a61e1c07d98845134), structurally inspected at 30,273 rows and 48 columns, and audited for 478 Jharkhand source-label rows. The authoritative data.gov.in catalog-resource parentage is now independently recorded in modules/health_access/evidence/nhd_authoritative_resource_identity_review_2026-09-14.json. This verifies the official metadata relationship only: exact candidate-byte equivalence to the current resource and canonical publication-payload identity remain unresolved, and NFHS-5 plus other required production Health evidence remain unacquired or unresolved."
   rights_licence_review:
     satisfied: true
     evidence: "modules/health_access/RIGHTS_LICENCE_REVIEW.md and modules/health_access/evidence/nhd_rights_review_2026-09-14.json record source-scoped rights decisions. OGD-derived use remains separately gated and contact/person fields are not authorized for redistribution; restricted ABDM HFR remains excluded pending established rights."
   smallest_authoritative_reusable_granularity:
     satisfied: false
-    evidence: "Facility-level NHD bytes have been acquired and structurally inspected, but they are not yet a reusable publication dataset: privacy-safe row curation, authoritative geography linkage, record-level temporal interpretation, semantic field review, and final source-identity resolution remain open."
+    evidence: "Facility-level NHD bytes have been acquired and structurally inspected, and official catalog-resource parentage is verified, but they are not yet a reusable publication dataset: candidate-byte equivalence to the current authoritative resource, privacy-safe row curation, authoritative geography linkage, record-level temporal interpretation, semantic field review, and final canonical payload identity remain open."
   cleaning_engineering:
     satisfied: false
     evidence: "Validated historical Census processing exists. The NHD candidate has a governed header/privacy projection, aggregate row audit, explicit null-token semantics, numeric parsing checks, and a systematic-zero quality review. No publication-ready row-level NHD curated dataset has been emitted. The six systematic-zero candidate numeric fields remain semantically unresolved and cannot be reinterpreted as true absence, silently converted to null, or used as indicators without authoritative field evidence; geography linkage and final semantic cleaning remain open."
@@ -77,7 +81,7 @@ criteria:
     evidence: "NHD source geography is explicitly unresolved. The Jharkhand subset contains source identifier/label ambiguity, including labels mapping to multiple IDs and IDs mapping to multiple labels; normalization such as Khunti/khunti cannot establish administrative equivalence. State_ID and District_ID remain uninterpreted until independently evidenced crosswalk records establish vintage and meaning. NFHS-5 and other cross-vintage linkage also remain source-native; name equality alone is prohibited."
   provenance:
     satisfied: false
-    evidence: "The NHD candidate has immutable SHA-256/size/schema evidence, a persisted aggregate receipt, a governed semantic contract, and a numeric-quality evidence receipt, while the historical Census extract has output/source provenance. Full Module 2 provenance remains open because canonical NHD source identity/equivalence and NFHS-5/other required production payload provenance are unresolved."
+    evidence: "The NHD candidate has immutable SHA-256/size/schema evidence, a persisted aggregate receipt, governed semantic and numeric-quality evidence, rights and temporal reviews, and an authoritative catalog-resource identity review that verifies official metadata parentage while explicitly leaving byte-level equivalence and canonical payload identity unresolved. The historical Census extract has output/source provenance. Full Module 2 provenance remains open because canonical NHD payload identity/equivalence and NFHS-5/other required production payload provenance are unresolved."
   schema:
     satisfied: true
     evidence: "modules/health_access/schema.yaml defines module grains and missing-value rules. The NHD candidate additionally has an observed 48-column governed schema contract bound to the exact source hash; schema inspection is not treated as semantic, geographic, temporal, or publication validation."
@@ -86,20 +90,20 @@ criteria:
     evidence: "No NHD current/latest or time-labelled indicators are authorized. Six candidate numeric fields (Establised_Year, Number_Doctor, Num_Mediconsultant_or_Expert, Total_Num_Beds, Number_Private_Wards, Num_Bed_for_Eco_Weaker_Sec) exhibit a systematic-zero profile in the Jharkhand candidate and are explicitly not indicator-eligible until independently validated against authoritative field semantics. Resource update date, catalog granularity, and download timestamp do not establish row-level reference periods; valid denominators, geography linkage, semantic fields, and temporal support are still required."
   validation:
     satisfied: false
-    evidence: "Historical Census evidence is validated. For the NHD candidate, hash, dimensions, privacy classification, aggregate Jharkhand audit, governed missing-value semantics, numeric parse behavior, systematic-zero detection, rights boundary, and temporal fail-closed rules are regression-tested. Full Module 2 validation remains open because semantic meaning of the systematic-zero fields, publication-ready current/differently dated outputs, authoritative geography linkage, and remaining source acquisition gates are unresolved."
+    evidence: "Historical Census evidence is validated. For the NHD candidate, hash, dimensions, privacy classification, aggregate Jharkhand audit, governed missing-value semantics, numeric parse behavior, systematic-zero detection, rights boundary, temporal fail-closed rules, and authoritative catalog-resource metadata parentage are regression-tested. The identity review explicitly prevents metadata parentage from being promoted to byte equivalence, current/latest semantics, geographic equivalence, or publication permission. Full Module 2 validation remains open because semantic meaning of the systematic-zero fields, publication-ready current/differently dated outputs, authoritative geography linkage, exact payload equivalence/canonical identity, and remaining source acquisition gates are unresolved."
   tests:
     satisfied: true
-    evidence: "Dedicated Health tests cover historical evidence, source identity, privacy, geography fail-closed behavior, NHD candidate schema/hash binding, persisted aggregate evidence, semantic/null rules, systematic-zero indicator exclusion, rights review, and temporal interpretation. The immediately preceding exact main head 5ebb1fbd716e87b672c1b5210f8f6b650e43ea88 had repository tests run 34819571684 and health-provisional-ogd-snapshot run 34819571681 both complete successfully."
+    evidence: "Dedicated Health tests cover historical evidence, source identity, privacy, geography fail-closed behavior, NHD candidate schema/hash binding, persisted aggregate evidence, semantic/null rules, systematic-zero indicator exclusion, rights review, temporal interpretation, and authoritative catalog-resource identity boundaries. Exact main head 6f13f4b028a65317d4c7f990a3039525f2b0216d had repository tests run 34835493289 and health-access-validation run 34835493276 both complete successfully before this completion-gate synchronization."
   streamlit_presentation:
     satisfied: true
     evidence: "Streamlit exposes the validated Census 2011 Health dataset only as historical evidence, while unresolved current-facility evidence remains IN DEVELOPMENT and non-downloadable. Repository truth continues to gate status and downloads rather than engineering progress alone."
   downloadable_data_reports:
     satisfied: false
-    evidence: "A provenance-gated historical Health CSV download and research-ready historical evidence report exist. Full completion remains open until additional validated production datasets/reports, including any publishable facility evidence, pass privacy, rights, geography, temporal, semantic, and validation gates."
+    evidence: "A provenance-gated historical Health CSV download and research-ready historical evidence report exist. Full completion remains open until additional validated production datasets/reports, including any publishable facility evidence, pass privacy, rights, geography, temporal, semantic, canonical-identity, and validation gates."
   documentation:
     satisfied: true
-    evidence: "Health documentation now includes the historical research assets, acquisition ledger, resource-identity evidence, governed NHD candidate schema, persisted aggregate receipt, semantic contract, numeric-quality review, rights review, temporal review, privacy rules, and geography fail-closed contracts."
+    evidence: "Health documentation now includes the historical research assets, acquisition ledger, resource-identity evidence, governed NHD candidate schema, persisted aggregate receipt, semantic contract, numeric-quality review, rights review, temporal review, authoritative catalog-resource identity review, privacy rules, and geography fail-closed contracts."
   green_ci_on_main:
     satisfied: false
-    evidence: "The immediately preceding exact main head 5ebb1fbd716e87b672c1b5210f8f6b650e43ea88 had repository tests run 34819571684 and health-provisional-ogd-snapshot run 34819571681 both complete successfully. This completion-gate evidence synchronization creates a newer main head, so exact-head CI must be re-verified before this criterion can be satisfied or any COMPLETE decision considered."
+    evidence: "Exact main head 6f13f4b028a65317d4c7f990a3039525f2b0216d had repository tests run 34835493289 and health-access-validation run 34835493276 both complete successfully. This completion-gate evidence synchronization creates a newer main head, so exact-head CI must be re-verified before this criterion can be satisfied or any COMPLETE decision considered."
 completion_rule: "status may become complete only when every criterion is satisfied and final CI is green on the exact main head."
