@@ -140,7 +140,7 @@ jobs:
           from pathlib import Path
           r = json.loads(Path('build/health_provisional_snapshot/aggregate_row_audit.json').read_text())
           assert r['contract'] == 'JLA_HEALTH_NHD_AGGREGATE_ROW_AUDIT_V3'
-          assert r['semantic_contract'] == 'JLA_HEALTH_NHD_SEMANTIC_CONTRACT_V1'
+          assert r['semantic_contract'] == 'JLA_HEALTH_NHD_SEMANTIC_CONTRACT_V2'
           assert r['source_rows_emitted'] is False
           assert r['privacy_risk_columns_read_for_output'] == []
           assert r['curated_dataset_emitted'] is False
