@@ -1,7 +1,8 @@
 {
-  "contract": "JLA_HEALTH_NHD_SEMANTIC_CONTRACT_V1",
+  "contract": "JLA_HEALTH_NHD_SEMANTIC_CONTRACT_V2",
   "module": "health_access",
   "source_contract": "modules/health_access/national_hospital_directory_candidate_schema.json",
+  "numeric_quality_evidence": "modules/health_access/evidence/nhd_numeric_quality_review_2026-09-14.json",
   "status": "in_development_nonpublishing",
   "publication_allowed": false,
   "row_level_curated_dataset_emitted": false,
@@ -21,6 +22,10 @@
       "Establised_Year", "Number_Doctor", "Num_Mediconsultant_or_Expert", "Total_Num_Beds",
       "Number_Private_Wards", "Num_Bed_for_Eco_Weaker_Sec"
     ],
+    "systematic_zero_profile_fields": [
+      "Establised_Year", "Number_Doctor", "Num_Mediconsultant_or_Expert", "Total_Num_Beds",
+      "Number_Private_Wards", "Num_Bed_for_Eco_Weaker_Sec"
+    ],
     "geography_identifiers_uninterpreted": ["State_ID", "District_ID"],
     "privacy_excluded": [
       "Telephone", "Mobile_Number", "Emergency_Num", "Ambulance_Phone_No", "Bloodbank_Phone_No",
@@ -34,7 +39,11 @@
     "failed_parse_becomes_null": true,
     "zero_is_observed_value_only": true,
     "no_imputation": true,
-    "no_cross_field_backfill": true
+    "no_cross_field_backfill": true,
+    "systematic_zero_profile_establishes_true_absence": false,
+    "systematic_zero_profile_establishes_field_validity": false,
+    "observed_zero_recode_to_null_allowed": false,
+    "systematic_zero_profile_requires_authoritative_semantic_validation": true
   },
   "geography_rules": {
     "source_labels_remain_source_native": true,
@@ -54,6 +63,7 @@
     "facility_counts_allowed_before_geography_resolution": false,
     "district_rates_allowed_before_geography_resolution": false,
     "bed_or_doctor_rates_allowed_without_valid_denominator_and_reference_period": false,
+    "systematic_zero_profile_fields_indicator_eligible": false,
     "derived_outputs_publication_allowed": false
   },
   "release_requirements": [
@@ -61,6 +71,7 @@
     "rights/licence permits intended redistribution",
     "immutable row-level source snapshot and provenance recorded",
     "field semantics validated against authoritative documentation",
+    "systematic-zero numeric fields independently validated before indicator use",
     "null preservation and numeric parsing validated on observed rows",
     "privacy projection validated",
     "temporal reference period established",

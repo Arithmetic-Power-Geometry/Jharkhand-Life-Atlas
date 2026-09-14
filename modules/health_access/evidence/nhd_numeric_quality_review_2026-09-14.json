@@ -1,0 +1,45 @@
+{
+  "contract": "JLA_HEALTH_NHD_NUMERIC_QUALITY_REVIEW_V1",
+  "module": "health_access",
+  "source_role": "authoritative_candidate_nonpublishing",
+  "review_date": "2026-09-14",
+  "source_sha256": "1ddcad9f9b922142a4374c7b89b70fb6cefd8a257448c70a61e1c07d98845134",
+  "source_row_count": 30273,
+  "source_column_count": 48,
+  "jharkhand_source_label_row_count": 478,
+  "row_values_exported": false,
+  "privacy_risk_values_exported": false,
+  "publication_allowed": false,
+  "derived_indicator_use_allowed": false,
+  "interpretation_boundary": {
+    "observed_zero_is_preserved_as_zero": true,
+    "observed_zero_may_be_reclassified_as_missing": false,
+    "systematic_zero_profile_proves_true_absence": false,
+    "systematic_zero_profile_proves_field_validity": false,
+    "authoritative_field_semantics_required_before_indicator_use": true,
+    "rule": "The aggregate audit diagnoses field-quality risk without altering source values. A systematic zero profile is not evidence of true absence and is not permission to recode observed zeros as null. These fields remain scientifically blocked until authoritative semantic documentation or an independently validated alternative source resolves their meaning and usability."
+  },
+  "numeric_field_profiles": {
+    "Establised_Year": {"jharkhand_rows": 478, "observed_nonmissing": 475, "governed_missing": 3, "observed_zero": 475, "nonzero_observed": 0, "negative": 0, "fractional": 0, "unparsable": 0, "status": "systematic_zero_profile_blocked"},
+    "Number_Doctor": {"jharkhand_rows": 478, "observed_nonmissing": 475, "governed_missing": 3, "observed_zero": 475, "nonzero_observed": 0, "negative": 0, "fractional": 0, "unparsable": 0, "status": "systematic_zero_profile_blocked"},
+    "Num_Mediconsultant_or_Expert": {"jharkhand_rows": 478, "observed_nonmissing": 475, "governed_missing": 3, "observed_zero": 475, "nonzero_observed": 0, "negative": 0, "fractional": 0, "unparsable": 0, "status": "systematic_zero_profile_blocked"},
+    "Total_Num_Beds": {"jharkhand_rows": 478, "observed_nonmissing": 478, "governed_missing": 0, "observed_zero": 478, "nonzero_observed": 0, "negative": 0, "fractional": 0, "unparsable": 0, "status": "systematic_zero_profile_blocked"},
+    "Number_Private_Wards": {"jharkhand_rows": 478, "observed_nonmissing": 475, "governed_missing": 3, "observed_zero": 475, "nonzero_observed": 0, "negative": 0, "fractional": 0, "unparsable": 0, "status": "systematic_zero_profile_blocked"},
+    "Num_Bed_for_Eco_Weaker_Sec": {"jharkhand_rows": 478, "observed_nonmissing": 475, "governed_missing": 3, "observed_zero": 475, "nonzero_observed": 0, "negative": 0, "fractional": 0, "unparsable": 0, "status": "systematic_zero_profile_blocked"}
+  },
+  "scientific_effect": {
+    "doctor_capacity_indicator_allowed": false,
+    "bed_capacity_indicator_allowed": false,
+    "private_ward_capacity_indicator_allowed": false,
+    "economically_weaker_section_bed_indicator_allowed": false,
+    "establishment_year_analysis_allowed": false,
+    "district_or_state_rate_derivation_allowed": false
+  },
+  "required_resolution": [
+    "authoritative field definitions or data dictionary for the exact governed payload",
+    "evidence that systematic zeros represent measured values rather than placeholders/defaults/not-populated fields",
+    "record-level reference-period evidence for any time-labelled use",
+    "authoritative geography linkage and valid denominators for any geographic rate",
+    "regression tests and green CI on the exact main head before publication"
+  ]
+}
