@@ -35,8 +35,15 @@ def _write_fixture(tmp_path: Path) -> tuple[Path, Path, Path]:
             "canonical_missing_representation": None,
             "missing_to_zero_allowed": False,
         },
+        "field_groups": {
+            "numeric_candidate_fields": ["Number_Doctor", "Total_Num_Beds"],
+        },
         "numeric_cleaning_rules": {
+            "parse_only_when_unambiguous": True,
+            "negative_counts_allowed": False,
+            "failed_parse_becomes_null": True,
             "zero_is_observed_value_only": True,
+            "no_imputation": True,
         },
     }
     semantic_path = tmp_path / "semantic_contract.json"
@@ -58,12 +65,12 @@ def _write_fixture(tmp_path: Path) -> tuple[Path, Path, Path]:
         })
         writer.writerow({
             "Hospital_Name": "C", "State": " jharkhand ", "District": "Khunti",
-            "Number_Doctor": "N/A", "Total_Num_Beds": "12", "Telephone": "333",
+            "Number_Doctor": "N/A", "Total_Num_Beds": "12.5", "Telephone": "333",
             "Nodal_Person_Info": "Person C", "State_ID": "20", "District_ID": "102",
         })
         writer.writerow({
             "Hospital_Name": "C2", "State": "Jharkhand", "District": "khunti",
-            "Number_Doctor": "Blank", "Total_Num_Beds": "2", "Telephone": "334",
+            "Number_Doctor": "Blank", "Total_Num_Beds": "-2", "Telephone": "334",
             "Nodal_Person_Info": "Person C2", "State_ID": "20", "District_ID": "102",
         })
         writer.writerow({
@@ -78,7 +85,7 @@ def test_audit_is_aggregate_only_and_honors_governed_missing_tokens(tmp_path):
     csv_path, contract_path, semantic_path = _write_fixture(tmp_path)
     report = audit_rows(csv_path, contract_path, semantic_path)
 
-    assert report["contract"] == "JLA_HEALTH_NHD_AGGREGATE_ROW_AUDIT_V2"
+    assert report["contract"] == "JLA_HEALTH_NHD_AGGREGATE_ROW_AUDIT_V3"
     assert report["semantic_contract"] == "JLA_HEALTH_NHD_SEMANTIC_CONTRACT_V1"
     assert report["source_row_count_verified"] == 5
     assert report["jharkhand_source_label_match"]["row_count"] == 4
@@ -92,6 +99,31 @@ def test_audit_is_aggregate_only_and_honors_governed_missing_tokens(tmp_path):
     assert report["source_rows_emitted"] is False
     assert report["privacy_risk_columns_read_for_output"] == []
     assert report["publication_allowed"] is False
+
+
+def test_audit_numeric_quality_is_aggregate_and_fail_closed(tmp_path):
+    csv_path, contract_path, semantic_path = _write_fixture(tmp_path)
+    report = audit_rows(csv_path, contract_path, semantic_path)
+
+    doctors = report["numeric_candidate_quality"]["Number_Doctor"]
+    assert doctors["missing_count"] == 3
+    assert doctors["observed_nonmissing_count"] == 1
+    assert doctors["parseable_nonnegative_integer_count"] == 1
+    assert doctors["zero_count"] == 0
+    assert doctors["negative_count"] == 0
+    assert doctors["noninteger_numeric_count"] == 0
+    assert doctors["unparsable_count"] == 0
+    assert doctors["raw_values_emitted"] is False
+
+    beds = report["numeric_candidate_quality"]["Total_Num_Beds"]
+    assert beds["missing_count"] == 0
+    assert beds["observed_nonmissing_count"] == 4
+    assert beds["parseable_nonnegative_integer_count"] == 2
+    assert beds["zero_count"] == 1
+    assert beds["negative_count"] == 1
+    assert beds["noninteger_numeric_count"] == 1
+    assert beds["unparsable_count"] == 0
+    assert beds["raw_values_emitted"] is False
 
 
 def test_audit_detects_source_identifier_ambiguity(tmp_path):
@@ -117,7 +149,7 @@ def test_audit_separates_casefold_collision_from_admin_equivalence(tmp_path):
     assert normalized["administrative_equivalence_established"] is False
 
 
-def test_audit_never_emits_privacy_values(tmp_path):
+def test_audit_never_emits_privacy_values_or_rejected_numeric_values(tmp_path):
     csv_path, contract_path, semantic_path = _write_fixture(tmp_path)
     report_text = json.dumps(audit_rows(csv_path, contract_path, semantic_path))
 
@@ -125,3 +157,5 @@ def test_audit_never_emits_privacy_values(tmp_path):
     assert "Person B" not in report_text
     assert '"111"' not in report_text
     assert '"222"' not in report_text
+    assert '"12.5"' not in report_text
+    assert '"-2"' not in report_text
