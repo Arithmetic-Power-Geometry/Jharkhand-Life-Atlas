@@ -3,7 +3,7 @@
   "module": "health_access",
   "source_id": "OGD_NHP_HOSPITAL_GEO_2026",
   "reviewed_on": "2026-09-14",
-  "status": "official_catalog_resource_parentage_verified_payload_equivalence_still_gated",
+  "status": "official_catalog_resource_parentage_and_primary_payload_binding_verified_alternate_alias_equivalence_still_gated",
   "publication_allowed": false,
   "authoritative_metadata": {
     "host": "data.gov.in",
@@ -38,8 +38,25 @@
     "observed_column_count": 48,
     "jharkhand_source_label_row_count": 478
   },
+  "primary_payload_binding_evidence": {
+    "receipt": "modules/health_access/evidence/nhd_primary_payload_binding_2026-09-14.json",
+    "workflow_run_id": 34846843959,
+    "workflow_head_sha": "b450f5bd416806f94def7c8264e7bdf7e32a0168",
+    "artifact_id": 10348620630,
+    "artifact_digest": "sha256:138d1898b2a26f2ea06a6e34b5c7e9fd678fc8c6708ea58d95c48b3c2e80de1a",
+    "primary_requested_url": "https://data.gov.in/sites/default/files/datafile/hospital_directory.csv",
+    "primary_final_url": "https://www.data.gov.in/sites/default/files/datafile/hospital_directory.csv",
+    "primary_http_status": 200,
+    "primary_matches_governed_sha256": true,
+    "primary_matches_governed_byte_count": true,
+    "primary_exact_payload_binding_verified": true,
+    "alternate_requested_url": "https://www.data.gov.in/files/ogdpv2dms/s3fs-public/datafile/hospital_directory.csv",
+    "alternate_http_status": 403,
+    "alternate_alias_equivalence_verified": false
+  },
   "scientific_boundary": {
-    "candidate_payload_equivalence_to_current_resource_bytes_verified": false,
+    "primary_authoritative_payload_binding_verified": true,
+    "candidate_payload_equivalence_to_all_explicit_current_resource_aliases_verified": false,
     "canonical_payload_identity_resolved": false,
     "record_level_reference_period_verified": false,
     "resource_update_date_may_be_used_as_record_date": false,
@@ -64,13 +81,15 @@
   },
   "decision": {
     "catalog_resource_parentage_can_be_treated_as_verified": true,
+    "primary_official_payload_binding_can_be_treated_as_verified": true,
+    "alternate_alias_can_be_treated_as_equivalent": false,
     "candidate_can_be_treated_as_canonical_publication_payload": false,
     "candidate_can_be_used_for_current_latest_indicators": false,
     "candidate_can_be_geographically_linked_by_name_only": false,
     "publication_gate_remains_closed": true
   },
   "remaining_gates": [
-    "prove exact candidate-payload equivalence to the authoritative resource bytes or acquire and hash the authoritative resource bytes directly",
+    "resolve the blocked alternate explicit official alias or obtain authoritative evidence that it is retired/non-canonical before deterministic canonical alias selection",
     "establish record-level temporal semantics independently of catalog update metadata",
     "establish authoritative semantics for candidate scientific fields, including systematic-zero fields",
     "establish evidence-backed geographic linkage and administrative vintage",
@@ -79,7 +98,10 @@
     "verify green CI on the exact main head"
   ],
   "rules": [
-    "Official catalog-resource parentage is identity evidence, not byte-level payload equivalence.",
+    "Official catalog-resource parentage is identity evidence, not by itself byte-level payload equivalence.",
+    "The primary explicit official data.gov.in CSV is byte-bound to the governed candidate by exact SHA-256 and byte count.",
+    "HTTP 403 on the alternate explicit official alias is missing equivalence evidence and does not establish equality, inequality, retirement, or canonicality.",
+    "Partial authoritative retrieval does not authorize deterministic canonical alias selection.",
     "The resource-level updated-on date and monthly granularity do not establish the observation date of individual facility records.",
     "Names or normalized spellings alone never establish administrative equivalence.",
     "Missing remains null and is never silently converted to zero.",
