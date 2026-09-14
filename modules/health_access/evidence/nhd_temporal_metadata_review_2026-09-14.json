@@ -1,5 +1,5 @@
 {
-  "contract": "JLA_HEALTH_NHD_TEMPORAL_METADATA_REVIEW_V1",
+  "contract": "JLA_HEALTH_NHD_TEMPORAL_METADATA_REVIEW_V2",
   "module": "health_access",
   "source_id": "OGD_NHP_HOSPITAL_GEO_2026",
   "status": "candidate_metadata_evidence_only",
@@ -16,23 +16,40 @@
     "catalog_title": "Hospital Directory (National Health Portal)",
     "catalog_url": "https://data.gov.in/catalog/hospital-directory-national-health-portal",
     "resource_published_on": "2017-08-10",
-    "resource_updated_on": "2025-06-02",
+    "resource_updated_on": "2026-08-11",
     "resource_declared_granularity": "Monthly",
     "resource_note": "NA/Blank: Not Available; data will be updated on regular interval",
     "resource_reference_url": "http://www.nhp.gov.in/",
     "contributing_organization": "National Institute of Health and Family Welfare (NIHFW), New Delhi",
     "official_metadata_observed_on": "2026-09-14",
-    "evidence_method": "Official data.gov.in resource metadata page; values transcribed as metadata evidence only."
+    "evidence_method": "Official data.gov.in catalog/resource metadata observed on 2026-09-14; metadata evidence is kept distinct from payload and record-level temporal evidence."
+  },
+  "metadata_drift_audit": {
+    "prior_repository_recorded_updated_on": "2025-06-02",
+    "current_official_updated_on": "2026-08-11",
+    "resource_metadata_changed_since_prior_review": true,
+    "metadata_change_may_be_assigned_to_record_observation_time": false,
+    "metadata_change_may_be_used_as_evidence_that_row_values_changed": false,
+    "live_payload_identity_recheck": {
+      "workflow_run_id": 34846843959,
+      "rerun_job_id": 104006375372,
+      "rerun_conclusion": "success",
+      "artifact_id": 10351545477,
+      "artifact_digest": "sha256:af4287acfecf9ba9f411f7764279787cddbeff13664c8f9b60f436a524189d60",
+      "head_sha_audited": "b450f5bd416806f94def7c8264e7bdf7e32a0168",
+      "interpretation": "The governed authoritative-payload identity assertions still passed after the observed catalog metadata change. This does not establish that every source row is unchanged across all historical catalog revisions; it establishes only that the live payload satisfied the repository's exact governed identity checks during this rerun."
+    }
   },
   "temporal_interpretation": {
     "resource_page_update_date_is_observation_date_for_every_record": false,
     "resource_title_updated_till_last_month_establishes_record_level_reference_month": false,
     "declared_monthly_granularity_establishes_record_level_update_timestamp": false,
     "payload_download_time_establishes_record_reference_period": false,
+    "metadata_updated_on_change_establishes_row_value_change": false,
     "record_level_reference_period_verified": false,
     "indicator_time_label_allowed": false,
     "cross_period_comparison_allowed": false,
-    "reason": "The official page exposes resource-level publication/update metadata and declared granularity, but the governed candidate evidence does not establish a record-level observation/update date for each hospital. Resource-page freshness must not be silently assigned to rows or derived indicators."
+    "reason": "The official page exposes resource-level publication/update metadata and declared granularity, but the governed candidate evidence does not establish a record-level observation/update date for each hospital. The observed movement of the catalog Updated On value while the governed payload identity audit remains green is direct operational evidence that catalog freshness and row-level observation time must remain separate evidence layers."
   },
   "missingness_interpretation": {
     "official_resource_note_treats_na_or_blank_as_not_available": true,
@@ -43,22 +60,25 @@
   "allowed_uses_before_temporal_resolution": [
     "Payload integrity and schema audits",
     "Privacy-safe aggregate diagnostics explicitly labelled candidate evidence",
+    "Resource-metadata drift monitoring that does not assign catalog dates to rows",
     "Geography ambiguity diagnostics that do not infer administrative equivalence",
     "Development of validation code and fail-closed publication gates"
   ],
   "prohibited_uses_before_temporal_resolution": [
-    "Labeling hospital rows or indicators as 2025 observations solely from the resource Updated On date",
-    "Calling the payload current or latest at record level solely from the resource title",
+    "Labeling hospital rows or indicators as 2026 observations solely from the resource Updated On date",
+    "Calling the payload current or latest at record level solely from the resource title or catalog metadata",
+    "Inferring that source row values changed merely because the catalog Updated On value changed",
     "Time-series or before/after comparisons using an unverified row reference period",
     "Publishing indicators that require a verified temporal denominator or reference period"
   ],
   "remaining_temporal_gate": "Obtain authoritative evidence that defines the payload/record reference period or a field-level update timestamp, then bind that evidence to the exact payload before any time-labelled scientific output is published.",
   "rules": [
-    "Resource metadata and record observation time are separate evidence layers.",
+    "Resource metadata, payload identity and record observation time are separate evidence layers.",
+    "A changing catalog Updated On date is not evidence that every row changed or that every row represents that date.",
     "No row values are stored in this receipt.",
     "No personal/contact values are reviewed or exported by this receipt.",
     "Missing values remain null and are never silently converted to zero.",
-    "This temporal review does not resolve canonical source identity, geography linkage, semantic field validation, privacy publication review, or scientific indicator validity.",
+    "This temporal review does not resolve canonical alias equivalence, geography linkage, semantic field validation, privacy publication review, or scientific indicator validity.",
     "Module 2 remains IN DEVELOPMENT until every strict publication gate and exact-main green CI are verified."
   ]
 }
