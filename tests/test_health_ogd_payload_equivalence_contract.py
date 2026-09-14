@@ -66,6 +66,59 @@ def test_partial_retrieval_does_not_turn_missing_evidence_into_false_equivalence
     assert result["deterministic_preferred_candidate_url"] is None
 
 
+def test_identical_aliases_must_match_governed_payload_binding() -> None:
+    module = _load_module()
+    governed_digest = "a" * 64
+    records = [
+        _record("https://data.gov.in/a.csv", governed_digest, 123),
+        _record("https://www.data.gov.in/b.csv", governed_digest, 123),
+    ]
+    result = module.evaluate_candidate_records(
+        records,
+        expected_sha256=governed_digest,
+        expected_byte_count=123,
+    )
+    assert result["byte_identical"] is True
+    assert result["governed_binding_required"] is True
+    assert result["governed_binding_verified"] is True
+    assert result["canonical_selection_permitted"] is True
+
+
+def test_two_aliases_drifting_together_cannot_validate_governed_candidate() -> None:
+    module = _load_module()
+    drifted_digest = "b" * 64
+    records = [
+        _record("https://data.gov.in/a.csv", drifted_digest, 456),
+        _record("https://www.data.gov.in/b.csv", drifted_digest, 456),
+    ]
+    result = module.evaluate_candidate_records(
+        records,
+        expected_sha256="a" * 64,
+        expected_byte_count=123,
+    )
+    assert result["all_candidates_verified"] is True
+    assert result["byte_identical"] is True
+    assert result["governed_binding_verified"] is False
+    assert result["canonical_selection_permitted"] is False
+    assert result["deterministic_preferred_candidate_url"] is None
+    assert result["shared_sha256"] == drifted_digest
+    assert result["shared_byte_count"] == 456
+
+
+def test_governed_binding_requires_hash_and_byte_count_together() -> None:
+    module = _load_module()
+    records = [
+        _record("https://data.gov.in/a.csv", "a" * 64, 123),
+        _record("https://www.data.gov.in/b.csv", "a" * 64, 123),
+    ]
+    try:
+        module.evaluate_candidate_records(records, expected_sha256="a" * 64)
+    except ValueError as exc:
+        assert "supplied together" in str(exc)
+    else:
+        raise AssertionError("partial governed payload binding must fail closed")
+
+
 def test_workflow_preserves_fail_closed_publication_boundary() -> None:
     text = WORKFLOW.read_text(encoding="utf-8")
     required = [
@@ -77,6 +130,11 @@ def test_workflow_preserves_fail_closed_publication_boundary() -> None:
         "multiple_candidates_require_all_successful_hashes_before_equivalence",
         "byte_equivalence_verification_is_not_raw_snapshot_acquisition",
         "byte_equivalence_verification_does_not_enable_publication",
+        "--expected-sha256",
+        "--expected-byte-count",
+        "governed_binding_required",
+        "governed_binding_verified",
+        "two_official_aliases_drifting_together_do_not_validate_the_governed_candidate",
     ]
     missing = [item for item in required if item not in text]
     assert not missing, f"Health payload equivalence workflow lost fail-closed guards: {missing}"
