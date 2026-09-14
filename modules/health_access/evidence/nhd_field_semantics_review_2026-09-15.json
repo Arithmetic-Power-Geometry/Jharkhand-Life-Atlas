@@ -1,0 +1,71 @@
+{
+  "contract": "JLA_HEALTH_NHD_FIELD_SEMANTICS_REVIEW_V1",
+  "module": "health_access",
+  "reviewed_at_utc": "2026-09-14T18:45:00Z",
+  "status": "authoritative_metadata_reviewed_semantics_unresolved",
+  "publication_allowed": false,
+  "resource": {
+    "title": "National Hospital Directory with Geo Code and additional parameters (updated till last month)",
+    "official_resource_url": "https://www.data.gov.in/resource/national-hospital-directory-geo-code-and-additional-parameters-updated-till-last-month",
+    "official_catalog_url": "https://data.gov.in/catalog/hospital-directory-national-health-portal",
+    "publisher": "National Institute of Health and Family Welfare (NIHFW), New Delhi",
+    "portal": "Open Government Data Platform India",
+    "published_on": "2017-08-10",
+    "resource_granularity": "Monthly",
+    "resource_note": "NA/Blank: Not Available; data will be updated on regular interval"
+  },
+  "authoritative_metadata_findings": {
+    "missing_token_semantics_defined": true,
+    "missing_tokens_supported_by_resource_metadata": ["NA", "Blank"],
+    "zero_semantics_defined": false,
+    "numeric_field_unit_definitions_found": false,
+    "systematic_zero_capacity_fields_explained": false,
+    "record_level_reference_period_defined": false,
+    "state_id_namespace_defined": false,
+    "district_id_namespace_defined": false
+  },
+  "systematic_zero_fields_reviewed": [
+    "Establised_Year",
+    "Number_Doctor",
+    "Num_Mediconsultant_or_Expert",
+    "Total_Num_Beds",
+    "Number_Private_Wards",
+    "Num_Bed_for_Eco_Weaker_Sec"
+  ],
+  "scientific_conclusion": {
+    "authoritative_documentation_sufficient_to_interpret_observed_zero_as_true_absence": false,
+    "authoritative_documentation_sufficient_to_recode_zero_as_missing": false,
+    "indicator_eligibility_established": false,
+    "action": "Preserve observed zeros exactly as observed, preserve missing tokens as null, and keep all systematic-zero fields excluded from indicators until an authoritative data dictionary, methodology document, or independently validated source establishes their semantics."
+  },
+  "geography_conclusion": {
+    "id_namespace_resolved": false,
+    "name_matching_authorized": false,
+    "crosswalk_authorized": false,
+    "action": "Keep State_ID and District_ID source-native and uninterpreted; do not map them to LGD, Census, or current administrative codes without independent authoritative evidence."
+  },
+  "temporal_conclusion": {
+    "catalog_update_date_is_record_date": false,
+    "monthly_granularity_establishes_row_reference_period": false,
+    "time_labelled_indicator_authorized": false
+  },
+  "sources": [
+    {
+      "url": "https://www.data.gov.in/resource/national-hospital-directory-geo-code-and-additional-parameters-updated-till-last-month",
+      "authority": "Government of India OGD / NIHFW",
+      "evidence_used": "resource title, publisher, published date, granularity, and NA/Blank note"
+    },
+    {
+      "url": "https://data.gov.in/help",
+      "authority": "Government of India OGD",
+      "evidence_used": "portal guidance that unavailable/not-reported/missing values should be represented as NA and that metadata should define raw data"
+    }
+  ],
+  "rules": [
+    "Absence of an authoritative zero definition is not evidence that zero means missing.",
+    "Absence of an authoritative zero definition is not evidence that zero means true absence.",
+    "Observed source values are never silently rewritten to satisfy an indicator schema.",
+    "This review does not authorize row-level publication or derived outputs.",
+    "Module 2 remains IN DEVELOPMENT."
+  ]
+}
