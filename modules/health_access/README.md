@@ -31,21 +31,30 @@ The governed source inventory in `sources.yaml` includes official Census of Indi
 - Jharkhand HMIS district time series and the newer all-States/districts HMIS catalog
 - NFHS-5 district factsheet evidence
 
-These resources are not treated as acquired merely because their official catalog/resource pages have been verified. Exact authoritative payload acquisition, immutable evidence capture, retrieval metadata, hash/API provenance, observed-schema inspection, rights/attribution checks and temporal/geographic validation are still required before publication.
+Discovery metadata is never treated as acquired evidence. Exact authoritative payload acquisition, immutable evidence capture, retrieval metadata, hash/API provenance, observed-schema inspection, rights/attribution checks and temporal/geographic validation are required source by source before publication.
 
-### National Hospital Directory candidate evidence
+### National Hospital Directory evidence
 
-The governed CI acquisition path has verified one retrievable official National Hospital Directory CSV candidate and now persists its **aggregate-only, non-row-level audit evidence** in:
+JLA has now verified one explicit primary official `data.gov.in` National Hospital Directory payload against the governed candidate. The primary official payload and governed candidate match exactly at **10,341,256 bytes** with SHA-256:
 
+`1ddcad9f9b922142a4374c7b89b70fb6cefd8a257448c70a61e1c07d98845134`
+
+Durable non-publishing evidence is recorded in:
+
+- `modules/health_access/evidence/nhd_primary_payload_binding_2026-09-14.json`
 - `modules/health_access/evidence/nhd_jharkhand_aggregate_receipt_2026-09-13.json`
-
-That receipt binds the source SHA-256, byte/row/column counts, successful CI run and artifact digest, privacy constraints, Jharkhand source-label row count, candidate-projection missingness counts and source geography ambiguity audit. It contains no source rows or privacy-risk source values. It is **candidate evidence only**: canonical source identity is unresolved, publication remains prohibited, and its source `State_ID`/`District_ID` values are not interpreted as LGD/Census/current administrative identifiers without independently evidenced crosswalks.
-
-A governed resource-specific rights review is also persisted in:
-
+- `modules/health_access/evidence/nhd_authoritative_resource_identity_review_2026-09-14.json`
+- `modules/health_access/evidence/nhd_numeric_quality_review_2026-09-14.json`
+- `modules/health_access/evidence/nhd_temporal_metadata_review_2026-09-14.json`
 - `modules/health_access/evidence/nhd_rights_review_2026-09-14.json`
 
-The review records that covered non-person facility fields may be considered for reuse under the Government Open Data License - India with required attribution, while personal information and named/contact fields remain excluded from publication. It is bound to the verified candidate hash and observed payload counts, stores no source row values, and explicitly **does not authorize publication by itself**. Canonical resource identity, privacy-safe public projection, semantic review, temporal validity, geography linkage, scientific validation and exact-main green CI remain separate mandatory gates.
+This establishes byte-level identity for that **one explicit primary official payload only**. It does **not** establish deterministic canonical alias selection: the alternate official alias remains unresolved. It also does not establish row-level reference periods, administrative-vintage equivalence, semantic validity of the systematic-zero capacity fields, indicator eligibility, or publication readiness.
+
+The aggregate receipt binds source hash, byte/row/column counts, successful CI evidence, privacy constraints, Jharkhand source-label row count, candidate-projection missingness counts and source-geography ambiguity audit. It contains no source rows or privacy-risk source values. Source `State_ID`/`District_ID` values remain uninterpreted and must not be treated as LGD, Census or current administrative identifiers without independently evidenced crosswalks.
+
+The resource-specific rights review records that covered non-person facility fields may be considered for reuse under the Government Open Data License - India with required attribution, while personal information and named/contact fields remain excluded from publication. Rights review does not authorize publication by itself.
+
+Six candidate numeric fields show a systematic-zero profile in the Jharkhand candidate and therefore remain **not indicator-eligible** pending authoritative field-semantic validation. Observed zero values are not silently changed to null, and missing values are never converted to zero.
 
 ABDM Health Facility Registry remains restricted pending a reusable official export/API and acceptable terms. JLA does not scrape or republish person-level or otherwise unsupported records.
 
@@ -67,4 +76,4 @@ No source means no published factual value. Discovery is not acquisition; acquis
 
 ## Completion boundary
 
-The validated Census 2011 extract is a genuine published Health evidence layer, but it does **not** by itself satisfy the full Module 2 completion gate. Module 2 remains **IN DEVELOPMENT** until current/differently dated authoritative acquisition, rights review, provenance, geographic linkage, indicators, validation, downloads/reports, Streamlit synchronization and green CI on `main` are all verified.
+The validated Census 2011 extract is a genuine published Health evidence layer and one primary official National Hospital Directory payload is now immutably byte-bound to its governed candidate. Neither fact by itself satisfies the full Module 2 completion gate. Module 2 remains **IN DEVELOPMENT** until remaining authoritative acquisition, privacy-safe row curation, semantic review, temporal interpretation, verified geographic linkage, valid indicators, validation, downloads/reports, Streamlit synchronization and green CI on the exact final `main` head are all verified.
