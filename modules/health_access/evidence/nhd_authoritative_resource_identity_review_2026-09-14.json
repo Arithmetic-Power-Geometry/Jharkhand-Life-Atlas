@@ -1,0 +1,89 @@
+{
+  "contract": "JLA_HEALTH_NHD_RESOURCE_IDENTITY_REVIEW_V1",
+  "module": "health_access",
+  "source_id": "OGD_NHP_HOSPITAL_GEO_2026",
+  "reviewed_on": "2026-09-14",
+  "status": "official_catalog_resource_parentage_verified_payload_equivalence_still_gated",
+  "publication_allowed": false,
+  "authoritative_metadata": {
+    "host": "data.gov.in",
+    "catalog": {
+      "title": "Hospital Directory (National Health Portal)",
+      "url": "https://www.data.gov.in/catalog/hospital-directory-national-health-portal",
+      "published_on": "2015-08-13",
+      "updated_on": "2018-01-12",
+      "contributors": [
+        "Ministry of Health and Family Welfare",
+        "Department of Health and Family Welfare",
+        "National Institute of Health and Family Welfare (NIHFW), New Delhi"
+      ]
+    },
+    "resource": {
+      "title": "National Hospital Directory with Geo Code and additional parameters (updated till last month)",
+      "url": "https://www.data.gov.in/resource/national-hospital-directory-geo-code-and-additional-parameters-updated-till-last-month",
+      "parent_catalog_title": "Hospital Directory (National Health Portal)",
+      "published_on": "2017-08-10",
+      "updated_on": "2025-06-02",
+      "granularity_label": "Monthly",
+      "displayed_file_size": "9.9 MB",
+      "missing_value_note": "NA/Blank: Not Available"
+    },
+    "catalog_resource_relationship_verified": true,
+    "metadata_surface_is_authoritative": true
+  },
+  "candidate_payload_binding": {
+    "sha256": "1ddcad9f9b922142a4374c7b89b70fb6cefd8a257448c70a61e1c07d98845134",
+    "byte_count": 10341256,
+    "observed_data_row_count": 30273,
+    "observed_column_count": 48,
+    "jharkhand_source_label_row_count": 478
+  },
+  "scientific_boundary": {
+    "candidate_payload_equivalence_to_current_resource_bytes_verified": false,
+    "canonical_payload_identity_resolved": false,
+    "record_level_reference_period_verified": false,
+    "resource_update_date_may_be_used_as_record_date": false,
+    "monthly_granularity_may_be_used_as_record_date": false,
+    "download_timestamp_may_be_used_as_record_date": false,
+    "semantic_field_validation_established": false,
+    "systematic_zero_fields_validated_as_true_absence": false,
+    "geography_linkage_established": false,
+    "source_geography_ids_interpreted": false
+  },
+  "missingness_policy": {
+    "source_note_supports_na_blank_as_not_available": true,
+    "missing_must_remain_null": true,
+    "missing_must_not_be_converted_to_zero": true,
+    "observed_zero_must_not_be_reclassified_as_missing_without_authoritative_field_evidence": true
+  },
+  "privacy_and_rights_boundary": {
+    "person_or_contact_fields_authorized_for_publication": false,
+    "raw_source_rows_persisted_in_this_receipt": false,
+    "privacy_risk_values_persisted_in_this_receipt": false,
+    "rights_review_reference": "modules/health_access/evidence/nhd_rights_review_2026-09-14.json"
+  },
+  "decision": {
+    "catalog_resource_parentage_can_be_treated_as_verified": true,
+    "candidate_can_be_treated_as_canonical_publication_payload": false,
+    "candidate_can_be_used_for_current_latest_indicators": false,
+    "candidate_can_be_geographically_linked_by_name_only": false,
+    "publication_gate_remains_closed": true
+  },
+  "remaining_gates": [
+    "prove exact candidate-payload equivalence to the authoritative resource bytes or acquire and hash the authoritative resource bytes directly",
+    "establish record-level temporal semantics independently of catalog update metadata",
+    "establish authoritative semantics for candidate scientific fields, including systematic-zero fields",
+    "establish evidence-backed geographic linkage and administrative vintage",
+    "emit only privacy-safe curated rows after all semantic, temporal, geographic, rights and provenance checks pass",
+    "validate indicators and denominators",
+    "verify green CI on the exact main head"
+  ],
+  "rules": [
+    "Official catalog-resource parentage is identity evidence, not byte-level payload equivalence.",
+    "The resource-level updated-on date and monthly granularity do not establish the observation date of individual facility records.",
+    "Names or normalized spellings alone never establish administrative equivalence.",
+    "Missing remains null and is never silently converted to zero.",
+    "Observed systematic zeros are not evidence of true absence until authoritative field semantics establish that interpretation.",
+    "This receipt stores metadata and aggregate bindings only; it stores no source rows or privacy-risk values."
+  ]
+}
