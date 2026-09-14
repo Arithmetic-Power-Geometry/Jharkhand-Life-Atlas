@@ -3,6 +3,7 @@
   "module": "health_access",
   "source_contract": "modules/health_access/national_hospital_directory_candidate_schema.json",
   "numeric_quality_evidence": "modules/health_access/evidence/nhd_numeric_quality_review_2026-09-14.json",
+  "authoritative_field_semantics_evidence": "modules/health_access/evidence/nhd_field_semantics_review_2026-09-15.json",
   "status": "in_development_nonpublishing",
   "publication_allowed": false,
   "row_level_curated_dataset_emitted": false,
@@ -43,7 +44,10 @@
     "systematic_zero_profile_establishes_true_absence": false,
     "systematic_zero_profile_establishes_field_validity": false,
     "observed_zero_recode_to_null_allowed": false,
-    "systematic_zero_profile_requires_authoritative_semantic_validation": true
+    "systematic_zero_profile_requires_authoritative_semantic_validation": true,
+    "official_metadata_defines_zero_semantics": false,
+    "official_metadata_authorizes_zero_as_missing": false,
+    "official_metadata_authorizes_zero_as_true_absence": false
   },
   "geography_rules": {
     "source_labels_remain_source_native": true,
@@ -56,6 +60,7 @@
   "temporal_rules": {
     "resource_update_date_is_record_date": false,
     "download_date_is_record_date": false,
+    "resource_granularity_is_record_reference_period": false,
     "current_latest_claim_allowed": false,
     "record_level_reference_period_required_for_time_labelled_indicators": true
   },
