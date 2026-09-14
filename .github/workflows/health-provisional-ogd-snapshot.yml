@@ -128,7 +128,7 @@ jobs:
           }
           report_path.write_text(json.dumps(governed_report, indent=2, sort_keys=True) + '\n', encoding='utf-8')
           PY
-      - name: Run aggregate-only Jharkhand and source-ID structural audit
+      - name: Run aggregate-only Jharkhand, numeric-quality, and source-ID audit
         run: |
           python modules/health_access/audit_nhd_candidate_rows.py \
             --csv build/health_provisional_snapshot/hospital_directory.csv \
@@ -139,7 +139,7 @@ jobs:
           import json
           from pathlib import Path
           r = json.loads(Path('build/health_provisional_snapshot/aggregate_row_audit.json').read_text())
-          assert r['contract'] == 'JLA_HEALTH_NHD_AGGREGATE_ROW_AUDIT_V2'
+          assert r['contract'] == 'JLA_HEALTH_NHD_AGGREGATE_ROW_AUDIT_V3'
           assert r['semantic_contract'] == 'JLA_HEALTH_NHD_SEMANTIC_CONTRACT_V1'
           assert r['source_rows_emitted'] is False
           assert r['privacy_risk_columns_read_for_output'] == []
@@ -153,12 +153,16 @@ jobs:
           assert r['jharkhand_source_label_match']['establishes_administrative_equivalence'] is False
           assert r['state_identifier_audit']['administrative_equivalence_established'] is False
           assert r['district_identifier_audit']['administrative_equivalence_established'] is False
+          for field, quality in r['numeric_candidate_quality'].items():
+              assert quality['raw_values_emitted'] is False, field
+              assert quality['future_curated_failed_parse_representation'] == 'null', field
           print(json.dumps({
               'jharkhand_rows': r['jharkhand_source_label_match']['row_count'],
               'district_labels': r['jharkhand_distinct_district_label_count'],
               'district_labels_with_multiple_ids': r['district_identifier_audit']['labels_with_multiple_ids_count'],
               'district_ids_with_multiple_labels': r['district_identifier_audit']['ids_with_multiple_labels_count'],
               'governed_missing_tokens': r['source_missing_tokens'],
+              'numeric_candidate_quality': r['numeric_candidate_quality'],
           }, indent=2))
           PY
       - name: Remove raw candidate before artifact export
