@@ -23,12 +23,14 @@ def test_hmis_pakur_contract_has_explicit_period_and_provisional_semantics():
     assert '"publication_allowed": False' in text
 
 
-def test_candidate_links_reject_non_ogd_hosts_and_resource_page_itself():
+def test_candidate_links_reject_non_ogd_hosts_resource_page_and_non_data_assets():
     module = _module()
     html = f'''
     <a href="{module.RESOURCE_PAGE}">same page</a>
     <a href="https://evil.example/download.csv">external csv</a>
     <a href="https://www.data.gov.in/files/example.csv">official csv</a>
+    <a href="https://www.data.gov.in/sites/default/files/STQC.pdf">unrelated pdf</a>
+    <script src="https://www.data.gov.in/sites/default/files/app.js"></script>
     '''
 
     links = module.candidate_links(html)
@@ -36,6 +38,7 @@ def test_candidate_links_reject_non_ogd_hosts_and_resource_page_itself():
     assert "https://www.data.gov.in/files/example.csv" in links
     assert module.RESOURCE_PAGE not in links
     assert all("evil.example" not in link for link in links)
+    assert all(not link.casefold().endswith((".pdf", ".js")) for link in links)
 
 
 def test_csv_inspection_rejects_html_masquerading_as_data():
@@ -81,6 +84,7 @@ def test_csv_inspection_accepts_only_complete_authoritative_schema():
 def test_source_contract_forbids_downscaling_and_requires_validation_gates():
     text = SCRIPT.read_text(encoding="utf-8")
 
+    assert "reject_obvious_non_data_assets_before_fetch" in text
     assert "subdistrict_aggregates_never_allocated_to_villages_facilities_or_persons" in text
     assert "preserve_missing_as_null" in text
     assert "provisional_source_status_must_be_preserved" in text
