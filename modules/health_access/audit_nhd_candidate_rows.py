@@ -23,7 +23,7 @@ from typing import Iterable
 
 
 CONTRACT_NAME = "JLA_HEALTH_NHD_AGGREGATE_ROW_AUDIT_V3"
-SEMANTIC_CONTRACT_NAME = "JLA_HEALTH_NHD_SEMANTIC_CONTRACT_V1"
+SEMANTIC_CONTRACT_NAME = "JLA_HEALTH_NHD_SEMANTIC_CONTRACT_V2"
 
 
 def _missing_token_set(tokens: Iterable[object]) -> set[str]:
