@@ -34,6 +34,13 @@
     "declared_fields": ["Indicator", "S.No.", "Parameters", "Type", "District - _Jharkhand"],
     "declared_fields_are_observed_schema": false
   },
+  "authoritative_resource_retry": {
+    "attempted_on": "2026-09-15",
+    "result": "timeout_fetching_authoritative_resource_page",
+    "payload_bytes_obtained": false,
+    "endpoint_inferred": false,
+    "third_party_payload_used": false
+  },
   "raw_payload_acquired": false,
   "raw_sha256": null,
   "raw_byte_count": null,
@@ -42,7 +49,7 @@
   "geography_linkage_validated": false,
   "indicator_validation_complete": false,
   "publication_allowed": false,
-  "blocker": "explicit_authoritative_resource_page_discovered_but_csv_payload_bytes_not_yet_acquired_or_hashed",
+  "blocker": "explicit_authoritative_resource_page_discovered_but_csv_payload_bytes_not_yet_acquired_or_hashed; authoritative resource fetch retry timed out on 2026-09-15",
   "governance": {
     "preserve_missing_as_null": true,
     "allow_missing_to_zero_conversion": false,
@@ -53,6 +60,6 @@
     "allow_provisional_period_as_current_conditions": false,
     "publication_requires_verified_payload_schema_geography_and_indicator_gates": true
   },
-  "scientific_value": "The catalog is now bound to an explicit authoritative district-level Jharkhand HMIS resource with a bounded provisional reference period and declared fields. This advances provenance and temporal interpretation without treating resource-page metadata as payload evidence.",
-  "next_safe_action": "Acquire the explicit authoritative CSV download bytes from the resource page without synthesizing an endpoint; hash and snapshot them immutably, inspect the actual schema, preserve missing as null, then validate administrative-vintage linkage before any indicator publication."
+  "scientific_value": "The catalog is bound to an explicit authoritative district-level Jharkhand HMIS resource with a bounded provisional reference period and declared fields. A fresh authoritative-resource fetch retry timed out, so no payload evidence was inferred or substituted.",
+  "next_safe_action": "Retry the explicit authoritative CSV download surface later without synthesizing an endpoint; if bytes become available, hash and snapshot them immutably, inspect the actual schema, preserve missing as null, then validate administrative-vintage linkage before any indicator publication."
 }
