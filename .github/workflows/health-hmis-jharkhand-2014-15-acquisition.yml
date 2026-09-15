@@ -35,7 +35,7 @@ jobs:
           from pathlib import Path
           p = Path('build/health_hmis_jharkhand_2014_15/hmis_jharkhand_2014_15_acquisition.json')
           r = json.loads(p.read_text(encoding='utf-8'))
-          assert r['contract'] == 'JLA_HEALTH_HMIS_OFFICIAL_PAYLOAD_ACQUISITION_V2'
+          assert r['contract'] == 'JLA_HEALTH_HMIS_OFFICIAL_PAYLOAD_ACQUISITION_V3'
           assert r['publication_allowed'] is False
           meta = r['authoritative_resource_metadata']
           assert meta['resource_api_state'] == 'does_not_exist'
@@ -57,6 +57,9 @@ jobs:
               assert r['authoritative_schema_fields_verified'] == meta['expected_columns']
           else:
               assert r.get('blocker')
+              assert r['raw_sha256'] is None
+              assert r['raw_byte_count'] is None
+              assert r['observed_schema'] is None
           print(json.dumps({k: r.get(k) for k in ('source_id','raw_payload_acquired','raw_sha256','raw_byte_count','observed_schema','blocker')}, indent=2))
           PY
       - name: Upload immutable acquisition evidence
