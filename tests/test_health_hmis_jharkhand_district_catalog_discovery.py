@@ -12,7 +12,7 @@ def _evidence():
 
 def test_authoritative_resource_discovery_does_not_equal_payload_acquisition():
     e = _evidence()
-    assert e["contract"] == "JLA_HEALTH_HMIS_JHARKHAND_DISTRICT_CATALOG_DISCOVERY_V2"
+    assert e["contract"] == "JLA_HEALTH_HMIS_JHARKHAND_DISTRICT_CATALOG_DISCOVERY_V3"
     assert e["evidence_kind"] == "authoritative_catalog_and_resource_discovery"
     assert e["authority"]["platform"] == "Open Government Data (OGD) Platform India"
     assert e["catalog_api_link_observed"] is True
@@ -47,3 +47,15 @@ def test_resource_metadata_cannot_bypass_scientific_gates():
     assert g["allow_declared_fields_as_observed_schema"] is False
     assert g["allow_provisional_period_as_current_conditions"] is False
     assert g["publication_requires_verified_payload_schema_geography_and_indicator_gates"] is True
+
+
+def test_resource_recovery_does_not_promote_payload_status():
+    e = _evidence()
+    retry = e["authoritative_resource_retry"]
+    assert retry["result"] == "authoritative_resource_page_retrievable_via_independent_web_verification"
+    assert retry["resource_metadata_reverified"] is True
+    assert retry["payload_bytes_obtained"] is False
+    assert retry["endpoint_inferred"] is False
+    assert retry["third_party_payload_used"] is False
+    assert e["raw_payload_acquired"] is False
+    assert e["publication_allowed"] is False
