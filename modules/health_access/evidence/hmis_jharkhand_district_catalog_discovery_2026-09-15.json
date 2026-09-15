@@ -1,0 +1,38 @@
+{
+  "contract": "JLA_HEALTH_HMIS_JHARKHAND_DISTRICT_CATALOG_DISCOVERY_V1",
+  "source_id": "OGD_HMIS_JHARKHAND_DISTRICT_MONTHLY",
+  "evidence_kind": "authoritative_catalog_discovery",
+  "observed_on": "2026-09-15",
+  "catalog_url": "https://jk.data.gov.in/catalog/item-wise-monthly-hmis-report-district-level-jharkhand",
+  "catalog_title": "Item-wise monthly HMIS report at District level of Jharkhand",
+  "authority": {
+    "platform": "Open Government Data (OGD) Platform India",
+    "contributor": "Ministry of Health and Family Welfare, Department of Health and Family Welfare",
+    "released_under": "National Data Sharing and Accessibility Policy (NDSAP)",
+    "published_on": "2020-12-23",
+    "updated_on": "2021-05-25"
+  },
+  "catalog_api_link_observed": true,
+  "catalog_api_url_observed": "https://jk.data.gov.in/apis/f7daca9b-92d4-4c6c-886a-91bf94a7e27e",
+  "catalog_api_fetch_result": "timeout_during_discovery",
+  "zip_download_label_observed": true,
+  "raw_payload_acquired": false,
+  "raw_sha256": null,
+  "raw_byte_count": null,
+  "observed_schema": null,
+  "schema_inspected": false,
+  "geography_linkage_validated": false,
+  "indicator_validation_complete": false,
+  "publication_allowed": false,
+  "blocker": "authoritative_catalog_discovered_but_no_payload_bytes_acquired_or_hashed",
+  "governance": {
+    "preserve_missing_as_null": true,
+    "allow_missing_to_zero_conversion": false,
+    "allow_name_only_geography_equivalence": false,
+    "allow_endpoint_synthesis": false,
+    "allow_third_party_payload_substitution": false,
+    "publication_requires_verified_payload_schema_geography_and_indicator_gates": true
+  },
+  "scientific_value": "This authoritative district-level Jharkhand HMIS catalog is a broader acquisition path than the single Pakur subdistrict resource and may support district-month evidence if explicit authoritative payload bytes can be acquired and validated.",
+  "next_safe_action": "Retry the observed authoritative Catalog API and explicit OGD download surfaces. Admit data only after authoritative payload bytes are obtained, hashed, schema-inspected, temporally interpreted and linked through evidence-backed geography crosswalks."
+}
