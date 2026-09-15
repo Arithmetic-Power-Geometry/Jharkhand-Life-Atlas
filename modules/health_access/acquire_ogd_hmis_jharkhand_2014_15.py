@@ -74,21 +74,9 @@ def inspect_csv(data: bytes, content_type: str, url: str) -> dict:
         missing_expected = [x for x in EXPECTED_COLUMNS if normalized_column(x) not in normalized]
         sample_count = sum(1 for _, _row in zip(range(50), reader))
         if missing_expected:
-            result.update({
-                "accepted": False,
-                "reason": "schema_does_not_match_authoritative_resource_metadata",
-                "observed_columns": header,
-                "missing_expected_columns": missing_expected,
-                "sample_rows_read": sample_count,
-            })
+            result.update({"accepted": False, "reason": "schema_does_not_match_authoritative_resource_metadata", "observed_columns": header, "missing_expected_columns": missing_expected, "sample_rows_read": sample_count})
             return result
-        result.update({
-            "accepted": True,
-            "format": "csv",
-            "observed_columns": header,
-            "authoritative_schema_fields_verified": EXPECTED_COLUMNS,
-            "sample_rows_read": sample_count,
-        })
+        result.update({"accepted": True, "format": "csv", "observed_columns": header, "authoritative_schema_fields_verified": EXPECTED_COLUMNS, "sample_rows_read": sample_count})
         return result
     except Exception as exc:
         result.update({"accepted": False, "reason": "not_parseable_csv", "parse_error": f"{type(exc).__name__}: {exc}"})
@@ -100,40 +88,17 @@ def run(output_dir: Path) -> dict:
     session = requests.Session()
     session.headers.update({"User-Agent": USER_AGENT, "Accept-Language": "en-US,en;q=0.9"})
     report = {
-        "contract": "JLA_HEALTH_HMIS_OFFICIAL_PAYLOAD_ACQUISITION_V2",
+        "contract": "JLA_HEALTH_HMIS_OFFICIAL_PAYLOAD_ACQUISITION_V3",
         "source_id": SOURCE_ID,
         "resource_page": RESOURCE_PAGE,
         "retrieved_at_utc": datetime.now(timezone.utc).isoformat(),
-        "authoritative_resource_metadata": {
-            "published_on": "2021-01-08",
-            "updated_on": "2021-01-08",
-            "reference_period": "2014-15_upto_december",
-            "status_as_on": "2016-01-29T14:00:00+05:30",
-            "granularity": "Monthly",
-            "advertised_format": "csv",
-            "advertised_file_size": "102 KB",
-            "resource_api_state": "does_not_exist",
-            "expected_columns": EXPECTED_COLUMNS,
-            "provisional_figures": True,
-        },
+        "authoritative_resource_metadata": {"published_on": "2021-01-08", "updated_on": "2021-01-08", "reference_period": "2014-15_upto_december", "status_as_on": "2016-01-29T14:00:00+05:30", "granularity": "Monthly", "advertised_format": "csv", "advertised_file_size": "102 KB", "resource_api_state": "does_not_exist", "expected_columns": EXPECTED_COLUMNS, "provisional_figures": True},
         "raw_payload_acquired": False,
         "raw_sha256": None,
         "raw_byte_count": None,
         "observed_schema": None,
         "publication_allowed": False,
-        "rules": [
-            "official_ogd_hosts_only",
-            "never_guess_download_url_or_resource_id",
-            "do_not_chase_resource_api_when_official_page_states_api_does_not_exist",
-            "explicit_official_csv_link_required",
-            "html_is_not_data",
-            "hash_before_curation",
-            "observed_schema_must_match_authoritative_resource_metadata",
-            "preserve_missing_as_null",
-            "district_aggregates_never_allocated_to_villages_or_facilities",
-            "provisional_source_status_must_be_preserved",
-            "publication_requires_period_indicator_geography_and_validation_gates",
-        ],
+        "rules": ["official_ogd_hosts_only", "never_guess_download_url_or_resource_id", "do_not_chase_resource_api_when_official_page_states_api_does_not_exist", "explicit_official_csv_link_required", "html_is_not_data", "hash_before_curation", "observed_schema_must_match_authoritative_resource_metadata", "preserve_missing_as_null", "district_aggregates_never_allocated_to_villages_or_facilities", "provisional_source_status_must_be_preserved", "publication_requires_period_indicator_geography_and_validation_gates"],
         "attempts": [],
     }
     try:
@@ -143,12 +108,7 @@ def run(output_dir: Path) -> dict:
         (output_dir / "hmis_jharkhand_2014_15_acquisition.json").write_text(json.dumps(report, indent=2), encoding="utf-8")
         return report
 
-    report.update({
-        "resource_page_status": page.status_code,
-        "resource_page_final_url": page.url,
-        "resource_page_sha256": digest(page.content),
-        "resource_page_bytes": len(page.content),
-    })
+    report.update({"resource_page_status": page.status_code, "resource_page_final_url": page.url, "resource_page_sha256": digest(page.content), "resource_page_bytes": len(page.content)})
     if page.status_code != 200 or not approved(page.url):
         report["blocker"] = "authoritative_resource_page_not_retrievable_on_approved_host"
     else:
@@ -166,15 +126,7 @@ def run(output_dir: Path) -> dict:
                 if response.status_code == 200 and attempt.get("accepted"):
                     payload = output_dir / "hmis_jharkhand_2014_15_raw.csv"
                     payload.write_bytes(response.content)
-                    report.update({
-                        "raw_payload_acquired": True,
-                        "raw_sha256": attempt["sha256"],
-                        "raw_byte_count": attempt["byte_count"],
-                        "raw_payload_url": response.url,
-                        "raw_payload_file": payload.name,
-                        "observed_schema": attempt["observed_columns"],
-                        "authoritative_schema_fields_verified": attempt["authoritative_schema_fields_verified"],
-                    })
+                    report.update({"raw_payload_acquired": True, "raw_sha256": attempt["sha256"], "raw_byte_count": attempt["byte_count"], "raw_payload_url": response.url, "raw_payload_file": payload.name, "observed_schema": attempt["observed_columns"], "authoritative_schema_fields_verified": attempt["authoritative_schema_fields_verified"]})
                     break
             except requests.RequestException as exc:
                 report["attempts"].append({"url": url, "accepted": False, "reason": f"{type(exc).__name__}: {exc}"})
