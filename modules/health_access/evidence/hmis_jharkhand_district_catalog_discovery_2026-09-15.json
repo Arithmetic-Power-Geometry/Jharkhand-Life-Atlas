@@ -1,5 +1,5 @@
 {
-  "contract": "JLA_HEALTH_HMIS_JHARKHAND_DISTRICT_CATALOG_DISCOVERY_V2",
+  "contract": "JLA_HEALTH_HMIS_JHARKHAND_DISTRICT_CATALOG_DISCOVERY_V3",
   "source_id": "OGD_HMIS_JHARKHAND_DISTRICT_MONTHLY",
   "evidence_kind": "authoritative_catalog_and_resource_discovery",
   "observed_on": "2026-09-15",
@@ -36,7 +36,8 @@
   },
   "authoritative_resource_retry": {
     "attempted_on": "2026-09-15",
-    "result": "timeout_fetching_authoritative_resource_page",
+    "result": "authoritative_resource_page_retrievable_via_independent_web_verification",
+    "resource_metadata_reverified": true,
     "payload_bytes_obtained": false,
     "endpoint_inferred": false,
     "third_party_payload_used": false
@@ -49,7 +50,7 @@
   "geography_linkage_validated": false,
   "indicator_validation_complete": false,
   "publication_allowed": false,
-  "blocker": "explicit_authoritative_resource_page_discovered_but_csv_payload_bytes_not_yet_acquired_or_hashed; authoritative resource fetch retry timed out on 2026-09-15",
+  "blocker": "authoritative resource page is retrievable again, but the explicit CSV payload bytes/download identity remain unavailable to the controlled acquisition path and are not inferred",
   "governance": {
     "preserve_missing_as_null": true,
     "allow_missing_to_zero_conversion": false,
@@ -60,6 +61,6 @@
     "allow_provisional_period_as_current_conditions": false,
     "publication_requires_verified_payload_schema_geography_and_indicator_gates": true
   },
-  "scientific_value": "The catalog is bound to an explicit authoritative district-level Jharkhand HMIS resource with a bounded provisional reference period and declared fields. A fresh authoritative-resource fetch retry timed out, so no payload evidence was inferred or substituted.",
-  "next_safe_action": "Retry the explicit authoritative CSV download surface later without synthesizing an endpoint; if bytes become available, hash and snapshot them immutably, inspect the actual schema, preserve missing as null, then validate administrative-vintage linkage before any indicator publication."
+  "scientific_value": "Independent verification confirms the authoritative OGD resource page is reachable again and still declares the same historical provisional monthly CSV resource. The earlier page-timeout blocker is therefore transient, while the scientifically material blocker remains acquisition of explicit payload bytes without endpoint synthesis.",
+  "next_safe_action": "Continue controlled acquisition of the explicit CSV download identity/bytes from the authoritative surface; once obtained, snapshot and hash bytes, inspect the actual schema, preserve missing as null, and validate administrative-vintage linkage before indicator publication."
 }
