@@ -1,0 +1,51 @@
+{
+  "contract": "JLA_HEALTH_NHD_METADATA_SURFACE_DIVERGENCE_V1",
+  "module": "health_access",
+  "source_id": "OGD_NHP_HOSPITAL_GEO_2026",
+  "reviewed_on": "2026-09-16",
+  "status": "authoritative_metadata_surfaces_diverge_fail_closed",
+  "publication_allowed": false,
+  "observations": {
+    "catalog_url": "https://data.gov.in/catalog/hospital-directory-national-health-portal",
+    "resource_url": "https://www.data.gov.in/resource/national-hospital-directory-geo-code-and-additional-parameters-updated-till-last-month",
+    "catalog_resource_listing_observed_updated_on": "2026-08-11",
+    "resource_surface_observed_updated_on": "2025-06-02",
+    "catalog_level_observed_updated_on": "2018-01-12",
+    "resource_granularity_label": "Monthly",
+    "resource_missing_value_note": "NA/Blank: Not Available; data will be updated on regular interval",
+    "official_contributor": "National Institute of Health and Family Welfare (NIHFW), New Delhi",
+    "official_platform": "Open Government Data Platform India"
+  },
+  "interpretation": {
+    "metadata_surface_divergence_verified": true,
+    "record_level_reference_period_verified": false,
+    "catalog_or_resource_updated_on_may_be_used_as_record_date": false,
+    "monthly_granularity_may_be_used_as_record_date": false,
+    "payload_freshness_inferred_from_metadata": false,
+    "existing_primary_payload_hash_invalidated": false,
+    "canonical_payload_identity_resolved": false
+  },
+  "scientific_boundary": {
+    "metadata_drift_is_not_payload_drift": true,
+    "metadata_drift_is_not_record_temporal_semantics": true,
+    "no_current_indicator_authorization": true,
+    "no_geography_equivalence_authorization": true,
+    "missing_remains_null": true,
+    "publication_gate_remains_closed": true
+  },
+  "required_follow_up": [
+    "re-acquire the explicit primary official payload and compare SHA-256/byte count with the governed binding",
+    "resolve or document the alternate explicit official alias independently",
+    "obtain authoritative evidence for record-level temporal semantics before any current/latest interpretation",
+    "retain source-native missingness and do not reinterpret systematic zeros without field-semantic evidence",
+    "verify exact-head CI after repository changes"
+  ],
+  "rules": [
+    "Conflicting authoritative metadata surfaces are recorded, not reconciled by guesswork.",
+    "An updated-on label is not an observation date for individual facility records.",
+    "A changed metadata date does not prove that payload bytes changed.",
+    "A previously verified payload hash remains a historical byte binding until a fresh authoritative payload comparison establishes otherwise.",
+    "Names alone never establish administrative equivalence.",
+    "No unsupported derived output may be published from this receipt."
+  ]
+}
