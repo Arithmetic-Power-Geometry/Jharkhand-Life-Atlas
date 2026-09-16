@@ -1,0 +1,42 @@
+{
+  "evidence_type": "exact_head_ci_receipt",
+  "observed_at_utc": "2026-09-16T21:50:00Z",
+  "repository": "Arithmetic-Power-Geometry/Jharkhand-Life-Atlas",
+  "branch": "main",
+  "head_sha": "92f8c01f784a864db062627a0ddbf3a89775e455",
+  "publication_critical": {
+    "tests": {
+      "run_id": 35142675033,
+      "run_number": 654,
+      "status": "completed",
+      "conclusion": "success"
+    },
+    "health_access_validation": {
+      "run_id": 35142675025,
+      "run_number": 238,
+      "status": "completed",
+      "conclusion": "success"
+    }
+  },
+  "scheduled_parallel_evidence": {
+    "health_hmis_quarterly_acquisition": "success",
+    "health_hmis_jharkhand_2014_15_acquisition": "success",
+    "health_hmis_pakur_2019_20_acquisition": "success",
+    "health_hmis_pakur_2019_20_november_acquisition": "success",
+    "health_nfhs5_acquisition": "success",
+    "health_hospital_july2015_acquisition": "success",
+    "health_provisional_ogd_snapshot": "success",
+    "health_ogd_resource_identity": "success",
+    "health_ogd_payload_equivalence": "success",
+    "water_jjm_acquisition": "success",
+    "sanitation_sbmg_acquisition": "success",
+    "education_udise_acquisition": "success"
+  },
+  "workflow_run_count_observed_for_head": 14,
+  "scientific_interpretation": {
+    "green_ci_verified_for_exact_head": true,
+    "module_complete": false,
+    "publication_allowed": false,
+    "rule": "Green CI verifies repository contracts only. It does not resolve authoritative payload identity/freshness, semantic field meaning, record-level temporal interpretation, evidence-backed geography linkage, privacy-safe curation, or other open publication gates."
+  }
+}
