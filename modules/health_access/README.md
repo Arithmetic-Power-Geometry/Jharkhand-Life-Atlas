@@ -47,8 +47,11 @@ Durable non-publishing evidence is recorded in:
 - `modules/health_access/evidence/nhd_numeric_quality_review_2026-09-14.json`
 - `modules/health_access/evidence/nhd_temporal_metadata_review_2026-09-14.json`
 - `modules/health_access/evidence/nhd_rights_review_2026-09-14.json`
+- `modules/health_access/evidence/nhd_metadata_surface_divergence_2026-09-16.json`
 
 This establishes byte-level identity for that **one explicit primary official payload only**. It does **not** establish deterministic canonical alias selection: the alternate official alias remains unresolved. It also does not establish row-level reference periods, administrative-vintage equivalence, semantic validity of the systematic-zero capacity fields, indicator eligibility, or publication readiness.
+
+The authoritative metadata surfaces currently diverge: the catalog resource listing was observed with an updated-on date of **2026-08-11**, while the resource surface was observed with **2025-06-02**, and the catalog-level date remains **2018-01-12**. These dates are recorded as metadata observations only. None is treated as a facility-record observation date; the `Monthly` granularity label is not interpreted as row-level temporal semantics; and metadata drift is not treated as evidence that payload bytes changed. The previously verified SHA-256 remains a historical byte binding until fresh authoritative payload reacquisition and hash comparison establish otherwise.
 
 The aggregate receipt binds source hash, byte/row/column counts, successful CI evidence, privacy constraints, Jharkhand source-label row count, candidate-projection missingness counts and source-geography ambiguity audit. It contains no source rows or privacy-risk source values. Source `State_ID`/`District_ID` values remain uninterpreted and must not be treated as LGD, Census or current administrative identifiers without independently evidenced crosswalks.
 
