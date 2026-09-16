@@ -214,8 +214,8 @@ for number, (module_id, planned_name) in enumerate(roadmap, start=1):
                 if identity_rows.height:
                     with st.expander("Current Health resource identity and acquisition blockers", expanded=True):
                         st.dataframe(identity_rows, width="stretch", hide_index=True)
-                        if identity_status["raw_payloads_acquired"] == 0:
-                            st.warning("Current facility publication remains blocked until an exact authoritative machine payload is acquired, hashed, schema-inspected, explicitly filtered to Jharkhand, and linked through evidence-backed geography. No identifier or geography equivalence is inferred from names alone.")
+                        if identity_status["publishable_resources"] == 0:
+                            st.warning("Current facility publication remains blocked. A byte-bound candidate may exist, but no current resource is publishable until its exact authoritative machine identity, schema/semantics, Jharkhand filtering, temporal meaning, rights, and evidence-backed geography linkage all pass the governed gates. No identifier or geography equivalence is inferred from names alone.")
 
             data = module_indicators(m.get("_path", ""))
             if data is not None:
