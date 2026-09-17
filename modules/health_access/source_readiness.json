@@ -1,0 +1,67 @@
+{
+  "module": "health_access",
+  "policy": "Source readiness is fail-closed. A source is publication-ready only after authoritative payload identity/acquisition, immutable byte hashing, observed schema/semantics, temporal interpretation, evidence-backed geography, rights review, privacy review, and validation are all satisfied. Metadata pages, successful probes, titles, names, or green CI never substitute for these requirements.",
+  "sources": {
+    "CENSUS2011_HEALTH_AMENITIES": {
+      "publication_ready": true,
+      "scope": "historical_source_native_only",
+      "authoritative_payload": true,
+      "immutable_hash": true,
+      "schema_semantics": true,
+      "temporal_interpretation": true,
+      "geography_evidence": true,
+      "rights_review": true,
+      "privacy_review": true,
+      "validated_curated_output": true,
+      "evidence": ["data/curated/health_access/census_health_access_2011.csv", "data/curated/health_access/census_health_access_2011.provenance.json", "modules/health_access/RESEARCH_USE_CENSUS2011.md"]
+    },
+    "OGD_NHP_HOSPITAL_GEO_2026": {
+      "publication_ready": false,
+      "authoritative_payload": false,
+      "immutable_hash": false,
+      "schema_semantics": false,
+      "temporal_interpretation": false,
+      "geography_evidence": false,
+      "rights_review": false,
+      "privacy_review": false,
+      "validated_curated_output": false,
+      "blocker": "Authoritative resource pages are hashed, but an unambiguous schema-bearing machine payload identity has not been established."
+    },
+    "OGD_NIN_HEALTH_FACILITIES_GEO_2026": {
+      "publication_ready": false,
+      "authoritative_payload": false,
+      "immutable_hash": false,
+      "schema_semantics": false,
+      "temporal_interpretation": false,
+      "geography_evidence": false,
+      "rights_review": false,
+      "privacy_review": false,
+      "validated_curated_output": false,
+      "blocker": "Authoritative resource pages are hashed, but an unambiguous schema-bearing machine payload identity has not been established."
+    },
+    "OGD_NFHS5_DISTRICT_FACTSHEETS_2019_2021": {
+      "publication_ready": false,
+      "authoritative_payload": false,
+      "immutable_hash": false,
+      "schema_semantics": false,
+      "temporal_interpretation": false,
+      "geography_evidence": false,
+      "rights_review": false,
+      "privacy_review": false,
+      "validated_curated_output": false,
+      "blocker": "Official resource identity is known, but authoritative workbook bytes have not yet been admitted as a verified immutable payload in repository evidence."
+    },
+    "OGD_HMIS_JH_DISTRICT": {
+      "publication_ready": false,
+      "authoritative_payload": false,
+      "immutable_hash": false,
+      "schema_semantics": false,
+      "temporal_interpretation": false,
+      "geography_evidence": false,
+      "rights_review": false,
+      "privacy_review": false,
+      "validated_curated_output": false,
+      "blocker": "The authoritative resource page is snapshotted, but no explicit authoritative schema-bearing CSV payload has been admitted. District aggregates must never be allocated to villages or facilities."
+    }
+  }
+}
