@@ -1,0 +1,32 @@
+{
+  "schema_version": "1.0.0",
+  "service": "shared_geography_crosswalk",
+  "publication_default": "fail_closed",
+  "description": "Contract for evidence-backed links between administrative/geographic vintages. This file defines no equivalences by itself.",
+  "required_fields": [
+    "source_system", "source_vintage", "source_level", "source_code",
+    "target_system", "target_vintage", "target_level", "target_code",
+    "relation", "evidence_type", "evidence_reference", "review_status"
+  ],
+  "allowed_relations": ["same_entity", "split_into", "merged_from", "boundary_change", "successor", "predecessor"],
+  "allowed_review_status": ["provisional", "verified", "rejected"],
+  "publication_rules": {
+    "name_only_match_allowed": false,
+    "fuzzy_name_match_allowed": false,
+    "missing_code_implies_equivalence": false,
+    "cross_vintage_join_requires_verified_record": true,
+    "verified_record_requires_evidence_reference": true,
+    "one_to_many_must_be_explicit": true,
+    "many_to_one_must_be_explicit": true,
+    "unknown_relation_remains_null": true
+  },
+  "evidence_preference": [
+    "authoritative_code_crosswalk",
+    "official_reorganisation_notification",
+    "official_boundary_or gazette evidence",
+    "independently_audited_documented_crosswalk"
+  ],
+  "privacy": {
+    "person_level_data_allowed": false
+  }
+}
