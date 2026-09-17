@@ -29,6 +29,13 @@ def _sha256(path, chunk_size=1024 * 1024):
     return digest.hexdigest()
 
 
+def _repository_path(path_value):
+    path = Path(path_value)
+    assert not path.is_absolute(), path_value
+    assert ".." not in path.parts, path_value
+    return path
+
+
 def test_health_source_readiness_is_fail_closed():
     ledger = _ledger()
     for source_id, source in ledger["sources"].items():
@@ -48,27 +55,30 @@ def test_publication_ready_source_evidence_is_repository_resident():
         evidence = source.get("evidence", [])
         assert evidence, source_id
         for evidence_path in evidence:
-            path = Path(evidence_path)
-            assert not path.is_absolute(), (source_id, evidence_path)
-            assert ".." not in path.parts, (source_id, evidence_path)
+            path = _repository_path(evidence_path)
             assert path.is_file(), (source_id, evidence_path)
 
 
 def test_publication_ready_source_has_immutable_curated_provenance():
-    """Recompute hashes so readiness is bound to the repository bytes themselves."""
+    """Recompute hashes and confine provenance bindings to repository-resident bytes."""
     ledger = _ledger()
     for source_id, source in ledger["sources"].items():
         if not source["publication_ready"]:
             continue
 
-        provenance_paths = [Path(p) for p in source.get("evidence", []) if p.endswith(".provenance.json")]
+        evidence = source.get("evidence", [])
+        provenance_paths = [_repository_path(p) for p in evidence if p.endswith(".provenance.json")]
         assert provenance_paths, f"{source_id}: publication-ready source lacks provenance JSON"
 
         for provenance_path in provenance_paths:
             provenance = json.loads(provenance_path.read_text(encoding="utf-8"))
-            output_path = Path(provenance["output"])
-            source_path = Path(provenance["source"])
+            output_path = _repository_path(provenance["output"])
+            source_path = _repository_path(provenance["source"])
 
+            assert provenance["output"] in evidence, (
+                source_id,
+                "curated output must be explicitly admitted in source-readiness evidence",
+            )
             assert output_path.is_file(), (source_id, provenance["output"])
             assert source_path.is_file(), (source_id, provenance["source"])
             assert SHA256_RE.fullmatch(provenance["output_sha256"]), source_id
