@@ -6,6 +6,7 @@ from jla.ui import hero, badges, section_note
 from jla.modules import discover_modules
 from jla.data import module_indicators, core_research_tables, optional_core_table
 from jla.acquisition import health_resource_identities, health_resource_identity_status
+from jla.health_publication import health_publication_status
 
 
 def humanize(value):
@@ -202,6 +203,19 @@ for number, (module_id, planned_name) in enumerate(roadmap, start=1):
                     st.dataframe(display_rows, width="stretch", hide_index=True)
 
             if module_id == "health_access":
+                publication = health_publication_status()
+                st.markdown("**Governed publication readiness**")
+                p1, p2, p3 = st.columns(3)
+                p1.metric("Publication gates satisfied", f"{publication['satisfied_count']}/{publication['gate_count']}")
+                p2.metric("Unresolved gates", publication["unresolved_count"])
+                p3.metric("Publication allowed", "YES" if publication["publication_allowed"] else "NO")
+                st.caption("These values are derived directly from the governed Health publication-gate ledger. Acquisition success or green CI cannot promote this module to COMPLETE while a scientific gate remains unresolved.")
+                if publication["unresolved_gates"]:
+                    with st.expander("Unresolved Health publication gates", expanded=True):
+                        for gate_name in publication["unresolved_gates"]:
+                            gate = publication["gates"][gate_name]
+                            st.markdown(f"- **{humanize(gate_name)}:** {gate.get('reason', 'Unresolved')}")
+
                 identity_status = health_resource_identity_status()
                 st.markdown("**Current authoritative facility acquisition state**")
                 h1, h2, h3, h4 = st.columns(4)
