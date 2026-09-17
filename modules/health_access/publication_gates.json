@@ -1,0 +1,63 @@
+{
+  "module": "health_access",
+  "status": "IN DEVELOPMENT",
+  "publication_allowed": false,
+  "module_complete": false,
+  "policy": "A gate may become true only from repository-verifiable evidence. Green CI is necessary but not sufficient. Missing evidence must remain false; no name-only geography equivalence, missing-to-zero conversion, person-level publication, or unsupported derived indicator is permitted.",
+  "gates": {
+    "validated_historical_census2011_layer": {
+      "satisfied": true,
+      "scope": "historical_source_native_only",
+      "evidence": [
+        "data/curated/health_access/census_health_access_2011.csv",
+        "data/curated/health_access/census_health_access_2011.provenance.json",
+        "modules/health_access/RESEARCH_USE_CENSUS2011.md"
+      ]
+    },
+    "priority_current_payloads_authoritatively_acquired": {
+      "satisfied": false,
+      "reason": "Priority current/differently dated sources are not all publication-ready authoritative payloads."
+    },
+    "immutable_raw_or_api_provenance_complete": {
+      "satisfied": false,
+      "reason": "Evidence exists for selected sources, but the required source-by-source coverage is incomplete."
+    },
+    "rights_and_attribution_complete": {
+      "satisfied": false,
+      "reason": "Resource-specific review exists for selected evidence; full publication scope is not yet cleared."
+    },
+    "observed_schema_and_semantics_validated": {
+      "satisfied": false,
+      "reason": "NHD systematic-zero capacity fields and other source semantics remain unresolved."
+    },
+    "record_level_temporal_interpretation_validated": {
+      "satisfied": false,
+      "reason": "NHD metadata dates and Monthly granularity do not establish facility-record reference periods."
+    },
+    "geographic_linkage_evidence_backed": {
+      "satisfied": false,
+      "reason": "NHD State_ID/District_ID values remain uninterpreted; Census/current geography equivalence is not inferred from names."
+    },
+    "privacy_safe_curated_current_tables": {
+      "satisfied": false,
+      "reason": "Current publication-ready curated facility/service tables have not passed all privacy and evidence gates."
+    },
+    "derived_indicators_supported": {
+      "satisfied": false,
+      "reason": "Unsupported current indicators remain prohibited pending semantic, temporal, denominator and geography validation."
+    },
+    "research_ready_downloads_reports_current_layer": {
+      "satisfied": false,
+      "reason": "Only validated evidence may be exposed; current-layer release artifacts are not yet publication-ready."
+    },
+    "streamlit_synchronized_with_validated_outputs": {
+      "satisfied": false,
+      "reason": "Historical validated evidence is exposed, but final current-layer synchronization cannot be satisfied before upstream gates."
+    },
+    "exact_final_main_green_ci": {
+      "satisfied": false,
+      "reason": "The final completion head does not yet exist. CI success on an intermediate head cannot satisfy the final completion gate."
+    }
+  },
+  "completion_rule": "module_complete and publication_allowed may become true only when every required gate above is satisfied and green CI is verified on the exact final main head."
+}
