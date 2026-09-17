@@ -1,5 +1,5 @@
 {
-  "started_at": "2026-09-05T20:03:09.805871+00:00",
+  "started_at": "2026-09-17T04:51:59.510587+00:00",
   "status": "success",
   "sources": {
     "location_directory": {
@@ -88,7 +88,7 @@
     }
   },
   "errors": [],
-  "finished_at": "2026-09-05T20:16:26.965972+00:00",
+  "finished_at": "2026-09-17T05:06:52.328966+00:00",
   "module1_completion_layers": {
     "dchb_village_amenities": "validated",
     "mdds_2001_2011_crosswalk": "validated",
