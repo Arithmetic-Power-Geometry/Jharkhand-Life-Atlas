@@ -1,4 +1,5 @@
 import json
+import re
 from pathlib import Path
 
 
@@ -12,6 +13,7 @@ REQUIRED = (
     "privacy_review",
     "validated_curated_output",
 )
+SHA256_RE = re.compile(r"^[0-9a-f]{64}$")
 
 
 def _ledger():
@@ -41,6 +43,37 @@ def test_publication_ready_source_evidence_is_repository_resident():
             assert not path.is_absolute(), (source_id, evidence_path)
             assert ".." not in path.parts, (source_id, evidence_path)
             assert path.is_file(), (source_id, evidence_path)
+
+
+def test_publication_ready_source_has_immutable_curated_provenance():
+    """A ready source must bind its curated output to explicit SHA-256 provenance.
+
+    This deliberately validates the provenance contract rather than recomputing a
+    multi-megabyte dataset hash in every unit-test run. Byte-level regeneration
+    workflows remain responsible for recomputation; this test prevents the
+    readiness ledger from silently pointing at an unhashed or semantically unsafe
+    curated artifact.
+    """
+    ledger = _ledger()
+    for source_id, source in ledger["sources"].items():
+        if not source["publication_ready"]:
+            continue
+
+        provenance_paths = [Path(p) for p in source.get("evidence", []) if p.endswith(".provenance.json")]
+        assert provenance_paths, f"{source_id}: publication-ready source lacks provenance JSON"
+
+        for provenance_path in provenance_paths:
+            provenance = json.loads(provenance_path.read_text(encoding="utf-8"))
+            output_path = Path(provenance["output"])
+            source_path = Path(provenance["source"])
+
+            assert output_path.is_file(), (source_id, provenance["output"])
+            assert source_path.is_file(), (source_id, provenance["source"])
+            assert SHA256_RE.fullmatch(provenance["output_sha256"]), source_id
+            assert SHA256_RE.fullmatch(provenance["source_sha256"]), source_id
+            assert provenance["row_count"] > 0, source_id
+            assert "never converted to zero" in provenance["missing_rule"], source_id
+            assert "no current-geography equivalence inferred" in provenance["geography_rule"], source_id
 
 
 def test_current_health_sources_are_not_promoted_without_payload_evidence():
