@@ -1,3 +1,4 @@
+import hashlib
 import json
 import re
 from pathlib import Path
@@ -18,6 +19,14 @@ SHA256_RE = re.compile(r"^[0-9a-f]{64}$")
 
 def _ledger():
     return json.loads(Path("modules/health_access/source_readiness.json").read_text(encoding="utf-8"))
+
+
+def _sha256(path, chunk_size=1024 * 1024):
+    digest = hashlib.sha256()
+    with path.open("rb") as handle:
+        for chunk in iter(lambda: handle.read(chunk_size), b""):
+            digest.update(chunk)
+    return digest.hexdigest()
 
 
 def test_health_source_readiness_is_fail_closed():
@@ -46,14 +55,7 @@ def test_publication_ready_source_evidence_is_repository_resident():
 
 
 def test_publication_ready_source_has_immutable_curated_provenance():
-    """A ready source must bind its curated output to explicit SHA-256 provenance.
-
-    This deliberately validates the provenance contract rather than recomputing a
-    multi-megabyte dataset hash in every unit-test run. Byte-level regeneration
-    workflows remain responsible for recomputation; this test prevents the
-    readiness ledger from silently pointing at an unhashed or semantically unsafe
-    curated artifact.
-    """
+    """Recompute hashes so readiness is bound to the repository bytes themselves."""
     ledger = _ledger()
     for source_id, source in ledger["sources"].items():
         if not source["publication_ready"]:
@@ -71,6 +73,8 @@ def test_publication_ready_source_has_immutable_curated_provenance():
             assert source_path.is_file(), (source_id, provenance["source"])
             assert SHA256_RE.fullmatch(provenance["output_sha256"]), source_id
             assert SHA256_RE.fullmatch(provenance["source_sha256"]), source_id
+            assert _sha256(output_path) == provenance["output_sha256"], (source_id, provenance["output"])
+            assert _sha256(source_path) == provenance["source_sha256"], (source_id, provenance["source"])
             assert provenance["row_count"] > 0, source_id
             assert "never converted to zero" in provenance["missing_rule"], source_id
             assert "no current-geography equivalence inferred" in provenance["geography_rule"], source_id
