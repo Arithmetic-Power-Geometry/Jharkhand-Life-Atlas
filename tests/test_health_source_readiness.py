@@ -29,6 +29,20 @@ def test_health_source_readiness_is_fail_closed():
             assert source.get("blocker"), source_id
 
 
+def test_publication_ready_source_evidence_is_repository_resident():
+    ledger = _ledger()
+    for source_id, source in ledger["sources"].items():
+        if not source["publication_ready"]:
+            continue
+        evidence = source.get("evidence", [])
+        assert evidence, source_id
+        for evidence_path in evidence:
+            path = Path(evidence_path)
+            assert not path.is_absolute(), (source_id, evidence_path)
+            assert ".." not in path.parts, (source_id, evidence_path)
+            assert path.is_file(), (source_id, evidence_path)
+
+
 def test_current_health_sources_are_not_promoted_without_payload_evidence():
     ledger = _ledger()
     for source_id, source in ledger["sources"].items():
