@@ -1,5 +1,6 @@
 import json
 from pathlib import Path
+import subprocess
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -41,6 +42,19 @@ def _repository_evidence_path(relative_path, gate_name):
             f"{gate_name}: evidence path escapes repository: {relative_path}"
         ) from exc
     return resolved
+
+
+def _assert_version_controlled(relative_path, gate_name):
+    result = subprocess.run(
+        ["git", "ls-files", "--error-unmatch", "--", relative_path],
+        cwd=ROOT,
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    assert result.returncode == 0, (
+        f"{gate_name}: publication evidence is not version-controlled: {relative_path}"
+    )
 
 
 def test_health_publication_gate_ledger_is_fail_closed():
@@ -85,6 +99,7 @@ def test_satisfied_health_gates_reference_repository_evidence():
             assert path.stat().st_size > 0, (
                 f"{name}: publication evidence is empty {relative_path}"
             )
+            _assert_version_controlled(relative_path, name)
 
 
 def test_current_health_ledger_does_not_overclaim_completion():
