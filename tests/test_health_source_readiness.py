@@ -43,8 +43,15 @@ def _csv_observation(path):
     with path.open("r", encoding="utf-8", newline="") as handle:
         reader = csv.reader(handle)
         header = next(reader)
-        row_count = sum(1 for _ in reader)
-    return row_count, header
+        row_count = 0
+        malformed_rows = []
+        for line_number, row in enumerate(reader, start=2):
+            row_count += 1
+            if len(row) != len(header):
+                malformed_rows.append((line_number, len(row)))
+                if len(malformed_rows) >= 10:
+                    break
+    return row_count, header, malformed_rows
 
 
 def test_health_source_readiness_is_fail_closed():
@@ -105,7 +112,12 @@ def test_publication_ready_source_has_immutable_curated_provenance():
             assert "no current-geography equivalence inferred" in provenance["geography_rule"], source_id
 
             if output_path.suffix.lower() == ".csv":
-                observed_rows, header = _csv_observation(output_path)
+                observed_rows, header, malformed_rows = _csv_observation(output_path)
+                assert not malformed_rows, (
+                    source_id,
+                    "curated CSV rows must have exactly the governed header width",
+                    malformed_rows,
+                )
                 assert len(header) == len(set(header)), (
                     source_id,
                     "curated CSV must not contain duplicate column names",
