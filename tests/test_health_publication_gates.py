@@ -4,6 +4,20 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 LEDGER = ROOT / "modules" / "health_access" / "publication_gates.json"
+REQUIRED_GATES = {
+    "validated_historical_census2011_layer",
+    "priority_current_payloads_authoritatively_acquired",
+    "immutable_raw_or_api_provenance_complete",
+    "rights_and_attribution_complete",
+    "observed_schema_and_semantics_validated",
+    "record_level_temporal_interpretation_validated",
+    "geographic_linkage_evidence_backed",
+    "privacy_safe_curated_current_tables",
+    "derived_indicators_supported",
+    "research_ready_downloads_reports_current_layer",
+    "streamlit_synchronized_with_validated_outputs",
+    "exact_final_main_green_ci",
+}
 
 
 def _ledger():
@@ -36,6 +50,10 @@ def test_health_publication_gate_ledger_is_fail_closed():
     assert isinstance(ledger["publication_allowed"], bool)
     assert isinstance(ledger["module_complete"], bool)
     assert ledger["gates"]
+    assert set(ledger["gates"]) == REQUIRED_GATES, (
+        "health publication gate inventory changed; required scientific/publication "
+        "gates must not be deleted, renamed, or silently bypassed"
+    )
 
     for name, gate in ledger["gates"].items():
         assert isinstance(gate.get("satisfied"), bool), name
