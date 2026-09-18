@@ -106,6 +106,14 @@ def test_publication_ready_source_has_immutable_curated_provenance():
 
             if output_path.suffix.lower() == ".csv":
                 observed_rows, header = _csv_observation(output_path)
+                assert len(header) == len(set(header)), (
+                    source_id,
+                    "curated CSV must not contain duplicate column names",
+                )
+                assert all(name.strip() == name and name for name in header), (
+                    source_id,
+                    "curated CSV column names must be non-empty and whitespace-stable",
+                )
                 assert observed_rows == provenance["row_count"], (
                     source_id,
                     "provenance row_count must equal the curated CSV row count",
@@ -116,6 +124,11 @@ def test_publication_ready_source_has_immutable_curated_provenance():
                         "declared health_field_count must equal the governed builder contract",
                     )
                     assert len(set(HEALTH_FIELDS)) == len(HEALTH_FIELDS), source_id
+                    assert len(set(IDENTITY_FIELDS)) == len(IDENTITY_FIELDS), source_id
+                    assert set(HEALTH_FIELDS).isdisjoint(IDENTITY_FIELDS), (
+                        source_id,
+                        "health and identity contracts must not overlap",
+                    )
                     assert set(HEALTH_FIELDS).issubset(header), (
                         source_id,
                         "every governed health field must be present in the curated CSV",
