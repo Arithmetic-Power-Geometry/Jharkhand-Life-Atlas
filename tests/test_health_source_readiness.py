@@ -60,7 +60,7 @@ def test_publication_ready_source_evidence_is_repository_resident():
 
 
 def test_publication_ready_source_has_immutable_curated_provenance():
-    """Recompute hashes and confine provenance bindings to repository-resident bytes."""
+    """Recompute hashes and require both provenance endpoints to be governed evidence."""
     ledger = _ledger()
     for source_id, source in ledger["sources"].items():
         if not source["publication_ready"]:
@@ -78,6 +78,10 @@ def test_publication_ready_source_has_immutable_curated_provenance():
             assert provenance["output"] in evidence, (
                 source_id,
                 "curated output must be explicitly admitted in source-readiness evidence",
+            )
+            assert provenance["source"] in evidence, (
+                source_id,
+                "provenance source bytes must be explicitly admitted in source-readiness evidence",
             )
             assert output_path.is_file(), (source_id, provenance["output"])
             assert source_path.is_file(), (source_id, provenance["source"])
