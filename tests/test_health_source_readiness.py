@@ -4,6 +4,8 @@ import json
 import re
 from pathlib import Path
 
+from modules.health_access.build_census2011_health_extract import HEALTH_FIELDS, IDENTITY_FIELDS
+
 
 REQUIRED = (
     "authoritative_payload",
@@ -37,12 +39,12 @@ def _repository_path(path_value):
     return path
 
 
-def _csv_shape(path):
+def _csv_observation(path):
     with path.open("r", encoding="utf-8", newline="") as handle:
         reader = csv.reader(handle)
         header = next(reader)
         row_count = sum(1 for _ in reader)
-    return row_count, len(header)
+    return row_count, header
 
 
 def test_health_source_readiness_is_fail_closed():
@@ -69,7 +71,7 @@ def test_publication_ready_source_evidence_is_repository_resident():
 
 
 def test_publication_ready_source_has_immutable_curated_provenance():
-    """Recompute hashes and require both provenance endpoints to be governed evidence."""
+    """Recompute hashes and verify the governed curated schema against its builder contract."""
     ledger = _ledger()
     for source_id, source in ledger["sources"].items():
         if not source["publication_ready"]:
@@ -103,15 +105,31 @@ def test_publication_ready_source_has_immutable_curated_provenance():
             assert "no current-geography equivalence inferred" in provenance["geography_rule"], source_id
 
             if output_path.suffix.lower() == ".csv":
-                observed_rows, observed_fields = _csv_shape(output_path)
+                observed_rows, header = _csv_observation(output_path)
                 assert observed_rows == provenance["row_count"], (
                     source_id,
                     "provenance row_count must equal the curated CSV row count",
                 )
                 if "health_field_count" in provenance:
-                    assert observed_fields == provenance["health_field_count"] + 1, (
+                    assert provenance["health_field_count"] == len(HEALTH_FIELDS), (
                         source_id,
-                        "curated CSV must contain the governed village key plus declared health fields",
+                        "declared health_field_count must equal the governed builder contract",
+                    )
+                    assert len(set(HEALTH_FIELDS)) == len(HEALTH_FIELDS), source_id
+                    assert set(HEALTH_FIELDS).issubset(header), (
+                        source_id,
+                        "every governed health field must be present in the curated CSV",
+                    )
+                    assert set(IDENTITY_FIELDS).issubset(header), (
+                        source_id,
+                        "every governed source-native identity field must be present in the curated CSV",
+                    )
+                    allowed = set(IDENTITY_FIELDS) | set(HEALTH_FIELDS)
+                    extras = set(header) - allowed
+                    assert all(name.startswith("source_") or name.startswith("jla_") for name in extras), (
+                        source_id,
+                        "curated CSV contains fields outside identity, health, or provenance namespaces",
+                        sorted(extras),
                     )
 
 
