@@ -34,7 +34,11 @@ def _repository_evidence_path(relative_path, gate_name):
     assert not candidate.is_absolute(), (
         f"{gate_name}: evidence path must be repository-relative: {relative_path}"
     )
-    resolved = (ROOT / candidate).resolve()
+    unresolved = ROOT / candidate
+    assert not unresolved.is_symlink(), (
+        f"{gate_name}: publication evidence must be an immutable tracked file, not a symlink: {relative_path}"
+    )
+    resolved = unresolved.resolve()
     try:
         resolved.relative_to(ROOT.resolve())
     except ValueError as exc:
