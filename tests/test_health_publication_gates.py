@@ -35,9 +35,16 @@ def _repository_evidence_path(relative_path, gate_name):
         f"{gate_name}: evidence path must be repository-relative: {relative_path}"
     )
     unresolved = ROOT / candidate
-    assert not unresolved.is_symlink(), (
-        f"{gate_name}: publication evidence must be an immutable tracked file, not a symlink: {relative_path}"
-    )
+    # Reject symlinks anywhere in the evidence path, not only at the leaf.  A
+    # tracked regular-looking leaf below a symlinked directory must never be
+    # allowed to redirect a publication gate to bytes outside the governed
+    # repository tree.
+    current = ROOT
+    for part in candidate.parts:
+        current = current / part
+        assert not current.is_symlink(), (
+            f"{gate_name}: publication evidence path contains a symlink: {relative_path}"
+        )
     resolved = unresolved.resolve()
     try:
         resolved.relative_to(ROOT.resolve())
