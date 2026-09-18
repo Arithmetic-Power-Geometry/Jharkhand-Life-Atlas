@@ -82,6 +82,9 @@ def test_satisfied_health_gates_reference_repository_evidence():
             path = _repository_evidence_path(relative_path, name)
             assert path.exists(), f"{name}: missing evidence {relative_path}"
             assert path.is_file(), f"{name}: evidence is not a file {relative_path}"
+            assert path.stat().st_size > 0, (
+                f"{name}: publication evidence is empty {relative_path}"
+            )
 
 
 def test_current_health_ledger_does_not_overclaim_completion():
