@@ -9,6 +9,7 @@
       "satisfied": true,
       "scope": "historical_source_native_only",
       "evidence": [
+        "data/curated/core_geography/village_amenities_2011.csv",
         "data/curated/health_access/census_health_access_2011.csv",
         "data/curated/health_access/census_health_access_2011.provenance.json",
         "modules/health_access/RESEARCH_USE_CENSUS2011.md"
