@@ -1,3 +1,4 @@
+import csv
 import hashlib
 import json
 import re
@@ -34,6 +35,14 @@ def _repository_path(path_value):
     assert not path.is_absolute(), path_value
     assert ".." not in path.parts, path_value
     return path
+
+
+def _csv_shape(path):
+    with path.open("r", encoding="utf-8", newline="") as handle:
+        reader = csv.reader(handle)
+        header = next(reader)
+        row_count = sum(1 for _ in reader)
+    return row_count, len(header)
 
 
 def test_health_source_readiness_is_fail_closed():
@@ -92,6 +101,18 @@ def test_publication_ready_source_has_immutable_curated_provenance():
             assert provenance["row_count"] > 0, source_id
             assert "never converted to zero" in provenance["missing_rule"], source_id
             assert "no current-geography equivalence inferred" in provenance["geography_rule"], source_id
+
+            if output_path.suffix.lower() == ".csv":
+                observed_rows, observed_fields = _csv_shape(output_path)
+                assert observed_rows == provenance["row_count"], (
+                    source_id,
+                    "provenance row_count must equal the curated CSV row count",
+                )
+                if "health_field_count" in provenance:
+                    assert observed_fields == provenance["health_field_count"] + 1, (
+                        source_id,
+                        "curated CSV must contain the governed village key plus declared health fields",
+                    )
 
 
 def test_current_health_sources_are_not_promoted_without_payload_evidence():
