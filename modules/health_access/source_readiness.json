@@ -13,7 +13,7 @@
       "rights_review": true,
       "privacy_review": true,
       "validated_curated_output": true,
-      "evidence": ["data/curated/health_access/census_health_access_2011.csv", "data/curated/health_access/census_health_access_2011.provenance.json", "modules/health_access/RESEARCH_USE_CENSUS2011.md"]
+      "evidence": ["data/curated/core_geography/village_amenities_2011.csv", "data/curated/health_access/census_health_access_2011.csv", "data/curated/health_access/census_health_access_2011.provenance.json", "modules/health_access/RESEARCH_USE_CENSUS2011.md"]
     },
     "OGD_NHP_HOSPITAL_GEO_2026": {
       "publication_ready": false,
