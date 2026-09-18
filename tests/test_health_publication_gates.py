@@ -10,6 +10,25 @@ def _ledger():
     return json.loads(LEDGER.read_text(encoding="utf-8"))
 
 
+def _repository_evidence_path(relative_path, gate_name):
+    assert isinstance(relative_path, str) and relative_path.strip(), gate_name
+    assert relative_path == relative_path.strip(), (
+        f"{gate_name}: evidence path has surrounding whitespace"
+    )
+    candidate = Path(relative_path)
+    assert not candidate.is_absolute(), (
+        f"{gate_name}: evidence path must be repository-relative: {relative_path}"
+    )
+    resolved = (ROOT / candidate).resolve()
+    try:
+        resolved.relative_to(ROOT.resolve())
+    except ValueError as exc:
+        raise AssertionError(
+            f"{gate_name}: evidence path escapes repository: {relative_path}"
+        ) from exc
+    return resolved
+
+
 def test_health_publication_gate_ledger_is_fail_closed():
     ledger = _ledger()
     assert ledger["module"] == "health_access"
@@ -40,8 +59,9 @@ def test_satisfied_health_gates_reference_repository_evidence():
             continue
         evidence = gate.get("evidence")
         assert isinstance(evidence, list) and evidence, name
+        assert len(evidence) == len(set(evidence)), f"{name}: duplicate evidence paths"
         for relative_path in evidence:
-            path = ROOT / relative_path
+            path = _repository_evidence_path(relative_path, name)
             assert path.exists(), f"{name}: missing evidence {relative_path}"
             assert path.is_file(), f"{name}: evidence is not a file {relative_path}"
 
