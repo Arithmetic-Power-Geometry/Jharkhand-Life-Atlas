@@ -15,8 +15,14 @@ ROOT = Path(__file__).resolve().parents[1]
 LEDGER_PATH = ROOT / "modules" / "health_access" / "publication_gates.json"
 EXTERNAL_CI_GATE = "exact_final_main_green_ci"
 EXPECTED_REPOSITORY = "Arithmetic-Power-Geometry/Jharkhand-Life-Atlas"
-REQUIRED_WORKFLOWS = {"tests", "health-access-validation"}
+REQUIRED_WORKFLOWS = {
+    "tests": ".github/workflows/tests.yml",
+    "health-access-validation": ".github/workflows/health-access-validation.yml",
+}
 _SHA40 = re.compile(r"^[0-9a-f]{40}$")
+_RUN_URL = re.compile(
+    rf"^https://github\.com/{re.escape(EXPECTED_REPOSITORY)}/actions/runs/[1-9][0-9]*$"
+)
 
 
 def health_publication_ledger() -> dict[str, Any]:
@@ -40,14 +46,15 @@ def verify_external_ci_attestation(attestation: dict[str, Any] | None, candidate
         url = str(run.get("url", ""))
         if (
             name in REQUIRED_WORKFLOWS
+            and run.get("path") == REQUIRED_WORKFLOWS[name]
             and run.get("head_sha") == candidate_sha
             and run.get("head_branch") == "main"
             and run.get("event") == "push"
             and run.get("conclusion") == "success"
-            and url.startswith(f"https://github.com/{EXPECTED_REPOSITORY}/actions/runs/")
+            and _RUN_URL.fullmatch(url)
         ):
             verified.add(name)
-    return verified == REQUIRED_WORKFLOWS
+    return verified == set(REQUIRED_WORKFLOWS)
 
 
 def health_publication_status(
@@ -69,9 +76,6 @@ def health_publication_status(
     satisfied = [k for k, v in effective.items() if v.get("satisfied") is True]
     unresolved = [k for k, v in effective.items() if v.get("satisfied") is not True]
 
-    # The in-tree top-level flags are conservative declarations, not a second
-    # self-referential gate. Runtime publication becomes reachable only when all
-    # scientific tree gates pass AND exact-main external CI is independently proven.
     publication_allowed = candidate_ready and external_ci_verified
     module_complete = publication_allowed
     return {
