@@ -37,7 +37,6 @@ def _repository_evidence_path(relative_path, gate_name):
         f"{gate_name}: evidence path must be repository-relative: {relative_path}"
     )
     unresolved = ROOT / candidate
-    # Reject symlinks anywhere in the evidence path, not only at the leaf.
     current = ROOT
     for part in candidate.parts:
         current = current / part
@@ -87,21 +86,6 @@ def _working_tree_blob(relative_path, gate_name):
         f"{gate_name}: cannot hash publication evidence bytes: {relative_path}"
     )
     return blob
-
-
-def _current_head():
-    result = subprocess.run(
-        ["git", "rev-parse", "HEAD"],
-        cwd=ROOT,
-        capture_output=True,
-        text=True,
-        check=False,
-    )
-    head = result.stdout.strip()
-    assert result.returncode == 0 and HEX40.fullmatch(head), (
-        "cannot determine exact repository HEAD for final-CI verification"
-    )
-    return head
 
 
 def test_health_publication_gate_ledger_is_fail_closed():
@@ -165,22 +149,25 @@ def test_satisfied_health_gates_reference_repository_evidence():
             )
 
 
-def test_final_ci_gate_is_bound_to_exact_head_when_satisfied():
-    gate = _ledger()["gates"]["exact_final_main_green_ci"]
-    if not gate["satisfied"]:
-        return
+def test_final_ci_gate_is_external_and_never_self_attested():
+    """A commit cannot contain a truthful attestation to its own Git SHA.
 
-    verified_sha = gate.get("verified_main_sha")
-    workflow_run_url = gate.get("workflow_run_url")
-    assert isinstance(verified_sha, str) and HEX40.fullmatch(verified_sha), (
-        "exact_final_main_green_ci: verified_main_sha must be an exact 40-hex commit SHA"
+    Exact-head green CI is therefore a post-commit external condition.  The
+    repository ledger must never satisfy it by embedding a would-be HEAD SHA or
+    workflow URL in the candidate tree.  Completion tooling must verify GitHub
+    Actions for the immutable candidate SHA after the commit exists.
+    """
+    gate = _ledger()["gates"]["exact_final_main_green_ci"]
+    assert gate["satisfied"] is False, (
+        "exact_final_main_green_ci is external post-commit evidence and must not "
+        "be self-attested inside publication_gates.json"
     )
-    assert verified_sha == _current_head(), (
-        "exact_final_main_green_ci: CI verification is stale; verified SHA is not current HEAD"
+    assert not gate.get("verified_main_sha"), (
+        "do not embed a self-referential candidate SHA in the repository ledger"
     )
-    assert isinstance(workflow_run_url, str) and workflow_run_url.startswith(
-        "https://github.com/Arithmetic-Power-Geometry/Jharkhand-Life-Atlas/actions/runs/"
-    ), "exact_final_main_green_ci: missing repository workflow-run evidence"
+    assert not gate.get("workflow_run_url"), (
+        "workflow-run evidence belongs to the external exact-head attestation"
+    )
 
 
 def test_current_health_ledger_does_not_overclaim_completion():
