@@ -24,7 +24,7 @@ def health_publication_ledger() -> dict[str, Any]:
 
 
 def verify_external_ci_attestation(attestation: dict[str, Any] | None, candidate_sha: str | None) -> bool:
-    """Fail-closed verification of runtime, post-commit exact-head CI evidence."""
+    """Fail-closed verification of post-commit CI evidence for exact main head."""
     if not attestation or not candidate_sha or not _SHA40.fullmatch(candidate_sha):
         return False
     if attestation.get("repository") != EXPECTED_REPOSITORY or attestation.get("head_sha") != candidate_sha:
@@ -41,6 +41,8 @@ def verify_external_ci_attestation(attestation: dict[str, Any] | None, candidate
         if (
             name in REQUIRED_WORKFLOWS
             and run.get("head_sha") == candidate_sha
+            and run.get("head_branch") == "main"
+            and run.get("event") == "push"
             and run.get("conclusion") == "success"
             and url.startswith(f"https://github.com/{EXPECTED_REPOSITORY}/actions/runs/")
         ):
@@ -67,8 +69,11 @@ def health_publication_status(
     satisfied = [k for k, v in effective.items() if v.get("satisfied") is True]
     unresolved = [k for k, v in effective.items() if v.get("satisfied") is not True]
 
-    publication_allowed = ledger.get("publication_allowed") is True and candidate_ready and external_ci_verified
-    module_complete = ledger.get("module_complete") is True and publication_allowed
+    # The in-tree top-level flags are conservative declarations, not a second
+    # self-referential gate. Runtime publication becomes reachable only when all
+    # scientific tree gates pass AND exact-main external CI is independently proven.
+    publication_allowed = candidate_ready and external_ci_verified
+    module_complete = publication_allowed
     return {
         "status": "COMPLETE" if module_complete else str(ledger.get("status", "IN DEVELOPMENT")),
         "publication_allowed": publication_allowed,
