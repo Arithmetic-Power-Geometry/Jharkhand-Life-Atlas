@@ -2,12 +2,17 @@ from jla.health_publication import verify_external_ci_attestation
 
 SHA = "a" * 40
 REPO = "Arithmetic-Power-Geometry/Jharkhand-Life-Atlas"
+PATHS = {
+    "tests": ".github/workflows/tests.yml",
+    "health-access-validation": ".github/workflows/health-access-validation.yml",
+}
 
 
 def attestation(sha=SHA):
     def run(name, run_id):
         return {
             "name": name,
+            "path": PATHS[name],
             "head_sha": sha,
             "head_branch": "main",
             "event": "push",
@@ -36,6 +41,9 @@ def test_attestation_fails_closed_for_stale_sha_wrong_repo_or_bad_url():
     evidence = attestation()
     evidence["workflow_runs"][0]["url"] = "https://example.com/actions/runs/1"
     assert not verify_external_ci_attestation(evidence, SHA)
+    evidence = attestation()
+    evidence["workflow_runs"][0]["url"] += "/attempts/1"
+    assert not verify_external_ci_attestation(evidence, SHA)
 
 
 def test_attestation_rejects_non_green_invalid_sha_and_non_main_runs():
@@ -49,4 +57,14 @@ def test_attestation_rejects_non_green_invalid_sha_and_non_main_runs():
     assert not verify_external_ci_attestation(evidence, SHA)
     evidence = attestation()
     evidence["workflow_runs"][1]["event"] = "pull_request"
+    assert not verify_external_ci_attestation(evidence, SHA)
+
+
+def test_attestation_binds_required_names_to_canonical_workflow_paths():
+    evidence = attestation()
+    evidence["workflow_runs"][0]["path"] = ".github/workflows/spoofed-tests.yml"
+    assert not verify_external_ci_attestation(evidence, SHA)
+
+    evidence = attestation()
+    evidence["workflow_runs"][1].pop("path")
     assert not verify_external_ci_attestation(evidence, SHA)
