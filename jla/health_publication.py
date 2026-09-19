@@ -61,11 +61,12 @@ def health_publication_status(
 
     effective = {k: dict(v) for k, v in gates.items()}
     if EXTERNAL_CI_GATE in effective:
+        effective[EXTERNAL_CI_GATE]["tree_satisfied"] = effective[EXTERNAL_CI_GATE].get("satisfied") is True
+        effective[EXTERNAL_CI_GATE]["satisfied"] = external_ci_verified
         effective[EXTERNAL_CI_GATE]["runtime_verified"] = external_ci_verified
     satisfied = [k for k, v in effective.items() if v.get("satisfied") is True]
     unresolved = [k for k, v in effective.items() if v.get("satisfied") is not True]
 
-    # The ledger authorizes a candidate; runtime CI verifies that immutable candidate.
     publication_allowed = ledger.get("publication_allowed") is True and candidate_ready and external_ci_verified
     module_complete = ledger.get("module_complete") is True and publication_allowed
     return {
