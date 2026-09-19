@@ -63,8 +63,9 @@
     },
     "exact_final_main_green_ci": {
       "satisfied": false,
-      "reason": "The final completion head does not yet exist. CI success on an intermediate head cannot satisfy the final completion gate."
+      "attestation_mode": "external_post_commit",
+      "reason": "Exact-head green CI is post-commit external evidence. It must be verified from GitHub Actions for the immutable candidate SHA and must never be self-attested by embedding that SHA in this candidate tree."
     }
   },
-  "completion_rule": "module_complete and publication_allowed may become true only when every required gate above is satisfied and green CI is verified on the exact final main head."
+  "completion_rule": "All repository-verifiable scientific/publication gates must be satisfied in the immutable candidate tree, then exact-head green CI must be verified externally for that exact candidate SHA. A stale, missing, wrong-repository, wrong-workflow, or non-green attestation fails closed."
 }
