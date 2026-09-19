@@ -72,6 +72,21 @@ def _tracked_blob(relative_path, gate_name):
     return fields[1]
 
 
+def _working_tree_blob(relative_path, gate_name):
+    result = subprocess.run(
+        ["git", "hash-object", "--", relative_path],
+        cwd=ROOT,
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    blob = result.stdout.strip()
+    assert result.returncode == 0 and blob, (
+        f"{gate_name}: cannot hash publication evidence bytes: {relative_path}"
+    )
+    return blob
+
+
 def test_health_publication_gate_ledger_is_fail_closed():
     ledger = _ledger()
     assert ledger["module"] == "health_access"
@@ -126,6 +141,10 @@ def test_satisfied_health_gates_reference_repository_evidence():
             actual_blob = _tracked_blob(relative_path, name)
             assert actual_blob == expected_blob, (
                 f"{name}: publication evidence bytes changed without gate re-review: {relative_path}"
+            )
+            working_blob = _working_tree_blob(relative_path, name)
+            assert working_blob == expected_blob, (
+                f"{name}: working-tree publication evidence differs from reviewed bytes: {relative_path}"
             )
 
 
