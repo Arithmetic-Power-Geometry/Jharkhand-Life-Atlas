@@ -1,5 +1,6 @@
 import json
 from pathlib import Path
+import re
 import subprocess
 
 
@@ -19,6 +20,7 @@ REQUIRED_GATES = {
     "streamlit_synchronized_with_validated_outputs",
     "exact_final_main_green_ci",
 }
+HEX40 = re.compile(r"[0-9a-f]{40}")
 
 
 def _ledger():
@@ -87,6 +89,21 @@ def _working_tree_blob(relative_path, gate_name):
     return blob
 
 
+def _current_head():
+    result = subprocess.run(
+        ["git", "rev-parse", "HEAD"],
+        cwd=ROOT,
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    head = result.stdout.strip()
+    assert result.returncode == 0 and HEX40.fullmatch(head), (
+        "cannot determine exact repository HEAD for final-CI verification"
+    )
+    return head
+
+
 def test_health_publication_gate_ledger_is_fail_closed():
     ledger = _ledger()
     assert ledger["module"] == "health_access"
@@ -135,7 +152,7 @@ def test_satisfied_health_gates_reference_repository_evidence():
                 f"{name}: publication evidence is empty {relative_path}"
             )
             expected_blob = blob_bindings[relative_path]
-            assert isinstance(expected_blob, str) and len(expected_blob) == 40, (
+            assert isinstance(expected_blob, str) and HEX40.fullmatch(expected_blob), (
                 f"{name}: invalid Git blob binding for {relative_path}"
             )
             actual_blob = _tracked_blob(relative_path, name)
@@ -146,6 +163,24 @@ def test_satisfied_health_gates_reference_repository_evidence():
             assert working_blob == expected_blob, (
                 f"{name}: working-tree publication evidence differs from reviewed bytes: {relative_path}"
             )
+
+
+def test_final_ci_gate_is_bound_to_exact_head_when_satisfied():
+    gate = _ledger()["gates"]["exact_final_main_green_ci"]
+    if not gate["satisfied"]:
+        return
+
+    verified_sha = gate.get("verified_main_sha")
+    workflow_run_url = gate.get("workflow_run_url")
+    assert isinstance(verified_sha, str) and HEX40.fullmatch(verified_sha), (
+        "exact_final_main_green_ci: verified_main_sha must be an exact 40-hex commit SHA"
+    )
+    assert verified_sha == _current_head(), (
+        "exact_final_main_green_ci: CI verification is stale; verified SHA is not current HEAD"
+    )
+    assert isinstance(workflow_run_url, str) and workflow_run_url.startswith(
+        "https://github.com/Arithmetic-Power-Geometry/Jharkhand-Life-Atlas/actions/runs/"
+    ), "exact_final_main_green_ci: missing repository workflow-run evidence"
 
 
 def test_current_health_ledger_does_not_overclaim_completion():
