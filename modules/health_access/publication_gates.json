@@ -13,7 +13,13 @@
         "data/curated/health_access/census_health_access_2011.csv",
         "data/curated/health_access/census_health_access_2011.provenance.json",
         "modules/health_access/RESEARCH_USE_CENSUS2011.md"
-      ]
+      ],
+      "evidence_git_blobs": {
+        "data/curated/core_geography/village_amenities_2011.csv": "ce31cdaab79decb7022add55a24a46cd1f51bc75",
+        "data/curated/health_access/census_health_access_2011.csv": "ad739667ba151ea2408ec49e19834b6aa44d306c",
+        "data/curated/health_access/census_health_access_2011.provenance.json": "36b170f10e00eddc269387b904d56757fbe90589",
+        "modules/health_access/RESEARCH_USE_CENSUS2011.md": "06ae292d96f125a8737f429110b4c7f9d353ad6a"
+      }
     },
     "priority_current_payloads_authoritatively_acquired": {
       "satisfied": false,

@@ -35,10 +35,7 @@ def _repository_evidence_path(relative_path, gate_name):
         f"{gate_name}: evidence path must be repository-relative: {relative_path}"
     )
     unresolved = ROOT / candidate
-    # Reject symlinks anywhere in the evidence path, not only at the leaf.  A
-    # tracked regular-looking leaf below a symlinked directory must never be
-    # allowed to redirect a publication gate to bytes outside the governed
-    # repository tree.
+    # Reject symlinks anywhere in the evidence path, not only at the leaf.
     current = ROOT
     for part in candidate.parts:
         current = current / part
@@ -55,17 +52,24 @@ def _repository_evidence_path(relative_path, gate_name):
     return resolved
 
 
-def _assert_version_controlled(relative_path, gate_name):
+def _tracked_blob(relative_path, gate_name):
     result = subprocess.run(
-        ["git", "ls-files", "--error-unmatch", "--", relative_path],
+        ["git", "ls-files", "-s", "--", relative_path],
         cwd=ROOT,
         capture_output=True,
         text=True,
         check=False,
     )
-    assert result.returncode == 0, (
+    assert result.returncode == 0 and result.stdout.strip(), (
         f"{gate_name}: publication evidence is not version-controlled: {relative_path}"
     )
+    rows = [line for line in result.stdout.splitlines() if line.strip()]
+    assert len(rows) == 1, f"{gate_name}: ambiguous Git index entry: {relative_path}"
+    fields = rows[0].split(None, 3)
+    assert len(fields) == 4 and fields[2] == "0", (
+        f"{gate_name}: unexpected Git index entry: {relative_path}"
+    )
+    return fields[1]
 
 
 def test_health_publication_gate_ledger_is_fail_closed():
@@ -101,8 +105,13 @@ def test_satisfied_health_gates_reference_repository_evidence():
         if not gate["satisfied"]:
             continue
         evidence = gate.get("evidence")
+        blob_bindings = gate.get("evidence_git_blobs")
         assert isinstance(evidence, list) and evidence, name
         assert len(evidence) == len(set(evidence)), f"{name}: duplicate evidence paths"
+        assert isinstance(blob_bindings, dict), f"{name}: missing immutable Git blob bindings"
+        assert set(blob_bindings) == set(evidence), (
+            f"{name}: every evidence path must have exactly one immutable Git blob binding"
+        )
         for relative_path in evidence:
             path = _repository_evidence_path(relative_path, name)
             assert path.exists(), f"{name}: missing evidence {relative_path}"
@@ -110,7 +119,14 @@ def test_satisfied_health_gates_reference_repository_evidence():
             assert path.stat().st_size > 0, (
                 f"{name}: publication evidence is empty {relative_path}"
             )
-            _assert_version_controlled(relative_path, name)
+            expected_blob = blob_bindings[relative_path]
+            assert isinstance(expected_blob, str) and len(expected_blob) == 40, (
+                f"{name}: invalid Git blob binding for {relative_path}"
+            )
+            actual_blob = _tracked_blob(relative_path, name)
+            assert actual_blob == expected_blob, (
+                f"{name}: publication evidence bytes changed without gate re-review: {relative_path}"
+            )
 
 
 def test_current_health_ledger_does_not_overclaim_completion():
