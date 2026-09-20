@@ -1,0 +1,90 @@
+name: health-nfhs5-catalog-api-snapshot
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '41 */6 * * *'
+
+permissions:
+  contents: read
+
+jobs:
+  snapshot-catalog-api:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      CATALOG_API_URL: https://www.data.gov.in/apis/6f1094bb-24f4-4fe4-8063-cf4cb733279c
+    steps:
+      - uses: actions/checkout@v4
+      - name: Capture exact evidenced catalog API response
+        id: capture
+        continue-on-error: true
+        shell: bash
+        run: |
+          set -uo pipefail
+          mkdir -p build/health_nfhs5_catalog_api
+          out=build/health_nfhs5_catalog_api
+          curl --fail-with-body --location --silent --show-error \
+            --connect-timeout 30 --max-time 180 \
+            --header 'Accept: application/json,text/plain,*/*' \
+            --user-agent 'Jharkhand-Life-Atlas/authoritative-source-audit' \
+            --dump-header "$out/response_headers.txt" \
+            --output "$out/response_body.bin" \
+            --write-out '%{http_code}\n%{url_effective}\n%{content_type}\n%{size_download}\n' \
+            "$CATALOG_API_URL" > "$out/curl_meta.txt"
+      - name: Build immutable audit receipt
+        if: always()
+        run: |
+          python - <<'PY'
+          import hashlib, json, os
+          from datetime import datetime, timezone
+          from pathlib import Path
+
+          out = Path('build/health_nfhs5_catalog_api')
+          body = out / 'response_body.bin'
+          meta = out / 'curl_meta.txt'
+          lines = meta.read_text(encoding='utf-8', errors='replace').splitlines() if meta.exists() else []
+          raw = body.read_bytes() if body.exists() else b''
+          receipt = {
+              'contract': 'JLA_AUTHORITATIVE_ENDPOINT_AUDIT_V1',
+              'source_id': 'OGD_NFHS5_DISTRICT_FACTSHEETS_2019_2021',
+              'authority': 'Open Government Data Platform India / Ministry of Health and Family Welfare / IIPS',
+              'endpoint_scope': 'catalog_api_identity_only_not_resource_or_payload',
+              'exact_evidenced_url': os.environ['CATALOG_API_URL'],
+              'observed_at_utc': datetime.now(timezone.utc).isoformat(),
+              'http_status': lines[0] if len(lines) > 0 else None,
+              'effective_url': lines[1] if len(lines) > 1 else None,
+              'content_type': lines[2] if len(lines) > 2 else None,
+              'byte_count': len(raw),
+              'sha256': hashlib.sha256(raw).hexdigest() if raw else None,
+              'response_captured': bool(raw),
+              'resource_payload_identity_verified': False,
+              'publication_allowed': False,
+              'geography_crosswalk_allowed': False,
+              'missing_values_may_be_converted_to_zero': False,
+              'next_gate': 'Inspect captured response for independently evidenced resource-level identity; never synthesize an API/resource URL from the catalog UUID.',
+          }
+          (out / 'audit_receipt.json').write_text(json.dumps(receipt, indent=2), encoding='utf-8')
+          print(json.dumps(receipt, indent=2))
+          PY
+      - name: Enforce fail-closed catalog scope
+        if: always()
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          r = json.loads(Path('build/health_nfhs5_catalog_api/audit_receipt.json').read_text())
+          assert r['endpoint_scope'] == 'catalog_api_identity_only_not_resource_or_payload'
+          assert r['resource_payload_identity_verified'] is False
+          assert r['publication_allowed'] is False
+          assert r['geography_crosswalk_allowed'] is False
+          assert r['missing_values_may_be_converted_to_zero'] is False
+          PY
+      - name: Upload governed endpoint evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: health-nfhs5-catalog-api-audit-${{ github.run_id }}
+          path: build/health_nfhs5_catalog_api/
+          if-no-files-found: error
+          retention-days: 90
