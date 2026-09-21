@@ -2,6 +2,8 @@ name: health-nfhs5-publisher-xls-snapshot
 
 on:
   workflow_dispatch:
+  schedule:
+    - cron: '17 */6 * * *'
 
 permissions:
   contents: read
@@ -54,8 +56,6 @@ jobs:
           except ValueError:
               curl_exit_code = None
           transfer_complete = curl_exit_code == 0 and bool(raw)
-          # Legacy XLS/OLE Compound File signature. Signature is only a format check,
-          # not evidence that the workbook is the intended NFHS resource.
           ole_sig = bytes.fromhex('D0CF11E0A1B11AE1')
           receipt = {
               'contract': 'JLA_AUTHORITATIVE_PAYLOAD_CANDIDATE_AUDIT_V1',
