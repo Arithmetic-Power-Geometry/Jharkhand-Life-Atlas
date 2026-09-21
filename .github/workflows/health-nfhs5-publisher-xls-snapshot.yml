@@ -1,0 +1,108 @@
+name: health-nfhs5-publisher-xls-snapshot
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  snapshot-publisher-xls:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      PUBLISHER_XLS_URL: https://data.gov.in/files/ogdpv2dms/s3fs-public/datafile/NFHS_5_India_Districts_Factsheet_Data.xls
+    steps:
+      - uses: actions/checkout@v4
+      - name: Capture exact publisher-hosted candidate workbook
+        id: capture
+        shell: bash
+        run: |
+          set -uo pipefail
+          out=build/health_nfhs5_publisher_xls
+          mkdir -p "$out"
+          set +e
+          curl --fail-with-body --location --silent --show-error \
+            --connect-timeout 30 --max-time 180 --remove-on-error \
+            --user-agent 'Jharkhand-Life-Atlas/authoritative-source-audit' \
+            --dump-header "$out/response_headers.txt" \
+            --output "$out/response_body.bin" \
+            --write-out '%{http_code}\n%{url_effective}\n%{content_type}\n%{size_download}\n' \
+            "$PUBLISHER_XLS_URL" > "$out/curl_meta.txt"
+          rc=$?
+          set -e
+          printf '%s\n' "$rc" > "$out/curl_exit_code.txt"
+          # Preserve the audit evidence even on transport failure. Scientific admission
+          # remains false unless the receipt independently verifies a complete transfer.
+          exit 0
+      - name: Build immutable audit receipt and inspect container signature
+        if: always()
+        run: |
+          python - <<'PY'
+          import hashlib, json, os
+          from datetime import datetime, timezone
+          from pathlib import Path
+
+          out = Path('build/health_nfhs5_publisher_xls')
+          body = out / 'response_body.bin'
+          meta = out / 'curl_meta.txt'
+          exit_file = out / 'curl_exit_code.txt'
+          lines = meta.read_text(encoding='utf-8', errors='replace').splitlines() if meta.exists() else []
+          raw = body.read_bytes() if body.exists() else b''
+          try:
+              curl_exit_code = int(exit_file.read_text().strip()) if exit_file.exists() else None
+          except ValueError:
+              curl_exit_code = None
+          transfer_complete = curl_exit_code == 0 and bool(raw)
+          # Legacy XLS/OLE Compound File signature. Signature is only a format check,
+          # not evidence that the workbook is the intended NFHS resource.
+          ole_sig = bytes.fromhex('D0CF11E0A1B11AE1')
+          receipt = {
+              'contract': 'JLA_AUTHORITATIVE_PAYLOAD_CANDIDATE_AUDIT_V1',
+              'source_id': 'OGD_NFHS5_DISTRICT_FACTSHEETS_2019_2021',
+              'authority': 'Open Government Data Platform India / Ministry of Health and Family Welfare / IIPS',
+              'candidate_url_scope': 'publisher_hosted_path_independently_reported_but_not_yet_resource_uuid_bound',
+              'exact_candidate_url': os.environ['PUBLISHER_XLS_URL'],
+              'observed_at_utc': datetime.now(timezone.utc).isoformat(),
+              'curl_exit_code': curl_exit_code,
+              'transfer_complete': transfer_complete,
+              'http_status': lines[0] if len(lines) > 0 else None,
+              'effective_url': lines[1] if len(lines) > 1 else None,
+              'content_type': lines[2] if len(lines) > 2 else None,
+              'byte_count': len(raw),
+              'sha256': hashlib.sha256(raw).hexdigest() if raw else None,
+              'response_captured': transfer_complete,
+              'ole_xls_signature_observed': transfer_complete and raw.startswith(ole_sig),
+              'resource_uuid_binding_verified': False,
+              'scientific_schema_verified': False,
+              'publication_allowed': False,
+              'geography_crosswalk_allowed': False,
+              'missing_values_may_be_converted_to_zero': False,
+              'next_gate': 'If a complete real XLS is captured, inspect workbook schema and suppression markers; separately establish authoritative resource identity/binding before admitting any curated output.',
+          }
+          (out / 'audit_receipt.json').write_text(json.dumps(receipt, indent=2), encoding='utf-8')
+          print(json.dumps(receipt, indent=2))
+          PY
+      - name: Enforce fail-closed candidate scope
+        if: always()
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          r = json.loads(Path('build/health_nfhs5_publisher_xls/audit_receipt.json').read_text())
+          assert r['candidate_url_scope'] == 'publisher_hosted_path_independently_reported_but_not_yet_resource_uuid_bound'
+          assert r['response_captured'] == r['transfer_complete']
+          assert r['resource_uuid_binding_verified'] is False
+          assert r['scientific_schema_verified'] is False
+          assert r['publication_allowed'] is False
+          assert r['geography_crosswalk_allowed'] is False
+          assert r['missing_values_may_be_converted_to_zero'] is False
+          PY
+      - name: Upload governed candidate evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: health-nfhs5-publisher-xls-audit-${{ github.run_id }}
+          path: build/health_nfhs5_publisher_xls/
+          if-no-files-found: error
+          retention-days: 90
