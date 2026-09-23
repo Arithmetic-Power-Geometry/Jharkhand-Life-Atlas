@@ -62,17 +62,19 @@ jobs:
               ],
           }
           (out / 'receipt.json').write_text(json.dumps(receipt, indent=2, sort_keys=True) + '\n', encoding='utf-8')
+          (out / 'drift.flag').write_text('1\n' if sha != expected_sha else '0\n', encoding='utf-8')
           print(json.dumps(receipt, indent=2, sort_keys=True))
-          assert sha == expected_sha, 'Publisher static CSV drifted from governed candidate; explicit review required'
           assert receipt['canonical_source_identity_resolved'] is False
           assert receipt['publication_allowed'] is False
           PY
       - name: Remove publisher HTML and sensitive raw CSV before artifact export
+        if: always()
         run: |
           rm -f build/health_nhd_identity_probe/resource.html
           rm -f build/health_nhd_identity_probe/hospital_directory.csv
           test ! -e build/health_nhd_identity_probe/hospital_directory.csv
       - name: Upload provenance-only receipt and response headers
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: health-nhd-authoritative-identity-probe-${{ github.run_id }}
@@ -82,3 +84,12 @@ jobs:
             build/health_nhd_identity_probe/csv.headers
           if-no-files-found: error
           retention-days: 90
+      - name: Fail closed on publisher CSV drift
+        if: always()
+        shell: bash
+        run: |
+          test -f build/health_nhd_identity_probe/drift.flag
+          test "$(cat build/health_nhd_identity_probe/drift.flag)" = "0" || {
+            echo 'Publisher static CSV drifted from governed candidate; provenance receipt preserved for explicit review.' >&2
+            exit 1
+          }
