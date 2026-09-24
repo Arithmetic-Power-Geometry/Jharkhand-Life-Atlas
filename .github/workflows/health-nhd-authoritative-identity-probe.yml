@@ -28,7 +28,7 @@ jobs:
             --dump-header build/health_nhd_identity_probe/csv.headers \
             --output build/health_nhd_identity_probe/hospital_directory.csv "$csv"
           python - <<'PY'
-          import hashlib, json, re
+          import hashlib, html, json, re
           from pathlib import Path
 
           out = Path('build/health_nhd_identity_probe')
@@ -37,17 +37,72 @@ jobs:
           expected_sha = '1ddcad9f9b922142a4374c7b89b70fb6cefd8a257448c70a61e1c07d98845134'
           candidate_uuid = '98fa254e-c5f8-4910-a19b-4828939b477d'
           catalog_uuid = 'e48a8bcf-ff56-4f39-839d-095827ba2a18'
+          static_csv_path = '/sites/default/files/datafile/hospital_directory.csv'
+
+          def decode_common_web_escapes(text):
+              text = html.unescape(text)
+              text = text.replace('\\/', '/')
+              text = re.sub(r'\\u002[fF]', '/', text)
+              text = re.sub(r'\\u003[aA]', ':', text)
+              return text
+
+          def direct_scalar_strings(obj):
+              if not isinstance(obj, dict):
+                  return []
+              values = []
+              for value in obj.values():
+                  if isinstance(value, (str, int, float, bool)) or value is None:
+                      values.append(str(value))
+              return values
+
+          def walk_dicts(obj):
+              if isinstance(obj, dict):
+                  yield obj
+                  for value in obj.values():
+                      yield from walk_dicts(value)
+              elif isinstance(obj, list):
+                  for value in obj:
+                      yield from walk_dicts(value)
+
           sha = hashlib.sha256(raw).hexdigest()
-          uuid_hits = sorted(set(re.findall(r'(?i)\b[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}\b', page)))
+          decoded_page = decode_common_web_escapes(page)
+          uuid_hits = sorted(set(re.findall(r'(?i)\b[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}\b', decoded_page)))
+          candidate_lower = candidate_uuid.lower()
+          csv_lower = static_csv_path.lower()
+          parsed_json_scripts = 0
+          object_level_bindings = 0
+          for block in re.findall(r'(?is)<script\b[^>]*>(.*?)</script>', page):
+              decoded = decode_common_web_escapes(block).strip()
+              if not decoded:
+                  continue
+              try:
+                  payload = json.loads(decoded)
+              except json.JSONDecodeError:
+                  continue
+              parsed_json_scripts += 1
+              for record in walk_dicts(payload):
+                  scalar_text = '\n'.join(direct_scalar_strings(record)).lower()
+                  if candidate_lower in scalar_text and csv_lower in scalar_text:
+                      object_level_bindings += 1
+
+          resource_uuid_api_refs = re.findall(
+              rf'(?i)(?:api|resource)[^"\'<>\s]{{0,160}}{re.escape(candidate_uuid)}|'
+              rf'{re.escape(candidate_uuid)}[^"\'<>\s]{{0,160}}(?:api|resource)',
+              decoded_page,
+          )
           receipt = {
-              'contract': 'JLA_HEALTH_NHD_AUTHORITATIVE_IDENTITY_PROBE_V1',
+              'contract': 'JLA_HEALTH_NHD_AUTHORITATIVE_IDENTITY_PROBE_V2',
               'publisher_resource_url': 'https://www.data.gov.in/resource/national-hospital-directory-geo-code-and-additional-parameters-updated-till-last-month',
               'publisher_static_csv_url': 'https://www.data.gov.in/sites/default/files/datafile/hospital_directory.csv',
               'candidate_resource_uuid': candidate_uuid,
               'candidate_catalog_uuid': catalog_uuid,
-              'candidate_resource_uuid_seen_on_live_publisher_page': candidate_uuid.lower() in {u.lower() for u in uuid_hits},
+              'candidate_resource_uuid_seen_on_live_publisher_page': candidate_lower in {u.lower() for u in uuid_hits},
               'candidate_catalog_uuid_seen_on_live_publisher_page': catalog_uuid.lower() in {u.lower() for u in uuid_hits},
               'publisher_page_uuid_hits': uuid_hits,
+              'parsed_json_script_count': parsed_json_scripts,
+              'resource_uuid_and_csv_path_same_object_scalar_fields': object_level_bindings > 0,
+              'resource_uuid_and_csv_path_same_object_scalar_field_count': object_level_bindings,
+              'resource_uuid_api_reference_count': len(resource_uuid_api_refs),
               'csv_sha256': sha,
               'csv_byte_count': len(raw),
               'csv_matches_governed_candidate_sha256': sha == expected_sha,
@@ -55,7 +110,10 @@ jobs:
               'publication_allowed': False,
               'rules': [
                   'uuid_presence_on_html_is_evidence_only_and_does_not_by_itself_bind_uuid_to_csv_bytes',
-                  'canonical_identity_requires_authoritative_machine_binding_or_equivalent_publisher_evidence',
+                  'object_level_binding_requires_uuid_and_csv_path_in_scalar_fields_of_the_same_parsed_json_dictionary',
+                  'web_escaped_slashes_are_decoded_before_structural_comparison',
+                  'structural_binding_signals_are_evidence_only_and_do_not_auto_open_the_canonical_identity_gate',
+                  'canonical_identity_requires_explicit_review_of_authoritative_machine_binding_or_equivalent_publisher_evidence',
                   'no_name_only_geography_equivalence',
                   'missing_values_must_remain_missing',
                   'no_person_level_or_contact_data_may_be_exported',
