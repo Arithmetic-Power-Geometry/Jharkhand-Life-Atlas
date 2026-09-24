@@ -1,0 +1,39 @@
+contract: JLA_HEALTH_NHD_AUTHORITATIVE_IDENTITY_EVIDENCE_V1
+source_id: OGD_NHP_HOSPITAL_GEO_2026
+observed_at_utc: '2026-09-24T05:25:30Z'
+workflow_run_id: 35959858539
+workflow_head_sha: 8bbab2451a6878d69b92c53ddfb56153e1daedb0
+workflow_conclusion: success
+publisher_resource_url: https://www.data.gov.in/resource/national-hospital-directory-geo-code-and-additional-parameters-updated-till-last-month
+publisher_static_csv_url: https://www.data.gov.in/sites/default/files/datafile/hospital_directory.csv
+authoritative_page_evidence:
+  resource_uuid: 98fa254e-c5f8-4910-a19b-4828939b477d
+  resource_uuid_seen_on_live_publisher_page: true
+  catalog_uuid: e48a8bcf-ff56-4f39-839d-095827ba2a18
+  catalog_uuid_seen_on_live_publisher_page: true
+publisher_payload_evidence:
+  content_type: text/csv
+  byte_count: 10341256
+  sha256: 1ddcad9f9b922142a4374c7b89b70fb6cefd8a257448c70a61e1c07d98845134
+  matches_governed_candidate_sha256: true
+  http_last_modified: 'Wed, 07 Jan 2026 07:46:44 GMT'
+  etag: '"2a1b832dfad3972a32998de751476db5"'
+  raw_payload_committed: false
+  publisher_html_committed: false
+gates:
+  canonical_source_identity_resolved: false
+  geography_linkage_verified: false
+  publication_allowed: false
+interpretation: >-
+  The live authoritative publisher page contains both the candidate resource UUID and
+  catalog UUID, and the publisher static CSV exactly matches the checksum-pinned governed
+  candidate bytes. This is strong provenance evidence, but the current JLA contract does
+  not treat co-presence on HTML plus checksum equality as an explicit machine binding of
+  resource UUID to the CSV object. Canonical identity therefore remains fail-closed.
+rules:
+  - never_infer_resource_binding_from_name_or_slug
+  - uuid_presence_on_html_is_not_by_itself_uuid_to_payload_binding
+  - missing_values_remain_null
+  - no_name_only_geography_equivalence
+  - no_person_level_or_contact_data_may_be_exported
+  - no_unsupported_derived_outputs
