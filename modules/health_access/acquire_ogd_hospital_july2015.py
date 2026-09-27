@@ -111,17 +111,15 @@ def run(output_dir: Path) -> dict:
     session = requests.Session()
     session.headers.update({"User-Agent": USER_AGENT, "Accept-Language": "en-US,en;q=0.9"})
 
-    page = session.get(RESOURCE_PAGE, timeout=90, allow_redirects=True)
-    page_bytes = page.content
     report = {
         "contract": "JLA_HEALTH_OFFICIAL_PAYLOAD_ACQUISITION_V1",
         "source_id": SOURCE_ID,
         "resource_page": RESOURCE_PAGE,
         "retrieved_at_utc": datetime.now(timezone.utc).isoformat(),
-        "resource_page_status": page.status_code,
-        "resource_page_final_url": page.url,
-        "resource_page_sha256": sha256(page_bytes),
-        "resource_page_bytes": len(page_bytes),
+        "resource_page_status": null,
+        "resource_page_final_url": null,
+        "resource_page_sha256": null,
+        "resource_page_bytes": null,
         "candidate_links": [],
         "attempts": [],
         "raw_payload_acquired": False,
@@ -137,6 +135,22 @@ def run(output_dir: Path) -> dict:
             "publication_requires_separate_geography_and_validation_gates",
         ],
     }
+
+    try:
+        page = session.get(RESOURCE_PAGE, timeout=90, allow_redirects=True)
+    except requests.RequestException as exc:
+        report["blocker"] = "authoritative_resource_page_request_failed"
+        report["resource_page_request_error"] = f"{type(exc).__name__}: {exc}"
+        (output_dir / "hospital_directory_july2015_acquisition.json").write_text(
+            json.dumps(report, indent=2, ensure_ascii=False), encoding="utf-8"
+        )
+        return report
+
+    page_bytes = page.content
+    report["resource_page_status"] = page.status_code
+    report["resource_page_final_url"] = page.url
+    report["resource_page_sha256"] = sha256(page_bytes)
+    report["resource_page_bytes"] = len(page_bytes)
 
     if page.status_code != 200:
         report["blocker"] = "authoritative_resource_page_not_retrievable"
